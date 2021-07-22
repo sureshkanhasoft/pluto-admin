@@ -1,0 +1,17 @@
+import React from 'react'
+import { Route } from "react-router-dom";
+import CreateStaff from './CreateStaff';
+import DetailStaff from './DetailStaff';
+import ViewStaff from './ViewStaff';
+
+const Staff = ({ match }) => {
+    return (
+        <>
+            <Route exact path={`${match.url}/`} component={ViewStaff} />
+            <Route exact path={`${match.url}/create`} component={CreateStaff} />
+            <Route exact path={`${match.url}/detail`} component={DetailStaff} />
+        </>
+    )
+}
+
+export default Staff

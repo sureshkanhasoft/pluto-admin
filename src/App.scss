@@ -1,0 +1,103 @@
+html{
+    padding: 0;
+    margin: 0;
+    height: 100%;
+}
+
+body{
+    font-family: "Roboto", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background: #eaecfb;
+    color: #18264d;
+    height: 100%;
+}
+#root{
+    height: 100%;
+}
+
+*{
+    box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+a{
+    color: inherit;
+    text-decoration: none;
+    &:hover{
+        text-decoration: none;
+    }
+}
+p{
+    margin-top: 0;
+}
+
+$sizes:12;
+@mixin margin-classes{
+    @for $var from 0 to $sizes {
+        $margin: $var * 0.25rem;
+        .m-#{$var} {margin: $margin;}
+        .ml-#{$var} {margin-left: $margin;}
+        .mr-#{$var} {margin-right: $margin;}
+        .mt-#{$var} {margin-top: $margin;}
+        .mb-#{$var} {margin-bottom: $margin;}
+    }
+}
+
+@include margin-classes;
+
+@mixin padding-classes{
+    @for $var from 0 to $sizes {
+        $padding: $var * 0.25rem;
+        .p-#{$var} {margin: $padding;}
+        .pl-#{$var} {margin-left: $padding;}
+        .pr-#{$var} {margin-right: $padding;}
+        .pt-#{$var} {margin-top: $padding;}
+        .pb-#{$var} {margin-bottom: $padding;}
+    }
+}
+
+@include padding-classes;
+
+.btn{
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 16px;
+    border-radius: 4px;
+    box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.20), 0px 2px 2px 0px rgba(0, 0, 0,0.14), 0px 1px 5px 0px rgba(0, 0, 0,0.12);
+}
+
+.btn-primary{
+    background: #184a7b;
+    color: #fff;
+}
+
+.btn-secondary{
+    background: #ff8b46;
+    color: #fff;
+}
+
+.btn-sm{
+    max-width: 80px;
+    margin-left: auto;
+}
