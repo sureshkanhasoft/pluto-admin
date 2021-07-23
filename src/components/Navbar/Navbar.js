@@ -8,10 +8,11 @@ import {
   Menu,
   MenuItem
 } from "@material-ui/core";
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
 // import { useRouteMatch, useParams } from "react-router-dom";
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import history from '../../utils/HistoryUtils';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,7 +32,6 @@ const useStyles = makeStyles((theme) => ({
 
 const Navbar = () => {
   const classes = useStyles();
-  const history = useHistory();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 

@@ -35,7 +35,6 @@ const CreateOrganization = ({ open, handleClose, id }) => {
 
     const handleChange = (event) => {
         setData({ ...data, [event.target.name]: event.target.value });
-        console.log('data: ', data);
     };
 
     return (

@@ -48,7 +48,6 @@ const Sidebar = (props) => {
     const classes = useStyle();
     let authAdmin = localStorage.getItem('admin');
     // let authSuperAdmin = localStorage.getItem('super-admin');
-    console.log('auth: ', authAdmin);
     return (
         <Drawer variant="permanent" classes={{ paper: classes.drawer }}>
             <Box className={classes.logoContainer}>
@@ -59,7 +58,7 @@ const Sidebar = (props) => {
 
             <List className={props.sidebarWidth}>
                 {
-                    authAdmin ? routes.filter(route => route.role === 'admin').map((route, index) => (
+                    authAdmin ? routes.filter(route => route.role === 'admin' && route.sidebar !== false).map((route, index) => (
                         <NavLink to={`/admin/${route.path}`} key={index} className={classes.navLink} activeClassName="active">
                             <ListItem button>
                                 <ListItemIcon className={`${classes.listItemIcon} activeIcon`}>
@@ -78,8 +77,6 @@ const Sidebar = (props) => {
                             </ListItem>
                         </NavLink>
                     ))
-
-
                 }
             </List>
 

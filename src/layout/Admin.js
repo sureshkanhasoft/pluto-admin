@@ -6,7 +6,6 @@ import {
 } from "react-router-dom";
 import Navbar from '../components/Navbar/Navbar'
 import Sidebar from '../components/Sidebar/Sidebar';
-
 import routes from '../routes.js';
 
 const drawerWidth = 240;

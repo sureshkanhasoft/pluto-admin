@@ -1,5 +1,6 @@
 import Bookings from "./pages/Bookings/Bookings";
 import CreateBooking from "./pages/Bookings/CreateBooking";
+import ChangePassword from "./pages/ChangePassword/ChangePassword";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Organization from "./pages/Organization/Organization";
 import PlanManagement from "./pages/PlanManagement/PlanManagement";
@@ -30,6 +31,15 @@ const Routes = [
         component:PlanManagement,
         icon:"account_tree",
         role:"superAdmin"
+    },
+
+    {
+        name:"change-password",
+        path:"change-password",
+        component:ChangePassword,
+        icon:"assignment",
+        role:"admin",
+        sidebar:false
     },
 
     {

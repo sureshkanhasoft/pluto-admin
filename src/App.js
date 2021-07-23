@@ -5,18 +5,18 @@ import {
   Route,
   Redirect
 } from "react-router-dom";
-import { createBrowserHistory } from "history";
 import Admin from './layout/Admin';
-import Login from './pages/Login/Login';
 import SuperAdmin from './layout/SuperAdmin';
-
-var history = createBrowserHistory();
+import Login from './pages/Auth/Login/Login';
+import ForgottenPassword from './pages/Auth/ForgottenPassword/ForgottenPassword';
+import history from './utils/HistoryUtils';
 
 function App() {
   return (
     <Router history={history}>
       <Switch>
         <Route exact path="/login" component={Login} />
+        <Route exact path="/forgotten-password" component={ForgottenPassword} />
         <Route path="/admin" component={Admin} />
         <Route path="/super-admin" component={SuperAdmin} />
         <Redirect from="/" to="/login" />

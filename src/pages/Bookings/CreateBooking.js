@@ -42,7 +42,6 @@ const CreateBooking = () => {
     const handleChange = (event) => {
         setData({ ...data, [event.target.name]: event.target.value });
     };
-    console.log('data: ', data);
     return (
         <Paper className={classes.root}>
 

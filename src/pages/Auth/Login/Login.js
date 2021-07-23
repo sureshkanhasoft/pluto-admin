@@ -3,7 +3,7 @@ import { Grid, Card, TextField, Button, makeStyles } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import MailIcon from '@material-ui/icons/Mail';
 import LockIcon from '@material-ui/icons/Lock';
-import logo from '../../assets/images/logo.svg'
+import logo from '../../../assets/images/logo.svg'
 
 const useStyle = makeStyles({
     loginContainer: {
@@ -60,22 +60,22 @@ const useStyle = makeStyles({
 
 const Login = ({ history }) => {
     const classes = useStyle();
-    
+
     const [data, setData] = useState({
         email: "",
         password: ""
     })
-    
+
     const handleChange = (event) => {
         setData({ ...data, [event.target.name]: event.target.value });
     }
-    
+
     const login = () => {
         if (data.email === 'admin') {
             // localStorage.clear()
             localStorage.setItem("admin", "admin");
-            history.push('admin/bookings')
-        } else if(data.email === "super-admin") {
+            history.push('admin/change-password')
+        } else if (data.email === "super-admin") {
             // localStorage.clear()
             localStorage.setItem("super-admin", "super-admin");
             history.push('super-admin/dashboard')
@@ -115,7 +115,7 @@ const Login = ({ history }) => {
                             className={classes.textField}
                         />
                         <div className={classes.forgotCont}>
-                            <Link to="#" className={classes.forgotText}>Forgotten your password?</Link>
+                            <Link to="/forgotten-password" className={classes.forgotText}>Forgotten your password?</Link>
                         </div>
                         <Button variant="contained" color="primary" className={classes.loginBtn} onClick={login}>
                             login

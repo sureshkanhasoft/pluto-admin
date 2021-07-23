@@ -34,7 +34,6 @@ const oraganization = [
 const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
     const classes = useStyle();
     const [data, setData] = useState(oraganization[0])
-    console.log('data: ', data);
     const handleChange = (event) => {
         setData({ ...data, [event.target.name]: event.target.value });
     };
