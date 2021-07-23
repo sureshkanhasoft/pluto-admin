@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
-import { Grid, Card, TextField, Button, makeStyles } from '@material-ui/core';
+import { useDispatch, useSelector } from 'react-redux';
+import { Grid, Card, TextField, Button, makeStyles, CircularProgress } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import MailIcon from '@material-ui/icons/Mail';
 import LockIcon from '@material-ui/icons/Lock';
 import logo from '../../../assets/images/logo.svg'
+import { login } from '../../../store/action';
 
 const useStyle = makeStyles({
     loginContainer: {
@@ -58,8 +60,14 @@ const useStyle = makeStyles({
     }
 })
 
-const Login = ({ history }) => {
+const Login = () => {
     const classes = useStyle();
+    const dispatch = useDispatch()
+
+    const { loading, errors } = useSelector(state => state.authReducer)
+    // const dsfsd = useSelector(state => state.authReducer)
+    // console.log('dsfsd: ', dsfsd);
+
 
     const [data, setData] = useState({
         email: "",
@@ -70,17 +78,10 @@ const Login = ({ history }) => {
         setData({ ...data, [event.target.name]: event.target.value });
     }
 
-    const login = () => {
-        if (data.email === 'admin') {
-            // localStorage.clear()
-            localStorage.setItem("admin", "admin");
-            history.push('admin/change-password')
-        } else if (data.email === "super-admin") {
-            // localStorage.clear()
-            localStorage.setItem("super-admin", "super-admin");
-            history.push('super-admin/dashboard')
-        }
+    const handleSubmit = () => {
+        dispatch(login(data))
     }
+
     return (
         <>
             <Grid className={classes.loginContainer}>
@@ -100,6 +101,8 @@ const Login = ({ history }) => {
                                 startAdornment: <MailIcon />
                             }}
                             className={classes.textField}
+                            required
+                            error={errors === true}
                         />
                         <TextField
                             id="password"
@@ -113,12 +116,13 @@ const Login = ({ history }) => {
                                 startAdornment: <LockIcon />
                             }}
                             className={classes.textField}
+                            error={errors === true}
                         />
                         <div className={classes.forgotCont}>
                             <Link to="/forgotten-password" className={classes.forgotText}>Forgotten your password?</Link>
                         </div>
-                        <Button variant="contained" color="primary" className={classes.loginBtn} onClick={login}>
-                            login
+                        <Button variant="contained" color="primary" className={classes.loginBtn} onClick={handleSubmit}>
+                            {loading ? <CircularProgress style={{ width: 18, height: 18, marginRight: 12 }} /> : ""}login
                         </Button>
                     </form>
                 </Card>
