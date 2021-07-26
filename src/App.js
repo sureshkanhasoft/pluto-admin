@@ -10,15 +10,39 @@ import SuperAdmin from './layout/SuperAdmin';
 import Login from './pages/Auth/Login/Login';
 import ForgottenPassword from './pages/Auth/ForgottenPassword/ForgottenPassword';
 import history from './utils/HistoryUtils';
+import PrivateRoute from './config/PrivateRoute';
+import { useEffect } from 'react';
 
 function App() {
+
+  const isAuthenticated = () => {
+    const token = localStorage.getItem('token');
+    try {
+      if (token) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    } catch (error) {
+      return false;
+    }
+  }
+
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem("token");
+    if (loggedInUser) {
+      history.push('/super-admin')
+    }
+  }, []);
+
   return (
     <Router history={history}>
       <Switch>
         <Route exact path="/login" component={Login} />
         <Route exact path="/forgotten-password" component={ForgottenPassword} />
-        <Route path="/admin" component={Admin} />
-        <Route path="/super-admin" component={SuperAdmin} />
+        <PrivateRoute path="/admin" component={Admin} />
+        <PrivateRoute path="/super-admin" component={SuperAdmin} isAuthenticated={e => isAuthenticated()} />
         <Redirect from="/" to="/login" />
       </Switch>
     </Router>

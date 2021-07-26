@@ -18,6 +18,7 @@ export const login = ({ email, password }) => {
                 const data = response.data
                 if (data && data.status === true) {
                     dispatch(getLoginSuccess(data))
+                    localStorage.setItem('token', JSON.stringify(data.data.token));
                     history.push('./super-admin')
                 } else {
                     dispatch(getLoginFailure())

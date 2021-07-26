@@ -65,9 +65,6 @@ const Login = () => {
     const dispatch = useDispatch()
 
     const { loading, errors } = useSelector(state => state.authReducer)
-    // const dsfsd = useSelector(state => state.authReducer)
-    // console.log('dsfsd: ', dsfsd);
-
 
     const [data, setData] = useState({
         email: "",
@@ -79,8 +76,25 @@ const Login = () => {
     }
 
     const handleSubmit = () => {
-        dispatch(login(data))
+        const {email,password} = data;
+        if(email && password){
+            dispatch(login(data))
+        }
     }
+
+    // const validation = (email) => {
+    //     let errors= {};
+    //     let isValid = true;
+
+    //     if(typeof email !== "undefined"){
+    //         console.log('email: ', email);
+    //         var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
+    //         if(!pattern.test(email)){
+    //             isValid = false;
+    //             errors[email]="please enter your email id"
+    //         }
+    //     }
+    // }
 
     return (
         <>

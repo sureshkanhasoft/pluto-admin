@@ -40,7 +40,7 @@ const SuperAdmin = ({ match }) => {
                         {routes.map((prop, key) => {
                             return (
                                 <Route
-                                    path={`${match.url}/${prop.path}`}
+                                    path={`${match.path}/${prop.path}`}
                                     component={prop.component}
                                     key={key}
                                 />
