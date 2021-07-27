@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Table,
     TableBody,
@@ -18,6 +18,9 @@ import AddIcon from '@material-ui/icons/Add';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import CreateOrganization from './CreateOrganization';
 import UpdateOrganization from './UpdateOrganization';
+import axios from 'axios';
+import Config from '../../../src/config/config';
+import Typography from '@material-ui/core/Typography';
 
 const useStyle = makeStyles((theme) => ({
     root: {
@@ -113,16 +116,17 @@ const oraganizationList = [
         status: "Active",
     }
 ]
-
 const Organization = () => {
     const classes = useStyle();
     const [open, setOpen] = useState(false);
     const [openUpdate, setOpenUpdate] = useState(false);
     const [Id, setId] = useState(false);
+    const [searchData, setSearchData] = useState({ search: "" });
+    const [responseData, setResponseData] = useState([]);
+    const [page, setPage] = React.useState(1);
 
     const handleClickOpen = (id) => {
         setOpen(true);
-        // setId(id);
     };
 
     const handleUpdateClickOpen = (id) => {
@@ -135,31 +139,69 @@ const Organization = () => {
         setOpenUpdate(false)
     };
 
+    const handleChange = (event, value) => {
+        console.log("valuevalue", value)
+        setPage(value);
+        setTimeout(getData(value), 2000);
+    };
+
+    const handleSearchChange = (event) => {
+        setSearchData({ ...searchData, [event.target.name]: event.target.value });
+    }
+
+    const handleClickSearch = (event, value) => {
+        console.log("searchData", searchData.search);
+        console.log("page", page);
+        setTimeout(getData(page, searchData.search), 1000);
+    };
+
+    const getData = async (pageNo = 1, search = '', status = "Active") => {
+        const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, '');
+        axios.get(`${Config.API_URL}api/organization/organization-list?search=${search}&status=${status}&page=${pageNo}`, {
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': `Bearer ${loggedInUser}`
+            }
+        }).then(response => {
+            const data = response.data;
+            setResponseData(response.data.data);
+        }).catch(error => {
+            console.log("error.message", error.message);
+        });
+    }
+
+    useEffect(() => {
+        getData(0);
+    }, []);
+
     return (
         <div>
             <CreateOrganization
                 open={open}
                 handleClose={handleClose}
                 id={Id}
-                // oraganization={oraganizationList}
-                
+            // oraganization={oraganizationList}
+
             />
 
-            <UpdateOrganization 
-                 openUpdate={openUpdate}
-                 handleClose={handleClose}
-                 id={Id}
+            <UpdateOrganization
+                openUpdate={openUpdate}
+                handleClose={handleClose}
+                id={Id}
             />
             <p className="mb-6">Welcome to your Pluto Software admin dashboard. Here you can get an overview of your account activity, or use navigation on the left hand side to get to your desired location.</p>
 
             <Paper className={classes.root}>
                 <Box className="mt-3 mb-5" display="flex" alignItems="center">
+                    <div onClick={handleClickSearch} className="icon">
+                        <i className="fa fa-play" />Search
+                    </div>
                     <div className={classes.search} >
-                        <div className={classes.searchIcon}>
-                            <SearchIcon />
+                        <div onClick={handleClickSearch} className={classes.searchIcon}>
+                            <SearchIcon onClick={handleClickSearch} />
                         </div>
-                        <InputBase
-                            placeholder="Search…"
+                        <InputBase name="search"
+                            placeholder="Search…" onChange={handleSearchChange}
                             classes={{
                                 root: classes.inputRoot,
                                 input: classes.inputInput,
@@ -186,21 +228,23 @@ const Organization = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {oraganizationList.map(row => (
+                        {responseData?.data?.map(row => (
                             <TableRow key={row.id}>
                                 <TableCell scope="row">{row.id}</TableCell>
-                                <TableCell align="left">{row.organization}</TableCell>
-                                <TableCell align="left">{row.person}</TableCell>
+                                <TableCell align="left">{row.first_name} {row.lsst_name}</TableCell>
+                                <TableCell align="left">{row.contact_person_name}</TableCell>
                                 <TableCell align="left">{row.email}</TableCell>
-                                <TableCell align="left">{row.number}</TableCell>
+                                <TableCell align="left">{row.contact_no}</TableCell>
                                 <TableCell align="left">{row.status} </TableCell>
                                 <TableCell align="right"><Button variant="contained" color="secondary" onClick={() => handleUpdateClickOpen(row.id)}>View</Button></TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
+
                 <Box className="mt-5" display="flex" justifyContent="flex-end">
-                    <Pagination count={10} />
+                    {/* <Typography>Page: {page}</Typography> */}
+                    <Pagination onChange={handleChange} page={page} showFirstButton showLastButton count={responseData?.last_page} />
                 </Box>
             </Paper>
 
