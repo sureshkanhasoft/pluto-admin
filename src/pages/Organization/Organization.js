@@ -9,7 +9,7 @@ import {
     makeStyles,
     InputBase,
     Button,
-    Box,
+    Box,Select,MenuItem
 } from '@material-ui/core';
 import { Pagination } from '@material-ui/lab';
 import SearchIcon from '@material-ui/icons/Search';
@@ -164,7 +164,18 @@ const Organization = () => {
                         />
                     </div>
                     <div className="ml-5">
-                        <Button><FilterListIcon /></Button>
+                        <Button><FilterListIcon />
+                        {/* <Select
+                                label="Trust Name"
+                                name="trust"
+                            >
+                                <MenuItem value="">
+                                    Select  Status
+                                </MenuItem>
+                                <MenuItem value="Ana Care Hospital">Ana Care Hospital</MenuItem>
+                                <MenuItem value="Apex Care Hospital">Apex Care Hospital</MenuItem>
+                            </Select> */}
+                            </Button>
                         <Button variant="contained" color="secondary" onClick={handleClickOpen}>
                             <AddIcon className="mr-2" />Add Organization
                         </Button>

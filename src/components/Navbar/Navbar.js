@@ -13,7 +13,8 @@ import {
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import history from '../../utils/HistoryUtils';
-
+import axios from 'axios';
+import Config from '../../../src/config/config';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -26,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
-    textTransform:"capitalize"
+    textTransform: "capitalize"
   },
 }));
 
@@ -45,9 +46,19 @@ const Navbar = () => {
     setAnchorEl(null);
   };
 
-  const logout = () =>{
-    localStorage.clear()
-    history.push('/login')
+  const logout = () => {
+    const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, '');
+    axios.get(`${Config.API_URL}api/organization/logout`, {
+      headers: {
+        'content-type': 'application/json',
+        'Authorization': `Bearer ${loggedInUser}`
+      }
+    }).then(response => {
+      localStorage.clear();
+      history.push('/login')
+    }).catch(error => {
+      console.log("error.message", error.message);
+    });
   }
   return (
     <AppBar position="static" className={classes.root}>
