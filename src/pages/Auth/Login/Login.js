@@ -29,6 +29,16 @@ const useStyle = makeStyles({
         display: "flex",
         flexDirection: "column"
     },
+    error: {
+        marginBottom: "15px",
+        paddingLeft: "7px",
+        color: "red"
+    },
+    success: {
+        marginBottom: "15px",
+        paddingLeft: "7px",
+        color: "green"
+    },
     textField: {
         marginBottom: 24,
         color: "#000",
@@ -64,8 +74,7 @@ const Login = () => {
     const classes = useStyle();
     const dispatch = useDispatch()
 
-    const { loading, errors } = useSelector(state => state.authReducer)
-
+    const { loading, errors, userInfo } = useSelector(state => state.authReducer)
     const [data, setData] = useState({
         email: "",
         password: ""
@@ -76,8 +85,8 @@ const Login = () => {
     }
 
     const handleSubmit = () => {
-        const {email,password} = data;
-        if(email && password){
+        const { email, password } = data;
+        if (email && password) {
             dispatch(login(data))
         }
     }
@@ -102,8 +111,20 @@ const Login = () => {
                 <div className="mb-6">
                     <img src={logo} alt="" />
                 </div>
+
                 <Card className={classes.loginCard}>
+                    {errors?.message &&
+                        <div className={classes.error}>
+                            {errors?.message}
+                        </div>
+                    }
+                    {userInfo?.message &&
+                        <div className={classes.success}>
+                            {userInfo?.message}
+                        </div>
+                    }
                     <form className={classes.form}>
+
                         <TextField
                             id="email"
                             name="email"

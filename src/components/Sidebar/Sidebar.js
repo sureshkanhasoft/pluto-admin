@@ -48,6 +48,8 @@ const Sidebar = (props) => {
     const classes = useStyle();
     let authAdmin = localStorage.getItem('admin');
     // let authSuperAdmin = localStorage.getItem('super-admin');
+     const loginUserInfo = JSON.parse(localStorage.getItem("loginUserInfo"));
+     authAdmin = (loginUserInfo.role === 'SUPERADMIN') ? false : true;
     return (
         <Drawer variant="permanent" classes={{ paper: classes.drawer }}>
             <Box className={classes.logoContainer}>

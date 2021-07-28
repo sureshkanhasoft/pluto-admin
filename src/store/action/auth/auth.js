@@ -13,20 +13,26 @@ export const login = ({ email, password }) => {
             },
             email,
             password
-        })
-            .then(response => {
-                const data = response.data
-                if (data && data.status === true) {
-                    dispatch(getLoginSuccess(data))
-                    localStorage.setItem('token', JSON.stringify(data.data.token));
+        }).then(response => {
+            const data = response.data
+            if (data && data.status === true) {
+                dispatch(getLoginSuccess(data))
+                dispatch(getLoginFailure(null))
+                localStorage.setItem('loginUserInfo', JSON.stringify(data.data));
+                localStorage.setItem('token', JSON.stringify(data.data.token));
+                if (data.data.role === 'SUPERADMIN') {
                     history.push('./super-admin')
                 } else {
-                    dispatch(getLoginFailure())
+                    history.push('./admin')
                 }
-            })
-            .catch(error => {
-                dispatch(getLoginFailure(error.message))
-            })
+            } else {
+                // console.log("Call Ellse ", data)
+                dispatch(getLoginFailure(data))
+                dispatch(getLoginSuccess(null))
+            }
+        }).catch(error => {
+            dispatch(getLoginFailure(error.message))
+        })
     }
 }
 
