@@ -3,5 +3,6 @@ export {
 } from "./auth/auth";
 
 export {
-    createOrganization
-} from "./organization/createOrganization"
+    createOrganization,
+    updateOrganization
+} from "./organization/organizationAction"

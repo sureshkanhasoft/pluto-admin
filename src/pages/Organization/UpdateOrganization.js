@@ -8,6 +8,7 @@ import {
 } from '@material-ui/core';
 import axios from 'axios';
 import Config from '../../../src/config/config';
+import { useDispatch } from 'react-redux';
 const useStyle = makeStyles((theme) => ({
     dialogWidth: { width: "100%" },
     radioGroup: {
@@ -15,28 +16,25 @@ const useStyle = makeStyles((theme) => ({
     }
 }))
 
-const oraganization = [
-    {
-        id: 1,
-        organization_name: "United Nations Organization",
-        contact_person_name: "David",
-        email: "david123@gmail.com",
-        number: "999 999 0000",
-        status: "active",
-        address1: "Postal code in Cambridge, England",
-        address2: "Postal code in Cambridge, England",
-        city: "Cambridge",
-        postcode: "CB10BX",
-        subscriptionplan: "Basic",
-        subscriptiondate: "01-07-2021"
-    }
-]
+
+
 
 const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
     const classes = useStyle();
-    const [data, setData] = useState([]);
-    // const [data, setData] = useState(oraganization[0]);
-    console.log("ididid =>", id);
+    const dispatch = useDispatch()
+    // const [data, setData] = useState([]);
+    const [data, setData] = useState({
+        organization_name: "",
+        contact_person_name: "",
+        email: "",
+        contact_no: "",
+        address_line_1: "",
+        address_line_2: "",
+        city: "",
+        postcode: "",
+        status:"",
+    })
+
     const getData = async (id) => {
         if (id > 0) {
             const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, '');
@@ -58,10 +56,14 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
     }, [id]);
 
     const handleChange = (event) => {
-        console.log("event.target.name" , event.target.name)
-        console.log("event.target.value" , event.target.value)
         setData({ ...data, [event.target.name]: event.target.value });
     };
+
+    const submitOrganization = () => {
+        console.log('data1111: ', data);
+        // dispatch(createOrganization(data))
+        handleClose()
+    }
 
 
     return (
@@ -80,7 +82,7 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                             label="Organization Name"
                             variant="outlined"
                             name="organization_name"
-                            value={data?.first_name}
+                            value={data?.organization_name}
                             onChange={handleChange}
                             fullWidth
                         />
@@ -170,54 +172,48 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                             />
                         </Grid>
                     </Grid>
-                    {
-                        id && id > 0 &&
-                        <>
-                            <Grid container spacing={2}>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField
-                                        margin="dense"
-                                        id="subscriptionPlan"
-                                        label="Subscription Plan"
-                                        variant="outlined"
-                                        name="subscriptionplan"
-                                        value={data?.organization?.plan}
-                                        onChange={handleChange}
-                                        fullWidth
-                                    />
-                                </Grid>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12} sm={6}>
+                            <TextField
+                                margin="dense"
+                                id="subscriptionPlan"
+                                label="Subscription Plan"
+                                variant="outlined"
+                                name="subscriptionplan"
+                                value={data?.organization?.plan}
+                                onChange={handleChange}
+                                fullWidth
+                            />
+                        </Grid>
 
-                                <Grid item xs={12} sm={6}>
-                                    <TextField
-                                        margin="dense"
-                                        id="subscriptionDate"
-                                        label="Subscription Date"
-                                        name="subscriptiondate"
-                                        value={data?.organization?.start_date}
-                                        onChange={handleChange}
-                                        variant="outlined"
-                                        fullWidth
-                                    />
-                                </Grid>
-                            </Grid>
-                            <Box className="mt-3"> 
-                                <FormLabel component="legend">Status</FormLabel>
-                                <RadioGroup name="status" value={data.status} onChange={handleChange} className={classes.radioGroup}>
-                                    <FormControlLabel value="Active" control={<Radio />} label="Active" />
-                                    <FormControlLabel value="Inactive" control={<Radio />} label="Deactive" />
-                                </RadioGroup>
-                            </Box>
-                        </>
-                    }
+                        <Grid item xs={12} sm={6}>
+                            <TextField
+                                margin="dense"
+                                id="subscriptionDate"
+                                label="Subscription Date"
+                                name="subscriptiondate"
+                                value={data?.organization?.start_date}
+                                onChange={handleChange}
+                                variant="outlined"
+                                fullWidth
+                            />
+                        </Grid>
+                    </Grid>
+                    <Box className="mt-3">
+                        <FormLabel component="legend">Status</FormLabel>
+                        <RadioGroup name="status" value={data.status} onChange={handleChange} className={classes.radioGroup}>
+                            <FormControlLabel checked={data.status === 'Active'} value="Active" control={<Radio />} label="Active" />
+                            <FormControlLabel value="Inactive" checked={data.status === 'Inactive'} control={<Radio />} label="Deactive" />
+                        </RadioGroup>
+                    </Box>
                 </DialogContent>
                 <DialogActions className="pr-4 pb-2">
                     <Button onClick={handleClose} color="primary">
                         Cancel
                     </Button>
-                    <Button onClick={handleClose} color="secondary" variant="contained">
+                    <Button onClick={submitOrganization} color="secondary" variant="contained">
                         Update
                     </Button>
-
                 </DialogActions>
             </form>
         </Dialog>
