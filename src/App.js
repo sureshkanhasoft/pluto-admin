@@ -31,7 +31,6 @@ function App() {
 
   useEffect(() => {
     const loggedInUser = localStorage.getItem("token");
-    const loginUserInfo = localStorage.getItem("loginUserInfo");
     if (loggedInUser) {
       // history.push('/super-admin')
     }
