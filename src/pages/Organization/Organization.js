@@ -20,7 +20,7 @@ import CreateOrganization from './CreateOrganization';
 import UpdateOrganization from './UpdateOrganization';
 import axios from 'axios';
 import Config from '../../../src/config/config';
-import Typography from '@material-ui/core/Typography';
+// import Typography from '@material-ui/core/Typography';
 
 const useStyle = makeStyles((theme) => ({
     root: {
@@ -74,48 +74,6 @@ const useStyle = makeStyles((theme) => ({
     },
 }))
 
-const oraganizationList = [
-    {
-        id: 1,
-        organization: "United Nations Organization",
-        person: "David",
-        email: "david123@gmail.com",
-        number: "999 999 0000",
-        status: "Active",
-    },
-    {
-        id: 2,
-        organization: "United Nations Organization",
-        person: "David",
-        email: "david123@gmail.com",
-        number: "999 999 0000",
-        status: "Active",
-    },
-    {
-        id: 3,
-        organization: "United Nations Organization",
-        person: "David",
-        email: "david123@gmail.com",
-        number: "999 999 0000",
-        status: "Active",
-    },
-    {
-        id: 4,
-        organization: "United Nations Organization",
-        person: "David",
-        email: "david123@gmail.com",
-        number: "999 999 0000",
-        status: "Active",
-    },
-    {
-        id: 5,
-        organization: "United Nations Organization",
-        person: "David",
-        email: "david123@gmail.com",
-        number: "999 999 0000",
-        status: "Active",
-    }
-]
 const Organization = () => {
     const classes = useStyle();
     const [open, setOpen] = useState(false);
@@ -157,21 +115,21 @@ const Organization = () => {
 
     const getData = async (pageNo = 1, search = '', status = "Active") => {
         const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, '');
-        axios.get(`${Config.API_URL}api/organization/organization-list?search=${search}&status=${status}&page=${pageNo}`, {
+        await axios.get(`${Config.API_URL}api/organization/organization-list?search=${search}&status=${status}&page=${pageNo}`, {
             headers: {
                 'content-type': 'application/json',
                 'Authorization': `Bearer ${loggedInUser}`
             }
         }).then(response => {
             const data = response.data;
-            setResponseData(response.data.data);
+            setResponseData(data.data);
         }).catch(error => {
             console.log("error.message", error.message);
         });
     }
 
     useEffect(() => {
-        getData(0);
+        getData();
     }, []);
 
     return (
@@ -179,9 +137,6 @@ const Organization = () => {
             <CreateOrganization
                 open={open}
                 handleClose={handleClose}
-                id={Id}
-            // oraganization={oraganizationList}
-
             />
 
             <UpdateOrganization

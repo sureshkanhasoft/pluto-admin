@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import {
     makeStyles,
     Button,
-    Box,
     Dialog, DialogActions, DialogContent, DialogTitle, TextField, Divider, Grid,
-    FormLabel, RadioGroup, FormControlLabel, Radio
 } from '@material-ui/core';
+import { useDispatch } from 'react-redux';
+import { createOrganization } from '../../store/action';
 
 const useStyle = makeStyles((theme) => ({
     dialogWidth: { width: "100%" },
@@ -15,61 +15,59 @@ const useStyle = makeStyles((theme) => ({
 }))
 
 
-
-const CreateOrganization = ({ open, handleClose, id }) => {
+const CreateOrganization = ({ open, handleClose }) => {
     const classes = useStyle();
+    const dispatch = useDispatch()
 
     const [data, setData] = useState({
-        organization: "",
-        person: "",
+        organization_name: "",
+        contact_person_name: "",
         email: "",
-        number: "",
-        address1: "",
-        address2: "",
+        contact_no: "",
+        address_line_1: "",
+        address_line_2: "",
         city: "",
         postcode: "",
-        status: "active",
-        subscriptionplan: "",
-        subscriptiondate: ""
+        password:"12345"
     })
 
     const handleChange = (event) => {
         setData({ ...data, [event.target.name]: event.target.value });
     };
 
+    const submitOrganization = () => {
+        console.log('data: ', data);
+        dispatch(createOrganization(data))
+        handleClose()
+    }
+
     return (
         <Dialog open={open} onClose={handleClose} classes={{ paper: classes.dialogWidth }}>
             <form>
                 <DialogTitle id="form-dialog-title">
-                    {
-                        id && id > 0 ?
-                            <div>Update Organization</div>
-                            :
-                            <div>Create Organization</div>
-                    }
+                    <div>Create Organization</div>
                 </DialogTitle>
                 <Divider />
                 <DialogContent>
-                    <div>
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            id="organization"
-                            label="Organization"
-                            variant="outlined"
-                            name="organization"
-                            value={data.organization}
-                            onChange={handleChange}
-                            fullWidth
-                        />
-                    </div>
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        id="organization_name"
+                        label="Organization"
+                        variant="outlined"
+                        name="organization_name"
+                        value={data.organization_name}
+                        onChange={handleChange}
+                        fullWidth
+                        required
+                    />
                     <TextField
                         margin="dense"
-                        id="person"
+                        id="contact_person_name"
                         label="Contact Person"
                         variant="outlined"
-                        name="person"
-                        value={data.person}
+                        name="contact_person_name"
+                        value={data.contact_person_name}
                         onChange={handleChange}
                         fullWidth
                     />
@@ -90,11 +88,11 @@ const CreateOrganization = ({ open, handleClose, id }) => {
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 margin="dense"
-                                id="number"
+                                id="contact_no"
                                 label="Contact Number"
                                 variant="outlined"
-                                name="number"
-                                value={data.number}
+                                name="contact_no"
+                                value={data.contact_no}
                                 onChange={handleChange}
                                 fullWidth
                             />
@@ -102,21 +100,21 @@ const CreateOrganization = ({ open, handleClose, id }) => {
                     </Grid>
                     <TextField
                         margin="dense"
-                        id="address1"
+                        id="address_line_1"
                         label="Address line 1"
                         variant="outlined"
-                        name="address1"
-                        value={data.address1}
+                        name="address_line_1"
+                        value={data.address_line_1}
                         onChange={handleChange}
                         fullWidth
                     />
                     <TextField
                         margin="dense"
-                        id="address2"
+                        id="address_line_2"
                         label="Address line 2"
                         variant="outlined"
-                        name="address2"
-                        value={data.address2}
+                        name="address_line_2"
+                        value={data.address_line_2}
                         onChange={handleChange}
                         fullWidth
                     />
@@ -148,60 +146,15 @@ const CreateOrganization = ({ open, handleClose, id }) => {
                             />
                         </Grid>
                     </Grid>
-                    {
-                        id && id > 0 &&
-                        <>
-                            <Grid container spacing={2}>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField
-                                        margin="dense"
-                                        id="subscriptionPlan"
-                                        label="Subscription Plan"
-                                        variant="outlined"
-                                        name="subscriptionplan"
-                                        value={data.subscriptionplan}
-                                        onChange={handleChange}
-                                        fullWidth
-                                    />
-                                </Grid>
 
-                                <Grid item xs={12} sm={6}>
-                                    <TextField
-                                        margin="dense"
-                                        id="subscriptionDate"
-                                        label="Subscription Date"
-                                        name="subscriptiondate"
-                                        value={data.subscriptiondate}
-                                        onChange={handleChange}
-                                        variant="outlined"
-                                        fullWidth
-                                    />
-                                </Grid>
-                            </Grid>
-                            <Box className="mt-3">
-                                <FormLabel component="legend">Status</FormLabel>
-                                <RadioGroup name="status" value={data.status} onChange={handleChange} className={classes.radioGroup}>
-                                    <FormControlLabel value="active" control={<Radio />} label="Active" />
-                                    <FormControlLabel value="deactive" control={<Radio />} label="Deactive" />
-                                </RadioGroup>
-                            </Box>
-                        </>
-                    }
                 </DialogContent>
                 <DialogActions className="pr-4 pb-2">
                     <Button onClick={handleClose} color="primary">
                         Cancel
                     </Button>
-                    {
-                        id && id > 0 ?
-                            <Button onClick={handleClose} color="secondary" variant="contained">
-                                Update
-                            </Button>
-                            :
-                            <Button onClick={handleClose} color="secondary" variant="contained">
-                                Add
-                            </Button>
-                    }
+                    <Button color="secondary" variant="contained" onClick={submitOrganization}>
+                        Add
+                    </Button>
 
                 </DialogActions>
             </form>
