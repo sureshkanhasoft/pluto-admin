@@ -18,8 +18,13 @@ export const login = ({ email, password }) => {
                 const data = response.data
                 if (data && data.status === true) {
                     dispatch(getLoginSuccess(data))
+                    localStorage.setItem('loginUserInfo', JSON.stringify(data.data));
                     localStorage.setItem('token', JSON.stringify(data.data.token));
-                    history.push('./super-admin')
+                    if (data.data.role === 'SUPERADMIN') {
+                        history.push('./super-admin')
+                    } else {
+                        history.push('./admin')
+                    }
                 } else {
                     dispatch(getLoginFailure())
                 }

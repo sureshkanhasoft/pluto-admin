@@ -31,8 +31,9 @@ function App() {
 
   useEffect(() => {
     const loggedInUser = localStorage.getItem("token");
+    const loginUserInfo = localStorage.getItem("loginUserInfo");
     if (loggedInUser) {
-      history.push('/super-admin')
+      // history.push('/super-admin')
     }
   }, []);
 
@@ -41,7 +42,7 @@ function App() {
       <Switch>
         <Route exact path="/login" component={Login} />
         <Route exact path="/forgotten-password" component={ForgottenPassword} />
-        <PrivateRoute path="/admin" component={Admin} />
+        <PrivateRoute path="/admin" component={Admin}  isAuthenticated={e => isAuthenticated()}/>
         <PrivateRoute path="/super-admin" component={SuperAdmin} isAuthenticated={e => isAuthenticated()} />
         <Redirect from="/" to="/login" />
       </Switch>

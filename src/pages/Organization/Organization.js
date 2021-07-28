@@ -98,7 +98,6 @@ const Organization = () => {
     };
 
     const handleChange = (event, value) => {
-        console.log("valuevalue", value)
         setPage(value);
         setTimeout(getData(value), 2000);
     };
@@ -108,8 +107,6 @@ const Organization = () => {
     }
 
     const handleClickSearch = (event, value) => {
-        console.log("searchData", searchData.search);
-        console.log("page", page);
         setTimeout(getData(page, searchData.search), 1000);
     };
 
