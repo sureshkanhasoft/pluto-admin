@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
     makeStyles,
     Button,
@@ -6,7 +6,8 @@ import {
     Dialog, DialogActions, DialogContent, DialogTitle, TextField, Divider, Grid,
     FormLabel, RadioGroup, FormControlLabel, Radio
 } from '@material-ui/core';
-
+import axios from 'axios';
+import Config from '../../../src/config/config';
 const useStyle = makeStyles((theme) => ({
     dialogWidth: { width: "100%" },
     radioGroup: {
@@ -17,8 +18,8 @@ const useStyle = makeStyles((theme) => ({
 const oraganization = [
     {
         id: 1,
-        organization: "United Nations Organization",
-        person: "David",
+        organization_name: "United Nations Organization",
+        contact_person_name: "David",
         email: "david123@gmail.com",
         number: "999 999 0000",
         status: "active",
@@ -33,15 +34,41 @@ const oraganization = [
 
 const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
     const classes = useStyle();
-    const [data, setData] = useState(oraganization[0])
+    const [data, setData] = useState([]);
+    // const [data, setData] = useState(oraganization[0]);
+    console.log("ididid =>", id);
+    const getData = async (id) => {
+        if (id > 0) {
+            const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, '');
+            axios.get(`${Config.API_URL}api/superadmin/get-organization-detail/${id}`, {
+                headers: {
+                    'content-type': 'application/json',
+                    'Authorization': `Bearer ${loggedInUser}`
+                }
+            }).then(response => {
+                // console.log("datadata", response.data.data)
+                setData(response.data.data)
+            }).catch(error => {
+                console.log("error.message", error.message);
+            });
+        }
+    }
+    useEffect(() => {
+        getData(id);
+    }, [id]);
+
     const handleChange = (event) => {
+        console.log("event.target.name" , event.target.name)
+        console.log("event.target.value" , event.target.value)
         setData({ ...data, [event.target.name]: event.target.value });
     };
+
+
     return (
         <Dialog open={openUpdate} onClose={handleClose} classes={{ paper: classes.dialogWidth }}>
             <form>
                 <DialogTitle id="form-dialog-title">
-                    <div>Update Organization 11</div>
+                    <div>Update Organization {data.first_name}</div>
                 </DialogTitle>
                 <Divider />
                 <DialogContent>
@@ -49,22 +76,22 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                         <TextField
                             autoFocus
                             margin="dense"
-                            id="organization"
-                            label="Organization"
+                            id="organization_name"
+                            label="Organization Name"
                             variant="outlined"
-                            name="organization"
-                            value={data.organization}
+                            name="organization_name"
+                            value={data?.first_name}
                             onChange={handleChange}
                             fullWidth
                         />
                     </div>
                     <TextField
                         margin="dense"
-                        id="person"
+                        id="contact_person_name"
                         label="Contact Person"
                         variant="outlined"
-                        name="person"
-                        value={data.person}
+                        name="contact_person_name"
+                        value={data?.organization?.contact_person_name}
                         onChange={handleChange}
                         fullWidth
                     />
@@ -76,7 +103,7 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                                 label="Email"
                                 variant="outlined"
                                 name="email"
-                                value={data.email}
+                                value={data?.email}
                                 onChange={handleChange}
                                 fullWidth
                             />
@@ -89,7 +116,7 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                                 label="Contact Number"
                                 variant="outlined"
                                 name="number"
-                                value={data.number}
+                                value={data?.organization?.contact_no}
                                 onChange={handleChange}
                                 fullWidth
                             />
@@ -101,7 +128,7 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                         label="Address line 1"
                         variant="outlined"
                         name="address1"
-                        value={data.address1}
+                        value={data?.organization?.address_line_1}
                         onChange={handleChange}
                         fullWidth
                     />
@@ -111,7 +138,7 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                         label="Address line 2"
                         variant="outlined"
                         name="address2"
-                        value={data.address2}
+                        value={data?.organization?.address_line_2}
                         onChange={handleChange}
                         fullWidth
                     />
@@ -124,7 +151,7 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                                 label="City"
                                 variant="outlined"
                                 name="city"
-                                value={data.city}
+                                value={data?.organization?.city}
                                 onChange={handleChange}
                                 fullWidth
                             />
@@ -137,7 +164,7 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                                 label="Postcode"
                                 variant="outlined"
                                 name="postcode"
-                                value={data.postcode}
+                                value={data?.organization?.postcode}
                                 onChange={handleChange}
                                 fullWidth
                             />
@@ -154,7 +181,7 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                                         label="Subscription Plan"
                                         variant="outlined"
                                         name="subscriptionplan"
-                                        value={data.subscriptionplan}
+                                        value={data?.organization?.plan}
                                         onChange={handleChange}
                                         fullWidth
                                     />
@@ -166,18 +193,18 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                                         id="subscriptionDate"
                                         label="Subscription Date"
                                         name="subscriptiondate"
-                                        value={data.subscriptiondate}
+                                        value={data?.organization?.start_date}
                                         onChange={handleChange}
                                         variant="outlined"
                                         fullWidth
                                     />
                                 </Grid>
                             </Grid>
-                            <Box className="mt-3">
+                            <Box className="mt-3"> 
                                 <FormLabel component="legend">Status</FormLabel>
                                 <RadioGroup name="status" value={data.status} onChange={handleChange} className={classes.radioGroup}>
-                                    <FormControlLabel value="active" control={<Radio />} label="Active" />
-                                    <FormControlLabel value="deactive" control={<Radio />} label="Deactive" />
+                                    <FormControlLabel value="Active" control={<Radio />} label="Active" />
+                                    <FormControlLabel value="Inactive" control={<Radio />} label="Deactive" />
                                 </RadioGroup>
                             </Box>
                         </>
