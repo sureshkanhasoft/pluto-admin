@@ -9,6 +9,7 @@ import Admin from './layout/Admin';
 import SuperAdmin from './layout/SuperAdmin';
 import Login from './pages/Auth/Login/Login';
 import ForgottenPassword from './pages/Auth/ForgottenPassword/ForgottenPassword';
+import ChangePassword from './pages/Auth/ForgottenPassword/ChangePassword';
 import history from './utils/HistoryUtils';
 import PrivateRoute from './config/PrivateRoute';
 import { useEffect } from 'react';
@@ -41,6 +42,7 @@ function App() {
       <Switch>
         <Route exact path="/login" component={Login} />
         <Route exact path="/forgotten-password" component={ForgottenPassword} />
+        <Route exact path="/change-password" component={ChangePassword} />
         <PrivateRoute path="/admin" component={Admin}  isAuthenticated={e => isAuthenticated()}/>
         <PrivateRoute path="/super-admin" component={SuperAdmin} isAuthenticated={e => isAuthenticated()} />
         <Redirect from="/" to="/login" />

@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import { Grid, Card, TextField, Button, makeStyles, Typography } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import MailIcon from '@material-ui/icons/Mail';
 import logo from '../../../assets/images/logo.svg';
+import { forgotpassword } from '../../../store/action';
 
 const useStyle = makeStyles({
     loginContainer: {
@@ -25,6 +27,16 @@ const useStyle = makeStyles({
         width: "100%",
         display: "flex",
         flexDirection: "column"
+    },
+    error: {
+        marginBottom: "15px",
+        paddingLeft: "7px",
+        color: "red"
+    },
+    success: {
+        marginBottom: "15px",
+        paddingLeft: "7px",
+        color: "green"
     },
     textField: {
         marginBottom: 24,
@@ -68,17 +80,22 @@ const useStyle = makeStyles({
 const ForgottenPassword = ({ history }) => {
     const classes = useStyle();
     const [show, setShow] = useState(true)
-
-    const [data, setData] = useState({
-        email: "",
-    })
+    const dispatch = useDispatch()
+    const { forgotsuccess, forgoterrors } = useSelector(state => state.authReducer)
+    const [data, setData] = useState({ email: "" })
 
     const handleChange = (event) => {
         setData({ ...data, [event.target.name]: event.target.value });
     }
 
     const toggleContainer = () => {
-        setShow(false)
+        // setShow(false)
+    }
+    const handleSubmit = () => {
+        const { email } = data;
+        if (email) {
+            dispatch(forgotpassword(data));
+        }
     }
 
     return (
@@ -87,13 +104,23 @@ const ForgottenPassword = ({ history }) => {
                 <div className="mb-6">
                     <img src={logo} alt="" />
                 </div>
-
                 {
                     show
                         ?
                         <>
                             <Typography className={classes.subTitle}>Reset your password</Typography>
                             <Card className={classes.loginCard}>
+                                {forgoterrors?.message &&
+                                    <div className={classes.error}>
+                                        {forgoterrors?.message}
+                                    </div>
+                                }
+                                {forgotsuccess?.message &&
+                                    <div className={classes.success}>
+                                        {forgotsuccess?.message}
+                                    </div>
+                                }
+
                                 <form className={classes.form}>
                                     <TextField
                                         id="email"
@@ -111,7 +138,8 @@ const ForgottenPassword = ({ history }) => {
                                     <div className={classes.forgotCont}>
                                         <Link to="/login" className={classes.forgotText}>Back to Login</Link>
                                     </div>
-                                    <Button variant="contained" color="primary" className={classes.resetBtn} onClick={toggleContainer}>
+                                    {/* <Button variant="contained" color="primary" className={classes.resetBtn} onClick={toggleContainer}> */}
+                                    <Button variant="contained" color="primary" className={classes.resetBtn} onClick={handleSubmit} disabled={forgotsuccess?.status}>
                                         Reset Password
                                     </Button>
                                 </form>
@@ -123,12 +151,12 @@ const ForgottenPassword = ({ history }) => {
                             <Card className={classes.loginCard} align="center">
                                 <Typography className={classes.descText}>We have sent you an email containing details on how to reset your password.</Typography>
                                 <Button variant="contained" color="primary" className={classes.resetBtn}>
-                                    Back
+                                    {/* Back */}
+                                    <Link to="/login" >Back to Login</Link>
                                 </Button>
                             </Card>
                         </>
                 }
-
             </Grid>
         </>
     )

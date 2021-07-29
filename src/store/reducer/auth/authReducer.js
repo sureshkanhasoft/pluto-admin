@@ -4,7 +4,11 @@ import { updateObject } from '../../shared/utility';
 const initialState = {
     loading: false,
     userInfo: [],
-    errors: []
+    errors: [],
+    forgotsuccess: [],
+    forgoterrors: [],
+    changesuccess: [],
+    changeerrors: [],
 }
 
 const authReducer = (state = initialState, action) => {
@@ -22,6 +26,34 @@ const authReducer = (state = initialState, action) => {
             return updateObject(state, {
                 loading: false,
                 errors: action.payload
+            })
+        case actionTypes.FORGOT_REQUEST:
+            return updateObject(state, {
+                loading: true
+            })
+        case actionTypes.FORGOT_SUCCESS:
+            return updateObject(state, {
+                loading: false,
+                forgotsuccess: action.payload,
+            })
+        case actionTypes.FORGOT_ERROR:
+            return updateObject(state, {
+                loading: false,
+                forgoterrors: action.payload
+            })
+        case actionTypes.CHANGE_PASSWORD_REQUEST:
+            return updateObject(state, {
+                loading: true
+            })
+        case actionTypes.CHANGE_PASSWORD_SUCCESS:
+            return updateObject(state, {
+                loading: false,
+                changesuccess: action.payload,
+            })
+        case actionTypes.CHANGE_PASSWORD_ERROR:
+            return updateObject(state, {
+                loading: false,
+                changeerrors: action.payload
             })
         default:
             return state
