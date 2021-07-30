@@ -9,8 +9,10 @@ import {
     makeStyles,
     InputBase,
     Button,
-    Box,Select,MenuItem
+    Box, Select, MenuItem
 } from '@material-ui/core';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { Pagination } from '@material-ui/lab';
 import SearchIcon from '@material-ui/icons/Search';
 import { alpha } from '@material-ui/core/styles/colorManipulator';
@@ -30,6 +32,10 @@ const useStyle = makeStyles((theme) => ({
     },
     table: {
         minWidth: 700,
+    },
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff',
     },
 
     search: {
@@ -55,6 +61,11 @@ const useStyle = makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        zIndex: 99,
+        cursor: "pointer"
+    },
+    searchIcondet: {
+        cursor: "pointer"
     },
     inputRoot: {
         color: 'inherit',
@@ -64,7 +75,7 @@ const useStyle = makeStyles((theme) => ({
         paddingTop: theme.spacing(),
         paddingRight: theme.spacing(),
         paddingBottom: theme.spacing(),
-        paddingLeft: theme.spacing(6),
+        paddingLeft: theme.spacing(1),
         transition: theme.transitions.create('width'),
         width: '100%',
         borderBottom: "1px solid #ccc",
@@ -82,6 +93,7 @@ const Organization = () => {
     const [searchData, setSearchData] = useState({ search: "" });
     const [responseData, setResponseData] = useState([]);
     const [page, setPage] = React.useState(1);
+    const [loader, setLoader] = useState(false);
 
     const handleClickOpen = (id) => {
         setOpen(true);
@@ -112,6 +124,7 @@ const Organization = () => {
 
     const getData = async (pageNo = 1, search = '', status = "Active") => {
         const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, '');
+        setLoader(true)
         await axios.get(`${Config.API_URL}api/organization/organization-list?search=${search}&status=${status}&page=${pageNo}`, {
             headers: {
                 'content-type': 'application/json',
@@ -120,8 +133,10 @@ const Organization = () => {
         }).then(response => {
             const data = response.data;
             setResponseData(data.data);
+            setLoader(false)
         }).catch(error => {
             console.log("error.message", error.message);
+            setLoader(false)
         });
     }
 
@@ -145,13 +160,8 @@ const Organization = () => {
 
             <Paper className={classes.root}>
                 <Box className="mt-3 mb-5" display="flex" alignItems="center">
-                    <div onClick={handleClickSearch} className="icon">
-                        <i className="fa fa-play" />Search
-                    </div>
+                    <SearchIcon className={classes.searchIcondet} onClick={handleClickSearch} />
                     <div className={classes.search} >
-                        <div onClick={handleClickSearch} className={classes.searchIcon}>
-                            <SearchIcon onClick={handleClickSearch} />
-                        </div>
                         <InputBase name="search"
                             placeholder="Search…" onChange={handleSearchChange}
                             classes={{
@@ -161,18 +171,9 @@ const Organization = () => {
                         />
                     </div>
                     <div className="ml-5">
-                        <Button><FilterListIcon />
-                        {/* <Select
-                                label="Trust Name"
-                                name="trust"
-                            >
-                                <MenuItem value="">
-                                    Select  Status
-                                </MenuItem>
-                                <MenuItem value="Ana Care Hospital">Ana Care Hospital</MenuItem>
-                                <MenuItem value="Apex Care Hospital">Apex Care Hospital</MenuItem>
-                            </Select> */}
-                            </Button>
+                        <Button>
+                            <FilterListIcon />
+                        </Button>
                         <Button variant="contained" color="secondary" onClick={handleClickOpen}>
                             <AddIcon className="mr-2" />Add Organization
                         </Button>
@@ -194,7 +195,7 @@ const Organization = () => {
                         {responseData?.data?.map(row => (
                             <TableRow key={row.id}>
                                 <TableCell scope="row">{row.id}</TableCell>
-                                <TableCell align="left">{row.first_name} {row.lsst_name}</TableCell>
+                                <TableCell align="left">{row.organization_name}</TableCell>
                                 <TableCell align="left">{row.contact_person_name}</TableCell>
                                 <TableCell align="left">{row.email}</TableCell>
                                 <TableCell align="left">{row.contact_no}</TableCell>
@@ -210,6 +211,13 @@ const Organization = () => {
                     <Pagination onChange={handleChange} page={page} showFirstButton showLastButton count={responseData?.last_page} />
                 </Box>
             </Paper>
+
+            {
+                loader ?
+                    <Backdrop className={classes.backdrop} open={loader}>
+                        <CircularProgress color="inherit" />
+                    </Backdrop> : ""
+            }
 
         </div>
     )

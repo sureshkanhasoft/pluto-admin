@@ -9,6 +9,7 @@ import {
 import axios from 'axios';
 import Config from '../../../src/config/config';
 import { useDispatch } from 'react-redux';
+import { updateOrganization } from '../../store/action';
 const useStyle = makeStyles((theme) => ({
     dialogWidth: { width: "100%" },
     radioGroup: {
@@ -16,13 +17,9 @@ const useStyle = makeStyles((theme) => ({
     }
 }))
 
-
-
-
 const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
     const classes = useStyle();
     const dispatch = useDispatch()
-    // const [data, setData] = useState([]);
     const [data, setData] = useState({
         organization_name: "",
         contact_person_name: "",
@@ -32,7 +29,7 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
         address_line_2: "",
         city: "",
         postcode: "",
-        status:"",
+        // status:"",
     })
 
     const getData = async (id) => {
@@ -44,7 +41,7 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                     'Authorization': `Bearer ${loggedInUser}`
                 }
             }).then(response => {
-                // console.log("datadata", response.data.data)
+                console.log("datadata", response.data.data)
                 setData(response.data.data)
             }).catch(error => {
                 console.log("error.message", error.message);
@@ -60,8 +57,33 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
     };
 
     const submitOrganization = () => {
-        console.log('data1111: ', data);
-        // dispatch(createOrganization(data))
+        const loggedInUser = localStorage.getItem('token').replace(/['"]+/g, '');
+        console.log('loggedInUser: ', loggedInUser);
+        // dispatch(updateOrganization(data, id,loggedInUser))
+        axios.post(`${Config.API_URL}api/superadmin/update-org`, {
+            // method: "POST",
+            // headers: {
+            //     'content-type': 'application/json',
+            //     'Authorization': `Bearer ${loggedInUser}`
+            // },
+
+                organization_name:"0123",
+                contact_person_name:'dfsf',
+                // // email,
+                contact_no:'332346',
+                address_line_1:'ewr',
+                address_line_2:'erwe',
+                city:'erewer',
+                postcode:'erew',
+                user_id:id
+            })
+            .then(response => {
+                const data = response.data
+                console.log('data: ', data);
+            })
+            .catch(error => {
+                console.log('error: ', error);
+            })
         handleClose()
     }
 
@@ -70,7 +92,7 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
         <Dialog open={openUpdate} onClose={handleClose} classes={{ paper: classes.dialogWidth }}>
             <form>
                 <DialogTitle id="form-dialog-title">
-                    <div>Update Organization {data.first_name}</div>
+                    <div>Update Organization</div>
                 </DialogTitle>
                 <Divider />
                 <DialogContent>
@@ -82,7 +104,7 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                             label="Organization Name"
                             variant="outlined"
                             name="organization_name"
-                            value={data?.organization_name}
+                            value={data.organization_name}
                             onChange={handleChange}
                             fullWidth
                         />
@@ -93,7 +115,7 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                         label="Contact Person"
                         variant="outlined"
                         name="contact_person_name"
-                        value={data?.organization?.contact_person_name}
+                        value={data?.contact_person_name}
                         onChange={handleChange}
                         fullWidth
                     />
@@ -114,11 +136,11 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 margin="dense"
-                                id="number"
+                                id="contact_no"
                                 label="Contact Number"
                                 variant="outlined"
-                                name="number"
-                                value={data?.organization?.contact_no}
+                                name="contact_no"
+                                value={data?.contact_no}
                                 onChange={handleChange}
                                 fullWidth
                             />
@@ -126,21 +148,21 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                     </Grid>
                     <TextField
                         margin="dense"
-                        id="address1"
+                        id="address_line_1"
                         label="Address line 1"
                         variant="outlined"
-                        name="address1"
-                        value={data?.organization?.address_line_1}
+                        name="address_line_1"
+                        value={data?.address_line_1}
                         onChange={handleChange}
                         fullWidth
                     />
                     <TextField
                         margin="dense"
-                        id="address2"
+                        id="address_line_2"
                         label="Address line 2"
                         variant="outlined"
-                        name="address2"
-                        value={data?.organization?.address_line_2}
+                        name="address_line_2"
+                        value={data?.address_line_2}
                         onChange={handleChange}
                         fullWidth
                     />
@@ -153,7 +175,7 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                                 label="City"
                                 variant="outlined"
                                 name="city"
-                                value={data?.organization?.city}
+                                value={data?.city}
                                 onChange={handleChange}
                                 fullWidth
                             />
@@ -166,7 +188,7 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                                 label="Postcode"
                                 variant="outlined"
                                 name="postcode"
-                                value={data?.organization?.postcode}
+                                value={data?.postcode}
                                 onChange={handleChange}
                                 fullWidth
                             />
@@ -180,7 +202,7 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                                 label="Subscription Plan"
                                 variant="outlined"
                                 name="subscriptionplan"
-                                value={data?.organization?.plan}
+                                value={data?.plan}
                                 onChange={handleChange}
                                 fullWidth
                             />
@@ -192,20 +214,20 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                                 id="subscriptionDate"
                                 label="Subscription Date"
                                 name="subscriptiondate"
-                                value={data?.organization?.start_date}
+                                value={data?.start_date}
                                 onChange={handleChange}
                                 variant="outlined"
                                 fullWidth
                             />
                         </Grid>
                     </Grid>
-                    <Box className="mt-3">
+                    {/* <Box className="mt-3">
                         <FormLabel component="legend">Status</FormLabel>
                         <RadioGroup name="status" value={data.status} onChange={handleChange} className={classes.radioGroup}>
                             <FormControlLabel checked={data.status === 'Active'} value="Active" control={<Radio />} label="Active" />
                             <FormControlLabel value="Inactive" checked={data.status === 'Inactive'} control={<Radio />} label="Deactive" />
                         </RadioGroup>
-                    </Box>
+                    </Box> */}
                 </DialogContent>
                 <DialogActions className="pr-4 pb-2">
                     <Button onClick={handleClose} color="primary">

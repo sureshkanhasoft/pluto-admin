@@ -69,31 +69,35 @@ export const createOrganizationFailure = error => {
 export const updateOrganization = ({
     organization_name,
     contact_person_name,
-    email,
+    // email,
     contact_no,
     address_line_1,
     address_line_2,
     city,
-    postcode }) => {
+    postcode },id,loggedInUser) => {
+        console.log('loggedInUser: ', loggedInUser);
+        console.log('id: ', id);
     return (dispatch) => {
         dispatch(updateOrganizationRequest())
         axios.post(`${Config.API_URL}api/superadmin/update-org`, {
             method: "POST",
             headers: {
                 'content-type': 'application/json',
+                'Authorization': `Bearer ${loggedInUser}`
             },
             organization_name,
             contact_person_name,
-            email,
+            // email,
             contact_no,
             address_line_1,
             address_line_2,
             city,
             postcode,
+            user_id:id
         })
             .then(response => {
                 const data = response.data
-                console.log('data111: ', data);
+                console.log('data: ', data);
                 if (data && data.status === true) {
                     dispatch(updateOrganizationSuccess(data))
                 }

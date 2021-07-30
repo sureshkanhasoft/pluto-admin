@@ -1,11 +1,11 @@
 import { combineReducers } from "redux";
 import authReducer from "./reducer/auth/authReducer";
-import createOrganizationReducer from "./reducer/organizationReducer/createOrganizationReducer";
+import organizationReducer from "./reducer/organizationReducer/organizationReducer";
 
 const rootReducer = combineReducers(
     {
         authReducer:authReducer,
-        createOrganization:createOrganizationReducer,
+        createOrganization:organizationReducer,
     }
 );
 
