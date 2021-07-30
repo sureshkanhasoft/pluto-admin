@@ -4,11 +4,11 @@ import Config from '../../../config/config';
 import { CREATE_ORGANIZATION_ERROR, CREATE_ORGANIZATION_REQUEST, CREATE_ORGANIZATION_SUCCESS, GET_ORGANIZATION_ERROR, GET_ORGANIZATION_REQUEST, GET_ORGANIZATION_SUCCESS } from '../actiontypes';
 import { UPDATE_ORGANIZATION_ERROR, UPDATE_ORGANIZATION_REQUEST, UPDATE_ORGANIZATION_SUCCESS } from '../actiontypes';
 
-export const getOrganization = ()=>{
+export const getOrganization = () => {
     const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, '');
-    return async(dispatch)=>{
+    return async (dispatch) => {
         dispatch(getOrganizationRequest())
-        await axios.get(`${Config.API_URL}api/organization/organization-list`, {
+        await axios.get(`${Config.API_URL}api/superadmin/organization-list`, {
             headers: {
                 'content-type': 'application/json',
                 'Authorization': `Bearer ${loggedInUser}`
@@ -22,7 +22,7 @@ export const getOrganization = ()=>{
             console.log("error.message", error.message);
         });
     }
-   
+
 }
 
 export const getOrganizationRequest = () => {
@@ -47,43 +47,64 @@ export const getOrganizationFailure = error => {
 
 // -------------------------------------------
 
-export const createOrganization = ({
-    organization_name,
-    contact_person_name,
-    email,
-    contact_no,
-    address_line_1,
-    address_line_2,
-    city,
-    postcode }) => {
+export const createOrganization = ( data ) => {
     return (dispatch) => {
-        dispatch(createOrganizationRequest())
-        axios.post(`${Config.API_URL}api/organization/signup`, {
-            method: "POST",
-            headers: {
+        dispatch(createOrganizationRequest());
+        const loggedInUser = localStorage.getItem('token').replace(/['"]+/g, '');
+        axios.post(`${Config.API_URL}api/superadmin/signup`, data, {
+            'headers': {
                 'content-type': 'application/json',
-            },
-            organization_name,
-            contact_person_name,
-            email,
-            contact_no,
-            address_line_1,
-            address_line_2,
-            city,
-            postcode,
+                'Authorization': 'Bearer ' + loggedInUser
+            }
+        }).then(response => {
+            const data = response.data
+            console.log('data111: ', data);
+            if (data && data.status === true) {
+                dispatch(createOrganizationSuccess(data))
+            }
+        }).catch(error => {
+            dispatch(createOrganizationFailure(error))
         })
-            .then(response => {
-                const data = response.data
-                console.log('data111: ', data);
-                if (data && data.status === true) {
-                    dispatch(createOrganizationSuccess(data))
-                }
-            })
-            .catch(error => {
-                dispatch(createOrganizationFailure(error))
-            })
     }
 }
+
+// export const createOrganization = ({
+//     organization_name,
+//     contact_person_name,
+//     email,
+//     contact_no,
+//     address_line_1,
+//     address_line_2,
+//     city,
+//     postcode }) => {
+//     return (dispatch) => {
+//         dispatch(createOrganizationRequest())
+//         axios.post(`${Config.API_URL}api/superadmin/signup`, {
+//             method: "POST",
+//             headers: {
+//                 'content-type': 'application/json',
+//             },
+//             organization_name,
+//             contact_person_name,
+//             email,
+//             contact_no,
+//             address_line_1,
+//             address_line_2,
+//             city,
+//             postcode,
+//         })
+//             .then(response => {
+//                 const data = response.data
+//                 console.log('data111: ', data);
+//                 if (data && data.status === true) {
+//                     dispatch(createOrganizationSuccess(data))
+//                 }
+//             })
+//             .catch(error => {
+//                 dispatch(createOrganizationFailure(error))
+//             })
+//     }
+// }
 
 export const createOrganizationRequest = () => {
     return {
