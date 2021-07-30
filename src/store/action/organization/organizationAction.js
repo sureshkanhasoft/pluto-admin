@@ -1,8 +1,51 @@
 import axios from 'axios';
 import Config from '../../../config/config';
 // import history from '../../../utils/HistoryUtils';
-import { CREATE_ORGANIZATION_ERROR, CREATE_ORGANIZATION_REQUEST, CREATE_ORGANIZATION_SUCCESS } from '../actiontypes';
+import { CREATE_ORGANIZATION_ERROR, CREATE_ORGANIZATION_REQUEST, CREATE_ORGANIZATION_SUCCESS, GET_ORGANIZATION_ERROR, GET_ORGANIZATION_REQUEST, GET_ORGANIZATION_SUCCESS } from '../actiontypes';
 import { UPDATE_ORGANIZATION_ERROR, UPDATE_ORGANIZATION_REQUEST, UPDATE_ORGANIZATION_SUCCESS } from '../actiontypes';
+
+export const getOrganization = ()=>{
+    const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, '');
+    return async(dispatch)=>{
+        dispatch(getOrganizationRequest())
+        await axios.get(`${Config.API_URL}api/organization/organization-list`, {
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': `Bearer ${loggedInUser}`
+            }
+        }).then(response => {
+            const dataItem = response.data;
+            // console.log('data111: ', data.data.data);
+            dispatch(getOrganizationSuccess(dataItem.data.data))
+        }).catch(error => {
+            dispatch(getOrganizationFailure(error))
+            console.log("error.message", error.message);
+        });
+    }
+   
+}
+
+export const getOrganizationRequest = () => {
+    return {
+        type: GET_ORGANIZATION_REQUEST
+    }
+}
+
+export const getOrganizationSuccess = data => {
+    return {
+        type: GET_ORGANIZATION_SUCCESS,
+        payload: data
+    }
+}
+
+export const getOrganizationFailure = error => {
+    return {
+        type: GET_ORGANIZATION_ERROR,
+        payload: error
+    }
+}
+
+// -------------------------------------------
 
 export const createOrganization = ({
     organization_name,
@@ -28,7 +71,6 @@ export const createOrganization = ({
             address_line_2,
             city,
             postcode,
-            password: "164747"
         })
             .then(response => {
                 const data = response.data
@@ -66,45 +108,26 @@ export const createOrganizationFailure = error => {
 // ----------------------
 
 
-export const updateOrganization = ({
-    organization_name,
-    contact_person_name,
-    // email,
-    contact_no,
-    address_line_1,
-    address_line_2,
-    city,
-    postcode },id,loggedInUser) => {
-        console.log('loggedInUser: ', loggedInUser);
-        console.log('id: ', id);
+export const updateOrganization = (data) => {
+    const loggedInUser = localStorage.getItem('token').replace(/['"]+/g, '');
     return (dispatch) => {
         dispatch(updateOrganizationRequest())
-        axios.post(`${Config.API_URL}api/superadmin/update-org`, {
-            method: "POST",
-            headers: {
+        axios.post(`${Config.API_URL}api/superadmin/update-org`, data, {
+            'headers': {
                 'content-type': 'application/json',
-                'Authorization': `Bearer ${loggedInUser}`
-            },
-            organization_name,
-            contact_person_name,
-            // email,
-            contact_no,
-            address_line_1,
-            address_line_2,
-            city,
-            postcode,
-            user_id:id
+                'Authorization': 'Bearer ' + loggedInUser
+            }
+        }).then(response => {
+            const data = response.data
+            console.log('data11: ', data);
+            if (data.status === true) {
+                dispatch(updateOrganizationSuccess(data))
+                // handleClose();
+            }
+        }).catch(error => {
+            console.log('error: ', error);
+            dispatch(updateOrganizationFailure(error))
         })
-            .then(response => {
-                const data = response.data
-                console.log('data: ', data);
-                if (data && data.status === true) {
-                    dispatch(updateOrganizationSuccess(data))
-                }
-            })
-            .catch(error => {
-                dispatch(updateOrganizationFailure(error))
-            })
     }
 }
 
@@ -115,6 +138,7 @@ export const updateOrganizationRequest = () => {
 }
 
 export const updateOrganizationSuccess = data => {
+    console.log('updateOrganizationSuccess: ', data);
     return {
         type: UPDATE_ORGANIZATION_SUCCESS,
         payload: data

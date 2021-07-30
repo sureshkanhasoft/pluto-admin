@@ -5,6 +5,7 @@ export {
 } from "./auth/auth";
 
 export {
+    getOrganization,
     createOrganization,
     updateOrganization
 } from "./organization/organizationAction"

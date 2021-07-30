@@ -9,7 +9,7 @@ import {
     makeStyles,
     InputBase,
     Button,
-    Box, Select, MenuItem
+    Box,
 } from '@material-ui/core';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -22,6 +22,8 @@ import CreateOrganization from './CreateOrganization';
 import UpdateOrganization from './UpdateOrganization';
 import axios from 'axios';
 import Config from '../../../src/config/config';
+import { useDispatch, useSelector } from 'react-redux';
+import { getOrganization } from '../../store/action';
 // import Typography from '@material-ui/core/Typography';
 
 const useStyle = makeStyles((theme) => ({
@@ -87,6 +89,7 @@ const useStyle = makeStyles((theme) => ({
 
 const Organization = () => {
     const classes = useStyle();
+    const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
     const [openUpdate, setOpenUpdate] = useState(false);
     const [Id, setId] = useState(false);
@@ -94,6 +97,8 @@ const Organization = () => {
     const [responseData, setResponseData] = useState([]);
     const [page, setPage] = React.useState(1);
     const [loader, setLoader] = useState(false);
+    const { organizationList, loading } = useSelector(state => state.createOrganization)
+    // console.log('dsfsdf: ', organizationList);
 
     const handleClickOpen = (id) => {
         setOpen(true);
@@ -122,22 +127,24 @@ const Organization = () => {
         setTimeout(getData(page, searchData.search), 1000);
     };
 
-    const getData = async (pageNo = 1, search = '', status = "Active") => {
-        const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, '');
-        setLoader(true)
-        await axios.get(`${Config.API_URL}api/organization/organization-list?search=${search}&status=${status}&page=${pageNo}`, {
-            headers: {
-                'content-type': 'application/json',
-                'Authorization': `Bearer ${loggedInUser}`
-            }
-        }).then(response => {
-            const data = response.data;
-            setResponseData(data.data);
-            setLoader(false)
-        }).catch(error => {
-            console.log("error.message", error.message);
-            setLoader(false)
-        });
+    const getData = (pageNo = 1, search = '', status = "Active") => {
+        // const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, '');
+        // setLoader(true)
+        // await axios.get(`${Config.API_URL}api/organization/organization-list?search=${search}&status=${status}&page=${pageNo}`, {
+        //     headers: {
+        //         'content-type': 'application/json',
+        //         'Authorization': `Bearer ${loggedInUser}`
+        //     }
+        // }).then(response => {
+        //     const data = response.data;
+        //     setResponseData(data.data);
+        //     setLoader(false)
+        // }).catch(error => {
+        //     console.log("error.message", error.message);
+        //     setLoader(false)
+        // });
+
+        dispatch(getOrganization(pageNo = 1, search = '', status = "Active"))
     }
 
     useEffect(() => {
@@ -192,29 +199,32 @@ const Organization = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {responseData?.data?.map(row => (
-                            <TableRow key={row.id}>
-                                <TableCell scope="row">{row.id}</TableCell>
-                                <TableCell align="left">{row.organization_name}</TableCell>
-                                <TableCell align="left">{row.contact_person_name}</TableCell>
-                                <TableCell align="left">{row.email}</TableCell>
-                                <TableCell align="left">{row.contact_no}</TableCell>
-                                <TableCell align="left">{row.status} </TableCell>
-                                <TableCell align="right"><Button variant="contained" color="secondary" onClick={() => handleUpdateClickOpen(row.id)}>View</Button></TableCell>
-                            </TableRow>
-                        ))}
+                        {
+                            organizationList.map(row => {
+                                return (<TableRow key={row.id}>
+                                    <TableCell scope="row">{row.id}</TableCell>
+                                    <TableCell align="left">{row.organization_name}</TableCell>
+                                    <TableCell align="left">{row.contact_person_name}</TableCell>
+                                    <TableCell align="left">{row.email}</TableCell>
+                                    <TableCell align="left">{row.contact_no}</TableCell>
+                                    <TableCell align="left">{row.status} </TableCell>
+                                    <TableCell align="right"><Button variant="contained" color="secondary" onClick={() => handleUpdateClickOpen(row.id)}>View</Button></TableCell>
+                                </TableRow>
+                                )
+
+                            })
+                        }
                     </TableBody>
                 </Table>
 
                 <Box className="mt-5" display="flex" justifyContent="flex-end">
-                    {/* <Typography>Page: {page}</Typography> */}
                     <Pagination onChange={handleChange} page={page} showFirstButton showLastButton count={responseData?.last_page} />
                 </Box>
             </Paper>
 
             {
-                loader ?
-                    <Backdrop className={classes.backdrop} open={loader}>
+                loading ?
+                    <Backdrop className={classes.backdrop} open={loading}>
                         <CircularProgress color="inherit" />
                     </Backdrop> : ""
             }

@@ -41,7 +41,6 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                     'Authorization': `Bearer ${loggedInUser}`
                 }
             }).then(response => {
-                console.log("datadata", response.data.data)
                 setData(response.data.data)
             }).catch(error => {
                 console.log("error.message", error.message);
@@ -57,33 +56,7 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
     };
 
     const submitOrganization = () => {
-        const loggedInUser = localStorage.getItem('token').replace(/['"]+/g, '');
-        console.log('loggedInUser: ', loggedInUser);
-        // dispatch(updateOrganization(data, id,loggedInUser))
-        axios.post(`${Config.API_URL}api/superadmin/update-org`, {
-            // method: "POST",
-            // headers: {
-            //     'content-type': 'application/json',
-            //     'Authorization': `Bearer ${loggedInUser}`
-            // },
-
-                organization_name:"0123",
-                contact_person_name:'dfsf',
-                // // email,
-                contact_no:'332346',
-                address_line_1:'ewr',
-                address_line_2:'erwe',
-                city:'erewer',
-                postcode:'erew',
-                user_id:id
-            })
-            .then(response => {
-                const data = response.data
-                console.log('data: ', data);
-            })
-            .catch(error => {
-                console.log('error: ', error);
-            })
+        dispatch(updateOrganization(data))
         handleClose()
     }
 
@@ -221,13 +194,13 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                             />
                         </Grid>
                     </Grid>
-                    {/* <Box className="mt-3">
+                    <Box className="mt-3">
                         <FormLabel component="legend">Status</FormLabel>
                         <RadioGroup name="status" value={data.status} onChange={handleChange} className={classes.radioGroup}>
                             <FormControlLabel checked={data.status === 'Active'} value="Active" control={<Radio />} label="Active" />
                             <FormControlLabel value="Inactive" checked={data.status === 'Inactive'} control={<Radio />} label="Deactive" />
                         </RadioGroup>
-                    </Box> */}
+                    </Box>
                 </DialogContent>
                 <DialogActions className="pr-4 pb-2">
                     <Button onClick={handleClose} color="primary">
