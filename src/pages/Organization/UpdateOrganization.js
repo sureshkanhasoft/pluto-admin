@@ -196,7 +196,7 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                     </Grid>
                     <Box className="mt-3">
                         <FormLabel component="legend">Status</FormLabel>
-                        <RadioGroup name="status" value={data.status} onChange={handleChange} className={classes.radioGroup}>
+                        <RadioGroup name="status" onChange={handleChange} className={classes.radioGroup}>
                             <FormControlLabel checked={data.status === 'Active'} value="Active" control={<Radio />} label="Active" />
                             <FormControlLabel value="Inactive" checked={data.status === 'Inactive'} control={<Radio />} label="Deactive" />
                         </RadioGroup>

@@ -111,6 +111,7 @@ const Organization = () => {
 
     const handleClose = () => {
         setOpen(false);
+        getData();
         setOpenUpdate(false)
     };
 
@@ -144,7 +145,7 @@ const Organization = () => {
         //     setLoader(false)
         // });
 
-        dispatch(getOrganization(pageNo = 1, search = '', status = "Active"))
+        dispatch(getOrganization(pageNo, search, status))
     }
 
     useEffect(() => {
