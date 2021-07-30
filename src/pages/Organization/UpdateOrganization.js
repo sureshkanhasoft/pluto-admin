@@ -168,7 +168,7 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                         </Grid>
                     </Grid>
                     <Grid container spacing={2}>
-                        <Grid item xs={12} sm={6}>
+                        <Grid item xs={12} sm={4}>
                             <TextField
                                 margin="dense"
                                 id="subscriptionPlan"
@@ -181,13 +181,25 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                             />
                         </Grid>
 
-                        <Grid item xs={12} sm={6}>
+                        <Grid item xs={12} sm={4}>
                             <TextField
                                 margin="dense"
                                 id="subscriptionDate"
-                                label="Subscription Date"
+                                label="Start Date"
                                 name="subscriptiondate"
                                 value={data?.start_date}
+                                onChange={handleChange}
+                                variant="outlined"
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={4}>
+                            <TextField
+                                margin="dense"
+                                id="subscriptionDate"
+                                label="End Date"
+                                name="subscriptiondate"
+                                value={data?.end_date}
                                 onChange={handleChange}
                                 variant="outlined"
                                 fullWidth

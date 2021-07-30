@@ -98,7 +98,6 @@ const Organization = () => {
     const [page, setPage] = React.useState(1);
     const [loader, setLoader] = useState(false);
     const { organizationList, loading } = useSelector(state => state.createOrganization)
-    console.log('dsfsdf: ', organizationList);
 
     const handleClickOpen = (id) => {
         setOpen(true);
@@ -144,7 +143,7 @@ const Organization = () => {
         //     console.log("error.message", error.message);
         //     setLoader(false)
         // });
-        dispatch(getOrganization({pageNo, search, status}))
+        dispatch(getOrganization({ pageNo, search, status }))
     }
 
     useEffect(() => {

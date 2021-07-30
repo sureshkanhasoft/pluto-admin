@@ -15,7 +15,6 @@ export const getOrganization = ({pageNo=1, search = '', status = 'Active'}) => {
             }
         }).then(response => {
             const dataItem = response.data;
-            console.log('data111: ', dataItem.data.data);
             dispatch(getOrganizationSuccess(dataItem.data.data))
         }).catch(error => {
             dispatch(getOrganizationSuccess([]))
@@ -59,7 +58,6 @@ export const createOrganization = ( data ) => {
             }
         }).then(response => {
             const data = response.data
-            console.log('data111: ', data);
             if (data && data.status === true) {
                 dispatch(createOrganizationSuccess(data))
             }

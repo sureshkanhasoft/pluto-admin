@@ -31,7 +31,6 @@ export const createOrganization = ({
         })
             .then(response => {
                 const data = response.data
-                console.log('data111: ', data);
                 if (data && data.status === true) {
                     dispatch(createOrganizationSuccess(data))
                 }
