@@ -4,20 +4,21 @@ import Config from '../../../config/config';
 import { CREATE_ORGANIZATION_ERROR, CREATE_ORGANIZATION_REQUEST, CREATE_ORGANIZATION_SUCCESS, GET_ORGANIZATION_ERROR, GET_ORGANIZATION_REQUEST, GET_ORGANIZATION_SUCCESS } from '../actiontypes';
 import { UPDATE_ORGANIZATION_ERROR, UPDATE_ORGANIZATION_REQUEST, UPDATE_ORGANIZATION_SUCCESS } from '../actiontypes';
 
-export const getOrganization = () => {
+export const getOrganization = ({pageNo=1, search = '', status = 'Active'}) => {
     const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, '');
     return async (dispatch) => {
         dispatch(getOrganizationRequest())
-        await axios.get(`${Config.API_URL}api/superadmin/organization-list`, {
+        await axios.get(`${Config.API_URL}api/superadmin/organization-list?search=${search}&status=${status}&page=${pageNo}`, {
             headers: {
                 'content-type': 'application/json',
                 'Authorization': `Bearer ${loggedInUser}`
             }
         }).then(response => {
             const dataItem = response.data;
-            // console.log('data111: ', data.data.data);
+            console.log('data111: ', dataItem.data.data);
             dispatch(getOrganizationSuccess(dataItem.data.data))
         }).catch(error => {
+            dispatch(getOrganizationSuccess([]))
             dispatch(getOrganizationFailure(error))
             console.log("error.message", error.message);
         });
