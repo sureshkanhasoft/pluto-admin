@@ -10,12 +10,10 @@ import {
 } from "react-router-dom";
 
 const Bookings = ({match}) => {
-    // console.log('props: ', props);
     return (
         <>
             {/* <Switch>
                 {routes.map((item, key) => {
-                    console.log('item: ', item);
                     return (
                         item.map((prop, key) => {
                             return (

@@ -8,6 +8,8 @@ import {
 } from '@material-ui/core';
 import { getProfile } from '../../store/action';
 import { useDispatch, useSelector } from 'react-redux';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyle = makeStyles((theme) => ({
     root: {
@@ -25,6 +27,10 @@ const useStyle = makeStyles((theme) => ({
     formControl: {
         width: "100%"
     },
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff',
+    },
     footerBtn: {
         display: "flex",
         justifyContent: "flex-end",
@@ -38,12 +44,12 @@ const useStyle = makeStyles((theme) => ({
 const Profile = () => {
     const classes = useStyle();
     const dispatch = useDispatch();
-    const { profile } = useSelector(state => state.profile)
-    console.log('profile: ', profile);
+    const { profile, loading } = useSelector(state => state.profile)
+    
     const [data, setData] = useState({
         first_name: "",
         last_name: "",
-        email: 'superadmin@gmail.com',
+        email: '',
         contact_number: '',
         address_line_1: '',
         address_line_2: '',
@@ -64,15 +70,28 @@ const Profile = () => {
     };
 
     const getProfileDetail =() => {
-        dispatch(getProfile)
+        dispatch(getProfile())
+        if(profile.data){
+            setData(profile.data)
+        }
     }
-
+    
     useEffect(() => {
-        // getProfile2()
         getProfileDetail()
+        if(profile.data){
+            setData(profile.data)
+        }
     }, [])
+
+    
     return (
         <>
+            {
+                loading ?
+                    <Backdrop className={classes.backdrop} open={loading}>
+                        <CircularProgress color="inherit" />
+                    </Backdrop> : ""
+            }
             <Paper className={classes.root}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={6} lg={4}>

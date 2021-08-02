@@ -19,7 +19,6 @@ export const getOrganization = ({pageNo=1, search = '', status = 'Active'}) => {
         }).catch(error => {
             dispatch(getOrganizationSuccess([]))
             dispatch(getOrganizationFailure(error))
-            console.log("error.message", error.message);
         });
     }
 
@@ -139,13 +138,11 @@ export const updateOrganization = (data) => {
             }
         }).then(response => {
             const data = response.data
-            console.log('data11: ', data);
             if (data.status === true) {
                 dispatch(updateOrganizationSuccess(data))
                 // handleClose();
             }
         }).catch(error => {
-            console.log('error: ', error);
             dispatch(updateOrganizationFailure(error))
         })
     }
@@ -158,7 +155,6 @@ export const updateOrganizationRequest = () => {
 }
 
 export const updateOrganizationSuccess = data => {
-    console.log('updateOrganizationSuccess: ', data);
     return {
         type: UPDATE_ORGANIZATION_SUCCESS,
         payload: data

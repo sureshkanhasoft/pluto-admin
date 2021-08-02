@@ -4,7 +4,6 @@ import { GET_PROFILE_ERROR, GET_PROFILE_REQUEST, GET_PROFILE_SUCCESS } from "../
 
 export const getProfile = () => {
     const loggedInUser = localStorage.getItem('token').replace(/['"]+/g, '');
-    console.log('loggedInUser: ', loggedInUser);
     return async(dispatch) =>{
         dispatch(getProfileRequest())
         await axios.get(`${Config.API_URL}api/superadmin/get-detail`,{
@@ -13,10 +12,8 @@ export const getProfile = () => {
                 'Authorization': `Bearer ${loggedInUser}`
             }
         }).then(res => {
-            console.log('res: ', res);
             dispatch(getProfileSuccess(res.data))
         }).catch(error => {
-            console.log('error: ', error);
             dispatch(getProfileError(error))
 
         })
