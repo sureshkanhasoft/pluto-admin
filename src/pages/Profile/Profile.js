@@ -7,8 +7,9 @@ import {
     Grid, TextField
 } from '@material-ui/core';
 import { getProfile } from '../../store/action';
-import axios from 'axios'
-import Config from '../../config/config'
+import { useDispatch, useSelector } from 'react-redux';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyle = makeStyles((theme) => ({
     root: {
@@ -26,6 +27,10 @@ const useStyle = makeStyles((theme) => ({
     formControl: {
         width: "100%"
     },
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff',
+    },
     footerBtn: {
         display: "flex",
         justifyContent: "flex-end",
@@ -38,18 +43,22 @@ const useStyle = makeStyles((theme) => ({
 
 const Profile = () => {
     const classes = useStyle();
+    const dispatch = useDispatch();
+    const { profile, loading } = useSelector(state => state.profile)
+    
     const [data, setData] = useState({
         first_name: "",
         last_name: "",
-        email: 'superadmin@gmail.com',
+        email: '',
         contact_number: '',
         address_line_1: '',
         address_line_2: '',
+        city:'',
         postcode: '',
     })
     const [resetPass, setResetPass] = useState({
         old_password: "",
-        password: "",
+        new_password: "",
         conform_password: ""
     })
     const handleChange = (event) => {
@@ -57,51 +66,52 @@ const Profile = () => {
     };
 
     const handleChangePassword = (event) => {
-        setResetPass({ ...data, [event.target.name]: event.target.value });
+        setResetPass({ ...resetPass, [event.target.name]: event.target.value });
     };
 
-    const getProfile2 = async() => {
-        const loggedInUser = localStorage.getItem('token').replace(/['"]+/g, '');
-        console.log('loggedInUser: ', 'dsfsdfsd');
-        await axios.get(`${Config.API_URL}api/superadmin/get-detail`, {
-            headers: {
-                'content-type': 'application/json',
-                'Authorization': `Bearer ${loggedInUser}`
-            }
-        }).then(res => {
-            console.log('res: ', res.data);
-        }).catch(error => {
-            console.log('error: ', error);
-
-        })
+    const getProfileDetail =() => {
+        dispatch(getProfile())
+        if(profile.data){
+            setData(profile.data)
+        }
     }
-
+    
     useEffect(() => {
-        // getProfile2()
-        getProfile()
+        getProfileDetail()
+        if(profile.data){
+            setData(profile.data)
+        }
     }, [])
+
+    
     return (
         <>
+            {
+                loading ?
+                    <Backdrop className={classes.backdrop} open={loading}>
+                        <CircularProgress color="inherit" />
+                    </Backdrop> : ""
+            }
             <Paper className={classes.root}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={6} lg={4}>
                         <TextField
-                            id="firstname"
+                            id="first_name"
                             label="First Name"
                             variant="outlined"
-                            name="firstname"
-                            value={data.firstname}
+                            name="first_name"
+                            value={data.first_name}
                             onChange={handleChange}
                             fullWidth
                         />
                     </Grid>
                     <Grid item xs={12} sm={6} lg={4}>
                         <TextField
-                            id="lastname"
+                            id="last_name"
                             label="Last Name"
                             variant="outlined"
-                            name="lastname"
-                            value={data.lastname}
+                            name="last_name"
+                            value={data.last_name}
                             onChange={handleChange}
                             fullWidth
                         />
@@ -171,6 +181,7 @@ const Profile = () => {
                             value={data.postcode}
                             onChange={handleChange}
                             fullWidth
+                            type="text"
                         />
                     </Grid>
                 </Grid>
@@ -200,15 +211,16 @@ const Profile = () => {
                             type="password"
                             onChange={handleChangePassword}
                             fullWidth
+                            autoComplete="new-password"
                         />
                     </Grid>
                     <Grid item xs={12} sm={6} lg={4}>
                         <TextField
-                            id="password"
+                            id="new_password"
                             label="New Password"
                             variant="outlined"
-                            name="password"
-                            value={resetPass.password}
+                            name="new_password"
+                            value={resetPass.new_password}
                             type="password"
                             onChange={handleChangePassword}
                             fullWidth

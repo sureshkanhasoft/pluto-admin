@@ -41,8 +41,6 @@ const ChangePassword = () => {
     };
 
     const handleClickShowPassword = () => {
-        console.log('sdfsdf')
-        console.log('data', data)
         setData({ ...data, showPassword: !data.showPassword });
     };
     return (

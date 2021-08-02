@@ -28,7 +28,6 @@ export const login = ({ email, password }) => {
                     history.push('./admin')
                 }
             } else {
-                // console.log("Call Ellse ", data)
                 dispatch(getLoginFailure(data))
                 dispatch(getLoginSuccess(null))
             }
@@ -64,8 +63,6 @@ export const forgotpassword = ({ email }) => {
 }
 
 export const changepassword = ({ decode_id, password, conform_password }) => {
-    console.log("Call change password")
-    console.log(decode_id, password, conform_password)
     return (dispatch) => {
         dispatch(getChangePasswordRequest());
         dispatch(getChangePasswordSuccess(''));
