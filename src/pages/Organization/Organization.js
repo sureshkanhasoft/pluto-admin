@@ -20,8 +20,6 @@ import AddIcon from '@material-ui/icons/Add';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import CreateOrganization from './CreateOrganization';
 import UpdateOrganization from './UpdateOrganization';
-import axios from 'axios';
-import Config from '../../../src/config/config';
 import { useDispatch, useSelector } from 'react-redux';
 import { getOrganization } from '../../store/action';
 // import Typography from '@material-ui/core/Typography';
@@ -96,7 +94,6 @@ const Organization = () => {
     const [searchData, setSearchData] = useState({ search: "" });
     const [responseData, setResponseData] = useState([]);
     const [page, setPage] = React.useState(1);
-    const [loader, setLoader] = useState(false);
     const { organizationList, loading } = useSelector(state => state.createOrganization)
 
     const handleClickOpen = (id) => {
@@ -128,21 +125,6 @@ const Organization = () => {
     };
 
     const getData = (pageNo = 1, search = '', status = "Active") => {
-        // const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, '');
-        // setLoader(true)
-        // await axios.get(`${Config.API_URL}api/organization/organization-list?search=${search}&status=${status}&page=${pageNo}`, {
-        //     headers: {
-        //         'content-type': 'application/json',
-        //         'Authorization': `Bearer ${loggedInUser}`
-        //     }
-        // }).then(response => {
-        //     const data = response.data;
-        //     setResponseData(data.data);
-        //     setLoader(false)
-        // }).catch(error => {
-        //     console.log("error.message", error.message);
-        //     setLoader(false)
-        // });
         dispatch(getOrganization({ pageNo, search, status }))
     }
 

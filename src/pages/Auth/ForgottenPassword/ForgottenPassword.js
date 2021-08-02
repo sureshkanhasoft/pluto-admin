@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Grid, Card, TextField, Button, makeStyles, Typography } from '@material-ui/core';
 import { Link } from 'react-router-dom';
@@ -88,9 +88,9 @@ const ForgottenPassword = ({ history }) => {
         setData({ ...data, [event.target.name]: event.target.value });
     }
 
-    const toggleContainer = () => {
-        // setShow(false)
-    }
+    // const toggleContainer = () => {
+    //     // setShow(false)
+    // }
     const handleSubmit = () => {
         const { email } = data;
         if (email) {

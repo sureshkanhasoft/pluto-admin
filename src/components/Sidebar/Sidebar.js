@@ -9,7 +9,7 @@ import {
     makeStyles,
     Box
 } from "@material-ui/core";
-import { NavLink, Link, Router } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import logo from '../../assets/images/logo.svg'
 
 const useStyle = makeStyles({
