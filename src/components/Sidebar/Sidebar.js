@@ -9,7 +9,7 @@ import {
     makeStyles,
     Box
 } from "@material-ui/core";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, Router } from "react-router-dom";
 import logo from '../../assets/images/logo.svg'
 
 const useStyle = makeStyles({
@@ -69,7 +69,7 @@ const Sidebar = (props) => {
                                 <ListItemText primary={route.name} />
                             </ListItem>
                         </NavLink>
-                    )) : routes.filter(route => route.role === 'superAdmin').map((route, index) => (
+                    )) : routes.filter(route => route.role === 'superAdmin' && route.sidebar !== false).map((route, index) => (
                         <NavLink to={`/super-admin/${route.path}`} key={index} className={classes.navLink} activeClassName="active">
                             <ListItem button>
                                 <ListItemIcon className={`${classes.listItemIcon} activeIcon`}>

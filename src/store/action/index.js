@@ -9,4 +9,8 @@ export {
     createOrganization,
     updateOrganization
 } from "./organization/organizationAction"
+
+export {
+    getProfile
+} from "./profile/profileAction"
  

@@ -46,6 +46,11 @@ const Navbar = () => {
     setAnchorEl(null);
   };
 
+  const openProfile = () =>{
+    history.push('/super-admin/profile')
+    handleClose()
+  }
+
   const logout = () => {
     const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, '');
     axios.get(`${Config.API_URL}api/organization/logout`, {
@@ -87,7 +92,7 @@ const Navbar = () => {
             open={open}
             onClose={handleClose}
           >
-            <MenuItem onClick={handleClose}>Profile</MenuItem>
+            <MenuItem onClick={openProfile}>Profile</MenuItem>
             <MenuItem onClick={logout}>Logout</MenuItem>
           </Menu>
         </div>

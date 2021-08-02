@@ -9,6 +9,7 @@ import Specialities from "./pages/Specialities/Specialities";
 import CreateStaff from "./pages/Staff/CreateStaff";
 import Staff from "./pages/Staff/Staff";
 import Trust from "./pages/Trust/Trust";
+import Profile from "./pages/Profile/Profile";
 
 const Routes = [
     {
@@ -104,6 +105,14 @@ const Routes = [
         component:PlanManagement,
         icon:"description",
         role:"admin"
+    },
+    {
+        name:"Profile",
+        path:"profile",
+        component:Profile,
+        // icon:"description",
+        role:"superAdmin",
+        sidebar:false
     },
 
 ]

@@ -205,7 +205,7 @@ const Organization = () => {
                                     <TableCell align="left">{row.organization_name}</TableCell>
                                     <TableCell align="left">{row.contact_person_name}</TableCell>
                                     <TableCell align="left">{row.email}</TableCell>
-                                    <TableCell align="left">{row.contact_no}</TableCell>
+                                    <TableCell align="left">{row.contact_number}</TableCell>
                                     <TableCell align="left">{row.status} </TableCell>
                                     <TableCell align="right"><Button variant="contained" color="secondary" onClick={() => handleUpdateClickOpen(row.id)}>View</Button></TableCell>
                                 </TableRow>
