@@ -4,6 +4,7 @@ import { Grid, Card, TextField, Button, makeStyles, Typography } from '@material
 import logo from '../../../assets/images/logo.svg';
 import LockIcon from '@material-ui/icons/Lock';
 import { changepassword } from '../../../store/action';
+import { useForm } from "react-hook-form";
 
 const useStyle = makeStyles({
     loginContainer: {
@@ -36,6 +37,10 @@ const useStyle = makeStyles({
         marginBottom: "15px",
         paddingLeft: "7px",
         color: "green"
+    },
+    validationError: {
+        marginTop: "-14px",
+        marginBottom: "10px",
     },
     textField: {
         marginBottom: 24,
@@ -78,27 +83,35 @@ const useStyle = makeStyles({
 
 const ChangePassword = ({ history }) => {
     const classes = useStyle();
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
     const params = new URLSearchParams(window.location.search);
     const dId = params.get('query');
     const { changesuccess, changeerrors } = useSelector(state => state.authReducer)
-
     const [data, setData] = useState({
         password: "",
         conform_password: "",
         decode_id: dId,
     })
-
+    const { register, handleSubmit, formState: { errors }, reset } = useForm();
+    const onSubmit = async data => {
+        data.decode_id = dId;
+        dispatch(changepassword(data));
+        reset();
+    };
     const handleChange = (event) => {
         setData({ ...data, [event.target.name]: event.target.value });
     }
+    // for (var key in errors) {
+    //     console.log("errors ", errors[key]?.message)
+    //     console.log("key ", key)
+    // }
 
-    const handleSubmit = () => {
-        const { decode_id, password, conform_password } = data;
-        if (decode_id && password && conform_password) {
-            dispatch(changepassword(data));
-        }
-    }
+    // const handleSubmit = () => {
+    //     const { decode_id, password, conform_password } = data;
+    //     if (decode_id && password && conform_password) {
+    //         dispatch(changepassword(data));
+    //     }
+    // }
     return (
         <>
             <Grid className={classes.loginContainer}>
@@ -117,25 +130,36 @@ const ChangePassword = ({ history }) => {
                             {changesuccess?.message}
                         </div>
                     }
-                    <form className={classes.form}>
+                    <form className={classes.form} autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
                         <TextField
                             id="password"
                             name="password"
                             label="password"
-                            value={data.password}
+                            autoComplete="off"
+                            // value={data.password}
                             onChange={handleChange}
                             type="password"
                             variant="outlined"
                             InputProps={{
                                 startAdornment: <LockIcon />
                             }}
+                            aria-invalid={errors.password ? "true" : "false"}
+                            {...register("password", {
+                                required: "Please enter password",
+                                minLength: {
+                                    value: 5,
+                                    message: "min length is 5"
+                                }
+                            })}
                             className={classes.textField}
                         />
+                        {errors.password && <span className={classes.validationError} role="alert"> {errors.password.message}</span>}
+
                         <TextField
                             id="conform_password"
                             name="conform_password"
                             label="conform password"
-                            value={data.conform_password}
+                            // value={data.conform_password}
                             onChange={handleChange}
                             type="password"
                             variant="outlined"
@@ -143,8 +167,16 @@ const ChangePassword = ({ history }) => {
                                 startAdornment: <LockIcon />
                             }}
                             className={classes.textField}
+                            {...register("conform_password", {
+                                required: "Please enter conform password",
+                                minLength: {
+                                    value: 5,
+                                    message: "min length is 5"
+                                }
+                            })}
                         />
-                        <Button variant="contained" color="primary" onClick={handleSubmit} className={classes.resetBtn} disabled={changesuccess?.status}>
+                        {errors.conform_password && <span className="validationError" role="alert">{errors.conform_password.message}</span>}
+                        <Button variant="contained" color="primary" type="submit" className={classes.resetBtn}>
                             Change Password
                         </Button>
                     </form>

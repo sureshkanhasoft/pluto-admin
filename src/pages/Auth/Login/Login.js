@@ -6,6 +6,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import LockIcon from '@material-ui/icons/Lock';
 import logo from '../../../assets/images/logo.svg'
 import { login } from '../../../store/action';
+import { useForm } from "react-hook-form";
 
 const useStyle = makeStyles({
     loginContainer: {
@@ -32,6 +33,11 @@ const useStyle = makeStyles({
     error: {
         marginBottom: "15px",
         paddingLeft: "7px",
+        color: "red"
+    },
+    validationError: {
+        marginTop: "-14px",
+        marginBottom: "10px",
         color: "red"
     },
     success: {
@@ -73,8 +79,12 @@ const useStyle = makeStyles({
 const Login = () => {
     const classes = useStyle();
     const dispatch = useDispatch()
-
-    const { loading, errors, userInfo } = useSelector(state => state.authReducer)
+    const { loading, loginErrors, userInfo } = useSelector(state => state.authReducer)
+    const { register, handleSubmit, formState: { errors }, reset } = useForm();
+    const onSubmit = async data => {
+        dispatch(login(data))
+        // reset();
+    };
     const [data, setData] = useState({
         email: "",
         password: ""
@@ -83,13 +93,14 @@ const Login = () => {
     const handleChange = (event) => {
         setData({ ...data, [event.target.name]: event.target.value });
     }
+   
 
-    const handleSubmit = () => {
-        const { email, password } = data;
-        if (email && password) {
-            dispatch(login(data))
-        }
-    }
+    // const handleSubmit = () => {
+    //     const { email, password } = data;
+    //     if (email && password) {
+    //         dispatch(login(data))
+    //     }
+    // }
 
     // const validation = (email) => {
     //     let errors= {};
@@ -113,9 +124,9 @@ const Login = () => {
                 </div>
 
                 <Card className={classes.loginCard}>
-                    {errors?.message &&
+                    {loginErrors?.message &&
                         <div className={classes.error}>
-                            {errors?.message}
+                            {loginErrors?.message}
                         </div>
                     }
                     {userInfo?.message &&
@@ -123,40 +134,58 @@ const Login = () => {
                             {userInfo?.message}
                         </div>
                     }
-                    <form className={classes.form}>
-
+                    <form className={classes.form} onSubmit={handleSubmit(onSubmit)} >
                         <TextField
-                            id="email"
-                            name="email"
-                            label="Email"
-                            value={data.email}
-                            onChange={handleChange}
-                            variant="outlined"
-                            InputProps={{
-                                startAdornment: <MailIcon />
-                            }}
-                            className={classes.textField}
-                            required
-                            error={errors === true}
+                          id="email"
+                          name="email"
+                          label="Email"
+                          autoComplete="off"
+                          // value={data.email}
+                          onChange={handleChange}
+                          type="email"
+                          variant="outlined"
+                          InputProps={{
+                              startAdornment: <LockIcon />
+                          }}
+                          aria-invalid={errors.password ? "true" : "false"}
+                          {...register("email", {
+                              required: "Please enter email",
+                              minLength: {
+                                  value: 5,
+                                  message: "min length is 5"
+                              }
+                          })}
+                          className={classes.textField}
                         />
+                        {errors.email && <span className={classes.validationError} role="alert"> {errors.email.message}</span>}
                         <TextField
                             id="password"
                             name="password"
                             label="Password"
-                            value={data.password}
+                            autoComplete="off"
+                            // value={data.password}
                             onChange={handleChange}
-                            variant="outlined"
                             type="password"
+                            variant="outlined"
                             InputProps={{
                                 startAdornment: <LockIcon />
                             }}
+                            aria-invalid={errors.password ? "true" : "false"}
+                            {...register("password", {
+                                required: "Please enter password",
+                                minLength: {
+                                    value: 5,
+                                    message: "min length is 5"
+                                }
+                            })}
                             className={classes.textField}
-                            error={errors === true}
                         />
+                        {errors.password && <span className={classes.validationError} role="alert"> {errors.password.message}</span>}
                         <div className={classes.forgotCont}>
                             <Link to="/forgotten-password" className={classes.forgotText}>Forgotten your password?</Link>
                         </div>
-                        <Button variant="contained" color="primary" className={classes.loginBtn} onClick={handleSubmit}>
+                        {/* <Button variant="contained" color="primary" className={classes.loginBtn} onClick={handleSubmit}> */}
+                        <Button variant="contained" color="primary" className={classes.loginBtn} type="submit" >
                             {loading ? <CircularProgress style={{ width: 18, height: 18, marginRight: 12 }} /> : ""}login
                         </Button>
                     </form>

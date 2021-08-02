@@ -4,7 +4,7 @@ import { updateObject } from '../../shared/utility';
 const initialState = {
     loading: false,
     userInfo: [],
-    errors: [],
+    loginErrors: [],
     forgotsuccess: [],
     forgoterrors: [],
     changesuccess: [],
@@ -25,7 +25,7 @@ const authReducer = (state = initialState, action) => {
         case actionTypes.LOGIN_ERROR:
             return updateObject(state, {
                 loading: false,
-                errors: action.payload
+                loginErrors: action.payload
             })
         case actionTypes.FORGOT_REQUEST:
             return updateObject(state, {
