@@ -7,6 +7,8 @@ import {
     Grid, TextField
 } from '@material-ui/core';
 import { getProfile } from '../../store/action';
+import axios from 'axios'
+import Config from '../../config/config'
 
 const useStyle = makeStyles((theme) => ({
     root: {
@@ -58,13 +60,26 @@ const Profile = () => {
         setResetPass({ ...data, [event.target.name]: event.target.value });
     };
 
-    const getProfile2 = () => {
-        
+    const getProfile2 = async() => {
+        const loggedInUser = localStorage.getItem('token').replace(/['"]+/g, '');
+        console.log('loggedInUser: ', 'dsfsdfsd');
+        await axios.get(`${Config.API_URL}api/superadmin/get-detail`, {
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': `Bearer ${loggedInUser}`
+            }
+        }).then(res => {
+            console.log('res: ', res.data);
+        }).catch(error => {
+            console.log('error: ', error);
+
+        })
     }
 
-    // useEffect(() => {
-    //     getProfile()
-    // }, [])
+    useEffect(() => {
+        // getProfile2()
+        getProfile()
+    }, [])
     return (
         <>
             <Paper className={classes.root}>

@@ -9,7 +9,6 @@ const initialState = {
 }
 
 const organizationReducer = (state = initialState, action) => {
-    console.log('action: ', action);
     switch (action.type) {
         case actionTypes.GET_ORGANIZATION_REQUEST:
             return updateObject(state, {
