@@ -12,6 +12,7 @@ export {
 
 export {
     getProfile,
-    updateProfile
+    updateProfile,
+    changePassword
 } from "./profile/profileAction"
  

@@ -1,6 +1,6 @@
 import axios from "axios";
 import Config from '../../../config/config'
-import { GET_PROFILE_ERROR, GET_PROFILE_REQUEST, GET_PROFILE_SUCCESS, 
+import { CHANGE_PASS_ERROR, CHANGE_PASS_REQUEST, CHANGE_PASS_SUCCESS, GET_PROFILE_ERROR, GET_PROFILE_REQUEST, GET_PROFILE_SUCCESS, 
     UPDATE_PROFILE_ERROR, UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS 
 } from "../actiontypes";
 
@@ -78,6 +78,49 @@ export const updateProfileSuccess = (data) => {
 export const updateProfileError = (error) => {
     return {
         type: UPDATE_PROFILE_ERROR,
+        payload:error
+    }
+}
+
+
+// -----------------------------
+
+export const changePassword = (data) => {
+    console.log('data: ', data);
+    const loggedInUser = localStorage.getItem('token').replace(/['"]+/g, '');
+    return async(dispatch) =>{
+        dispatch(changePasswordRequest())
+        await axios.post(`${Config.API_URL}api/superadmin/change-password`, data,{
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': `Bearer ${loggedInUser}`
+            }
+        }).then(response => {
+            const data = response.data
+            if (data.status === true) {
+                dispatch(changePasswordSuccess(data))
+            }
+        }).catch(error => {
+            dispatch(changePasswordError(error))
+
+        })
+    }
+}
+
+export const changePasswordRequest = () => {
+    return {
+        type: CHANGE_PASS_REQUEST
+    }
+}
+export const changePasswordSuccess = (data) => {
+    return {
+        type: CHANGE_PASS_SUCCESS,
+        payload:data
+    }
+}
+export const changePasswordError = (error) => {
+    return {
+        type: CHANGE_PASS_ERROR,
         payload:error
     }
 }
