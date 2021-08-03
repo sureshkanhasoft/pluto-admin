@@ -142,18 +142,14 @@ const Login = () => {
                           autoComplete="off"
                           // value={data.email}
                           onChange={handleChange}
-                          type="email"
+                          type="email" 
                           variant="outlined"
                           InputProps={{
-                              startAdornment: <LockIcon />
+                              startAdornment: <MailIcon />
                           }}
                           aria-invalid={errors.password ? "true" : "false"}
                           {...register("email", {
                               required: "Please enter email",
-                              minLength: {
-                                  value: 5,
-                                  message: "min length is 5"
-                              }
                           })}
                           className={classes.textField}
                         />
@@ -173,10 +169,10 @@ const Login = () => {
                             aria-invalid={errors.password ? "true" : "false"}
                             {...register("password", {
                                 required: "Please enter password",
-                                minLength: {
-                                    value: 5,
-                                    message: "min length is 5"
-                                }
+                                // minLength: {
+                                //     value: 5,
+                                //     message: "min length is 5"
+                                // }
                             })}
                             className={classes.textField}
                         />

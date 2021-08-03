@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import MailIcon from '@material-ui/icons/Mail';
 import logo from '../../../assets/images/logo.svg';
 import { forgotpassword } from '../../../store/action';
+import { useForm } from "react-hook-form";
 
 const useStyle = makeStyles({
     loginContainer: {
@@ -74,7 +75,12 @@ const useStyle = makeStyles({
     },
     descText: {
         marginBottom: 20
-    }
+    },
+    validationError: {
+        marginTop: "-14px",
+        marginBottom: "10px",
+        color: "red"
+    },
 })
 
 const ForgottenPassword = ({ history }) => {
@@ -83,7 +89,11 @@ const ForgottenPassword = ({ history }) => {
     const dispatch = useDispatch()
     const { forgotsuccess, forgoterrors } = useSelector(state => state.authReducer)
     const [data, setData] = useState({ email: "" })
-
+    const { register, handleSubmit, formState: { errors }, reset } = useForm();
+    const onSubmit = async data => {
+        // dispatch(forgotpassword(data));
+        // reset();
+    };
     const handleChange = (event) => {
         setData({ ...data, [event.target.name]: event.target.value });
     }
@@ -91,12 +101,12 @@ const ForgottenPassword = ({ history }) => {
     // const toggleContainer = () => {
     //     // setShow(false)
     // }
-    const handleSubmit = () => {
-        const { email } = data;
-        if (email) {
-            dispatch(forgotpassword(data));
-        }
-    }
+    // const handleSubmit = () => {
+    //     const { email } = data;
+    //     if (email) {
+    //         dispatch(forgotpassword(data));
+    //     }
+    // }
 
     return (
         <>
@@ -121,25 +131,32 @@ const ForgottenPassword = ({ history }) => {
                                     </div>
                                 }
 
-                                <form className={classes.form}>
+                                <form className={classes.form} onSubmit={handleSubmit(onSubmit)} >
                                     <TextField
                                         id="email"
                                         name="email"
                                         label="Email"
-                                        value={data.email}
+                                        autoComplete="off"
+                                        // value={data.email}
                                         onChange={handleChange}
+                                        type="email"
                                         variant="outlined"
                                         InputProps={{
                                             startAdornment: <MailIcon />
                                         }}
+                                        aria-invalid={errors.password ? "true" : "false"}
+                                        {...register("email", {
+                                            required: "Please enter email",
+                                        })}
                                         className={classes.textField}
                                     />
+                                    {errors.email && <span className={classes.validationError} role="alert"> {errors.email.message}</span>}
 
                                     <div className={classes.forgotCont}>
                                         <Link to="/login" className={classes.forgotText}>Back to Login</Link>
                                     </div>
                                     {/* <Button variant="contained" color="primary" className={classes.resetBtn} onClick={toggleContainer}> */}
-                                    <Button variant="contained" color="primary" className={classes.resetBtn} onClick={handleSubmit} disabled={forgotsuccess?.status}>
+                                    <Button variant="contained"  type="submit" color="primary" className={classes.resetBtn} onClick={handleSubmit} disabled={forgotsuccess?.status}>
                                         Reset Password
                                     </Button>
                                 </form>
