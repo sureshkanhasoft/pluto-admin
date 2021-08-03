@@ -24,7 +24,7 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
         organization_name: "",
         contact_person_name: "",
         email: "",
-        contact_no: "",
+        contact_number: "",
         address_line_1: "",
         address_line_2: "",
         city: "",
@@ -103,17 +103,18 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                                 value={data?.email}
                                 onChange={handleChange}
                                 fullWidth
+                                disabled
                             />
                         </Grid>
 
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 margin="dense"
-                                id="contact_no"
+                                id="contact_number"
                                 label="Contact Number"
                                 variant="outlined"
-                                name="contact_no"
-                                value={data?.contact_no}
+                                name="contact_number"
+                                value={data?.contact_number}
                                 onChange={handleChange}
                                 fullWidth
                             />
