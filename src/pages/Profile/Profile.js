@@ -6,7 +6,7 @@ import {
     Box,
     Grid, TextField
 } from '@material-ui/core';
-import { getProfile, updateProfile } from '../../store/action';
+import { changePassword, getProfile, updateProfile } from '../../store/action';
 import { useDispatch, useSelector } from 'react-redux';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -56,7 +56,7 @@ const Profile = () => {
     })
     const [resetPass, setResetPass] = useState({
         old_password: "",
-        new_password: "",
+        password: "",
         conform_password: ""
     })
     const { profile, loading } = useSelector(state => state.profile)
@@ -72,6 +72,8 @@ const Profile = () => {
     const getProfileDetail =() => {
         dispatch(getProfile())
     }
+
+    
     
     useEffect(() => {
         getProfileDetail()
@@ -86,6 +88,9 @@ const Profile = () => {
     const profileSubmit = () => {
         dispatch(updateProfile(data))
         // console.log('data: ', data);
+    }
+    const changePassDetail =() => {
+        dispatch(changePassword(resetPass))
     }
 
     
@@ -221,11 +226,11 @@ const Profile = () => {
                     </Grid>
                     <Grid item xs={12} sm={6} lg={4}>
                         <TextField
-                            id="new_password"
+                            id="password"
                             label="New Password"
                             variant="outlined"
-                            name="new_password"
-                            value={resetPass.new_password}
+                            name="password"
+                            value={resetPass.password}
                             type="password"
                             onChange={handleChangePassword}
                             fullWidth
@@ -248,7 +253,7 @@ const Profile = () => {
                     <Button color="primary">
                         Cancel
                     </Button>
-                    <Button color="secondary" variant="contained">
+                    <Button color="secondary" variant="contained" onClick={changePassDetail}>
                         Save
                     </Button>
                 </Box>

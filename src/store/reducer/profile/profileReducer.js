@@ -5,7 +5,8 @@ const initialState = {
     loading: false,
     profile: [],
     errors: false,
-    profileData:[]
+    profileData:[],
+    passChange:[]
 }
 
 const profileReducer = (state = initialState, action) => {
@@ -39,6 +40,24 @@ const profileReducer = (state = initialState, action) => {
             })
 
         case actionTypes.UPDATE_PROFILE_ERROR:
+            return updateObject(state, {
+                loading:false,
+                errors: true
+            })
+
+
+        case actionTypes.CHANGE_PASS_REQUEST:
+            return updateObject(state, {
+                loading:true,
+            })
+
+        case actionTypes.CHANGE_PASS_SUCCESS:
+            return updateObject(state, {
+                loading:false,
+                passChange:action.payload
+            })
+
+        case actionTypes.CHANGE_PASS_ERROR:
             return updateObject(state, {
                 loading:false,
                 errors: true
