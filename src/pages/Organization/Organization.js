@@ -124,7 +124,7 @@ const Organization = () => {
         setTimeout(getData(page, searchData.search), 1000);
     };
 
-    const getData = (pageNo = 1, search = '', status = "Active") => {
+    const getData = (pageNo = 1, search = '', status = "") => {
         dispatch(getOrganization({ pageNo, search, status }))
     }
 
