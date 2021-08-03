@@ -6,7 +6,7 @@ import {
     Box,
     Grid, TextField
 } from '@material-ui/core';
-import { getProfile } from '../../store/action';
+import { getProfile, updateProfile } from '../../store/action';
 import { useDispatch, useSelector } from 'react-redux';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -44,8 +44,6 @@ const useStyle = makeStyles((theme) => ({
 const Profile = () => {
     const classes = useStyle();
     const dispatch = useDispatch();
-    const { profile, loading } = useSelector(state => state.profile)
-    
     const [data, setData] = useState({
         first_name: "",
         last_name: "",
@@ -61,6 +59,8 @@ const Profile = () => {
         new_password: "",
         conform_password: ""
     })
+    const { profile, loading } = useSelector(state => state.profile)
+
     const handleChange = (event) => {
         setData({ ...data, [event.target.name]: event.target.value });
     };
@@ -71,24 +71,29 @@ const Profile = () => {
 
     const getProfileDetail =() => {
         dispatch(getProfile())
-        if(profile.data){
-            setData(profile.data)
-        }
     }
     
     useEffect(() => {
         getProfileDetail()
+    }, [])
+
+    useEffect(()=>{
         if(profile.data){
             setData(profile.data)
         }
-    }, [])
+    },[profile.data])
+
+    const profileSubmit = () => {
+        dispatch(updateProfile(data))
+        // console.log('data: ', data);
+    }
 
     
     return (
         <>
             {
                 loading ?
-                    <Backdrop className={classes.backdrop} open={loading}>
+                <Backdrop className={classes.backdrop} open={loading}>
                         <CircularProgress color="inherit" />
                     </Backdrop> : ""
             }
@@ -189,7 +194,7 @@ const Profile = () => {
                     <Button color="primary">
                         Cancel
                     </Button>
-                    <Button color="secondary" variant="contained">
+                    <Button color="secondary" variant="contained" onClick={profileSubmit}>
                         Save
                     </Button>
                 </Box>

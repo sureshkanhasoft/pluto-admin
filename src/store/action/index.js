@@ -11,6 +11,7 @@ export {
 } from "./organization/organizationAction"
 
 export {
-    getProfile
+    getProfile,
+    updateProfile
 } from "./profile/profileAction"
  
