@@ -4,7 +4,7 @@ import Config from '../../../config/config';
 import { CREATE_ORGANIZATION_ERROR, CREATE_ORGANIZATION_REQUEST, CREATE_ORGANIZATION_SUCCESS, GET_ORGANIZATION_ERROR, GET_ORGANIZATION_REQUEST, GET_ORGANIZATION_SUCCESS } from '../actiontypes';
 import { UPDATE_ORGANIZATION_ERROR, UPDATE_ORGANIZATION_REQUEST, UPDATE_ORGANIZATION_SUCCESS } from '../actiontypes';
 
-export const getOrganization = ({pageNo=1, search = '', status = 'Active'}) => {
+export const getOrganization = ({pageNo=1, search = '', status = ''}) => {
     const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, '');
     return async (dispatch) => {
         dispatch(getOrganizationRequest())
