@@ -36,7 +36,6 @@ const CreateOrganization = ({ open, handleClose }) => {
     };
 
     const submitOrganization = () => {
-        console.log('data: ', data);
         dispatch(createOrganization(data))
         handleClose()
     }

@@ -3,6 +3,7 @@ import Config from '../../../config/config'
 import { CHANGE_PASS_ERROR, CHANGE_PASS_REQUEST, CHANGE_PASS_SUCCESS, GET_PROFILE_ERROR, GET_PROFILE_REQUEST, GET_PROFILE_SUCCESS, 
     UPDATE_PROFILE_ERROR, UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS 
 } from "../actiontypes";
+import { putNotify } from "../notify";
 
 export const getProfile = () => {
     const loggedInUser = localStorage.getItem('token').replace(/['"]+/g, '');
@@ -56,6 +57,9 @@ export const updateProfile = (data) => {
             if (data.status === true) {
                 dispatch(updateProfileSuccess(data))
                 dispatch(getProfile())
+                dispatch(putNotify('Profile Updated Successfully'))
+            } else {
+                dispatch(updateProfileError('profile not updated'))
             }
         }).catch(error => {
             dispatch(updateProfileError(error))
@@ -99,6 +103,9 @@ export const changePassword = (data) => {
             const data = response.data
             if (data.status === true) {
                 dispatch(changePasswordSuccess(data))
+                dispatch(putNotify('data success'))
+            } else {
+                dispatch(changePasswordError('change password not changed'))
             }
         }).catch(error => {
             dispatch(changePasswordError(error))

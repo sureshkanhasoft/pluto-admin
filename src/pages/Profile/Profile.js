@@ -10,6 +10,7 @@ import { changePassword, getProfile, updateProfile } from '../../store/action';
 import { useDispatch, useSelector } from 'react-redux';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Notification from '../../components/Notification/Notification';
 
 const useStyle = makeStyles((theme) => ({
     root: {
@@ -44,6 +45,7 @@ const useStyle = makeStyles((theme) => ({
 const Profile = () => {
     const classes = useStyle();
     const dispatch = useDispatch();
+    const [notify, setNotify] = useState(false)
     const [data, setData] = useState({
         first_name: "",
         last_name: "",
@@ -60,6 +62,8 @@ const Profile = () => {
         conform_password: ""
     })
     const { profile, loading } = useSelector(state => state.profile)
+
+    const notification = useSelector(state => state.notify)
 
     const handleChange = (event) => {
         setData({ ...data, [event.target.name]: event.target.value });
@@ -87,7 +91,6 @@ const Profile = () => {
 
     const profileSubmit = () => {
         dispatch(updateProfile(data))
-        // console.log('data: ', data);
     }
     const changePassDetail =() => {
         dispatch(changePassword(resetPass))
@@ -96,11 +99,18 @@ const Profile = () => {
     
     return (
         <>
+        {/* {
+            notification.notify &&
+            <Notification 
+                data={notification.notify}
+            />
+        } */}
+        
             {
                 loading ?
                 <Backdrop className={classes.backdrop} open={loading}>
-                        <CircularProgress color="inherit" />
-                    </Backdrop> : ""
+                    <CircularProgress color="inherit" />
+                </Backdrop> : ""
             }
             <Paper className={classes.root}>
                 <Grid container spacing={2}>
