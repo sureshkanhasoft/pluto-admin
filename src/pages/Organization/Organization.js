@@ -103,9 +103,10 @@ const Organization = () => {
     const [openUpdate, setOpenUpdate] = useState(false);
     const [Id, setId] = useState(false);
     const [searchData, setSearchData] = useState({ search: "" });
-    const [responseData, setResponseData] = useState([]);
+    // const [responseData, setResponseData] = useState([]);
     const [page, setPage] = React.useState(1);
     const { organizationList, loading } = useSelector(state => state.createOrganization)
+    console.log('organizationList: ', organizationList);
     // const { createOrgErrors, createOrgSuccess } = useSelector(state => state.organizationReducer)
 
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -224,7 +225,7 @@ const Organization = () => {
                     </TableHead>
                     <TableBody>
                         {
-                            organizationList.map(row => {
+                            organizationList.data && organizationList.data.map(row => {
                                 return (<TableRow key={row.id}>
                                     <TableCell scope="row">{row.id}</TableCell>
                                     <TableCell align="left">{row.organization_name}</TableCell>
@@ -242,7 +243,7 @@ const Organization = () => {
                 </Table>
 
                 <Box className="mt-5" display="flex" justifyContent="flex-end">
-                    <Pagination onChange={handleChange} page={page} showFirstButton showLastButton count={responseData?.last_page} />
+                    <Pagination onChange={handleChange} page={page} showFirstButton showLastButton count={organizationList?.last_page} />
                 </Box>
             </Paper>
 
