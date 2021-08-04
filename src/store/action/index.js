@@ -15,4 +15,8 @@ export {
     updateProfile,
     changePassword
 } from "./profile/profileAction"
+
+export {
+    orgChangePassword
+} from './orgProfile/orgProfileAction'
  

@@ -22,6 +22,7 @@ export const login = ({ email, password }) => {
                 dispatch(getLoginFailure(null))
                 localStorage.setItem('loginUserInfo', JSON.stringify(data.data));
                 localStorage.setItem('token', JSON.stringify(data.data.token));
+                localStorage.setItem('role', JSON.stringify(data.data.role));
                 if (data.data.role === 'SUPERADMIN') {
                     history.push('./super-admin')
                 } else {
