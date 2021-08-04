@@ -6,7 +6,7 @@ import {
     Box,
     Grid, TextField
 } from '@material-ui/core';
-import { getProfile, updateProfile } from '../../store/action';
+import { getOrgProfile, updateProfile } from '../../store/action';
 import { useDispatch, useSelector } from 'react-redux';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -45,6 +45,7 @@ const OrgProfile = () => {
     const classes = useStyle();
     const dispatch = useDispatch();
     const [data, setData] = useState({
+        organization_name:"",
         first_name: "",
         last_name: "",
         email: '',
@@ -54,14 +55,15 @@ const OrgProfile = () => {
         city:'',
         postcode: '',
     })
-    const { profile, loading } = useSelector(state => state.profile)
+    const { profile, loading } = useSelector(state => state.orgProfile)
+    console.log('profile: ', profile);
 
     const handleChange = (event) => {
         setData({ ...data, [event.target.name]: event.target.value });
     };
 
     const getProfileDetail =() => {
-        dispatch(getProfile())
+        dispatch(getOrgProfile())
     }
 
     
@@ -94,6 +96,30 @@ const OrgProfile = () => {
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={6} lg={4}>
                         <TextField
+                            id="organization_name"
+                            label="Organization Name"
+                            variant="outlined"
+                            name="organization_name"
+                            value={data.organization_name}
+                            onChange={handleChange}
+                            fullWidth
+                            disabled
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={6} lg={4}>
+                        <TextField
+                            id="email"
+                            label="Email"
+                            variant="outlined"
+                            name="email"
+                            value={data.email}
+                            onChange={handleChange}
+                            fullWidth
+                            disabled
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={6} lg={4}>
+                        <TextField
                             id="first_name"
                             label="First Name"
                             variant="outlined"
@@ -114,18 +140,7 @@ const OrgProfile = () => {
                             fullWidth
                         />
                     </Grid>
-                    <Grid item xs={12} sm={6} lg={4}>
-                        <TextField
-                            id="email"
-                            label="Email"
-                            variant="outlined"
-                            name="email"
-                            value={data.email}
-                            onChange={handleChange}
-                            fullWidth
-                            disabled
-                        />
-                    </Grid>
+                   
                     <Grid item xs={12} sm={6} lg={4}>
                         <TextField
                             id="contact_number"

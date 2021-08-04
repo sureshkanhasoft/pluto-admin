@@ -4,7 +4,9 @@ import { updateObject } from '../../shared/utility';
 const initialState = {
     loading: false,
     errors: false,
-    passChange:[]
+    passChange:[],
+    profile: [],
+    profileErrors: [],
 }
 
 const orgProfileReducer = (state = initialState, action) => {
@@ -24,6 +26,23 @@ const orgProfileReducer = (state = initialState, action) => {
             return updateObject(state, {
                 loading:false,
                 errors: action.payload
+            })
+
+        case actionTypes.GET_ORG_PROFILE_REQUEST:
+            return updateObject(state, {
+                loading: true
+            })
+
+        case actionTypes.GET_ORG_PROFILE_SUCCESS:
+            return updateObject(state, {
+                loading: false,
+                profile: action.payload
+            })
+
+        case actionTypes.GET_ORG_PROFILE_ERROR:
+            return updateObject(state, {
+                loading: false,
+                profileErrors: action.payload
             })
     
         default:

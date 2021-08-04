@@ -17,6 +17,7 @@ export {
 } from "./profile/profileAction"
 
 export {
-    orgChangePassword
+    orgChangePassword,
+    getOrgProfile
 } from './orgProfile/orgProfileAction'
  

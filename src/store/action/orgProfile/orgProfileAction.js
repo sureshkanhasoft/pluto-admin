@@ -1,7 +1,7 @@
 import axios from "axios";
 import Config from '../../../config/config'
 import history from "../../../utils/HistoryUtils";
-import { CHANGE_ORG_PASS_REQUEST, CHANGE_ORG_PASS_SUCCESS, CHANGE_ORG_PASS_ERROR,
+import { CHANGE_ORG_PASS_REQUEST, CHANGE_ORG_PASS_SUCCESS, CHANGE_ORG_PASS_ERROR, GET_ORG_PROFILE_REQUEST, GET_ORG_PROFILE_SUCCESS, GET_ORG_PROFILE_ERROR,
 } from "../actiontypes";
 
 export const orgChangePassword = (data) => {
@@ -43,6 +43,44 @@ export const changePasswordSuccess = (data) => {
 export const changePasswordError = (error) => {
     return {
         type: CHANGE_ORG_PASS_ERROR,
+        payload:error
+    }
+}
+
+// -----------------------------
+
+export const getOrgProfile = () => {
+    const loggedInUser = localStorage.getItem('token').replace(/['"]+/g, '');
+    return async(dispatch) =>{
+        dispatch(getOrgProfileRequest())
+        await axios.get(`${Config.API_URL}api/organization/get-detail`,{
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': `Bearer ${loggedInUser}`
+            }
+        }).then(res => {
+            dispatch(getOrgProfileSuccess(res.data))
+        }).catch(error => {
+            dispatch(getOrgProfileError(error))
+
+        })
+    }
+}
+
+export const getOrgProfileRequest = () => {
+    return {
+        type: GET_ORG_PROFILE_REQUEST
+    }
+}
+export const getOrgProfileSuccess = (data) => {
+    return {
+        type: GET_ORG_PROFILE_SUCCESS,
+        payload:data
+    }
+}
+export const getOrgProfileError = (error) => {
+    return {
+        type: GET_ORG_PROFILE_ERROR,
         payload:error
     }
 }
