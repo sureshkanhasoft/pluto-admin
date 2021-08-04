@@ -8,6 +8,7 @@ const rootReducer = combineReducers(
     {
         authReducer:authReducer,
         createOrganization:organizationReducer,
+        organizationReducer:organizationReducer,
         profile:profileReducer,
         notify:notifyReducer
     }

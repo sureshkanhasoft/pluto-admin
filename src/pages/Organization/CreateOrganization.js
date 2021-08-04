@@ -4,21 +4,38 @@ import {
     Button,
     Dialog, DialogActions, DialogContent, DialogTitle, TextField, Divider, Grid,
 } from '@material-ui/core';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createOrganization } from '../../store/action';
-
+import { useForm } from "react-hook-form";
 const useStyle = makeStyles((theme) => ({
     dialogWidth: { width: "100%" },
     radioGroup: {
         flexDirection: "row"
-    }
+    },
+    error: {
+        marginBottom: "15px",
+        paddingLeft: "7px",
+        color: "red"
+    },
+    validationError: {
+        marginTop: "-14px",
+        marginBottom: "10px",
+        color: "red"
+    },
+    success: {
+        marginBottom: "15px",
+        paddingLeft: "7px",
+        color: "green"
+    },
 }))
 
 
 const CreateOrganization = ({ open, handleClose }) => {
     const classes = useStyle();
     const dispatch = useDispatch()
-
+    const { register, handleSubmit, formState: { errors }, reset } = useForm();
+    const { createOrgErrors, createOrgSuccess } = useSelector(state => state.organizationReducer)
+    console.log("createOrgErrors, createOrgSuccess", createOrgErrors, createOrgSuccess)
     const [data, setData] = useState({
         organization_name: "",
         contact_person_name: "",
@@ -28,7 +45,7 @@ const CreateOrganization = ({ open, handleClose }) => {
         address_line_2: "",
         city: "",
         postcode: "",
-        password:"12345"
+        password: "12345"
     })
 
     const handleChange = (event) => {
@@ -36,18 +53,37 @@ const CreateOrganization = ({ open, handleClose }) => {
     };
 
     const submitOrganization = () => {
-        dispatch(createOrganization(data))
-        handleClose()
+        // dispatch(createOrganization(data))
+        // handleClose()
     }
-
+    
+    const onSubmit = async datas => {
+        console.log("datasss ======== ", datas)
+        console.log("data ======== ", data)
+        dispatch(createOrganization(datas))
+        handleClose();
+        reset();
+    };
     return (
+        // <Dialog open={open} onClose={handleClose} classes={{ paper: classes.dialogWidth }}>
         <Dialog open={open} onClose={handleClose} classes={{ paper: classes.dialogWidth }}>
-            <form>
+            <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
                 <DialogTitle id="form-dialog-title">
                     <div>Create Organization</div>
                 </DialogTitle>
                 <Divider />
                 <DialogContent>
+                {createOrgErrors?.message &&
+                    <div className={classes.error}>
+                        {createOrgErrors?.message}
+                    </div>
+                }
+                {createOrgSuccess?.message &&
+                    <div className={classes.success}>
+                        {createOrgSuccess?.message}
+                    </div>
+                }
+                
                     <TextField
                         autoFocus
                         margin="dense"
@@ -55,10 +91,14 @@ const CreateOrganization = ({ open, handleClose }) => {
                         label="Organization"
                         variant="outlined"
                         name="organization_name"
-                        value={data.organization_name}
+                        // value={data.organization_name}
                         onChange={handleChange}
                         fullWidth
-                        required
+                        // required
+                        {...register("organization_name", {
+                            required: "Please enter Organization name",
+                        })}
+                        error={(errors.organization_name ? true : false)}
                     />
                     <TextField
                         margin="dense"
@@ -66,9 +106,13 @@ const CreateOrganization = ({ open, handleClose }) => {
                         label="Contact Person"
                         variant="outlined"
                         name="contact_person_name"
-                        value={data.contact_person_name}
+                        // value={data.contact_person_name}
                         onChange={handleChange}
                         fullWidth
+                        {...register("contact_person_name", {
+                            required: "Please contact persone name",
+                        })}
+                        error={(errors.contact_person_name ? true : false)}
                     />
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
@@ -78,9 +122,13 @@ const CreateOrganization = ({ open, handleClose }) => {
                                 label="Email"
                                 variant="outlined"
                                 name="email"
-                                value={data.email}
+                                // value={data.email}
                                 onChange={handleChange}
                                 fullWidth
+                                {...register("email", {
+                                    required: "Please Enter email",
+                                })}
+                                error={(errors.email ? true : false)}
                             />
                         </Grid>
 
@@ -91,9 +139,13 @@ const CreateOrganization = ({ open, handleClose }) => {
                                 label="Contact Number"
                                 variant="outlined"
                                 name="contact_number"
-                                value={data.contact_number}
+                                // value={data.contact_number}
                                 onChange={handleChange}
                                 fullWidth
+                                {...register("contact_number", {
+                                    required: "Please contact number",
+                                })}
+                                error={(errors.contact_number ? true : false)}
                             />
                         </Grid>
                     </Grid>
@@ -103,9 +155,13 @@ const CreateOrganization = ({ open, handleClose }) => {
                         label="Address line 1"
                         variant="outlined"
                         name="address_line_1"
-                        value={data.address_line_1}
+                        // value={data.address_line_1}
                         onChange={handleChange}
                         fullWidth
+                        {...register("address_line_1", {
+                            required: "Please enter address line 1",
+                        })}
+                        error={(errors.address_line_1 ? true : false)}
                     />
                     <TextField
                         margin="dense"
@@ -113,7 +169,7 @@ const CreateOrganization = ({ open, handleClose }) => {
                         label="Address line 2"
                         variant="outlined"
                         name="address_line_2"
-                        value={data.address_line_2}
+                        // value={data.address_line_2}
                         onChange={handleChange}
                         fullWidth
                     />
@@ -126,9 +182,13 @@ const CreateOrganization = ({ open, handleClose }) => {
                                 label="City"
                                 variant="outlined"
                                 name="city"
-                                value={data.city}
+                                // value={data.city}
                                 onChange={handleChange}
                                 fullWidth
+                                {...register("city", {
+                                    required: "Please enter city",
+                                })}
+                                error={(errors.city ? true : false)}
                             />
                         </Grid>
 
@@ -139,9 +199,13 @@ const CreateOrganization = ({ open, handleClose }) => {
                                 label="Postcode"
                                 variant="outlined"
                                 name="postcode"
-                                value={data.postcode}
+                                // value={data.postcode}
                                 onChange={handleChange}
                                 fullWidth
+                                {...register("postcode", {
+                                    required: "Please enter postcode",
+                                })}
+                                error={(errors.postcode ? true : false)}
                             />
                         </Grid>
                     </Grid>
@@ -151,7 +215,8 @@ const CreateOrganization = ({ open, handleClose }) => {
                     <Button onClick={handleClose} color="primary">
                         Cancel
                     </Button>
-                    <Button color="secondary" variant="contained" onClick={submitOrganization}>
+                    <Button color="secondary" variant="contained" type="submit">
+                        {/* <Button color="secondary" variant="contained" onClick={submitOrganization}> */}
                         Add
                     </Button>
 

@@ -33,6 +33,8 @@ export const createOrganization = ({
                 const data = response.data
                 if (data && data.status === true) {
                     dispatch(createOrganizationSuccess(data))
+                }else {
+                    dispatch(createOrganizationFailure(data))
                 }
             })
             .catch(error => {

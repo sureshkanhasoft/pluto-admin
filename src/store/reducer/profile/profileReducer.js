@@ -3,10 +3,12 @@ import { updateObject } from '../../shared/utility';
 
 const initialState = {
     loading: false,
+    passloading: false,
     profile: [],
-    errors: false,
-    profileData:[],
-    passChange:[]
+    profileErrors: [],
+    profileData: [],
+    passChange: [],
+    passerrors: [],
 }
 
 const profileReducer = (state = initialState, action) => {
@@ -25,44 +27,44 @@ const profileReducer = (state = initialState, action) => {
         case actionTypes.GET_PROFILE_ERROR:
             return updateObject(state, {
                 loading: false,
-                errors: true
+                profileErrors: action.payload
             })
 
         case actionTypes.UPDATE_PROFILE_REQUEST:
             return updateObject(state, {
-                loading:true,
+                loading: true,
             })
 
         case actionTypes.UPDATE_PROFILE_SUCCESS:
             return updateObject(state, {
-                loading:false,
-                profileData:action.payload
+                loading: false,
+                profileData: action.payload
             })
 
         case actionTypes.UPDATE_PROFILE_ERROR:
             return updateObject(state, {
-                loading:false,
-                errors: true
+                loading: false,
+                profileErrors: action.payload
             })
 
 
         case actionTypes.CHANGE_PASS_REQUEST:
             return updateObject(state, {
-                loading:true,
+                loading: true,
             })
 
         case actionTypes.CHANGE_PASS_SUCCESS:
             return updateObject(state, {
-                loading:false,
-                passChange:action.payload
+                loading: false,
+                passChange: action.payload
             })
 
         case actionTypes.CHANGE_PASS_ERROR:
             return updateObject(state, {
-                loading:false,
-                errors: true
+                loading: false,
+                passerrors: action.payload
             })
-    
+
         default:
             return state
     }

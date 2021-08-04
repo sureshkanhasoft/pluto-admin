@@ -106,6 +106,7 @@ const Organization = () => {
     const [responseData, setResponseData] = useState([]);
     const [page, setPage] = React.useState(1);
     const { organizationList, loading } = useSelector(state => state.createOrganization)
+    const { createOrgErrors, createOrgSuccess } = useSelector(state => state.organizationReducer)
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const openMenu = Boolean(anchorEl);
@@ -167,7 +168,16 @@ const Organization = () => {
                 id={Id}
             />
             <p className="mb-6">Welcome to your Pluto Software admin dashboard. Here you can get an overview of your account activity, or use navigation on the left hand side to get to your desired location.</p>
-
+            {createOrgErrors?.message &&
+                    <div className={classes.error}>
+                        {createOrgErrors?.message}
+                    </div>
+                }
+                {createOrgSuccess?.message &&
+                    <div className={classes.success}>
+                        {createOrgSuccess?.message}
+                    </div>
+                }
             <Paper className={classes.root}>
                 <Box className="mt-3 mb-5" display="flex" alignItems="center">
                     <SearchIcon className={classes.searchIcondet} onClick={handleClickSearch} />

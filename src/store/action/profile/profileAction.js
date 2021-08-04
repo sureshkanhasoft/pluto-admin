@@ -47,6 +47,8 @@ export const updateProfile = (data) => {
     const loggedInUser = localStorage.getItem('token').replace(/['"]+/g, '');
     return async(dispatch) =>{
         dispatch(updateProfileRequest())
+        dispatch(updateProfileSuccess())
+        dispatch(updateProfileError())
         await axios.post(`${Config.API_URL}api/superadmin/update-profile`, data,{
             headers: {
                 'content-type': 'application/json',
@@ -59,7 +61,7 @@ export const updateProfile = (data) => {
                 dispatch(getProfile())
                 dispatch(putNotify('Profile Updated Successfully'))
             } else {
-                dispatch(updateProfileError('profile not updated'))
+                dispatch(updateProfileError(data))
             }
         }).catch(error => {
             dispatch(updateProfileError(error))
@@ -105,7 +107,7 @@ export const changePassword = (data) => {
                 dispatch(changePasswordSuccess(data))
                 dispatch(putNotify('data success'))
             } else {
-                dispatch(changePasswordError('change password not changed'))
+                dispatch(changePasswordError(data))
             }
         }).catch(error => {
             dispatch(changePasswordError(error))

@@ -5,7 +5,9 @@ const initialState = {
     loading: false,
     createOrganization: [],
     errors: false,
-    organizationList:[]
+    organizationList:[],
+    createOrgSuccess: [],
+    createOrgErrors: [],
 }
 
 const organizationReducer = (state = initialState, action) => {
@@ -34,12 +36,12 @@ const organizationReducer = (state = initialState, action) => {
         case actionTypes.CREATE_ORGANIZATION_SUCCESS:
             return updateObject(state, {
                 loading: false,
-                organization: action.payload,
+                createOrgSuccess: action.payload,
             })
         case actionTypes.CREATE_ORGANIZATION_ERROR:
             return updateObject(state, {
                 loading: false,
-                errors: true
+                createOrgErrors: action.payload
             })
 
         case actionTypes.UPDATE_ORGANIZATION_REQUEST:

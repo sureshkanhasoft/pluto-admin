@@ -60,8 +60,8 @@ export const createOrganization = ( data ) => {
             if (data && data.status === true) {
                 dispatch(createOrganizationSuccess(data))
                 dispatch(getOrganization())
-            } else {
-                dispatch(createOrganizationFailure("error"))
+            }else {
+                dispatch(createOrganizationFailure(data))
             }
         }).catch(error => {
             dispatch(createOrganizationFailure(error))
