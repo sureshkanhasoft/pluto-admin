@@ -10,6 +10,7 @@ import CreateStaff from "./pages/Staff/CreateStaff";
 import Staff from "./pages/Staff/Staff";
 import Trust from "./pages/Trust/Trust";
 import Profile from "./pages/Profile/Profile";
+import OrgProfile from "./pages/Profile/OrgProfile";
 
 const Routes = [
     {
@@ -112,6 +113,14 @@ const Routes = [
         component:Profile,
         // icon:"description",
         role:"superAdmin",
+        sidebar:false
+    },
+    {
+        name:"Organization Profile",
+        path:"organization-profile",
+        component:OrgProfile,
+        // icon:"description",
+        role:"admin",
         sidebar:false
     },
 

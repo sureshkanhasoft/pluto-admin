@@ -5,8 +5,11 @@ import {
     Button,
     Grid, TextField, IconButton
 } from '@material-ui/core';
+import { useForm } from "react-hook-form";
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+import { useDispatch, useSelector } from 'react-redux';
+import { orgChangePassword } from '../../store/action';
 
 const useStyle = makeStyles((theme) => ({
     root: {
@@ -30,83 +33,109 @@ const useStyle = makeStyles((theme) => ({
 
 const ChangePassword = () => {
     const classes = useStyle();
+    const dispatch = useDispatch();
+    const [showPass, setShowPass]= useState(false)
+    const { passChange, passerrors, profileErrors, profileData } = useSelector(state => state.profile)
+    const {register, handleSubmit, formState: { errors }, setValue, reset } = useForm();
     const [data, setData] = useState({
-        oldPassword: "",
-        newPassword: "",
-        confirmPassword: "",
-        showPassword: false,
+        old_password: "",
+        password: "",
+        conform_password: "",
     })
-    const handleChange = (event) => {
+    const handleChangePassword = (event) => {
+        console.log('event: ', event);
         setData({ ...data, [event.target.name]: event.target.value });
     };
 
     const handleClickShowPassword = () => {
-        setData({ ...data, showPassword: !data.showPassword });
+        setShowPass(!showPass);
     };
+    const onSubmit = async(data) => {
+        dispatch(orgChangePassword(data))
+    }
     return (
         <>
             <p className="mb-6">Welcome to your Pluto Software admin dashboard. Here you can get an overview of your account activity, or use navigation on the left hand side to get to your desired location.</p>
             <Paper className={classes.root}>
-                <form>
+                <form onSubmit={handleSubmit(onSubmit)}>
                     <Grid container spacing={2} direction="column">
                         <Grid item xs={12} sm={6} lg={4}>
                             <TextField
-                                id="oldPassword"
-                                label="Enter Old Password"
+                                error={(errors.old_password ? true : false)}
+                                id="old_password"
+                                label="Old Password"
                                 variant="outlined"
-                                name="oldPassword"
-                                value={data.oldPassword}
-                                onChange={handleChange}
-                                type={data.showPassword ? "text" : "password"}
+                                name="old_password"
+                                // value={resetPass.old_password}
+                                type="password"
+                                aria-invalid={errors.old_password ? "true" : "false zz"}
+                                onChange={handleChangePassword}
                                 fullWidth
-                                InputProps={{
-                                    endAdornment: <IconButton onClick={handleClickShowPassword}>
-                                        {data.showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
-                                    </IconButton>
-                                }}
+                                {...register("old_password", {
+                                    required: "Please enter old password",
+                                })}
+                                autoComplete="new-password"
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
                             <TextField
-                                id="newPassword"
+                                id="password"
                                 label="Enter New Password"
                                 variant="outlined"
-                                name="newPassword"
-                                value={data.newPassword}
-                                type={data.showPassword ? "text" : "password"}
-                                onChange={handleChange}
+                                name="password"
+                                // value={data.password}
+                                type={showPass ? "text" : "password"}
+                                onChange={handleChangePassword}
                                 fullWidth
                                 InputProps={{
                                     endAdornment: <IconButton onClick={handleClickShowPassword}>
-                                        {data.showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                                        {showPass ? <VisibilityIcon /> : <VisibilityOffIcon />}
                                     </IconButton>
                                 }}
+                                error={(errors.password ? true : false)}
+                                {...register("password", {
+                                    required: "Please enter password",
+                                })}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
                             <TextField
-                                id="confirmPassword"
+                                id="conform_password"
                                 label="Confirm Password"
                                 variant="outlined"
-                                name="confirmPassword"
-                                value={data.confirmPassword}
+                                name="conform_password"
+                                // value={data.conform_password}
                                 type={data.showPassword ? "text" : "password"}
-                                onChange={handleChange}
+                                onChange={handleChangePassword}
                                 fullWidth
                                 InputProps={{
                                     endAdornment: <IconButton onClick={handleClickShowPassword}>
                                         {data.showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
                                     </IconButton>
                                 }}
+                                error={(errors.conform_password ? true : false)}
+                                {...register("conform_password", {
+                                    required: "Please enter conform password",
+                                })}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
-                            <Button color="secondary" variant="contained">
+                            <Button color="secondary" variant="contained" type="submit">
                                 Save
                             </Button>
                         </Grid>
                     </Grid>
                 </form>
+                {passerrors?.message &&
+                    <div className={classes.error}>
+                        {passerrors?.message}
+                    </div>
+                }
+                {passChange?.message &&
+                    <div className={classes.success}>
+                        {passChange?.message}
+                    </div>
+                }
             </Paper>
         </>
     )

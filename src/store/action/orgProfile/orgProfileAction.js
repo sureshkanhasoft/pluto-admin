@@ -1,5 +1,6 @@
 import axios from "axios";
 import Config from '../../../config/config'
+import history from "../../../utils/HistoryUtils";
 import { CHANGE_ORG_PASS_REQUEST, CHANGE_ORG_PASS_SUCCESS, CHANGE_ORG_PASS_ERROR,
 } from "../actiontypes";
 
@@ -16,9 +17,10 @@ export const orgChangePassword = (data) => {
             const data = response.data
             if (data.status === true) {
                 dispatch(changePasswordSuccess(data))
+                history.push('/admin')
                 // dispatch(putNotify('data success'))
             } else {
-                dispatch(changePasswordError('change password not changed'))
+                dispatch(changePasswordError('Invalid password'))
             }
         }).catch(error => {
             dispatch(changePasswordError(error))
