@@ -69,43 +69,6 @@ export const createOrganization = ( data ) => {
     }
 }
 
-// export const createOrganization = ({
-//     organization_name,
-//     contact_person_name,
-//     email,
-//     contact_no,
-//     address_line_1,
-//     address_line_2,
-//     city,
-//     postcode }) => {
-//     return (dispatch) => {
-//         dispatch(createOrganizationRequest())
-//         axios.post(`${Config.API_URL}api/superadmin/signup`, {
-//             method: "POST",
-//             headers: {
-//                 'content-type': 'application/json',
-//             },
-//             organization_name,
-//             contact_person_name,
-//             email,
-//             contact_no,
-//             address_line_1,
-//             address_line_2,
-//             city,
-//             postcode,
-//         })
-//             .then(response => {
-//                 const data = response.data
-//                 console.log('data111: ', data);
-//                 if (data && data.status === true) {
-//                     dispatch(createOrganizationSuccess(data))
-//                 }
-//             })
-//             .catch(error => {
-//                 dispatch(createOrganizationFailure(error))
-//             })
-//     }
-// }
 
 export const createOrganizationRequest = () => {
     return {

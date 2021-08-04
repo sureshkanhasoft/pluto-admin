@@ -10,6 +10,11 @@ import {
     InputBase,
     Button,
     Box,
+    Menu,
+    RadioGroup,
+    FormControlLabel,
+    Radio,
+    FormLabel
 } from '@material-ui/core';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -29,6 +34,12 @@ const useStyle = makeStyles((theme) => ({
         width: '100%',
         overflowX: 'auto',
         padding: 24,
+    },
+    filterBox:{
+        padding:12
+    },
+    radioGroup: {
+        flexDirection: "row",
     },
     table: {
         minWidth: 700,
@@ -97,6 +108,9 @@ const Organization = () => {
     const { organizationList, loading } = useSelector(state => state.createOrganization)
     const { createOrgErrors, createOrgSuccess } = useSelector(state => state.organizationReducer)
 
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const openMenu = Boolean(anchorEl);
+
     const handleClickOpen = (id) => {
         setOpen(true);
     };
@@ -132,6 +146,14 @@ const Organization = () => {
     useEffect(() => {
         getData();
     }, []);
+
+    const handleMenu = (event) => {
+        setAnchorEl(event.currentTarget);
+      };
+    
+      const handleMenuClose = () => {
+        setAnchorEl(null);
+      };
 
     return (
         <div>
@@ -169,9 +191,30 @@ const Organization = () => {
                         />
                     </div>
                     <div className="ml-5">
-                        <Button>
+                        <Button onClick={handleMenu}>
                             <FilterListIcon />
                         </Button>
+                        <Menu
+                                id="menu-appbar"
+                                anchorEl={anchorEl}
+                                getContentAnchorEl={null}
+                                anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+                                open={openMenu}
+                                onClose={handleMenuClose}
+                            >
+                                <div>
+                                <Box className={classes.filterBox} >
+                                    <FormLabel component="legend">Status</FormLabel>
+                                    <RadioGroup name="status" className={classes.radioGroup}>
+                                        <FormControlLabel value="Active" control={<Radio />} label="Active" />
+                                        <FormControlLabel value="Inactive" control={<Radio />} label="Deactive" />
+                                    </RadioGroup>
+                                    <Button variant="contained" color="secondary" onClick={handleClickOpen}>
+                                        Filter
+                                    </Button>
+                                </Box>
+                                </div>
+                            </Menu>
                         <Button variant="contained" color="secondary" onClick={handleClickOpen}>
                             <AddIcon className="mr-2" />Add Organization
                         </Button>
