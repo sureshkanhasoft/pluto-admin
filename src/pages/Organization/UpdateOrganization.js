@@ -29,7 +29,7 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
         address_line_2: "",
         city: "",
         postcode: "",
-        // status:"",
+        status:"",
     })
 
     const getData = async (id) => {
@@ -176,9 +176,10 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                                 label="Subscription Plan"
                                 variant="outlined"
                                 name="subscriptionplan"
-                                value={data?.plan}
+                                value={data.plan ? data.plan :""}
                                 onChange={handleChange}
                                 fullWidth
+                                disabled
                             />
                         </Grid>
 
@@ -188,22 +189,24 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                                 id="subscriptionDate"
                                 label="Start Date"
                                 name="subscriptiondate"
-                                value={data?.start_date}
+                                value={data.start_date ?data.start_date:""}
                                 onChange={handleChange}
                                 variant="outlined"
                                 fullWidth
+                                disabled
                             />
                         </Grid>
                         <Grid item xs={12} sm={4}>
                             <TextField
                                 margin="dense"
-                                id="subscriptionDate"
+                                id="subscriptionDate2"
                                 label="End Date"
                                 name="subscriptiondate"
-                                value={data?.end_date}
+                                value={data.end_date ? data.end_date  :""}
                                 onChange={handleChange}
                                 variant="outlined"
                                 fullWidth
+                                disabled
                             />
                         </Grid>
                     </Grid>
