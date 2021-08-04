@@ -25,7 +25,11 @@ export const login = ({ email, password }) => {
                 if (data.data.role === 'SUPERADMIN') {
                     history.push('./super-admin')
                 } else {
-                    history.push('./admin')
+                    if(data.data.password_change === 0){
+                        history.push('./admin/change-password')
+                    }else{
+                        history.push('./admin')
+                    }
                 }
             } else {
                 dispatch(getLoginFailure(data))
