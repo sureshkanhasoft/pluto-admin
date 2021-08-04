@@ -11,7 +11,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Notification from '../../components/Notification/Notification';
-
+import { useForm } from "react-hook-form";
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 const useStyle = makeStyles((theme) => ({
     root: {
         width: '100%',
@@ -46,6 +48,12 @@ const Profile = () => {
     const classes = useStyle();
     const dispatch = useDispatch();
     const [notify, setNotify] = useState(false)
+    const { passChange, passerrors, profileErrors, profileData } = useSelector(state => state.profile)
+
+    const { profile, loading } = useSelector(state => state.profile)
+    const [open, setOpen] = React.useState(false);
+    const notification = useSelector(state => state.notify)
+    const { register, handleSubmit, formState: { errors }, setValue, reset } = useForm();
     const [data, setData] = useState({
         first_name: "",
         last_name: "",
@@ -53,7 +61,7 @@ const Profile = () => {
         contact_number: '',
         address_line_1: '',
         address_line_2: '',
-        city:'',
+        city: '',
         postcode: '',
     })
     const [resetPass, setResetPass] = useState({
@@ -61,10 +69,12 @@ const Profile = () => {
         password: "",
         conform_password: ""
     })
-    const { profile, loading } = useSelector(state => state.profile)
 
-    const notification = useSelector(state => state.notify)
-
+    const onSubmit = async data => {
+        console.log("resetPass => ", data)
+        dispatch(changePassword(data))
+        // reset();
+    };
     const handleChange = (event) => {
         setData({ ...data, [event.target.name]: event.target.value });
     };
@@ -73,46 +83,70 @@ const Profile = () => {
         setResetPass({ ...resetPass, [event.target.name]: event.target.value });
     };
 
-    const getProfileDetail =() => {
+    const getProfileDetail = () => {
         dispatch(getProfile())
     }
 
-    
-    
     useEffect(() => {
         getProfileDetail()
     }, [])
 
-    useEffect(()=>{
-        if(profile.data){
+    useEffect(() => {
+        if (profile.data) {
             setData(profile.data)
         }
-    },[profile.data])
+    }, [profile.data])
 
     const profileSubmit = () => {
         dispatch(updateProfile(data))
     }
-    const changePassDetail =() => {
+    const changePassDetail = () => {
         dispatch(changePassword(resetPass))
     }
 
-    
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
+    };
+    function Alert(props) {
+        return <MuiAlert elevation={6} variant="filled" {...props} />;
+    }
     return (
         <>
-        {/* {
+            {/* {
             notification.notify &&
             <Notification 
                 data={notification.notify}
             />
         } */}
-        
+
             {
                 loading ?
-                <Backdrop className={classes.backdrop} open={loading}>
-                    <CircularProgress color="inherit" />
-                </Backdrop> : ""
+                    <Backdrop className={classes.backdrop} open={loading}>
+                        <CircularProgress color="inherit" />
+                    </Backdrop> : ""
             }
+            {/* <Alert autoHideDuration={3000} severity="error">This is an error message! {profileData?.status}</Alert>
+            <Snackbar open={profileData?.status} autoHideDuration={2000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity="success">
+                    This is a success message!
+                </Alert>
+            </Snackbar> */}
+
             <Paper className={classes.root}>
+                {profileErrors?.message &&
+                    <Alert icon={false} variant="outlined" severity="error">
+                        {profileErrors?.message}
+                    </Alert>
+                }
+                {profileData?.message &&
+                    <Alert icon={false} variant="outlined" severity="success">
+                        {profileData?.message}
+                    </Alert>
+                }
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={6} lg={4}>
                         <TextField
@@ -219,55 +253,82 @@ const Profile = () => {
 
             <Paper className={classes.root}>
                 <h3 className={classes.title}>Change Password</h3>
-                <Grid container spacing={2}>
+                {passerrors?.message &&
+                    <div className={classes.error}>
+                        {passerrors?.message}
+                    </div>
+                }
+                {passChange?.message &&
+                    <div className={classes.success}>
+                        {passChange?.message}
+                    </div>
+                }
 
-                    <Grid item xs={12} sm={6} lg={4}>
-                        <TextField
-                            id="old_password"
-                            label="Old Password"
-                            variant="outlined"
-                            name="old_password"
-                            value={resetPass.old_password}
-                            type="password"
-                            onChange={handleChangePassword}
-                            fullWidth
-                            autoComplete="new-password"
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={6} lg={4}>
-                        <TextField
-                            id="password"
-                            label="New Password"
-                            variant="outlined"
-                            name="password"
-                            value={resetPass.password}
-                            type="password"
-                            onChange={handleChangePassword}
-                            fullWidth
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={6} lg={4}>
-                        <TextField
-                            id="conform_password"
-                            label="Confirm Password"
-                            variant="outlined"
-                            name="conform_password"
-                            value={resetPass.conform_password}
-                            type="password"
-                            onChange={handleChangePassword}
-                            fullWidth
-                        />
-                    </Grid>
-                </Grid>
-                <Box className={classes.footerBtn}>
-                    <Button color="primary">
-                        Cancel
-                    </Button>
-                    <Button color="secondary" variant="contained" onClick={changePassDetail}>
-                        Save
-                    </Button>
-                </Box>
+                <form className={classes.form} onSubmit={handleSubmit(onSubmit)} >
+                    <Grid container spacing={2}>
 
+                        <Grid item xs={12} sm={6} lg={4}>
+                            <TextField
+                                error={(errors.old_password ? true : false)}
+                                id="old_password"
+                                label="Old Password"
+                                variant="outlined"
+                                name="old_password"
+                                // value={resetPass.old_password}
+                                type="password"
+                                aria-invalid={errors.old_password ? "true" : "false zz"}
+                                onChange={handleChangePassword}
+                                fullWidth
+                                {...register("old_password", {
+                                    required: "Please enter old password",
+                                })}
+                                autoComplete="new-password"
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6} lg={4}>
+                            <TextField
+                                id="password"
+                                label="New Password"
+                                variant="outlined"
+                                name="password"
+                                // value={resetPass.password}
+                                type="password"
+                                onChange={handleChangePassword}
+                                fullWidth
+                                error={(errors.password ? true : false)}
+                                {...register("password", {
+                                    required: "Please enter password",
+                                })}
+                            />
+                        </Grid>
+
+                        <Grid item xs={12} sm={6} lg={4}>
+                            <TextField
+                                id="conform_password"
+                                label="Confirm Password"
+                                variant="outlined"
+                                name="conform_password"
+                                // value={resetPass.conform_password}
+                                type="password"
+                                onChange={handleChangePassword}
+                                fullWidth
+                                error={(errors.conform_password ? true : false)}
+                                {...register("conform_password", {
+                                    required: "Please enter conform password",
+                                })}
+                            />
+                        </Grid>
+                    </Grid>
+                    <Box className={classes.footerBtn}>
+                        <Button color="primary">
+                            Cancel
+                        </Button>
+                        {/* <Button color="secondary" variant="contained" onClick={changePassDetail}> */}
+                        <Button color="secondary" variant="contained" type="submit">
+                            Save
+                        </Button>
+                    </Box>
+                </form>
             </Paper>
         </>
     )
