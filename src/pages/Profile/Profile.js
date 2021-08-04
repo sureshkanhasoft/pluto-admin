@@ -41,6 +41,9 @@ const useStyle = makeStyles((theme) => ({
         '& > *': {
             margin: theme.spacing(1),
         },
+    },
+    error:{
+        color:"red"
     }
 }))
 
@@ -138,14 +141,22 @@ const Profile = () => {
 
             <Paper className={classes.root}>
                 {profileErrors?.message &&
-                    <Alert icon={false} variant="outlined" severity="error">
-                        {profileErrors?.message}
-                    </Alert>
+                    <Notification 
+                        data={profileErrors?.message}
+                        status="error"
+                    />
+                    // <Alert icon={false} variant="outlined" severity="error">
+                    //     {profileErrors?.message}
+                    // </Alert>
                 }
                 {profileData?.message &&
-                    <Alert icon={false} variant="outlined" severity="success">
-                        {profileData?.message}
-                    </Alert>
+                        <Notification 
+                            data={profileData?.message}
+                            status="success"
+                        />
+                    // <Alert icon={false} variant="outlined" severity="success">
+                    //     {profileData?.message}
+                    // </Alert>
                 }
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={6} lg={4}>
@@ -253,16 +264,7 @@ const Profile = () => {
 
             <Paper className={classes.root}>
                 <h3 className={classes.title}>Change Password</h3>
-                {passerrors?.message &&
-                    <div className={classes.error}>
-                        {passerrors?.message}
-                    </div>
-                }
-                {passChange?.message &&
-                    <div className={classes.success}>
-                        {passChange?.message}
-                    </div>
-                }
+                
 
                 <form className={classes.form} onSubmit={handleSubmit(onSubmit)} >
                     <Grid container spacing={2}>
@@ -319,6 +321,16 @@ const Profile = () => {
                             />
                         </Grid>
                     </Grid>
+                    {passerrors?.message &&
+                        <div className={classes.error}>
+                            {passerrors?.message}
+                        </div>
+                    }
+                    {passChange?.message &&
+                        <div className={classes.success}>
+                            {passChange?.message}
+                        </div>
+                    }
                     <Box className={classes.footerBtn}>
                         <Button color="primary">
                             Cancel

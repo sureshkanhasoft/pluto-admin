@@ -8,6 +8,9 @@ const initialState = {
     organizationList:[],
     createOrgSuccess: [],
     createOrgErrors: [],
+
+    updateOrgSuccess:"",
+    updateOrgError:""
 }
 
 const organizationReducer = (state = initialState, action) => {
@@ -31,7 +34,9 @@ const organizationReducer = (state = initialState, action) => {
 
         case actionTypes.CREATE_ORGANIZATION_REQUEST:
             return updateObject(state, {
-                loading: true
+                loading: true,
+                createOrgSuccess:"",
+                createOrgErrors:""
             })
         case actionTypes.CREATE_ORGANIZATION_SUCCESS:
             return updateObject(state, {
@@ -46,18 +51,20 @@ const organizationReducer = (state = initialState, action) => {
 
         case actionTypes.UPDATE_ORGANIZATION_REQUEST:
             return updateObject(state, {
-                loading: true
+                loading: true,
+                updateOrgSuccess:"",
+                updateOrgError:""
             })
         case actionTypes.UPDATE_ORGANIZATION_SUCCESS:
             return updateObject(state, {
                 loading: false,
-                organization: action.payload
+                updateOrgSuccess: action.payload
             })
 
         case actionTypes.UPDATE_ORGANIZATION_ERROR:
             return updateObject(state, {
                 loading: false,
-                errors: true
+                updateOrgError: action.payload
             })
         default:
             return state

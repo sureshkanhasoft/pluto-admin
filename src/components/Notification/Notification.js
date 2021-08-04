@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Notification = ({data}) => {
+const Notification = ({data,status}) => {
     const classes = useStyles();
     const [open, setOpen] = React.useState(true);
 
@@ -37,7 +37,7 @@ const Notification = ({data}) => {
                 autoHideDuration={4000}
                 onClose={handleClose}
             >
-                <Alert onClose={handleClose} severity="success">
+                <Alert onClose={handleClose} severity={status==="success"?"success":"error"}>
                         {data}
                 </Alert>
             </Snackbar>

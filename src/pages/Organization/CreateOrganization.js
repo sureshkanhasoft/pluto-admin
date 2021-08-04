@@ -7,6 +7,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { createOrganization } from '../../store/action';
 import { useForm } from "react-hook-form";
+import Notification from '../../components/Notification/Notification';
 const useStyle = makeStyles((theme) => ({
     dialogWidth: { width: "100%" },
     radioGroup: {
@@ -45,44 +46,50 @@ const CreateOrganization = ({ open, handleClose }) => {
         address_line_2: "",
         city: "",
         postcode: "",
-        password: "12345"
+        // password: "12345"
     })
 
     const handleChange = (event) => {
         setData({ ...data, [event.target.name]: event.target.value });
     };
 
-    const submitOrganization = () => {
-        // dispatch(createOrganization(data))
-        // handleClose()
-    }
+    // const submitOrganization = () => {
+    //     // dispatch(createOrganization(data))
+    //     // handleClose()
+    // }
     
     const onSubmit = async datas => {
-        console.log("datasss ======== ", datas)
-        console.log("data ======== ", data)
         dispatch(createOrganization(datas))
         handleClose();
         reset();
     };
+    const dialogClose = ()=>{
+        reset();
+        handleClose()
+    }
     return (
-        // <Dialog open={open} onClose={handleClose} classes={{ paper: classes.dialogWidth }}>
-        <Dialog open={open} onClose={handleClose} classes={{ paper: classes.dialogWidth }}>
+        <>
+        {createOrgErrors?.message &&
+            <Notification
+                data= {createOrgErrors?.message}
+                status="error"
+            />
+        }
+        {createOrgSuccess?.message &&
+            <Notification
+                data={createOrgSuccess?.message}
+                status="success"
+            />
+        }
+        {/* // <Dialog open={open} onClose={handleClose} classes={{ paper: classes.dialogWidth }}> */}
+        <Dialog open={open} onClose={dialogClose} classes={{ paper: classes.dialogWidth }}>
             <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
                 <DialogTitle id="form-dialog-title">
                     <div>Create Organization</div>
                 </DialogTitle>
                 <Divider />
                 <DialogContent>
-                {createOrgErrors?.message &&
-                    <div className={classes.error}>
-                        {createOrgErrors?.message}
-                    </div>
-                }
-                {createOrgSuccess?.message &&
-                    <div className={classes.success}>
-                        {createOrgSuccess?.message}
-                    </div>
-                }
+                
                 
                     <TextField
                         autoFocus
@@ -127,6 +134,10 @@ const CreateOrganization = ({ open, handleClose }) => {
                                 fullWidth
                                 {...register("email", {
                                     required: "Please Enter email",
+                                    pattern: {
+                                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                                        message: "Enter a valid e-mail address",
+                                    },
                                 })}
                                 error={(errors.email ? true : false)}
                             />
@@ -144,6 +155,10 @@ const CreateOrganization = ({ open, handleClose }) => {
                                 fullWidth
                                 {...register("contact_number", {
                                     required: "Please contact number",
+                                    minLength:{
+                                        value:10,
+                                        message: "Number must have at least 10 digit"
+                                    }
                                 })}
                                 error={(errors.contact_number ? true : false)}
                             />
@@ -204,6 +219,9 @@ const CreateOrganization = ({ open, handleClose }) => {
                                 fullWidth
                                 {...register("postcode", {
                                     required: "Please enter postcode",
+                                    minLength:{
+                                        value:5
+                                    }
                                 })}
                                 error={(errors.postcode ? true : false)}
                             />
@@ -212,7 +230,7 @@ const CreateOrganization = ({ open, handleClose }) => {
 
                 </DialogContent>
                 <DialogActions className="pr-4 pb-2">
-                    <Button onClick={handleClose} color="primary">
+                    <Button onClick={dialogClose} color="primary">
                         Cancel
                     </Button>
                     <Button color="secondary" variant="contained" type="submit">
@@ -223,6 +241,7 @@ const CreateOrganization = ({ open, handleClose }) => {
                 </DialogActions>
             </form>
         </Dialog>
+        </>
     )
 }
 

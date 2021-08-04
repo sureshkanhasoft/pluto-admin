@@ -49,7 +49,7 @@ const Navbar = () => {
   const openProfile = () =>{
     const loggedUser = localStorage.getItem("role").replace(/['"]+/g, '');
     console.log('loggedUser: ', loggedUser);
-    if(loggedUser == "ORGANIZATION"){
+    if(loggedUser === "ORGANIZATION"){
       history.push('/admin/organization-profile')
     } else {
       history.push('/super-admin/profile')

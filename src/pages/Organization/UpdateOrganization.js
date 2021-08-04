@@ -8,8 +8,10 @@ import {
 } from '@material-ui/core';
 import axios from 'axios';
 import Config from '../../../src/config/config';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { updateOrganization } from '../../store/action';
+import Notification from "../../components/Notification/Notification"
+
 const useStyle = makeStyles((theme) => ({
     dialogWidth: { width: "100%" },
     radioGroup: {
@@ -20,16 +22,17 @@ const useStyle = makeStyles((theme) => ({
 const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
     const classes = useStyle();
     const dispatch = useDispatch()
+    const { updateOrgSuccess, updateOrgError } = useSelector(state => state.organizationReducer)
     const [data, setData] = useState({
         organization_name: "",
         contact_person_name: "",
-        email: "",
         contact_number: "",
         address_line_1: "",
         address_line_2: "",
         city: "",
         postcode: "",
         status:"",
+        user_id:id
     })
 
     const getData = async (id) => {
@@ -62,6 +65,20 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
 
 
     return (
+        <>
+        {updateOrgError?.message &&
+            
+            <Notification
+                data={updateOrgError?.message}
+                status="error"
+            />
+        }
+        {updateOrgSuccess?.message &&
+             <Notification
+                data={updateOrgSuccess?.message}
+                status="success"
+             />
+        }
         <Dialog open={openUpdate} onClose={handleClose} classes={{ paper: classes.dialogWidth }}>
             <form>
                 <DialogTitle id="form-dialog-title">
@@ -77,7 +94,7 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                             label="Organization Name"
                             variant="outlined"
                             name="organization_name"
-                            value={data.organization_name}
+                            value={data.organization_name?data.organization_name:""}
                             onChange={handleChange}
                             fullWidth
                         />
@@ -88,7 +105,7 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                         label="Contact Person"
                         variant="outlined"
                         name="contact_person_name"
-                        value={data?.contact_person_name}
+                        value={data.contact_person_name?data.contact_person_name:""}
                         onChange={handleChange}
                         fullWidth
                     />
@@ -100,7 +117,7 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                                 label="Email"
                                 variant="outlined"
                                 name="email"
-                                value={data?.email}
+                                value={data.email? data.email:""}
                                 onChange={handleChange}
                                 fullWidth
                                 disabled
@@ -114,7 +131,7 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                                 label="Contact Number"
                                 variant="outlined"
                                 name="contact_number"
-                                value={data?.contact_number}
+                                value={data.contact_number?data.contact_number:""}
                                 onChange={handleChange}
                                 fullWidth
                             />
@@ -126,7 +143,7 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                         label="Address line 1"
                         variant="outlined"
                         name="address_line_1"
-                        value={data?.address_line_1}
+                        value={data.address_line_1?data.address_line_1:""}
                         onChange={handleChange}
                         fullWidth
                     />
@@ -136,7 +153,7 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                         label="Address line 2"
                         variant="outlined"
                         name="address_line_2"
-                        value={data?.address_line_2}
+                        value={data.address_line_2?data.address_line_2:""}
                         onChange={handleChange}
                         fullWidth
                     />
@@ -149,7 +166,7 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                                 label="City"
                                 variant="outlined"
                                 name="city"
-                                value={data?.city}
+                                value={data.city?data.city:""}
                                 onChange={handleChange}
                                 fullWidth
                             />
@@ -162,7 +179,7 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                                 label="Postcode"
                                 variant="outlined"
                                 name="postcode"
-                                value={data?.postcode}
+                                value={data.postcode?data.postcode:""}
                                 onChange={handleChange}
                                 fullWidth
                             />
@@ -228,6 +245,7 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                 </DialogActions>
             </form>
         </Dialog>
+        </>
     )
 }
 
