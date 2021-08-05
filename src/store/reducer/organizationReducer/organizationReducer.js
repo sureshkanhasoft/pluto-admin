@@ -9,8 +9,8 @@ const initialState = {
     createOrgSuccess: [],
     createOrgErrors: [],
 
-    updateOrgSuccess:"",
-    updateOrgError:""
+    updateOrgSuccess:[],
+    updateOrgError:[]
 }
 
 const organizationReducer = (state = initialState, action) => {

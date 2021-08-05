@@ -22,6 +22,7 @@ const useStyle = makeStyles((theme) => ({
 const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
     const classes = useStyle();
     const dispatch = useDispatch()
+    const [updateMsg, setUpdateMsg]=useState(false)
     const { updateOrgSuccess, updateOrgError } = useSelector(state => state.organizationReducer)
     const [data, setData] = useState({
         organization_name: "",
@@ -60,20 +61,21 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
 
     const submitOrganization = () => {
         dispatch(updateOrganization(data))
+        setUpdateMsg(true)
         handleClose()
     }
 
 
     return (
         <>
-        {updateOrgError?.message &&
+        {updateMsg && updateOrgError?.message &&
             
             <Notification
                 data={updateOrgError?.message}
                 status="error"
             />
         }
-        {updateOrgSuccess?.message &&
+        {updateMsg && updateOrgSuccess?.message &&
              <Notification
                 data={updateOrgSuccess?.message}
                 status="success"
