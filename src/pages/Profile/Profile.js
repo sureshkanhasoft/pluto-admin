@@ -12,7 +12,6 @@ import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Notification from '../../components/Notification/Notification';
 import { useForm } from "react-hook-form";
-import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 const useStyle = makeStyles((theme) => ({
     root: {
@@ -42,21 +41,22 @@ const useStyle = makeStyles((theme) => ({
             margin: theme.spacing(1),
         },
     },
-    error:{
-        color:"red"
+    error: {
+        color: "red"
     }
 }))
 
 const Profile = () => {
     const classes = useStyle();
     const dispatch = useDispatch();
-    const [notify, setNotify] = useState(false)
     const { passChange, passerrors, profileErrors, profileData } = useSelector(state => state.profile)
 
     const { profile, loading } = useSelector(state => state.profile)
     const [open, setOpen] = React.useState(false);
-    const notification = useSelector(state => state.notify)
-    const { register, handleSubmit, formState: { errors }, setValue, reset } = useForm();
+    const [profileNotify, setProfileNotify]= useState(false)
+    const { register, handleSubmit, formState: { errors }, reset } = useForm();
+    const { register: register2, control, formState: { errors: errors2 }, handleSubmit: handleSubmit2, } = useForm();
+
     const [data, setData] = useState({
         first_name: "",
         last_name: "",
@@ -73,11 +73,6 @@ const Profile = () => {
         conform_password: ""
     })
 
-    const onSubmit = async data => {
-        console.log("resetPass => ", data)
-        dispatch(changePassword(data))
-        // reset();
-    };
     const handleChange = (event) => {
         setData({ ...data, [event.target.name]: event.target.value });
     };
@@ -94,24 +89,34 @@ const Profile = () => {
         getProfileDetail()
     }, [])
 
+    const onSubmit = async data => {
+        console.log("resetPass => ", data)
+        dispatch(changePassword(data))
+        // reset();
+    };
+    const onSubmit2 = async data => {
+        console.log("profile datas  => ", data)
+        dispatch(updateProfile(data))
+        setProfileNotify(true)
+    };
+
     useEffect(() => {
         if (profile.data) {
             setData(profile.data)
         }
     }, [profile.data])
 
-    const profileSubmit = () => {
-        dispatch(updateProfile(data))
-    }
-    const changePassDetail = () => {
-        dispatch(changePassword(resetPass))
-    }
+    // const profileSubmit = () => {
+    //     dispatch(updateProfile(data))
+    // }
+    // const changePassDetail = () => {
+    //     dispatch(changePassword(resetPass))
+    // }
 
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
             return;
         }
-
         setOpen(false);
     };
     function Alert(props) {
@@ -119,152 +124,165 @@ const Profile = () => {
     }
     return (
         <>
-            {/* {
-            notification.notify &&
-            <Notification 
-                data={notification.notify}
-            />
-        } */}
-
             {
                 loading ?
                     <Backdrop className={classes.backdrop} open={loading}>
                         <CircularProgress color="inherit" />
                     </Backdrop> : ""
             }
-            {/* <Alert autoHideDuration={3000} severity="error">This is an error message! {profileData?.status}</Alert>
-            <Snackbar open={profileData?.status} autoHideDuration={2000} onClose={handleClose}>
-                <Alert onClose={handleClose} severity="success">
-                    This is a success message!
-                </Alert>
-            </Snackbar> */}
 
             <Paper className={classes.root}>
-                {profileErrors?.message &&
-                    <Notification 
-                        data={profileErrors?.message}
-                        status="error"
-                    />
-                    // <Alert icon={false} variant="outlined" severity="error">
-                    //     {profileErrors?.message}
-                    // </Alert>
-                }
-                {profileData?.message &&
-                        <Notification 
+                <form className={classes.form} onSubmit={handleSubmit2(onSubmit2)} >
+
+                    {profileNotify && profileErrors?.message &&
+                        <Notification
+                            data={profileErrors?.message}
+                            status="error"
+                        />
+                    }
+                    {profileNotify && profileData?.message &&
+                        <Notification
                             data={profileData?.message}
                             status="success"
                         />
-                    // <Alert icon={false} variant="outlined" severity="success">
-                    //     {profileData?.message}
-                    // </Alert>
-                }
-                <Grid container spacing={2}>
-                    <Grid item xs={12} sm={6} lg={4}>
-                        <TextField
-                            id="first_name"
-                            label="First Name"
-                            variant="outlined"
-                            name="first_name"
-                            value={data.first_name}
-                            onChange={handleChange}
-                            fullWidth
-                        />
+                    }
+                    <Grid container spacing={2}>
+                        <Grid item xs={12} sm={6} lg={4}>
+                            <TextField
+                                
+                                id="first_name"
+                                label="First Name"
+                                variant="outlined"
+                                name="first_name"
+                                value={data.first_name}
+                                error={(errors2.first_name ? true : false)}
+                                {...register2("first_name", {
+                                    required: true,
+                                })}
+                                onChange={handleChange}
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6} lg={4}>
+                            <TextField
+                                
+                                id="last_name"
+                                label="Last Name"
+                                variant="outlined"
+                                name="last_name"
+                                value={data.last_name}
+                                error={(errors2.last_name ? true : false)}
+                                {...register2("last_name", {
+                                    required: true,
+                                })}
+                                onChange={handleChange}
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6} lg={4}>
+                            <TextField
+                                id="email"
+                                label="Email"
+                                variant="outlined"
+                                name="email"
+                                value={data.email}
+                                onChange={handleChange}
+                                fullWidth
+                                disabled
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6} lg={4}>
+                            <TextField
+                                
+                                id="contact_number"
+                                label="Contact Number"
+                                variant="outlined"
+                                name="contact_number"
+                                value={data.contact_number}
+                                error={(errors2.contact_number ? true : false)}
+                                {...register2("contact_number", {
+                                    required: true,
+                                })}
+                                onChange={handleChange}
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6} lg={4}>
+                            <TextField
+                                
+                                id="address_line_1"
+                                label="Address line 1"
+                                variant="outlined"
+                                name="address_line_1"
+                                value={data.address_line_1}
+                                error={(errors2.address_line_1 ? true : false)}
+                                {...register2("address_line_1", {
+                                    required: true,
+                                })}
+                                onChange={handleChange}
+                                fullWidth
+                               
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6} lg={4}>
+                            <TextField
+                                id="address_line_2"
+                                label="Address line 2"
+                                variant="outlined"
+                                name="address_line_2"
+                                value={data.address_line_2}
+                                onChange={handleChange}
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6} lg={4}>
+                            <TextField
+                                
+                                id="city"
+                                label="City"
+                                variant="outlined"
+                                name="city"
+                                value={data.city}
+                                error={(errors2.city ? true : false)}
+                                {...register2("city", {
+                                    required: true,
+                                })}
+                                onChange={handleChange}
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6} lg={4}>
+                            <TextField
+                                
+                                id="postcode"
+                                label="Postcode"
+                                variant="outlined"
+                                name="postcode"
+                                value={data.postcode}
+                                error={(errors2.postcode ? true : false)}
+                                {...register2("postcode", {
+                                    required: true,
+                                })}
+                                onChange={handleChange}
+                                fullWidth
+                                type="text"
+                            />
+                        </Grid>
                     </Grid>
-                    <Grid item xs={12} sm={6} lg={4}>
-                        <TextField
-                            id="last_name"
-                            label="Last Name"
-                            variant="outlined"
-                            name="last_name"
-                            value={data.last_name}
-                            onChange={handleChange}
-                            fullWidth
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={6} lg={4}>
-                        <TextField
-                            id="email"
-                            label="Email"
-                            variant="outlined"
-                            name="email"
-                            value={data.email}
-                            onChange={handleChange}
-                            fullWidth
-                            disabled
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={6} lg={4}>
-                        <TextField
-                            id="contact_number"
-                            label="Contact Number"
-                            variant="outlined"
-                            name="contact_number"
-                            value={data.contact_number}
-                            onChange={handleChange}
-                            fullWidth
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={6} lg={4}>
-                        <TextField
-                            id="address_line_1"
-                            label="Address line 1"
-                            variant="outlined"
-                            name="address_line_1"
-                            value={data.address_line_1}
-                            onChange={handleChange}
-                            fullWidth
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={6} lg={4}>
-                        <TextField
-                            id="address_line_2"
-                            label="Address line 2"
-                            variant="outlined"
-                            name="address_line_2"
-                            value={data.address_line_2}
-                            onChange={handleChange}
-                            fullWidth
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={6} lg={4}>
-                        <TextField
-                            id="city"
-                            label="City"
-                            variant="outlined"
-                            name="city"
-                            value={data.city}
-                            onChange={handleChange}
-                            fullWidth
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={6} lg={4}>
-                        <TextField
-                            id="postcode"
-                            label="Postcode"
-                            variant="outlined"
-                            name="postcode"
-                            value={data.postcode}
-                            onChange={handleChange}
-                            fullWidth
-                            type="text"
-                        />
-                    </Grid>
-                </Grid>
-                <Box className={classes.footerBtn}>
-                    <Button color="primary">
-                        Cancel
-                    </Button>
-                    <Button color="secondary" variant="contained" onClick={profileSubmit}>
-                        Save
-                    </Button>
-                </Box>
-
-
+                    <Box className={classes.footerBtn}>
+                        <Button color="primary">
+                            Cancel
+                        </Button>
+                        <Button color="secondary" variant="contained" type="submit">
+                            Save
+                        </Button>
+                    </Box>
+                </form>
             </Paper>
 
             <Paper className={classes.root}>
                 <h3 className={classes.title}>Change Password</h3>
-                
+
 
                 <form className={classes.form} onSubmit={handleSubmit(onSubmit)} >
                     <Grid container spacing={2}>
@@ -285,6 +303,7 @@ const Profile = () => {
                                     required: "Please enter old password",
                                 })}
                                 autoComplete="new-password"
+                                helperText={errors.old_password ? "Please enter old password" : ""}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
@@ -301,6 +320,7 @@ const Profile = () => {
                                 {...register("password", {
                                     required: "Please enter password",
                                 })}
+                                helperText={errors.password ? "Please enter New password" : ""}
                             />
                         </Grid>
 
@@ -318,6 +338,7 @@ const Profile = () => {
                                 {...register("conform_password", {
                                     required: "Please enter conform password",
                                 })}
+                                helperText={errors.conform_password ? "Please enter conform password" : ""}
                             />
                         </Grid>
                     </Grid>
@@ -335,7 +356,6 @@ const Profile = () => {
                         <Button color="primary">
                             Cancel
                         </Button>
-                        {/* <Button color="secondary" variant="contained" onClick={changePassDetail}> */}
                         <Button color="secondary" variant="contained" type="submit">
                             Save
                         </Button>
