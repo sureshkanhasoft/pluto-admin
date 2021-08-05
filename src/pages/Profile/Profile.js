@@ -94,7 +94,7 @@ const Profile = () => {
         console.log("resetPass => ", data)
         dispatch(changePassword(data))
         setPassNotify(true)
-        // reset();
+        reset();
     };
     // const onSubmit2 = async data => {
     //     console.log("profile datas  => ", data)
@@ -356,7 +356,7 @@ const Profile = () => {
                     {passNotify && passChange?.message &&
                         <Notification
                             data=  {passChange?.message}
-                            status="error"
+                            status="success"
                         />
                     }
                     <Box className={classes.footerBtn}>
