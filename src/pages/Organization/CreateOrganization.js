@@ -150,6 +150,7 @@ const CreateOrganization = ({ open, handleClose }) => {
                                 label="Contact Number"
                                 variant="outlined"
                                 name="contact_number"
+                                type="number"
                                 // value={data.contact_number}
                                 onChange={handleChange}
                                 fullWidth
@@ -158,7 +159,8 @@ const CreateOrganization = ({ open, handleClose }) => {
                                     minLength:{
                                         value:10,
                                         message: "Number must have at least 10 digit"
-                                    }
+                                    },
+                                    pattern: /[0-9]/
                                 })}
                                 error={(errors.contact_number ? true : false)}
                             />

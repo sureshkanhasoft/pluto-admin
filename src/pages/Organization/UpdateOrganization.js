@@ -133,6 +133,7 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                                 label="Contact Number"
                                 variant="outlined"
                                 name="contact_number"
+                                type="number"
                                 value={data.contact_number?data.contact_number:""}
                                 onChange={handleChange}
                                 fullWidth
