@@ -5,6 +5,7 @@ import logo from '../../../assets/images/logo.svg';
 import LockIcon from '@material-ui/icons/Lock';
 import { changepassword } from '../../../store/action';
 import { useForm } from "react-hook-form";
+import Notification from '../../../components/Notification/Notification';
 
 const useStyle = makeStyles({
     loginContainer: {
@@ -85,6 +86,7 @@ const ChangePassword = ({ history }) => {
     const classes = useStyle();
     const dispatch = useDispatch();
     const params = new URLSearchParams(window.location.search);
+    const [resetMsg, setReset]=useState(false)
     const dId = params.get('query');
     const { changesuccess, changeerrors } = useSelector(state => state.authReducer)
     const [data, setData] = useState({
@@ -96,6 +98,7 @@ const ChangePassword = ({ history }) => {
     const onSubmit = async data => {
         data.decode_id = dId;
         dispatch(changepassword(data));
+        setReset(true)
         reset();
     };
     const handleChange = (event) => {
@@ -120,15 +123,17 @@ const ChangePassword = ({ history }) => {
                 </div>
                 <Typography className={classes.subTitle}>Change your password</Typography>
                 <Card className={classes.loginCard}>
-                    {changeerrors?.message &&
-                        <div className={classes.error}>
-                            {changeerrors?.message}
-                        </div>
+                    {resetMsg && changeerrors?.message &&
+                        <Notification
+                            data={changeerrors?.message}
+                            status="error"
+                        />
                     }
-                    {changesuccess?.message &&
-                        <div className={classes.success}>
-                            {changesuccess?.message}
-                        </div>
+                    {resetMsg && changesuccess?.message &&
+                        <Notification
+                            data={changesuccess?.message}
+                            status="success"
+                        />
                     }
                     <form className={classes.form} autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
                         <TextField

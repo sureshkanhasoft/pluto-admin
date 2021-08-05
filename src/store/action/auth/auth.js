@@ -83,6 +83,9 @@ export const changepassword = ({ decode_id, password, conform_password }) => {
             const data = response.data
             if (data && data.status === true) {
                 dispatch(getChangePasswordSuccess(data));
+                setTimeout(() => {
+                    history.push('./login')
+                }, 3000);
             } else {
                 dispatch(getChangePasswordFailure(data));
             }

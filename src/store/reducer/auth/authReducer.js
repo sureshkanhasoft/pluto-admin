@@ -43,7 +43,9 @@ const authReducer = (state = initialState, action) => {
             })
         case actionTypes.CHANGE_PASSWORD_REQUEST:
             return updateObject(state, {
-                loading: true
+                loading: true,
+                changesuccess:"",
+                changeerrors:""
             })
         case actionTypes.CHANGE_PASSWORD_SUCCESS:
             return updateObject(state, {
