@@ -10,6 +10,7 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import { useDispatch, useSelector } from 'react-redux';
 import { orgChangePassword } from '../../store/action';
+import Notification from '../../components/Notification/Notification';
 
 const useStyle = makeStyles((theme) => ({
     root: {
@@ -35,7 +36,9 @@ const ChangePassword = () => {
     const classes = useStyle();
     const dispatch = useDispatch();
     const [showPass, setShowPass]= useState(false)
-    const { passChange, passerrors, profileErrors, profileData } = useSelector(state => state.profile)
+    const [showCPass, setShowCPass]= useState(false)
+    const [passNotify, setPassNotify]= useState(false)
+    const { passChange, passerrors } = useSelector(state => state.orgProfile)
     const {register, handleSubmit, formState: { errors }, setValue, reset } = useForm();
     const [data, setData] = useState({
         old_password: "",
@@ -50,11 +53,28 @@ const ChangePassword = () => {
     const handleClickShowPassword = () => {
         setShowPass(!showPass);
     };
+    const handleClickShowCPassword = () => {
+        setShowCPass(!showCPass);
+    };
     const onSubmit = async(data) => {
         dispatch(orgChangePassword(data))
+        setPassNotify(true)
     }
     return (
         <>
+         
+            {passNotify && (passerrors || passerrors?.message) &&
+                <Notification
+                        data={passerrors || passerrors?.message}
+                        status="error"
+                />
+            }
+            {passNotify && passChange?.message &&
+                <Notification
+                        data={passChange?.message}
+                        status="success"
+                />
+            }
             <p className="mb-6">Welcome to your Pluto Software admin dashboard. Here you can get an overview of your account activity, or use navigation on the left hand side to get to your desired location.</p>
             <Paper className={classes.root}>
                 <form onSubmit={handleSubmit(onSubmit)}>
@@ -75,6 +95,7 @@ const ChangePassword = () => {
                                     required: "Please enter old password",
                                 })}
                                 autoComplete="new-password"
+                                helperText={errors.old_password ? "Please enter old password" : ""}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
@@ -96,6 +117,7 @@ const ChangePassword = () => {
                                 {...register("password", {
                                     required: "Please enter password",
                                 })}
+                                helperText={errors.password ? "Please enter New password" : ""}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
@@ -105,18 +127,19 @@ const ChangePassword = () => {
                                 variant="outlined"
                                 name="conform_password"
                                 // value={data.conform_password}
-                                type={data.showPassword ? "text" : "password"}
+                                type={showCPass ? "text" : "password"}
                                 onChange={handleChangePassword}
                                 fullWidth
                                 InputProps={{
-                                    endAdornment: <IconButton onClick={handleClickShowPassword}>
-                                        {data.showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                                    endAdornment: <IconButton onClick={handleClickShowCPassword}>
+                                        {showCPass ? <VisibilityIcon /> : <VisibilityOffIcon />}
                                     </IconButton>
                                 }}
                                 error={(errors.conform_password ? true : false)}
                                 {...register("conform_password", {
                                     required: "Please enter conform password",
                                 })}
+                                helperText={errors.conform_password ? "Please enter conform password" : ""}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
@@ -126,16 +149,7 @@ const ChangePassword = () => {
                         </Grid>
                     </Grid>
                 </form>
-                {passerrors?.message &&
-                    <div className={classes.error}>
-                        {passerrors?.message}
-                    </div>
-                }
-                {passChange?.message &&
-                    <div className={classes.success}>
-                        {passChange?.message}
-                    </div>
-                }
+                
             </Paper>
         </>
     )

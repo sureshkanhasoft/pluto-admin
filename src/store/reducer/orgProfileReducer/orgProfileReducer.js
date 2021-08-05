@@ -5,6 +5,7 @@ const initialState = {
     loading: false,
     errors: false,
     passChange:[],
+    passerrors:[],
     profile: [],
     profileErrors: [],
 }
@@ -14,6 +15,8 @@ const orgProfileReducer = (state = initialState, action) => {
         case actionTypes.CHANGE_ORG_PASS_REQUEST:
             return updateObject(state, {
                 loading:true,
+                passerrors:"",
+                passChange:""
             })
 
         case actionTypes.CHANGE_ORG_PASS_SUCCESS:
@@ -25,7 +28,7 @@ const orgProfileReducer = (state = initialState, action) => {
         case actionTypes.CHANGE_ORG_PASS_ERROR:
             return updateObject(state, {
                 loading:false,
-                errors: action.payload
+                passerrors: action.payload
             })
 
         case actionTypes.GET_ORG_PROFILE_REQUEST:

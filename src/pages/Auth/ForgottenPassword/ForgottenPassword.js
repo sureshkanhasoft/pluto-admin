@@ -91,8 +91,8 @@ const ForgottenPassword = ({ history }) => {
     const [data, setData] = useState({ email: "" })
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const onSubmit = async data => {
-        // dispatch(forgotpassword(data));
-        // reset();
+        dispatch(forgotpassword(data));
+        reset();
     };
     const handleChange = (event) => {
         setData({ ...data, [event.target.name]: event.target.value });

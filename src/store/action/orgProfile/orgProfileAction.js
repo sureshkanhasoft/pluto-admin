@@ -17,7 +17,9 @@ export const orgChangePassword = (data) => {
             const data = response.data
             if (data.status === true) {
                 dispatch(changePasswordSuccess(data))
-                history.push('/admin')
+                setTimeout(() => {
+                    history .push('/admin')
+                }, 2000);
                 // dispatch(putNotify('data success'))
             } else {
                 dispatch(changePasswordError('Invalid password'))
