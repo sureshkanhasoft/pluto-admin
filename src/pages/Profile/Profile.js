@@ -54,6 +54,7 @@ const Profile = () => {
     const { profile, loading } = useSelector(state => state.profile)
     const [open, setOpen] = React.useState(false);
     const [profileNotify, setProfileNotify]= useState(false)
+    const [passNotify, setPassNotify]= useState(false)
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const { register: register2, control, formState: { errors: errors2 }, handleSubmit: handleSubmit2, } = useForm();
 
@@ -92,13 +93,14 @@ const Profile = () => {
     const onSubmit = async data => {
         console.log("resetPass => ", data)
         dispatch(changePassword(data))
+        setPassNotify(true)
         // reset();
     };
-    const onSubmit2 = async data => {
-        console.log("profile datas  => ", data)
-        dispatch(updateProfile(data))
-        setProfileNotify(true)
-    };
+    // const onSubmit2 = async data => {
+    //     console.log("profile datas  => ", data)
+    //     dispatch(updateProfile(data))
+    //     setProfileNotify(true)
+    // };
 
     useEffect(() => {
         if (profile.data) {
@@ -106,9 +108,11 @@ const Profile = () => {
         }
     }, [profile.data])
 
-    // const profileSubmit = () => {
-    //     dispatch(updateProfile(data))
-    // }
+    const profileSubmit = (e) => {
+        e.preventDefault()
+        dispatch(updateProfile(data))
+        setProfileNotify(true)
+    }
     // const changePassDetail = () => {
     //     dispatch(changePassword(resetPass))
     // }
@@ -132,7 +136,8 @@ const Profile = () => {
             }
 
             <Paper className={classes.root}>
-                <form className={classes.form} onSubmit={handleSubmit2(onSubmit2)} >
+                {/* <form className={classes.form} onSubmit={handleSubmit2(onSubmit2)} > */}
+                <form className={classes.form} onSubmit={profileSubmit} >
 
                     {profileNotify && profileErrors?.message &&
                         <Notification
@@ -155,10 +160,10 @@ const Profile = () => {
                                 variant="outlined"
                                 name="first_name"
                                 value={data.first_name}
-                                error={(errors2.first_name ? true : false)}
-                                {...register2("first_name", {
-                                    required: true,
-                                })}
+                                // error={(errors2.first_name ? true : false)}
+                                // {...register2("first_name", {
+                                //     required: true,
+                                // })}
                                 onChange={handleChange}
                                 fullWidth
                             />
@@ -171,10 +176,10 @@ const Profile = () => {
                                 variant="outlined"
                                 name="last_name"
                                 value={data.last_name}
-                                error={(errors2.last_name ? true : false)}
-                                {...register2("last_name", {
-                                    required: true,
-                                })}
+                                // error={(errors2.last_name ? true : false)}
+                                // {...register2("last_name", {
+                                //     required: true,
+                                // })}
                                 onChange={handleChange}
                                 fullWidth
                             />
@@ -199,10 +204,10 @@ const Profile = () => {
                                 variant="outlined"
                                 name="contact_number"
                                 value={data.contact_number}
-                                error={(errors2.contact_number ? true : false)}
-                                {...register2("contact_number", {
-                                    required: true,
-                                })}
+                                // error={(errors2.contact_number ? true : false)}
+                                // {...register2("contact_number", {
+                                //     required: true,
+                                // })}
                                 onChange={handleChange}
                                 fullWidth
                             />
@@ -215,10 +220,10 @@ const Profile = () => {
                                 variant="outlined"
                                 name="address_line_1"
                                 value={data.address_line_1}
-                                error={(errors2.address_line_1 ? true : false)}
-                                {...register2("address_line_1", {
-                                    required: true,
-                                })}
+                                // error={(errors2.address_line_1 ? true : false)}
+                                // {...register2("address_line_1", {
+                                //     required: true,
+                                // })}
                                 onChange={handleChange}
                                 fullWidth
                                
@@ -243,10 +248,10 @@ const Profile = () => {
                                 variant="outlined"
                                 name="city"
                                 value={data.city}
-                                error={(errors2.city ? true : false)}
-                                {...register2("city", {
-                                    required: true,
-                                })}
+                                // error={(errors2.city ? true : false)}
+                                // {...register2("city", {
+                                //     required: true,
+                                // })}
                                 onChange={handleChange}
                                 fullWidth
                             />
@@ -259,10 +264,10 @@ const Profile = () => {
                                 variant="outlined"
                                 name="postcode"
                                 value={data.postcode}
-                                error={(errors2.postcode ? true : false)}
-                                {...register2("postcode", {
-                                    required: true,
-                                })}
+                                // error={(errors2.postcode ? true : false)}
+                                // {...register2("postcode", {
+                                //     required: true,
+                                // })}
                                 onChange={handleChange}
                                 fullWidth
                                 type="text"
@@ -342,15 +347,17 @@ const Profile = () => {
                             />
                         </Grid>
                     </Grid>
-                    {passerrors?.message &&
-                        <div className={classes.error}>
-                            {passerrors?.message}
-                        </div>
+                    {passNotify && passerrors?.message &&
+                        <Notification
+                            data=  {passerrors?.message}
+                            status="error"
+                        />
                     }
-                    {passChange?.message &&
-                        <div className={classes.success}>
-                            {passChange?.message}
-                        </div>
+                    {passNotify && passChange?.message &&
+                        <Notification
+                            data=  {passChange?.message}
+                            status="error"
+                        />
                     }
                     <Box className={classes.footerBtn}>
                         <Button color="primary">

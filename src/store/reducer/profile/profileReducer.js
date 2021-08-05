@@ -51,6 +51,8 @@ const profileReducer = (state = initialState, action) => {
         case actionTypes.CHANGE_PASS_REQUEST:
             return updateObject(state, {
                 loading: true,
+                passerrors:"",
+                passChange:""
             })
 
         case actionTypes.CHANGE_PASS_SUCCESS:
