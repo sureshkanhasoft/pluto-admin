@@ -6,6 +6,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import logo from '../../../assets/images/logo.svg';
 import { forgotpassword } from '../../../store/action';
 import { useForm } from "react-hook-form";
+import Notification from '../../../components/Notification/Notification';
 
 const useStyle = makeStyles({
     loginContainer: {
@@ -88,10 +89,12 @@ const ForgottenPassword = ({ history }) => {
     const [show, setShow] = useState(true)
     const dispatch = useDispatch()
     const { forgotsuccess, forgoterrors } = useSelector(state => state.authReducer)
+    const [forgotMsg, setForgotMsg]=useState(false)
     const [data, setData] = useState({ email: "" })
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const onSubmit = async data => {
         dispatch(forgotpassword(data));
+        setForgotMsg(true)
         reset();
     };
     const handleChange = (event) => {
@@ -120,15 +123,17 @@ const ForgottenPassword = ({ history }) => {
                         <>
                             <Typography className={classes.subTitle}>Reset your password</Typography>
                             <Card className={classes.loginCard}>
-                                {forgoterrors?.message &&
-                                    <div className={classes.error}>
-                                        {forgoterrors?.message}
-                                    </div>
+                                {forgotMsg && forgoterrors?.message &&
+                                    <Notification
+                                        data={forgoterrors?.message}
+                                        status="error"
+                                    />
                                 }
-                                {forgotsuccess?.message &&
-                                    <div className={classes.success}>
-                                        {forgotsuccess?.message}
-                                    </div>
+                                {forgotMsg && forgotsuccess?.message &&
+                                    <Notification
+                                        data={forgotsuccess?.message}
+                                        status="success"
+                                    />
                                 }
 
                                 <form className={classes.form} onSubmit={handleSubmit(onSubmit)} >
