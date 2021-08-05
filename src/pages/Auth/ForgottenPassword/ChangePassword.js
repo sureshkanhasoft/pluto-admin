@@ -79,7 +79,12 @@ const useStyle = makeStyles({
     },
     descText: {
         marginBottom: 20
-    }
+    },
+    validationError: {
+        marginTop: "-14px",
+        marginBottom: "10px",
+        color: "red"
+    },
 })
 
 const ChangePassword = ({ history }) => {
@@ -180,7 +185,7 @@ const ChangePassword = ({ history }) => {
                                 }
                             })}
                         />
-                        {errors.conform_password && <span className="validationError" role="alert">{errors.conform_password.message}</span>}
+                        {errors.conform_password && <span className={classes.validationError} role="alert">{errors.conform_password.message}</span>}
                         <Button variant="contained" color="primary" type="submit" className={classes.resetBtn}>
                             Change Password
                         </Button>
