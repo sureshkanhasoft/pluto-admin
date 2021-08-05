@@ -24,12 +24,18 @@ export const login = ({ email, password }) => {
                 localStorage.setItem('token', JSON.stringify(data.data.token));
                 localStorage.setItem('role', JSON.stringify(data.data.role));
                 if (data.data.role === 'SUPERADMIN') {
-                    history.push('./super-admin')
+                    setTimeout(() => {
+                        history.push('./super-admin')
+                    }, 2000);
                 } else {
                     if(data.data.password_change === 0){
-                        history.push('./admin/change-password')
+                        setTimeout(() => {
+                            history.push('./admin/change-password')
+                        }, 2000);
                     }else{
-                        history.push('./admin')
+                        setTimeout(() => {
+                            history.push('./admin')
+                        }, 2000);
                     }
                 }
             } else {

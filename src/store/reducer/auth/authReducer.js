@@ -15,7 +15,8 @@ const authReducer = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.LOGIN_REQUEST:
             return updateObject(state, {
-                loading: true
+                loading: true,
+                loginErrors:"",
             })
         case actionTypes.LOGIN_SUCCESS:
             return updateObject(state, {

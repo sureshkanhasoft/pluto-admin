@@ -7,6 +7,7 @@ import LockIcon from '@material-ui/icons/Lock';
 import logo from '../../../assets/images/logo.svg'
 import { login } from '../../../store/action';
 import { useForm } from "react-hook-form";
+import Notification from '../../../components/Notification/Notification';
 
 const useStyle = makeStyles({
     loginContainer: {
@@ -80,9 +81,11 @@ const Login = () => {
     const classes = useStyle();
     const dispatch = useDispatch()
     const { loading, loginErrors, userInfo } = useSelector(state => state.authReducer)
+    const [loginNotify, setLoginNotify]=useState(false)
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const onSubmit = async data => {
         dispatch(login(data))
+        setLoginNotify(true)
         // reset();
     };
     const [data, setData] = useState({
@@ -124,15 +127,17 @@ const Login = () => {
                 </div>
 
                 <Card className={classes.loginCard}>
-                    {loginErrors?.message &&
-                        <div className={classes.error}>
-                            {loginErrors?.message}
-                        </div>
+                    {loginNotify && loginErrors?.message &&
+                        <Notification
+                            data= {loginErrors?.message}
+                            status="error"
+                        />
                     }
-                    {userInfo?.message &&
-                        <div className={classes.success}>
-                            {userInfo?.message}
-                        </div>
+                    {loginNotify && userInfo?.message &&
+                        <Notification
+                            data= {userInfo?.message}
+                            status="success"
+                        />
                     }
                     <form className={classes.form} onSubmit={handleSubmit(onSubmit)} >
                         <TextField
