@@ -107,6 +107,8 @@ export const updateOrganization = (data) => {
             if (data.status === true) {
                 dispatch(updateOrganizationSuccess(data))
                 // handleClose();
+            }else{
+                dispatch(updateOrganizationFailure(data))
             }
         }).catch(error => {
             dispatch(updateOrganizationFailure(error))

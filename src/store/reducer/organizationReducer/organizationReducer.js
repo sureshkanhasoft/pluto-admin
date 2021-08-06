@@ -17,7 +17,8 @@ const organizationReducer = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.GET_ORGANIZATION_REQUEST:
             return updateObject(state, {
-                loading: true
+                loading: true,
+                updateOrgError:""
             })
 
         case actionTypes.GET_ORGANIZATION_SUCCESS:
