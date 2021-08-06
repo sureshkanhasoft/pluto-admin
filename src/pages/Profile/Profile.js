@@ -325,7 +325,7 @@ const Profile = () => {
                                 {...register("password", {
                                     required: "Please enter password",
                                 })}
-                                helperText={errors.password ? "Please enter New password" : ""}
+                                helperText={errors.password ? "Please enter new password" : ""}
                             />
                         </Grid>
 
@@ -341,9 +341,9 @@ const Profile = () => {
                                 fullWidth
                                 error={(errors.conform_password ? true : false)}
                                 {...register("conform_password", {
-                                    required: "Please enter conform password",
+                                    required: "Please enter confirm password",
                                 })}
-                                helperText={errors.conform_password ? "Please enter conform password" : ""}
+                                helperText={errors.conform_password ? "Please enter confirm password" : ""}
                             />
                         </Grid>
                     </Grid>
