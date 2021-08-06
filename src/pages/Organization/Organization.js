@@ -102,13 +102,12 @@ const Organization = () => {
     const [open, setOpen] = useState(false);
     const [openUpdate, setOpenUpdate] = useState(false);
     const [Id, setId] = useState(false);
-    const [searchData, setSearchData] = useState({ search: "" });
+    const [searchData, setSearchData] = useState({ search: "",status: "" });
     // const [responseData, setResponseData] = useState([]);
     const [page, setPage] = React.useState(1);
     const { organizationList, loading } = useSelector(state => state.createOrganization)
     console.log('organizationList: ', organizationList);
     // const { createOrgErrors, createOrgSuccess } = useSelector(state => state.organizationReducer)
-
     const [anchorEl, setAnchorEl] = React.useState(null);
     const openMenu = Boolean(anchorEl);
 
@@ -134,10 +133,13 @@ const Organization = () => {
 
     const handleSearchChange = (event) => {
         setSearchData({ ...searchData, [event.target.name]: event.target.value });
+        console.log("searchData ", searchData)
     }
 
     const handleClickSearch = (event, value) => {
-        setTimeout(getData(page, searchData.search), 1000);
+        console.log("searchDatasearchData" , searchData)
+        handleMenuClose(true)
+        setTimeout(getData(page, searchData.search, searchData.status), 1000);
     };
 
     const getData = (pageNo = 1, search = '', status = "") => {
@@ -197,10 +199,10 @@ const Organization = () => {
                                 <Box className={classes.filterBox} >
                                     <FormLabel component="legend">Status</FormLabel>
                                     <RadioGroup name="status" className={classes.radioGroup}>
-                                        <FormControlLabel value="Active" control={<Radio />} label="Active" />
-                                        <FormControlLabel value="Inactive" control={<Radio />} label="Deactive" />
+                                        <FormControlLabel onChange={handleSearchChange} value="Active" control={<Radio />} label="Active" />
+                                        <FormControlLabel onChange={handleSearchChange} value="Inactive" control={<Radio />} label="Deactive" />
                                     </RadioGroup>
-                                    <Button variant="contained" color="secondary" onClick={handleClickOpen}>
+                                    <Button variant="contained" color="secondary" onClick={handleClickSearch}>
                                         Filter
                                     </Button>
                                 </Box>
@@ -225,7 +227,7 @@ const Organization = () => {
                     </TableHead>
                     <TableBody>
                         {
-                            organizationList.data && organizationList.data.map(row => {
+                            organizationList?.data && organizationList.data.map(row => {
                                 return (<TableRow key={row.id}>
                                     <TableCell scope="row">{row.id}</TableCell>
                                     <TableCell align="left">{row.organization_name}</TableCell>
