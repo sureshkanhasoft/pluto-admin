@@ -71,10 +71,13 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
     const submitOrganization = () => {
         dispatch(updateOrganization(data))
         setUpdateMsg(true)
-        if(updateMsg && updateOrgError) {
+    }
+
+    useEffect(()=>{
+        if(updateMsg && updateOrgSuccess?.message) {
             handleClose()
         }
-    }
+    },[updateOrgSuccess])
 
 
     return (
