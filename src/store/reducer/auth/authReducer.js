@@ -17,6 +17,7 @@ const authReducer = (state = initialState, action) => {
             return updateObject(state, {
                 loading: true,
                 loginErrors:"",
+                userInfo:""
             })
         case actionTypes.LOGIN_SUCCESS:
             return updateObject(state, {

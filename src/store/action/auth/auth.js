@@ -19,7 +19,6 @@ export const login = ({ email, password }) => {
             const data = response.data
             if (data && data.status === true) {
                 dispatch(getLoginSuccess(data))
-                dispatch(getLoginFailure(null))
                 localStorage.setItem('loginUserInfo', JSON.stringify(data.data));
                 localStorage.setItem('token', JSON.stringify(data.data.token));
                 localStorage.setItem('role', JSON.stringify(data.data.role));
@@ -40,7 +39,6 @@ export const login = ({ email, password }) => {
                 }
             } else {
                 dispatch(getLoginFailure(data))
-                dispatch(getLoginSuccess(null))
             }
         }).catch(error => {
             dispatch(getLoginFailure(error.message))
@@ -51,8 +49,6 @@ export const login = ({ email, password }) => {
 export const forgotpassword = ({ email }) => {
     return (dispatch) => {
         dispatch(getForgotRequest());
-        dispatch(getForgotSuccess(''));
-        dispatch(getForgotFailure(''));
         axios.post(`${Config.API_URL}api/superadmin/forgot`, {
             headers: {
                 'content-type': 'application/json',
@@ -76,8 +72,6 @@ export const forgotpassword = ({ email }) => {
 export const changepassword = ({ decode_id, password, conform_password }) => {
     return (dispatch) => {
         dispatch(getChangePasswordRequest());
-        dispatch(getChangePasswordSuccess(''));
-        dispatch(getChangePasswordFailure(''));
         axios.post(`${Config.API_URL}api/superadmin/reset-password`, {
             headers: {
                 'content-type': 'application/json',
