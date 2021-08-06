@@ -35,6 +35,7 @@ const Navbar = () => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  const loggedUser = localStorage.getItem("role").replace(/['"]+/g, '');
 
   const titleName = window.location.pathname.split("/").pop();
 
@@ -47,12 +48,19 @@ const Navbar = () => {
   };
 
   const openProfile = () =>{
-    const loggedUser = localStorage.getItem("role").replace(/['"]+/g, '');
+    // const loggedUser = localStorage.getItem("role").replace(/['"]+/g, '');
     console.log('loggedUser: ', loggedUser);
     if(loggedUser === "ORGANIZATION"){
       history.push('/admin/organization-profile')
     } else {
       history.push('/super-admin/profile')
+    }
+    handleClose()
+  }
+
+  const openChangePassword = () =>{
+    if(loggedUser === "ORGANIZATION"){
+      history.push('/admin/change-password')
     }
     handleClose()
   }
@@ -99,6 +107,10 @@ const Navbar = () => {
             onClose={handleClose}
           >
             <MenuItem onClick={openProfile}>Profile</MenuItem>
+            {
+              loggedUser === "ORGANIZATION" && <MenuItem onClick={openChangePassword}>Change password</MenuItem>
+            }
+            
             <MenuItem onClick={logout}>Logout</MenuItem>
           </Menu>
         </div>
