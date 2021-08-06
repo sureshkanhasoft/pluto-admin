@@ -24,7 +24,7 @@ export const orgChangePassword = (data) => {
                 }, 2000);
                 // dispatch(putNotify('data success'))
             } else {
-                dispatch(changePasswordError('Please enter correct old password'))
+                dispatch(changePasswordError(data.message))
             }
         }).catch(error => {
             dispatch(changePasswordError(error))
