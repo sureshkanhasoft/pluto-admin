@@ -35,6 +35,7 @@ const CreateOrganization = ({ open, handleClose }) => {
     const classes = useStyle();
     const dispatch = useDispatch()
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
+    const [createMsg, setCreateMsg]=useState(false)
     const { createOrgErrors, createOrgSuccess } = useSelector(state => state.organizationReducer)
     console.log("createOrgErrors, createOrgSuccess", createOrgErrors, createOrgSuccess)
     const [data, setData] = useState({
@@ -67,6 +68,7 @@ const CreateOrganization = ({ open, handleClose }) => {
     
     const onSubmit = async datas => {
         dispatch(createOrganization(datas))
+        setCreateMsg(true)
         handleClose();
         reset();
     };
@@ -76,13 +78,13 @@ const CreateOrganization = ({ open, handleClose }) => {
     }
     return (
         <>
-        {createOrgErrors?.message &&
+        {createMsg && createOrgErrors?.message &&
             <Notification
                 data= {createOrgErrors?.message}
                 status="error"
             />
         }
-        {createOrgSuccess?.message &&
+        {createMsg && createOrgSuccess?.message &&
             <Notification
                 data={createOrgSuccess?.message}
                 status="success"
