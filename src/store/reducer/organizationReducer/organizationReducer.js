@@ -19,7 +19,6 @@ const organizationReducer = (state = initialState, action) => {
             return updateObject(state, {
                 loading: true,
                 updateOrgError:"",
-                createOrgSuccess:"",
                 createOrgErrors:""
             })
 
