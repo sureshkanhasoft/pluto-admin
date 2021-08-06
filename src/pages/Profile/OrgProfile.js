@@ -208,9 +208,9 @@ const OrgProfile = () => {
                     </Grid>
                 </Grid>
                 <Box className={classes.footerBtn}>
-                    <Button color="primary">
+                    {/* <Button color="primary">
                         Cancel
-                    </Button>
+                    </Button> */}
                     <Button color="secondary" variant="contained" onClick={profileSubmit}>
                         Save
                     </Button>

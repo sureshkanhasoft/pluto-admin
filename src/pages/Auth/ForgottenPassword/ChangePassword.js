@@ -39,10 +39,6 @@ const useStyle = makeStyles({
         paddingLeft: "7px",
         color: "green"
     },
-    validationError: {
-        marginTop: "-14px",
-        marginBottom: "10px",
-    },
     textField: {
         marginBottom: 24,
         color: "#000",

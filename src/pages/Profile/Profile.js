@@ -286,9 +286,9 @@ const Profile = () => {
                         </Grid>
                     </Grid>
                     <Box className={classes.footerBtn}>
-                        <Button color="primary">
+                        {/* <Button color="primary">
                             Cancel
-                        </Button>
+                        </Button> */}
                         <Button color="secondary" variant="contained" type="submit">
                             Save
                         </Button>
@@ -371,9 +371,9 @@ const Profile = () => {
                         />
                     }
                     <Box className={classes.footerBtn}>
-                        <Button color="primary">
+                        {/* <Button color="primary">
                             Cancel
-                        </Button>
+                        </Button> */}
                         <Button color="secondary" variant="contained" type="submit">
                             Save
                         </Button>
