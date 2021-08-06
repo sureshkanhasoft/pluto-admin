@@ -59,7 +59,7 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
         // setData({ ...data, [event.target.name]: event.target.value });
         if (event.target.name === 'contact_number') {
             const re = /^[0-9 \b]+$/; 
-            if (re.test(event.target.value)) {
+            if (event.target.value === '' || re.test(event.target.value)) {
                 setData({ ...data, [event.target.name]: event.target.value });
              }
         }else{
