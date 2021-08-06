@@ -6,10 +6,11 @@ import {
     Box,
     Grid, TextField
 } from '@material-ui/core';
-import { getOrgProfile, updateProfile } from '../../store/action';
+import { getOrgProfile, updateOrgProfile } from '../../store/action';
 import { useDispatch, useSelector } from 'react-redux';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Notification from '../../components/Notification/Notification';
 
 const useStyle = makeStyles((theme) => ({
     root: {
@@ -44,6 +45,7 @@ const useStyle = makeStyles((theme) => ({
 const OrgProfile = () => {
     const classes = useStyle();
     const dispatch = useDispatch();
+    const [profileNotify, setProfileNotify]= useState(false)
     const [data, setData] = useState({
         organization_name:"",
         first_name: "",
@@ -56,7 +58,8 @@ const OrgProfile = () => {
         postcode: '',
     })
     const { profile, loading } = useSelector(state => state.orgProfile)
-    console.log('profile: ', profile);
+    const {profileOrgErrors, profileOrgSuccess} = useSelector(state => state.orgProfile)
+    console.log('profileOrgErrors: ', profileOrgErrors);
 
     const handleChange = (event) => {
         setData({ ...data, [event.target.name]: event.target.value });
@@ -65,8 +68,6 @@ const OrgProfile = () => {
     const getProfileDetail =() => {
         dispatch(getOrgProfile())
     }
-
-    
     
     useEffect(() => {
         getProfileDetail()
@@ -79,9 +80,9 @@ const OrgProfile = () => {
     },[profile.data])
 
     const profileSubmit = () => {
-        dispatch(updateProfile(data))
+        dispatch(updateOrgProfile(data))
+        setProfileNotify(true)
     }
-
 
     
     return (
@@ -91,6 +92,12 @@ const OrgProfile = () => {
                 <Backdrop className={classes.backdrop} open={loading}>
                     <CircularProgress color="inherit" />
                 </Backdrop> : ""
+            }
+            {profileNotify && profileOrgSuccess?.message &&
+                <Notification
+                    data={profileOrgSuccess?.message}
+                    status="success"
+                />
             }
             <Paper className={classes.root}>
                 <Grid container spacing={2}>
@@ -120,24 +127,17 @@ const OrgProfile = () => {
                     </Grid>
                     <Grid item xs={12} sm={6} lg={4}>
                         <TextField
-                            id="first_name"
-                            label="First Name"
+                            id="contact_person_name"
+                            label="Contact Person Name"
                             variant="outlined"
-                            name="first_name"
-                            value={data.first_name}
+                            name="contact_person_name"
+                            value={data.contact_person_name? data.contact_person_name:""}
                             onChange={handleChange}
                             fullWidth
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={6} lg={4}>
-                        <TextField
-                            id="last_name"
-                            label="Last Name"
-                            variant="outlined"
-                            name="last_name"
-                            value={data.last_name}
-                            onChange={handleChange}
-                            fullWidth
+                            helperText={profileOrgErrors.message==="The contact person name field is required."?profileOrgErrors.message:null}
+                            error={
+                                profileOrgErrors.message==="The contact person name field is required."?profileOrgErrors.message:null
+                            }
                         />
                     </Grid>
                    
@@ -150,6 +150,9 @@ const OrgProfile = () => {
                             value={data.contact_number}
                             onChange={handleChange}
                             fullWidth
+                            helperText={profileOrgErrors.message==="The contact number field is required." || profileOrgErrors.message==="The contact number must be at least 6 characters."?profileOrgErrors.message:""}
+                            error={
+                                profileOrgErrors.message==="The contact number field is required." || profileOrgErrors.message==="The contact number must be at least 6 characters."?profileOrgErrors.message:""}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6} lg={4}>
@@ -161,6 +164,8 @@ const OrgProfile = () => {
                             value={data.address_line_1}
                             onChange={handleChange}
                             fullWidth
+                            helperText={profileOrgErrors.message==="The address line 1 field is required."?profileOrgErrors.message:""}
+                            error={profileOrgErrors.message==="The address line 1 field is required."?profileOrgErrors.message:""}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6} lg={4}>
@@ -169,7 +174,7 @@ const OrgProfile = () => {
                             label="Address line 2"
                             variant="outlined"
                             name="address_line_2"
-                            value={data.address_line_2}
+                            value={data.address_line_2? data.address_line_2:""}
                             onChange={handleChange}
                             fullWidth
                         />
@@ -183,6 +188,8 @@ const OrgProfile = () => {
                             value={data.city}
                             onChange={handleChange}
                             fullWidth
+                            helperText={profileOrgErrors.message==="The city field is required."?profileOrgErrors.message:""}
+                            error={profileOrgErrors.message==="The city field is required."?profileOrgErrors.message:""}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6} lg={4}>
@@ -195,6 +202,8 @@ const OrgProfile = () => {
                             onChange={handleChange}
                             fullWidth
                             type="text"
+                            helperText={profileOrgErrors.message==="The postcode field is required."?profileOrgErrors.message:""}
+                            error={profileOrgErrors.message==="The postcode field is required."?profileOrgErrors.message:""}
                         />
                     </Grid>
                 </Grid>

@@ -33,6 +33,8 @@ const profileReducer = (state = initialState, action) => {
         case actionTypes.UPDATE_PROFILE_REQUEST:
             return updateObject(state, {
                 loading: true,
+                profileErrors:"",
+                profileData:""
             })
 
         case actionTypes.UPDATE_PROFILE_SUCCESS:

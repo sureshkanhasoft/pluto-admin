@@ -8,6 +8,9 @@ const initialState = {
     passerrors:[],
     profile: [],
     profileErrors: [],
+
+    profileOrgErrors:[],
+    profileOrgSuccess:[]
 }
 
 const orgProfileReducer = (state = initialState, action) => {
@@ -46,6 +49,25 @@ const orgProfileReducer = (state = initialState, action) => {
             return updateObject(state, {
                 loading: false,
                 profileErrors: action.payload
+            })
+
+            case actionTypes.UPDATE_ORG_PROFILE_REQUEST:
+            return updateObject(state, {
+                loading: true,
+                profileOrgErrors:"",
+                profileOrgSuccess:""
+            })
+
+        case actionTypes.UPDATE_ORG_PROFILE_SUCCESS:
+            return updateObject(state, {
+                loading: false,
+                profileOrgSuccess: action.payload
+            })
+
+        case actionTypes.UPDATE_ORG_PROFILE_ERROR:
+            return updateObject(state, {
+                loading: false,
+                profileOrgErrors: action.payload
             })
     
         default:
