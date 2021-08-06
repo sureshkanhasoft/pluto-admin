@@ -138,6 +138,7 @@ const Organization = () => {
 
     const handleClickSearch = (event, value) => {
         console.log("searchDatasearchData" , searchData)
+        handleMenuClose(true)
         setTimeout(getData(page, searchData.search, searchData.status), 1000);
     };
 
