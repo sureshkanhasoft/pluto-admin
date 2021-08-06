@@ -56,7 +56,15 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
     }, [id]);
 
     const handleChange = (event) => {
-        setData({ ...data, [event.target.name]: event.target.value });
+        // setData({ ...data, [event.target.name]: event.target.value });
+        if (event.target.name === 'contact_number') {
+            const re = /^[0-9 \b]+$/; 
+            if (re.test(event.target.value)) {
+                setData({ ...data, [event.target.name]: event.target.value });
+             }
+        }else{
+            setData({ ...data, [event.target.name]: event.target.value });
+        }
     };
 
     const submitOrganization = () => {
@@ -133,7 +141,7 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                                 label="Contact Number"
                                 variant="outlined"
                                 name="contact_number"
-                                type="number"
+                                // type="number"
                                 value={data.contact_number?data.contact_number:""}
                                 onChange={handleChange}
                                 fullWidth

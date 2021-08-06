@@ -53,8 +53,8 @@ const Profile = () => {
 
     const { profile, loading } = useSelector(state => state.profile)
     const [open, setOpen] = React.useState(false);
-    const [profileNotify, setProfileNotify]= useState(false)
-    const [passNotify, setPassNotify]= useState(false)
+    const [profileNotify, setProfileNotify] = useState(false)
+    const [passNotify, setPassNotify] = useState(false)
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const { register: register2, control, formState: { errors: errors2 }, handleSubmit: handleSubmit2, } = useForm();
 
@@ -75,7 +75,15 @@ const Profile = () => {
     })
 
     const handleChange = (event) => {
-        setData({ ...data, [event.target.name]: event.target.value });
+        if (event.target.name === 'contact_number') {
+            const re = /^[0-9 \b]+$/; 
+            if (event.target.value === '' || re.test(event.target.value)) {
+                setData({ ...data, [event.target.name]: event.target.value });
+             }
+        }else{
+            setData({ ...data, [event.target.name]: event.target.value });
+        }
+        
     };
 
     const handleChangePassword = (event) => {
@@ -154,7 +162,7 @@ const Profile = () => {
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6} lg={4}>
                             <TextField
-                                
+
                                 id="first_name"
                                 label="First Name"
                                 variant="outlined"
@@ -170,7 +178,7 @@ const Profile = () => {
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
                             <TextField
-                                
+
                                 id="last_name"
                                 label="Last Name"
                                 variant="outlined"
@@ -198,7 +206,7 @@ const Profile = () => {
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
                             <TextField
-                                
+
                                 id="contact_number"
                                 label="Contact Number"
                                 variant="outlined"
@@ -214,7 +222,7 @@ const Profile = () => {
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
                             <TextField
-                                
+
                                 id="address_line_1"
                                 label="Address line 1"
                                 variant="outlined"
@@ -226,7 +234,7 @@ const Profile = () => {
                                 // })}
                                 onChange={handleChange}
                                 fullWidth
-                               
+
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
@@ -242,7 +250,7 @@ const Profile = () => {
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
                             <TextField
-                                
+
                                 id="city"
                                 label="City"
                                 variant="outlined"
@@ -258,7 +266,7 @@ const Profile = () => {
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
                             <TextField
-                                
+
                                 id="postcode"
                                 label="Postcode"
                                 variant="outlined"
@@ -349,13 +357,13 @@ const Profile = () => {
                     </Grid>
                     {passNotify && passerrors?.message &&
                         <Notification
-                            data=  {passerrors?.message}
+                            data={passerrors?.message}
                             status="error"
                         />
                     }
                     {passNotify && passChange?.message &&
                         <Notification
-                            data=  {passChange?.message}
+                            data={passChange?.message}
                             status="success"
                         />
                     }
