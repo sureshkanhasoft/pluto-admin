@@ -96,7 +96,7 @@ const ChangePassword = ({ history }) => {
     const { changesuccess, changeerrors } = useSelector(state => state.authReducer)
     const [data, setData] = useState({
         password: "",
-        conform_password: "",
+        confirm_password: "",
         decode_id: dId,
     })
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
@@ -115,8 +115,8 @@ const ChangePassword = ({ history }) => {
     // }
 
     // const handleSubmit = () => {
-    //     const { decode_id, password, conform_password } = data;
-    //     if (decode_id && password && conform_password) {
+    //     const { decode_id, password, confirm_password } = data;
+    //     if (decode_id && password && confirm_password) {
     //         dispatch(changepassword(data));
     //     }
     // }
@@ -166,10 +166,10 @@ const ChangePassword = ({ history }) => {
                         {errors.password && <span className={classes.validationError} role="alert"> {errors.password.message}</span>}
 
                         <TextField
-                            id="conform_password"
-                            name="conform_password"
+                            id="confirm_password"
+                            name="confirm_password"
                             label="confirm password"
-                            // value={data.conform_password}
+                            // value={data.confirm_password}
                             onChange={handleChange}
                             type="password"
                             variant="outlined"
@@ -177,7 +177,7 @@ const ChangePassword = ({ history }) => {
                                 startAdornment: <LockIcon />
                             }}
                             className={classes.textField}
-                            {...register("conform_password", {
+                            {...register("confirm_password", {
                                 required: "Please enter confirm password",
                                 minLength: {
                                     value: 5,
@@ -185,7 +185,7 @@ const ChangePassword = ({ history }) => {
                                 }
                             })}
                         />
-                        {errors.conform_password && <span className={classes.validationError} role="alert">{errors.conform_password.message}</span>}
+                        {errors.confirm_password && <span className={classes.validationError} role="alert">{errors.confirm_password.message}</span>}
                         <Button variant="contained" color="primary" type="submit" className={classes.resetBtn}>
                             Change Password
                         </Button>

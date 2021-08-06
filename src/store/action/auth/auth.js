@@ -69,7 +69,7 @@ export const forgotpassword = ({ email }) => {
     }
 }
 
-export const changepassword = ({ decode_id, password, conform_password }) => {
+export const changepassword = ({ decode_id, password, confirm_password }) => {
     return (dispatch) => {
         dispatch(getChangePasswordRequest());
         axios.post(`${Config.API_URL}api/superadmin/reset-password`, {
@@ -78,7 +78,7 @@ export const changepassword = ({ decode_id, password, conform_password }) => {
             },
             decode_id, 
             password, 
-            conform_password
+            confirm_password
         }).then(response => {
             const data = response.data
             if (data && data.status === true) {

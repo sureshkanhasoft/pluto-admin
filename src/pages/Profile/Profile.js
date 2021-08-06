@@ -71,7 +71,7 @@ const Profile = () => {
     const [resetPass, setResetPass] = useState({
         old_password: "",
         password: "",
-        conform_password: ""
+        confirm_password: ""
     })
 
     const handleChange = (event) => {
@@ -342,19 +342,19 @@ const Profile = () => {
 
                         <Grid item xs={12} sm={6} lg={4}>
                             <TextField
-                                id="conform_password"
+                                id="confirm_password"
                                 label="Confirm Password"
                                 variant="outlined"
-                                name="conform_password"
-                                // value={resetPass.conform_password}
+                                name="confirm_password"
+                                // value={resetPass.confirm_password}
                                 type="password"
                                 onChange={handleChangePassword}
                                 fullWidth
-                                error={(errors.conform_password ? true : false)}
-                                {...register("conform_password", {
+                                error={(errors.confirm_password ? true : false)}
+                                {...register("confirm_password", {
                                     required: "Please enter confirm password",
                                 })}
-                                helperText={errors.conform_password ? "Please enter confirm password" : ""}
+                                helperText={errors.confirm_password ? "Please enter confirm password" : ""}
                             />
                         </Grid>
                     </Grid>

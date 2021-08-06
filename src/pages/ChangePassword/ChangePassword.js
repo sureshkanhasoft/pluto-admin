@@ -43,7 +43,7 @@ const ChangePassword = () => {
     const [data, setData] = useState({
         old_password: "",
         password: "",
-        conform_password: "",
+        confirm_password: "",
     })
     const handleChangePassword = (event) => {
         console.log('event: ', event);
@@ -122,11 +122,11 @@ const ChangePassword = () => {
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
                             <TextField
-                                id="conform_password"
+                                id="confirm_password"
                                 label="Confirm Password"
                                 variant="outlined"
-                                name="conform_password"
-                                // value={data.conform_password}
+                                name="confirm_password"
+                                // value={data.confirm_password}
                                 type={showCPass ? "text" : "password"}
                                 onChange={handleChangePassword}
                                 fullWidth
@@ -135,11 +135,11 @@ const ChangePassword = () => {
                                         {showCPass ? <VisibilityIcon /> : <VisibilityOffIcon />}
                                     </IconButton>
                                 }}
-                                error={(errors.conform_password ? true : false)}
-                                {...register("conform_password", {
+                                error={(errors.confirm_password ? true : false)}
+                                {...register("confirm_password", {
                                     required: "Please enter Confirm password",
                                 })}
-                                helperText={errors.conform_password ? "Please enter confirm password" : ""}
+                                helperText={errors.confirm_password ? "Please enter confirm password" : ""}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
