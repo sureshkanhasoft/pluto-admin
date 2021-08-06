@@ -117,7 +117,7 @@ const ChangePassword = () => {
                                 {...register("password", {
                                     required: "Please enter password",
                                 })}
-                                helperText={errors.password ? "Please enter New password" : ""}
+                                helperText={errors.password ? "Please enter new password" : ""}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
@@ -137,9 +137,9 @@ const ChangePassword = () => {
                                 }}
                                 error={(errors.conform_password ? true : false)}
                                 {...register("conform_password", {
-                                    required: "Please enter conform password",
+                                    required: "Please enter Confirm password",
                                 })}
-                                helperText={errors.conform_password ? "Please enter conform password" : ""}
+                                helperText={errors.conform_password ? "Please enter confirm password" : ""}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>

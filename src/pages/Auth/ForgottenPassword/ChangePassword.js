@@ -168,7 +168,7 @@ const ChangePassword = ({ history }) => {
                         <TextField
                             id="conform_password"
                             name="conform_password"
-                            label="conform password"
+                            label="confirm password"
                             // value={data.conform_password}
                             onChange={handleChange}
                             type="password"
@@ -178,7 +178,7 @@ const ChangePassword = ({ history }) => {
                             }}
                             className={classes.textField}
                             {...register("conform_password", {
-                                required: "Please enter conform password",
+                                required: "Please enter confirm password",
                                 minLength: {
                                     value: 5,
                                     message: "min length is 5"

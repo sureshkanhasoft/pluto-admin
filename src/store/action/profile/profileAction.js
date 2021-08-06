@@ -47,8 +47,6 @@ export const updateProfile = (data) => {
     const loggedInUser = localStorage.getItem('token').replace(/['"]+/g, '');
     return async(dispatch) =>{
         dispatch(updateProfileRequest())
-        dispatch(updateProfileSuccess())
-        dispatch(updateProfileError())
         await axios.post(`${Config.API_URL}api/superadmin/update-profile`, data,{
             headers: {
                 'content-type': 'application/json',
@@ -59,7 +57,6 @@ export const updateProfile = (data) => {
             if (data.status === true) {
                 dispatch(updateProfileSuccess(data))
                 dispatch(getProfile())
-                dispatch(putNotify('Profile Updated Successfully'))
             } else {
                 dispatch(updateProfileError(data))
             }
