@@ -50,7 +50,14 @@ const CreateOrganization = ({ open, handleClose }) => {
     })
 
     const handleChange = (event) => {
-        setData({ ...data, [event.target.name]: event.target.value });
+        if (event.target.name === 'contact_number') {
+            const re = /^[0-9 \b]+$/; 
+            if (re.test(event.target.value)) {
+                setData({ ...data, [event.target.name]: event.target.value });
+             }
+        }else{
+            setData({ ...data, [event.target.name]: event.target.value });
+        }
     };
 
     // const submitOrganization = () => {
@@ -150,10 +157,8 @@ const CreateOrganization = ({ open, handleClose }) => {
                                 label="Contact Number"
                                 variant="outlined"
                                 name="contact_number"
-                                type="number"
-                                // value={data.contact_number}
-                                onChange={handleChange}
-                                fullWidth
+                                // type="number"
+                                value={data.contact_number}
                                 {...register("contact_number", {
                                     required: "Please contact number",
                                     minLength:{
@@ -162,6 +167,9 @@ const CreateOrganization = ({ open, handleClose }) => {
                                     },
                                     pattern: /[0-9]/
                                 })}
+                                onChange={handleChange}
+                                fullWidth
+                                
                                 error={(errors.contact_number ? true : false)}
                             />
                         </Grid>
