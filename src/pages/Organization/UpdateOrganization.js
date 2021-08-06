@@ -52,6 +52,7 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
         }
     }
     useEffect(() => {
+        setData("")
         getData(id);
     }, [id]);
 
