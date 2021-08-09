@@ -4,6 +4,7 @@ import notifyReducer from "./reducer/notify";
 import organizationReducer from "./reducer/organizationReducer/organizationReducer";
 import orgProfileReducer from "./reducer/orgProfileReducer/orgProfileReducer";
 import profileReducer from "./reducer/profile/profileReducer"
+import rolesReducer from "./reducer/Roles/rolesReducer";
 
 const rootReducer = combineReducers(
     {
@@ -12,7 +13,8 @@ const rootReducer = combineReducers(
         organizationReducer:organizationReducer,
         profile:profileReducer,
         orgProfile:orgProfileReducer,
-        notify:notifyReducer
+        notify:notifyReducer,
+        roles:rolesReducer
     }
 );
 

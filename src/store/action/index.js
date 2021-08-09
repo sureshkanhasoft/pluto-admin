@@ -21,4 +21,9 @@ export {
     getOrgProfile,
     updateOrgProfile
 } from './orgProfile/orgProfileAction'
+
+export {
+    getRoles,
+    createRoles
+} from './roles/rolesAction'
  

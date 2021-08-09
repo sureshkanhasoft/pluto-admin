@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import {
     Paper,
@@ -11,18 +11,26 @@ import {
     TableRow,
     TableCell,
     IconButton,
+    Backdrop,
+    CircularProgress
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import { Pagination } from '@material-ui/lab';
+// import { Pagination } from '@material-ui/lab';
 import DeleteIcon from '@material-ui/icons/Delete';
 import CreateRoles from './CreateRoles';
 import AlertDialog from '../../components/Alert/AlertDialog';
+import { useDispatch, useSelector } from 'react-redux';
+import { getRoles } from '../../store/action';
 
 const useStyle = makeStyles((theme) => ({
     root: {
         width: '100%',
         overflowX: 'auto',
         padding: 24,
+    },
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff',
     },
     viewBtn: {
         display: "flex",
@@ -44,8 +52,13 @@ const roleList = [
 
 const Roles = () => {
     const classes = useStyle();
+    const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
     const [deleteOpen, setDeleteOpen] = useState(false);
+
+    const {getRolesItem, loading}=useSelector(state => state.roles)
+    console.log('getRoles: ', getRolesItem);
+
     const handleClickOpen = (id) => {
         setOpen(true);
     };
@@ -60,6 +73,16 @@ const Roles = () => {
     const deleteRoleClose = () => {
         setDeleteOpen(false)
     }
+
+    const getRoleData = () => {
+        console.log('sdfsdf')
+        dispatch(getRoles())
+    }
+
+    useEffect(()=> {
+        getRoleData()
+    },[])
+    
     return (
         <>
 
@@ -82,11 +105,11 @@ const Roles = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {roleList.map((row, index) => {
+                        {getRolesItem?.data && getRolesItem.data.map((row, index) => {
                             return (
                                 <TableRow key={index} >
                                     <TableCell scope="row">{index + 1}</TableCell>
-                                    <TableCell align="left">{row.name}</TableCell>
+                                    <TableCell align="left">{row.role_name}</TableCell>
                                     <TableCell align="right">
                                         <Box display="flex" alignItems="center" justifyContent="flex-end">
                                             <IconButton onClick={deleteRole}><DeleteIcon color="secondary" /></IconButton>
@@ -98,9 +121,9 @@ const Roles = () => {
                         })}
                     </TableBody>
                 </Table>
-                <Box className="mt-5" display="flex" justifyContent="flex-end">
+                {/* <Box className="mt-5" display="flex" justifyContent="flex-end">
                     <Pagination count={5} />
-                </Box>
+                </Box> */}
 
             </Paper>
 
@@ -116,6 +139,13 @@ const Roles = () => {
                 description="Are you sure you want to delete role?"
                 buttonName="Delete"
             />
+
+            {
+                loading ?
+                    <Backdrop className={classes.backdrop} open={loading}>
+                        <CircularProgress color="inherit" />
+                    </Backdrop> : ""
+            }
         </>
     )
 }
