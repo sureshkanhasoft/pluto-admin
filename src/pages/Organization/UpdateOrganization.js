@@ -113,6 +113,7 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                             value={data.organization_name?data.organization_name:""}
                             onChange={handleChange}
                             fullWidth
+                            required
                             helperText={updateOrgError.message==="The organization name field is required."?updateOrgError.message:null}
                             error={
                                 updateOrgError.message==="The organization name field is required."?updateOrgError.message:null
@@ -128,6 +129,7 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                         value={data.contact_person_name?data.contact_person_name:""}
                         onChange={handleChange}
                         fullWidth
+                        required
                         helperText={updateOrgError.message ==="The contact person name field is required."?updateOrgError.message:null}
                         error={
                             updateOrgError.message ==="The contact person name field is required."?updateOrgError.message:null
@@ -156,6 +158,7 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                                 variant="outlined"
                                 name="contact_number"
                                 // type="number"
+                                required
                                 value={data.contact_number?data.contact_number:""}
                                 onChange={handleChange}
                                 fullWidth
@@ -175,6 +178,7 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                         value={data.address_line_1?data.address_line_1:""}
                         onChange={handleChange}
                         fullWidth
+                        required
                         helperText={updateOrgError.message ==="The address line 1 field is required."?updateOrgError.message:null}
                         error={
                             updateOrgError.message ==="The address line 1 field is required."?updateOrgError.message:null
@@ -202,6 +206,7 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                                 value={data.city?data.city:""}
                                 onChange={handleChange}
                                 fullWidth
+                                required
                                 helperText={updateOrgError.message ==="The city field is required."?updateOrgError.message:null}
                                 error={
                                     updateOrgError.message ==="The city field is required."?updateOrgError.message:null
@@ -219,6 +224,7 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                                 value={data.postcode?data.postcode:""}
                                 onChange={handleChange}
                                 fullWidth
+                                required
                                 helperText={updateOrgError.message ==="The postcode field is required."?updateOrgError.message:null}
                                 error={
                                     updateOrgError.message ==="The postcode field is required."?updateOrgError.message:null

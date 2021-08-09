@@ -164,6 +164,7 @@ const Profile = () => {
                                 // })}
                                 onChange={handleChange}
                                 fullWidth
+                                required
                                 helperText={profileErrors.message==="The first name field is required."?profileErrors.message:null}
                                 error={
                                     profileErrors.message==="The first name field is required."?profileErrors.message:null
@@ -184,6 +185,7 @@ const Profile = () => {
                                 // })}
                                 onChange={handleChange}
                                 fullWidth
+                                required
                                 helperText={profileErrors.message==="The last name field is required."?profileErrors.message:null}
                                 error={profileErrors.message==="The last name field is required."?profileErrors.message:null}
                             />
@@ -214,6 +216,7 @@ const Profile = () => {
                                 // })}
                                 onChange={handleChange}
                                 fullWidth
+                                required
                                 helperText={profileErrors.message==="The contact number field is required." || profileErrors.message==="The contact number must be at least 6 characters."?profileErrors.message:""}
                                 error={
                                     profileErrors.message==="The contact number field is required." || profileErrors.message==="The contact number must be at least 6 characters."?profileErrors.message:""}
@@ -233,6 +236,7 @@ const Profile = () => {
                                 // })}
                                 onChange={handleChange}
                                 fullWidth
+                                required
                                 helperText={profileErrors.message==="The address line 1 field is required."?profileErrors.message:""}
                                 error={profileErrors.message==="The address line 1 field is required."?profileErrors.message:""}
                             />
@@ -262,6 +266,7 @@ const Profile = () => {
                                 // })}
                                 onChange={handleChange}
                                 fullWidth
+                                required
                                 helperText={profileErrors.message==="The city field is required."?profileErrors.message:""}
                                 error={profileErrors.message==="The city field is required."?profileErrors.message:""}
                             />
@@ -280,6 +285,7 @@ const Profile = () => {
                                 // })}
                                 onChange={handleChange}
                                 fullWidth
+                                required
                                 helperText={profileErrors.message==="The postcode field is required."?profileErrors.message:""}
                                 error={profileErrors.message==="The postcode field is required."?profileErrors.message:""}
                             />
@@ -315,6 +321,7 @@ const Profile = () => {
                                 aria-invalid={errors.old_password ? "true" : "false zz"}
                                 onChange={handleChangePassword}
                                 fullWidth
+                                required
                                 {...register("old_password", {
                                     required: "Please enter old password",
                                 })}
@@ -332,6 +339,7 @@ const Profile = () => {
                                 type="password"
                                 onChange={handleChangePassword}
                                 fullWidth
+                                required
                                 error={(errors.password ? true : false)}
                                 {...register("password", {
                                     required: "Please enter password",
@@ -350,6 +358,7 @@ const Profile = () => {
                                 type="password"
                                 onChange={handleChangePassword}
                                 fullWidth
+                                required
                                 error={(errors.confirm_password ? true : false)}
                                 {...register("confirm_password", {
                                     required: "Please enter confirm password",

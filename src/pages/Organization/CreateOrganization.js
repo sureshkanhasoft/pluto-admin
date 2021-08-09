@@ -110,7 +110,7 @@ const CreateOrganization = ({ open, handleClose }) => {
                         // value={data.organization_name}
                         onChange={handleChange}
                         fullWidth
-                        // required
+                        required
                         {...register("organization_name", {
                             required: "Please enter Organization name",
                         })}
@@ -125,6 +125,7 @@ const CreateOrganization = ({ open, handleClose }) => {
                         // value={data.contact_person_name}
                         onChange={handleChange}
                         fullWidth
+                        required
                         {...register("contact_person_name", {
                             required: "Please contact persone name",
                         })}
@@ -141,6 +142,7 @@ const CreateOrganization = ({ open, handleClose }) => {
                                 // value={data.email}
                                 onChange={handleChange}
                                 fullWidth
+                                required
                                 {...register("email", {
                                     required: "Please Enter email",
                                     pattern: {
@@ -161,6 +163,7 @@ const CreateOrganization = ({ open, handleClose }) => {
                                 name="contact_number"
                                 // type="number"
                                 value={data.contact_number}
+                                required
                                 {...register("contact_number", {
                                     required: "Please contact number",
                                     minLength:{
@@ -185,6 +188,7 @@ const CreateOrganization = ({ open, handleClose }) => {
                         // value={data.address_line_1}
                         onChange={handleChange}
                         fullWidth
+                        required
                         {...register("address_line_1", {
                             required: "Please enter address line 1",
                         })}
@@ -212,6 +216,7 @@ const CreateOrganization = ({ open, handleClose }) => {
                                 // value={data.city}
                                 onChange={handleChange}
                                 fullWidth
+                                required
                                 {...register("city", {
                                     required: "Please enter city",
                                 })}
@@ -229,6 +234,7 @@ const CreateOrganization = ({ open, handleClose }) => {
                                 // value={data.postcode}
                                 onChange={handleChange}
                                 fullWidth
+                                required
                                 {...register("postcode", {
                                     required: "Please enter postcode",
                                     minLength:{

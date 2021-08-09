@@ -134,6 +134,7 @@ const OrgProfile = () => {
                             value={data.contact_person_name? data.contact_person_name:""}
                             onChange={handleChange}
                             fullWidth
+                            required
                             helperText={profileOrgErrors.message==="The contact person name field is required."?profileOrgErrors.message:null}
                             error={
                                 profileOrgErrors.message==="The contact person name field is required."?profileOrgErrors.message:null
@@ -150,6 +151,7 @@ const OrgProfile = () => {
                             value={data.contact_number ? data.contact_number:""}
                             onChange={handleChange}
                             fullWidth
+                            required
                             helperText={profileOrgErrors.message==="The contact number field is required." || profileOrgErrors.message==="The contact number must be at least 6 characters."?profileOrgErrors.message:""}
                             error={
                                 profileOrgErrors.message==="The contact number field is required." || profileOrgErrors.message==="The contact number must be at least 6 characters."?profileOrgErrors.message:""}
@@ -164,6 +166,7 @@ const OrgProfile = () => {
                             value={data.address_line_1 ?data.address_line_1:""}
                             onChange={handleChange}
                             fullWidth
+                            required
                             helperText={profileOrgErrors.message==="The address line 1 field is required."?profileOrgErrors.message:""}
                             error={profileOrgErrors.message==="The address line 1 field is required."?profileOrgErrors.message:""}
                         />
@@ -188,6 +191,7 @@ const OrgProfile = () => {
                             value={data.city?data.city:""}
                             onChange={handleChange}
                             fullWidth
+                            required
                             helperText={profileOrgErrors.message==="The city field is required."?profileOrgErrors.message:""}
                             error={profileOrgErrors.message==="The city field is required."?profileOrgErrors.message:""}
                         />
@@ -201,7 +205,7 @@ const OrgProfile = () => {
                             value={data.postcode?data.postcode:""}
                             onChange={handleChange}
                             fullWidth
-                            type="text"
+                            required
                             helperText={profileOrgErrors.message==="The postcode field is required."?profileOrgErrors.message:""}
                             error={profileOrgErrors.message==="The postcode field is required."?profileOrgErrors.message:""}
                         />

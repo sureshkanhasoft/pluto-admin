@@ -39,7 +39,7 @@ const ChangePassword = () => {
     const [showCPass, setShowCPass]= useState(false)
     const [passNotify, setPassNotify]= useState(false)
     const { passChange, passerrors } = useSelector(state => state.orgProfile)
-    const {register, handleSubmit, formState: { errors }, setValue, reset } = useForm();
+    const {register, handleSubmit, formState: { errors }} = useForm();
     const [data, setData] = useState({
         old_password: "",
         password: "",
@@ -91,6 +91,7 @@ const ChangePassword = () => {
                                 aria-invalid={errors.old_password ? "true" : "false zz"}
                                 onChange={handleChangePassword}
                                 fullWidth
+                                required
                                 {...register("old_password", {
                                     required: "Please enter old password",
                                 })}
@@ -108,6 +109,7 @@ const ChangePassword = () => {
                                 type={showPass ? "text" : "password"}
                                 onChange={handleChangePassword}
                                 fullWidth
+                                required
                                 InputProps={{
                                     endAdornment: <IconButton onClick={handleClickShowPassword}>
                                         {showPass ? <VisibilityIcon /> : <VisibilityOffIcon />}
@@ -130,6 +132,7 @@ const ChangePassword = () => {
                                 type={showCPass ? "text" : "password"}
                                 onChange={handleChangePassword}
                                 fullWidth
+                                required
                                 InputProps={{
                                     endAdornment: <IconButton onClick={handleClickShowCPassword}>
                                         {showCPass ? <VisibilityIcon /> : <VisibilityOffIcon />}

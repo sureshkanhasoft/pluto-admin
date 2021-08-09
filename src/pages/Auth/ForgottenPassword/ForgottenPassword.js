@@ -146,6 +146,7 @@ const ForgottenPassword = ({ history }) => {
                                         onChange={handleChange}
                                         type="email"
                                         variant="outlined"
+                                        required
                                         InputProps={{
                                             startAdornment: <MailIcon />
                                         }}

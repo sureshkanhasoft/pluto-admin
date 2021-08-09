@@ -150,6 +150,7 @@ const ChangePassword = ({ history }) => {
                                 startAdornment: <LockIcon />
                             }}
                             aria-invalid={errors.password ? "true" : "false"}
+                            required
                             {...register("password", {
                                 required: "Please enter password",
                                 minLength: {
@@ -173,6 +174,7 @@ const ChangePassword = ({ history }) => {
                                 startAdornment: <LockIcon />
                             }}
                             className={classes.textField}
+                            required
                             {...register("confirm_password", {
                                 required: "Please enter confirm password",
                                 minLength: {

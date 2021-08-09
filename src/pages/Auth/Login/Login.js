@@ -152,6 +152,7 @@ const Login = () => {
                           InputProps={{
                               startAdornment: <MailIcon />
                           }}
+                          required
                           aria-invalid={errors.password ? "true" : "false"}
                           {...register("email", {
                               required: "Please enter email",
@@ -171,6 +172,7 @@ const Login = () => {
                             InputProps={{
                                 startAdornment: <LockIcon />
                             }}
+                            required
                             aria-invalid={errors.password ? "true" : "false"}
                             {...register("password", {
                                 required: "Please enter password",
