@@ -251,11 +251,10 @@ const CreateOrganization = ({ open, handleClose }) => {
                     <Button onClick={dialogClose} color="primary">
                         Cancel
                     </Button>
-                    <Button color="secondary" variant="contained" type="submit">
+                    <Button color="secondary" variant="contained" type="submit" formNoValidate>
                         {/* <Button color="secondary" variant="contained" onClick={submitOrganization}> */}
                         Add
                     </Button>
-
                 </DialogActions>
             </form>
         </Dialog>

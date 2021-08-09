@@ -15,7 +15,9 @@ const profileReducer = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.GET_PROFILE_REQUEST:
             return updateObject(state, {
-                loading: true
+                loading: true,
+                profileErrors:"",
+                profileData:""
             })
 
         case actionTypes.GET_PROFILE_SUCCESS:

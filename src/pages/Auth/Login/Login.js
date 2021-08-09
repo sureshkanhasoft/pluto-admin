@@ -188,7 +188,7 @@ const Login = () => {
                             <Link to="/forgotten-password" className={classes.forgotText}>Forgotten your password?</Link>
                         </div>
                         {/* <Button variant="contained" color="primary" className={classes.loginBtn} onClick={handleSubmit}> */}
-                        <Button variant="contained" color="primary" className={classes.loginBtn} type="submit" >
+                        <Button variant="contained" color="primary" className={classes.loginBtn} type="submit" formNoValidate>
                             {loading ? <CircularProgress style={{ width: 18, height: 18, marginRight: 12 }} /> : ""}login
                         </Button>
                     </form>

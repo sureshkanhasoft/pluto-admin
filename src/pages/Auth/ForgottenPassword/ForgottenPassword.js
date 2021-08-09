@@ -162,7 +162,7 @@ const ForgottenPassword = ({ history }) => {
                                         <Link to="/login" className={classes.forgotText}>Back to Login</Link>
                                     </div>
                                     {/* <Button variant="contained" color="primary" className={classes.resetBtn} onClick={toggleContainer}> */}
-                                    <Button variant="contained"  type="submit" color="primary" className={classes.resetBtn} onClick={handleSubmit} disabled={forgotsuccess?.status}>
+                                    <Button variant="contained" formNoValidate  type="submit" color="primary" className={classes.resetBtn} onClick={handleSubmit} disabled={forgotsuccess?.status}>
                                         Send
                                     </Button>
                                 </form>

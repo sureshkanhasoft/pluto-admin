@@ -184,7 +184,7 @@ const ResetPassword = ({ history }) => {
                             })}
                         />
                         {errors.confirm_password && <span className={classes.validationError} role="alert">{errors.confirm_password.message}</span>}
-                        <Button variant="contained" color="primary" type="submit" className={classes.resetBtn}>
+                        <Button variant="contained" color="primary" type="submit" className={classes.resetBtn} formNoValidate>
                             Reset Password
                         </Button>
                     </form>

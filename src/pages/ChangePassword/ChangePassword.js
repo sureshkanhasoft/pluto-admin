@@ -146,7 +146,7 @@ const ChangePassword = () => {
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
-                            <Button color="secondary" variant="contained" type="submit">
+                            <Button color="secondary" variant="contained" type="submit" formNoValidate>
                                 Save
                             </Button>
                         </Grid>

@@ -157,7 +157,7 @@ const Profile = () => {
                                 label="First Name"
                                 variant="outlined"
                                 name="first_name"
-                                value={data.first_name}
+                                value={data.first_name?data.first_name:""}
                                 // error={(errors2.first_name ? true : false)}
                                 // {...register2("first_name", {
                                 //     required: true,
@@ -178,7 +178,7 @@ const Profile = () => {
                                 label="Last Name"
                                 variant="outlined"
                                 name="last_name"
-                                value={data.last_name}
+                                value={data.last_name?data.last_name:""}
                                 // error={(errors2.last_name ? true : false)}
                                 // {...register2("last_name", {
                                 //     required: true,
@@ -196,7 +196,7 @@ const Profile = () => {
                                 label="Email"
                                 variant="outlined"
                                 name="email"
-                                value={data.email}
+                                value={data.email?data.email:""}
                                 onChange={handleChange}
                                 fullWidth
                                 disabled
@@ -209,7 +209,7 @@ const Profile = () => {
                                 label="Contact Number"
                                 variant="outlined"
                                 name="contact_number"
-                                value={data.contact_number}
+                                value={data.contact_number?data.contact_number:""}
                                 // error={(errors2.contact_number ? true : false)}
                                 // {...register2("contact_number", {
                                 //     required: true,
@@ -229,7 +229,7 @@ const Profile = () => {
                                 label="Address line 1"
                                 variant="outlined"
                                 name="address_line_1"
-                                value={data.address_line_1}
+                                value={data.address_line_1?data.address_line_1:""}
                                 // error={(errors2.address_line_1 ? true : false)}
                                 // {...register2("address_line_1", {
                                 //     required: true,
@@ -247,7 +247,7 @@ const Profile = () => {
                                 label="Address line 2"
                                 variant="outlined"
                                 name="address_line_2"
-                                value={data.address_line_2}
+                                value={data.address_line_2?data.address_line_2:""}
                                 onChange={handleChange}
                                 fullWidth
                             />
@@ -259,7 +259,7 @@ const Profile = () => {
                                 label="City"
                                 variant="outlined"
                                 name="city"
-                                value={data.city}
+                                value={data.city?data.city:""}
                                 // error={(errors2.city ? true : false)}
                                 // {...register2("city", {
                                 //     required: true,
@@ -278,7 +278,7 @@ const Profile = () => {
                                 label="Postcode"
                                 variant="outlined"
                                 name="postcode"
-                                value={data.postcode}
+                                value={data.postcode?data.postcode:""}
                                 // error={(errors2.postcode ? true : false)}
                                 // {...register2("postcode", {
                                 //     required: true,
@@ -306,7 +306,7 @@ const Profile = () => {
                 <h3 className={classes.title}>Change Password</h3>
 
 
-                <form className={classes.form} onSubmit={handleSubmit(onSubmit)} >
+                <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
                     <Grid container spacing={2}>
 
                         <Grid item xs={12} sm={6} lg={4}>
@@ -383,7 +383,7 @@ const Profile = () => {
                         {/* <Button color="primary">
                             Cancel
                         </Button> */}
-                        <Button color="secondary" variant="contained" type="submit">
+                        <Button color="secondary" formNoValidate variant="contained" type="submit">
                             Save
                         </Button>
                     </Box>
