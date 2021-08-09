@@ -83,7 +83,7 @@ const useStyle = makeStyles({
     },
 })
 
-const ChangePassword = ({ history }) => {
+const ResetPassword = ({ history }) => {
     const classes = useStyle();
     const dispatch = useDispatch();
     const params = new URLSearchParams(window.location.search);
@@ -122,7 +122,7 @@ const ChangePassword = ({ history }) => {
                 <div className="mb-6">
                     <img src={logo} alt="" />
                 </div>
-                <Typography className={classes.subTitle}>Change your password</Typography>
+                <Typography className={classes.subTitle}>Reset your password</Typography>
                 <Card className={classes.loginCard}>
                     {resetMsg && changeerrors?.message &&
                         <Notification
@@ -140,7 +140,7 @@ const ChangePassword = ({ history }) => {
                         <TextField
                             id="password"
                             name="password"
-                            label="password"
+                            label="Password"
                             autoComplete="off"
                             // value={data.password}
                             onChange={handleChange}
@@ -165,7 +165,7 @@ const ChangePassword = ({ history }) => {
                         <TextField
                             id="confirm_password"
                             name="confirm_password"
-                            label="confirm password"
+                            label="Confirm password"
                             // value={data.confirm_password}
                             onChange={handleChange}
                             type="password"
@@ -185,7 +185,7 @@ const ChangePassword = ({ history }) => {
                         />
                         {errors.confirm_password && <span className={classes.validationError} role="alert">{errors.confirm_password.message}</span>}
                         <Button variant="contained" color="primary" type="submit" className={classes.resetBtn}>
-                            Change Password
+                            Reset Password
                         </Button>
                     </form>
                 </Card>
@@ -195,4 +195,4 @@ const ChangePassword = ({ history }) => {
     )
 }
 
-export default ChangePassword
+export default ResetPassword

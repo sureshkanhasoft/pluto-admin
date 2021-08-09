@@ -121,7 +121,7 @@ const ForgottenPassword = ({ history }) => {
                     show
                         ?
                         <>
-                            <Typography className={classes.subTitle}>Reset your password</Typography>
+                            <Typography className={classes.subTitle}>Forgot your Password?</Typography>
                             <Card className={classes.loginCard}>
                                 {forgotMsg && forgoterrors?.message &&
                                     <Notification
@@ -163,7 +163,7 @@ const ForgottenPassword = ({ history }) => {
                                     </div>
                                     {/* <Button variant="contained" color="primary" className={classes.resetBtn} onClick={toggleContainer}> */}
                                     <Button variant="contained"  type="submit" color="primary" className={classes.resetBtn} onClick={handleSubmit} disabled={forgotsuccess?.status}>
-                                        Reset Password
+                                        Send
                                     </Button>
                                 </form>
                             </Card>
