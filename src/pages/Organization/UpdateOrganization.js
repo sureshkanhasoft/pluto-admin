@@ -114,9 +114,9 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                             onChange={handleChange}
                             fullWidth
                             required
-                            helperText={updateOrgError.message==="The organization name field is required."?updateOrgError.message:null}
+                            helperText={updateOrgError?.message?.organization_name}
                             error={
-                                updateOrgError.message==="The organization name field is required."?updateOrgError.message:null
+                                !!updateOrgError?.message?.organization_name
                             }
                         />
                     </div>
@@ -130,9 +130,9 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                         onChange={handleChange}
                         fullWidth
                         required
-                        helperText={updateOrgError.message ==="The contact person name field is required."?updateOrgError.message:null}
+                        helperText={updateOrgError.message?.contact_person_name}
                         error={
-                            updateOrgError.message ==="The contact person name field is required."?updateOrgError.message:null
+                            !!updateOrgError.message?.contact_person_name
                         }
                     />
                     <Grid container spacing={2}>
@@ -162,9 +162,9 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                                 value={data.contact_number?data.contact_number:""}
                                 onChange={handleChange}
                                 fullWidth
-                                helperText={ updateOrgError.message ==="The contact number field is required." || updateOrgError.message ==="The contact number must be at least 6 characters."?updateOrgError.message:null}
+                                helperText={ updateOrgError.message?.contact_number}
                                 error={
-                                    updateOrgError.message ==="The contact number field is required." || updateOrgError.message ==="The contact number must be at least 6 characters."?updateOrgError.message:null
+                                    !!updateOrgError.message?.contact_number
                                 }
                             />
                         </Grid>
@@ -179,9 +179,9 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                         onChange={handleChange}
                         fullWidth
                         required
-                        helperText={updateOrgError.message ==="The address line 1 field is required."?updateOrgError.message:null}
+                        helperText={updateOrgError.message?.address_line_1}
                         error={
-                            updateOrgError.message ==="The address line 1 field is required."?updateOrgError.message:null
+                            !!updateOrgError.message?.address_line_1
                         }
                     />
                     <TextField
@@ -207,9 +207,9 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                                 onChange={handleChange}
                                 fullWidth
                                 required
-                                helperText={updateOrgError.message ==="The city field is required."?updateOrgError.message:null}
+                                helperText={updateOrgError.message?.city}
                                 error={
-                                    updateOrgError.message ==="The city field is required."?updateOrgError.message:null
+                                    !!updateOrgError.message?.city
                                 }
                             />
                         </Grid>
@@ -225,9 +225,9 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                                 onChange={handleChange}
                                 fullWidth
                                 required
-                                helperText={updateOrgError.message ==="The postcode field is required."?updateOrgError.message:null}
+                                helperText={updateOrgError.message?.postcode}
                                 error={
-                                    updateOrgError.message ==="The postcode field is required."?updateOrgError.message:null
+                                    !!updateOrgError.message?.postcode
                                 }
                             />
                         </Grid>

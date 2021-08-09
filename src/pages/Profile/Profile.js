@@ -165,9 +165,9 @@ const Profile = () => {
                                 onChange={handleChange}
                                 fullWidth
                                 required
-                                helperText={profileErrors.message==="The first name field is required."?profileErrors.message:null}
+                                helperText={profileErrors.message?.first_name}
                                 error={
-                                    profileErrors.message==="The first name field is required."?profileErrors.message:null
+                                    !!profileErrors.message?.first_name
                                 }
                             />
                         </Grid>
@@ -186,8 +186,8 @@ const Profile = () => {
                                 onChange={handleChange}
                                 fullWidth
                                 required
-                                helperText={profileErrors.message==="The last name field is required."?profileErrors.message:null}
-                                error={profileErrors.message==="The last name field is required."?profileErrors.message:null}
+                                helperText={profileErrors.message?.last_name}
+                                error={!!profileErrors.message?.last_name}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
@@ -217,9 +217,9 @@ const Profile = () => {
                                 onChange={handleChange}
                                 fullWidth
                                 required
-                                helperText={profileErrors.message==="The contact number field is required." || profileErrors.message==="The contact number must be at least 6 characters."?profileErrors.message:""}
+                                helperText={profileErrors.message?.contact_number}
                                 error={
-                                    profileErrors.message==="The contact number field is required." || profileErrors.message==="The contact number must be at least 6 characters."?profileErrors.message:""}
+                                    !!profileErrors.message?.contact_number}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
@@ -237,8 +237,8 @@ const Profile = () => {
                                 onChange={handleChange}
                                 fullWidth
                                 required
-                                helperText={profileErrors.message==="The address line 1 field is required."?profileErrors.message:""}
-                                error={profileErrors.message==="The address line 1 field is required."?profileErrors.message:""}
+                                helperText={profileErrors.message?.address_line_1}
+                                error={!!profileErrors.message?.address_line_1}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
@@ -267,8 +267,8 @@ const Profile = () => {
                                 onChange={handleChange}
                                 fullWidth
                                 required
-                                helperText={profileErrors.message==="The city field is required."?profileErrors.message:""}
-                                error={profileErrors.message==="The city field is required."?profileErrors.message:""}
+                                helperText={profileErrors.message?.city}
+                                error={!!profileErrors.message?.city}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
@@ -286,8 +286,8 @@ const Profile = () => {
                                 onChange={handleChange}
                                 fullWidth
                                 required
-                                helperText={profileErrors.message==="The postcode field is required."?profileErrors.message:""}
-                                error={profileErrors.message==="The postcode field is required."?profileErrors.message:""}
+                                helperText={profileErrors.message?.postcode}
+                                error={!!profileErrors.message?.postcode}
                             />
                         </Grid>
                     </Grid>
@@ -295,7 +295,7 @@ const Profile = () => {
                         {/* <Button color="primary">
                             Cancel
                         </Button> */}
-                        <Button color="secondary" variant="contained" type="submit">
+                        <Button color="secondary" variant="contained" onClick={profileSubmit}>
                             Save
                         </Button>
                     </Box>

@@ -135,9 +135,9 @@ const OrgProfile = () => {
                             onChange={handleChange}
                             fullWidth
                             required
-                            helperText={profileOrgErrors.message==="The contact person name field is required."?profileOrgErrors.message:null}
+                            helperText={profileOrgErrors?.message?.contact_person_name}
                             error={
-                                profileOrgErrors.message==="The contact person name field is required."?profileOrgErrors.message:null
+                                !!profileOrgErrors?.message?.contact_person_name
                             }
                         />
                     </Grid>
@@ -152,9 +152,10 @@ const OrgProfile = () => {
                             onChange={handleChange}
                             fullWidth
                             required
-                            helperText={profileOrgErrors.message==="The contact number field is required." || profileOrgErrors.message==="The contact number must be at least 6 characters."?profileOrgErrors.message:""}
+                            helperText={profileOrgErrors?.message?.contact_number}
                             error={
-                                profileOrgErrors.message==="The contact number field is required." || profileOrgErrors.message==="The contact number must be at least 6 characters."?profileOrgErrors.message:""}
+                                !!profileOrgErrors?.message?.contact_number
+                            }
                         />
                     </Grid>
                     <Grid item xs={12} sm={6} lg={4}>
@@ -167,8 +168,8 @@ const OrgProfile = () => {
                             onChange={handleChange}
                             fullWidth
                             required
-                            helperText={profileOrgErrors.message==="The address line 1 field is required."?profileOrgErrors.message:""}
-                            error={profileOrgErrors.message==="The address line 1 field is required."?profileOrgErrors.message:""}
+                            helperText={profileOrgErrors.message?.address_line_1}
+                            error={!!profileOrgErrors.message?.address_line_1}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6} lg={4}>
@@ -192,8 +193,8 @@ const OrgProfile = () => {
                             onChange={handleChange}
                             fullWidth
                             required
-                            helperText={profileOrgErrors.message==="The city field is required."?profileOrgErrors.message:""}
-                            error={profileOrgErrors.message==="The city field is required."?profileOrgErrors.message:""}
+                            helperText={profileOrgErrors.message?.city}
+                            error={!!profileOrgErrors.message?.city}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6} lg={4}>
@@ -206,8 +207,8 @@ const OrgProfile = () => {
                             onChange={handleChange}
                             fullWidth
                             required
-                            helperText={profileOrgErrors.message==="The postcode field is required."?profileOrgErrors.message:""}
-                            error={profileOrgErrors.message==="The postcode field is required."?profileOrgErrors.message:""}
+                            helperText={profileOrgErrors.message?.postcode}
+                            error={!!profileOrgErrors.message?.postcode}
                         />
                     </Grid>
                 </Grid>
