@@ -38,18 +38,6 @@ const useStyle = makeStyles((theme) => ({
     },
 }))
 
-const roleList = [
-    {
-        name: "Manager",
-    },
-    {
-        name: "Clinical Manager",
-    },
-    {
-        name: "Nurse Manager",
-    },
-]
-
 const Roles = () => {
     const classes = useStyle();
     const dispatch = useDispatch();
@@ -57,7 +45,6 @@ const Roles = () => {
     const [deleteOpen, setDeleteOpen] = useState(false);
 
     const {getRolesItem, loading}=useSelector(state => state.roles)
-    console.log('getRoles: ', getRolesItem);
 
     const handleClickOpen = (id) => {
         setOpen(true);
@@ -74,14 +61,9 @@ const Roles = () => {
         setDeleteOpen(false)
     }
 
-    const getRoleData = () => {
-        console.log('sdfsdf')
-        dispatch(getRoles())
-    }
-
     useEffect(()=> {
-        getRoleData()
-    },[])
+        dispatch(getRoles())
+    },[dispatch])
     
     return (
         <>

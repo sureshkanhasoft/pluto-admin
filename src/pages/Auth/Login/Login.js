@@ -82,7 +82,7 @@ const Login = () => {
     const dispatch = useDispatch()
     const { loading, loginErrors, userInfo } = useSelector(state => state.authReducer)
     const [loginNotify, setLoginNotify]=useState(false)
-    const { register, handleSubmit, formState: { errors }, reset } = useForm();
+    const { register, handleSubmit, formState: { errors } } = useForm();
     const onSubmit = async data => {
         dispatch(login(data))
         setLoginNotify(true)

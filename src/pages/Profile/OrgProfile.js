@@ -65,13 +65,14 @@ const OrgProfile = () => {
         setData({ ...data, [event.target.name]: event.target.value });
     };
 
-    const getProfileDetail =() => {
-        dispatch(getOrgProfile())
-    }
+    
     
     useEffect(() => {
+        const getProfileDetail =() => {
+            dispatch(getOrgProfile())
+        }
         getProfileDetail()
-    }, [])
+    }, [dispatch])
 
     useEffect(()=>{
         if(profile.data){

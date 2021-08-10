@@ -12,7 +12,7 @@ import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Notification from '../../components/Notification/Notification';
 import { useForm } from "react-hook-form";
-import MuiAlert from '@material-ui/lab/Alert';
+// import MuiAlert from '@material-ui/lab/Alert';
 const useStyle = makeStyles((theme) => ({
     root: {
         width: '100%',
@@ -52,11 +52,10 @@ const Profile = () => {
     const { passChange, passerrors, profileErrors, profileData } = useSelector(state => state.profile)
 
     const { profile, loading } = useSelector(state => state.profile)
-    const [open, setOpen] = React.useState(false);
     const [profileNotify, setProfileNotify] = useState(false)
     const [passNotify, setPassNotify] = useState(false)
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
-    const { register: register2, control, formState: { errors: errors2 }, handleSubmit: handleSubmit2, } = useForm();
+    // const { register: register2, control, formState: { errors: errors2 }, handleSubmit: handleSubmit2, } = useForm();
 
     const [data, setData] = useState({
         first_name: "",
@@ -90,13 +89,14 @@ const Profile = () => {
         setResetPass({ ...resetPass, [event.target.name]: event.target.value });
     };
 
-    const getProfileDetail = () => {
-        dispatch(getProfile())
-    }
+    
 
     useEffect(() => {
+        const getProfileDetail = () => {
+            dispatch(getProfile())
+        }
         getProfileDetail()
-    }, [])
+    }, [dispatch])
 
     const onSubmit = async data => {
         console.log("resetPass => ", data)
