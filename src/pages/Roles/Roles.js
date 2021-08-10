@@ -20,7 +20,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import CreateRoles from './CreateRoles';
 import AlertDialog from '../../components/Alert/AlertDialog';
 import { useDispatch, useSelector } from 'react-redux';
-import { getRoles } from '../../store/action';
+import { deleteRoles, getRoles } from '../../store/action';
+import Notification from '../../components/Notification/Notification';
 
 const useStyle = makeStyles((theme) => ({
     root: {
@@ -43,8 +44,10 @@ const Roles = () => {
     const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
     const [deleteOpen, setDeleteOpen] = useState(false);
+    const [deleteNotify, SetDeleteNotify] = useState(false);
+    // const [deleteConfirm, SetDeleteConfim] = useState(false);
 
-    const {getRolesItem, loading}=useSelector(state => state.roles)
+    const { getRolesItem, loading,deleteSuccess,deleteError } = useSelector(state => state.roles)
 
     const handleClickOpen = (id) => {
         setOpen(true);
@@ -54,19 +57,34 @@ const Roles = () => {
         setOpen(false);
     };
 
-    const deleteRole = () => {
+    const deleteRole = (role_id) => {
         setDeleteOpen(true)
+        dispatch(deleteRoles(role_id))
+        SetDeleteNotify(true)
     }
     const deleteRoleClose = () => {
         setDeleteOpen(false)
     }
 
-    useEffect(()=> {
+    useEffect(() => {
         dispatch(getRoles())
-    },[dispatch])
-    
+    }, [dispatch])
+
     return (
         <>
+            {deleteNotify && deleteSuccess?.message &&
+                <Notification
+                    data={deleteSuccess?.message}
+                    status="success"
+                />
+            }
+
+            {deleteNotify && deleteError?.message &&
+                <Notification
+                    data={deleteError?.message}
+                    status="error"
+                />
+            }
 
             <p className="mb-6">Welcome to your Pluto Software admin dashboard. Here you can get an overview of your account activity, or use navigation on the left hand side to get to your desired location.</p>
             <Paper className={`${classes.root} mb-6`}>
@@ -94,7 +112,7 @@ const Roles = () => {
                                     <TableCell align="left">{row.role_name}</TableCell>
                                     <TableCell align="right">
                                         <Box display="flex" alignItems="center" justifyContent="flex-end">
-                                            <IconButton onClick={deleteRole}><DeleteIcon color="secondary" /></IconButton>
+                                            <IconButton onClick={() => deleteRole(row.id, row.role_name)}><DeleteIcon color="secondary" /></IconButton>
                                         </Box>
                                     </TableCell>
                                 </TableRow>

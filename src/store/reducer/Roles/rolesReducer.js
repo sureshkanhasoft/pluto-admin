@@ -7,6 +7,9 @@ const initialState = {
     getRolesError:[],
     roleSuccess: [],
     roleErrors: [],
+
+    deleteError:[],
+    deleteSuccess:[]
 }
 
 const rolesReducer = (state = initialState, action) => {
@@ -16,6 +19,9 @@ const rolesReducer = (state = initialState, action) => {
                 loading: true,
                 roleSuccess: "",
                 roleErrors: "",
+
+                deleteSuccess:"",
+                deleteError:""
             })
 
         case actionTypes.GET_ROLE_SUCCESS:
@@ -47,6 +53,26 @@ const rolesReducer = (state = initialState, action) => {
             return updateObject(state, {
                 loading: false,
                 roleErrors: action.payload
+            })
+
+
+        case actionTypes.DELETE_ROLE_REQUEST:
+            return updateObject(state, {
+                loading: true,
+                deleteError: "",
+                deleteSuccess: "",
+            })
+
+        case actionTypes.DELETE_ROLE_SUCCESS:
+            return updateObject(state, {
+                loading: false,
+                deleteSuccess: action.payload
+            })
+
+        case actionTypes.DELETE_ROLE_ERROR:
+            return updateObject(state, {
+                loading: false,
+                deleteError: action.payload
             })
 
         default:

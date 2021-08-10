@@ -24,6 +24,7 @@ export {
 
 export {
     getRoles,
-    createRoles
+    createRoles,
+    deleteRoles
 } from './roles/rolesAction'
  
