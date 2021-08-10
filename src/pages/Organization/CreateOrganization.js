@@ -37,7 +37,6 @@ const CreateOrganization = ({ open, handleClose }) => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const [createMsg, setCreateMsg]=useState(false)
     const { createOrgErrors, createOrgSuccess } = useSelector(state => state.organizationReducer)
-    console.log("createOrgErrors, createOrgSuccess", createOrgErrors, createOrgSuccess)
     const [data, setData] = useState({
         organization_name: "",
         contact_person_name: "",
@@ -90,7 +89,6 @@ const CreateOrganization = ({ open, handleClose }) => {
                 status="success"
             />
         }
-        {/* // <Dialog open={open} onClose={handleClose} classes={{ paper: classes.dialogWidth }}> */}
         <Dialog open={open} onClose={dialogClose} classes={{ paper: classes.dialogWidth }}>
             <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
                 <DialogTitle id="form-dialog-title">

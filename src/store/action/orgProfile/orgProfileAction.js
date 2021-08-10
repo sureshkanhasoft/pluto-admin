@@ -20,7 +20,7 @@ export const orgChangePassword = (data) => {
             if (data.status === true) {
                 dispatch(changePasswordSuccess(data))
                 setTimeout(() => {
-                    history .push('/admin')
+                    history.push('/admin')
                 }, 2000);
                 // dispatch(putNotify('data success'))
             } else {

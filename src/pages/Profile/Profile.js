@@ -99,7 +99,6 @@ const Profile = () => {
     }, [dispatch])
 
     const onSubmit = async data => {
-        console.log("resetPass => ", data)
         dispatch(changePassword(data))
         setPassNotify(true)
         reset();

@@ -103,11 +103,8 @@ const Organization = () => {
     const [openUpdate, setOpenUpdate] = useState(false);
     const [Id, setId] = useState(false);
     const [searchData, setSearchData] = useState({ search: "",status: "" });
-    // const [responseData, setResponseData] = useState([]);
     const [page, setPage] = React.useState(1);
     const { organizationList, loading } = useSelector(state => state.createOrganization)
-    console.log('organizationList: ', organizationList);
-    // const { createOrgErrors, createOrgSuccess } = useSelector(state => state.organizationReducer)
     const [anchorEl, setAnchorEl] = React.useState(null);
     const openMenu = Boolean(anchorEl);
 
@@ -133,11 +130,9 @@ const Organization = () => {
 
     const handleSearchChange = (event) => {
         setSearchData({ ...searchData, [event.target.name]: event.target.value });
-        console.log("searchData ", searchData)
     }
 
     const handleClickSearch = (event, value) => {
-        console.log("searchDatasearchData" , searchData)
         handleMenuClose(true)
         setTimeout(getData(page, searchData.search, searchData.status), 1000);
     };

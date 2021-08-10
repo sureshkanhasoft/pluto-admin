@@ -49,7 +49,6 @@ const Navbar = () => {
 
   const openProfile = () =>{
     // const loggedUser = localStorage.getItem("role").replace(/['"]+/g, '');
-    console.log('loggedUser: ', loggedUser);
     if(loggedUser === "ORGANIZATION"){
       history.push('/admin/organization-profile')
     } else {

@@ -59,7 +59,6 @@ const OrgProfile = () => {
     })
     const { profile, loading } = useSelector(state => state.orgProfile)
     const {profileOrgErrors, profileOrgSuccess} = useSelector(state => state.orgProfile)
-    console.log('profileOrgErrors: ', profileOrgErrors);
 
     const handleChange = (event) => {
         setData({ ...data, [event.target.name]: event.target.value });

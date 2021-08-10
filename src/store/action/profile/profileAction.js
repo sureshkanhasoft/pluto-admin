@@ -89,7 +89,6 @@ export const updateProfileError = (error) => {
 // -----------------------------
 
 export const changePassword = (data) => {
-    console.log('data: ', data);
     const loggedInUser = localStorage.getItem('token').replace(/['"]+/g, '');
     return async(dispatch) =>{
         dispatch(changePasswordRequest())

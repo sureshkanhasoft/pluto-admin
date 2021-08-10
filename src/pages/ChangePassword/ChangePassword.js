@@ -46,7 +46,6 @@ const ChangePassword = () => {
         confirm_password: "",
     })
     const handleChangePassword = (event) => {
-        console.log('event: ', event);
         setData({ ...data, [event.target.name]: event.target.value });
     };
 
