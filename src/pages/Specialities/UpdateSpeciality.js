@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     makeStyles,
     Button,
     Dialog, DialogActions, DialogContent, DialogTitle, TextField, Divider
 } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
-import { useForm } from 'react-hook-form';
-import { createSpecialities } from '../../store/action';
+import axios from 'axios';
+import apiConfigs from '../../config/config';
+import { updateSpecialities } from '../../store/action';
 import Notification from '../../components/Notification/Notification';
 
 const useStyle = makeStyles((theme) => ({
@@ -16,12 +17,11 @@ const useStyle = makeStyles((theme) => ({
     }
 }))
 
-const CreateSpeciality = ({ open, handleClose }) => {
+function UpdateSpeciality({ open, handleClose, id }) {
     const classes = useStyle();
     const dispatch = useDispatch();
     const [specilaityNotify, setSpecilaityNotify] = useState(false)
-    const { specialitySuccess, specialityError } = useSelector(state => state.specialities)
-    const { register, handleSubmit, formState: { errors }, reset } = useForm();
+    const { speUpdateSuccess, speUpdateErrors } = useSelector(state => state.specialities)
     const [data, setData] = useState({
         speciality_name: "",
     })
@@ -30,32 +30,56 @@ const CreateSpeciality = ({ open, handleClose }) => {
         setData({ ...data, [event.target.name]: event.target.value });
     };
 
-    const specialitySubmit = async (data) => {
-        dispatch(createSpecialities(data))
+    const specialitySubmit = (event) => {
+        dispatch(updateSpecialities(data))
         setSpecilaityNotify(true)
-        handleClose();
-        reset();
     }
+
+    useEffect(()=>{
+        if(speUpdateSuccess?.message) {
+            handleClose()
+        }
+    },[speUpdateSuccess])
+
+    const getData = async (id) => {
+        if (id > 0) {
+            const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, '');
+            axios.get(`${apiConfigs.API_URL}api/organization/get-speciality/${id}`, {
+                headers: {
+                    'content-type': 'application/json',
+                    'Authorization': `Bearer ${loggedInUser}`
+                }
+            }).then(response => {
+                setData(response.data.data)
+            }).catch(error => {
+                console.log("error.message", error.message);
+            });
+        }
+    }
+    useEffect(() => {
+        setData("")
+        getData(id);
+    }, [id]);
 
     return (
         <>
-            {specilaityNotify && specialitySuccess?.message &&
+            {specilaityNotify && speUpdateSuccess?.message &&
                 <Notification
-                    data={specialitySuccess?.message}
+                    data={speUpdateSuccess?.message}
                     status="success"
                 />
             }
 
-            {specilaityNotify && specialityError?.message &&
+            {/* {specilaityNotify && speUpdateErrors?.message &&
                 <Notification
-                    data={specialityError?.message}
+                    data={speUpdateErrors?.message}
                     status="error"
                 />
-            }
+            } */}
             <Dialog open={open} onClose={handleClose} classes={{ paper: classes.dialogWidth }}>
-                <form onSubmit={handleSubmit(specialitySubmit)}>
+                <form>
                     <DialogTitle id="form-dialog-title">
-                        <div>Create Speciality</div>
+                        <div>Update Speciality</div>
                     </DialogTitle>
                     <Divider />
                     <DialogContent>
@@ -66,14 +90,10 @@ const CreateSpeciality = ({ open, handleClose }) => {
                             label="Speciality"
                             variant="outlined"
                             name="speciality_name"
-                            // value={data.speciality_name}
-
+                            value={data.speciality_name ? data.speciality_name : ""}
                             fullWidth
-                            {...register('speciality_name', {
-                                required: "Please enter speciality name",
-                            })}
-                            helperText={errors.speciality_name ? "Please enter speciality name" : false}
-                            error={(errors.speciality_name ? true : false)}
+                            error={speUpdateErrors?.message ? true : false}
+                            helperText={speUpdateErrors?.message ? speUpdateErrors?.message : ""}
                             onChange={handleChange}
                             required
                         />
@@ -82,8 +102,8 @@ const CreateSpeciality = ({ open, handleClose }) => {
                         <Button onClick={handleClose} color="primary">
                             Cancel
                         </Button>
-                        <Button color="secondary" variant="contained" type="submit" formNoValidate>
-                            Add
+                        <Button color="secondary" variant="contained" onClick={specialitySubmit} formNoValidate >
+                            Update
                         </Button>
                     </DialogActions>
                 </form>
@@ -92,4 +112,4 @@ const CreateSpeciality = ({ open, handleClose }) => {
     )
 }
 
-export default CreateSpeciality
+export default UpdateSpeciality

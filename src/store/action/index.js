@@ -27,4 +27,10 @@ export {
     createRoles,
     deleteRoles
 } from './roles/rolesAction'
+
+export {
+    getSpecialities,
+    createSpecialities,
+    updateSpecialities
+} from './specialities/specialitiesAction'
  

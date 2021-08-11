@@ -96,8 +96,6 @@ const CreateOrganization = ({ open, handleClose }) => {
                 </DialogTitle>
                 <Divider />
                 <DialogContent>
-                
-                
                     <TextField
                         autoFocus
                         margin="dense"

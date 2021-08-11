@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Paper,
     makeStyles,
@@ -10,7 +10,9 @@ import {
     TableRow,
     TableCell,
     IconButton,
-    InputBase
+    InputBase,
+    Backdrop,
+    CircularProgress
 } from '@material-ui/core';
 import { alpha } from '@material-ui/core/styles/colorManipulator';
 import AddIcon from '@material-ui/icons/Add';
@@ -20,12 +22,19 @@ import EditIcon from '@material-ui/icons/Edit';
 import SearchIcon from '@material-ui/icons/Search';
 import AlertDialog from '../../components/Alert/AlertDialog';
 import CreateSpeciality from './CreateSpeciality';
+import { useDispatch, useSelector } from 'react-redux';
+import { getSpecialities } from '../../store/action';
+import UpdateSpeciality from './UpdateSpeciality';
 
 const useStyle = makeStyles((theme) => ({
     root: {
         width: '100%',
         overflowX: 'auto',
         padding: 24,
+    },
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff',
     },
 
     search: {
@@ -51,6 +60,11 @@ const useStyle = makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        zIndex: 99,
+        cursor: "pointer"
+    },
+    searchIcondet: {
+        cursor: "pointer"
     },
     inputRoot: {
         color: 'inherit',
@@ -74,57 +88,76 @@ const useStyle = makeStyles((theme) => ({
     },
 }))
 
-const specialityList = [
-    {
-        name: "Aerospace Medicine",
-    },
-    {
-        name: "General Surgery",
-    },
-    {
-        name: "Plastic Surgery",
-    },
-    {
-        name: "Neurosurgery",
-    },
-    {
-        name: "Physiotherapy",
-    },
-    {
-        name: "Psychiatry",
-    },
-]
 
 const Specialities = () => {
     const classes = useStyle();
+    const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
+    const [openUpdate, setOpenUpdate] = useState(false);
+    const [Id, setId] = useState(false);
     const [deleteOpen, setDeleteOpen] = useState(false);
 
-    const handleClickOpen = () => {
+    const [page, setPage] = React.useState(1);
+    const [searchData, setSearchData] = useState({ search: "", status: "" });
+
+    const { getSpecialityItem, loading} = useSelector(state => state.specialities)
+
+    const handleClickOpen = (id) => {
         setOpen(true);
+    };
+    const handleUpdateClickOpen = (id) => {
+        setOpenUpdate(true);
+        setId(id)
     };
 
     const handleClose = () => {
         setOpen(false);
+        setOpenUpdate(false)
     };
 
-    const deleteRole = () => {
+    const deleteSpeciality = () => {
         setDeleteOpen(true)
     }
     const deleteRoleClose = () => {
         setDeleteOpen(false)
     }
+
+    const alertResponse = () => {
+        console.log('responsce ok')
+    }
+
+    // -----------------------------------
+    const handleSearchChange = (event) => {
+        setSearchData({ ...searchData, [event.target.name]: event.target.value });
+    }
+
+    const handleClickSearch = (event, value) => {
+        setTimeout(getSpecialitiesData(searchData.search), 1000);
+    };
+
+    const handleChange = (event, value) => {
+        setPage(value);
+        // setTimeout(getSpecialitiesData(value), 2000);
+    };
+
+    const getSpecialitiesData = () => {
+        dispatch(getSpecialities())
+    }
+
+    useEffect(() => {
+        getSpecialitiesData()
+    }, [])
+
     return (
         <>
+            
             <p className="mb-6">Welcome to your Pluto Software admin dashboard. Here you can get an overview of your account activity, or use navigation on the left hand side to get to your desired location.</p>
             <Paper className={`${classes.root} mb-6`}>
                 <Box className="mb-5" display="flex" alignItems="center">
+                    <SearchIcon className={classes.searchIcondet} onClick={handleClickSearch} />
                     <div className={classes.search} >
-                        <div className={classes.searchIcon}>
-                            <SearchIcon />
-                        </div>
-                        <InputBase
-                            placeholder="Search…"
+                        <InputBase name="search"
+                            placeholder="Search…" onChange={handleSearchChange}
                             classes={{
                                 root: classes.inputRoot,
                                 input: classes.inputInput,
@@ -148,25 +181,33 @@ const Specialities = () => {
                     </TableHead>
                     <TableBody>
                         {
-                            specialityList.map((row, index) => {
+                            getSpecialityItem?.data?.data && getSpecialityItem?.data?.data.map((row, index) => {
                                 return (
                                     <TableRow key={index} >
                                         <TableCell scope="row">{index + 1}</TableCell>
-                                        <TableCell align="left">{row.name}</TableCell>
+                                        <TableCell align="left">{row.speciality_name}</TableCell>
                                         <TableCell align="right">
                                             <Box display="flex" alignItems="center" justifyContent="flex-end">
-                                                <IconButton onClick={handleClickOpen}><EditIcon color="primary" /></IconButton>
-                                                <IconButton onClick={deleteRole}><DeleteIcon color="secondary" /></IconButton>
+                                                <IconButton onClick={() => handleUpdateClickOpen(row.id)}><EditIcon color="primary" /></IconButton>
+                                                <IconButton onClick={deleteSpeciality}><DeleteIcon color="secondary" /></IconButton>
                                             </Box>
                                         </TableCell>
                                     </TableRow>
                                 )
                             })
                         }
+                        {
+                            !getSpecialityItem?.data &&
+                            <TableRow>
+                                <TableCell scope="row" colSpan="3">
+                                    <div className="" align="center">Sorry, speciality  not available!</div>
+                                </TableCell>
+                            </TableRow>
+                        }
                     </TableBody>
                 </Table>
                 <Box className="mt-5" display="flex" justifyContent="flex-end">
-                    <Pagination count={5} />
+                    <Pagination onChange={handleChange} page={page} count={getSpecialityItem?.data?.last_page} showFirstButton showLastButton />
                 </Box>
             </Paper>
 
@@ -175,13 +216,27 @@ const Specialities = () => {
                 handleClose={handleClose}
             />
 
+            <UpdateSpeciality
+                open={openUpdate}
+                handleClose={handleClose}
+                id={Id}
+            />
+
             <AlertDialog
                 open={deleteOpen}
                 close={deleteRoleClose}
+                response={alertResponse}
                 title="Delete Speciality"
                 description="Are you sure you want to delete?"
                 buttonName="Delete"
             />
+
+            {
+                loading ?
+                    <Backdrop className={classes.backdrop} open={loading}>
+                        <CircularProgress color="inherit" />
+                    </Backdrop> : ""
+            }
         </>
     )
 }

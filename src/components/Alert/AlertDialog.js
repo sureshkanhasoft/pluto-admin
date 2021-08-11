@@ -23,6 +23,10 @@ const useStyle = makeStyles((theme) => ({
 const AlertDialog = ({ open, close, title, description, buttonName }) => {
     const classes = useStyle();
 
+    const deleteResponse = () => {
+        close()
+    }
+
     return (
         <Dialog
             open={open}
@@ -40,7 +44,7 @@ const AlertDialog = ({ open, close, title, description, buttonName }) => {
                 <Button onClick={close} color="primary">
                     Cancel
                 </Button>
-                <Button variant="contained" onClick={close} color="secondary" autoFocus>
+                <Button variant="contained" onClick={deleteResponse} color="secondary" autoFocus>
                     {buttonName}
                 </Button>
             </DialogActions>

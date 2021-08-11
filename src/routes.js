@@ -95,7 +95,7 @@ const Routes = [
     },
     {
         name:"Specialities",
-        path:"specialties",
+        path:"specialities",
         component:Specialities,
         icon:"volunteer_activism",
         role:"admin"
