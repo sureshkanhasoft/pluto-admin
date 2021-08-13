@@ -2,6 +2,9 @@ import axios from "axios";
 import Config from '../../../config/config'
 import {
     CREATE_SPECIALITIES_ERROR, CREATE_SPECIALITIES_REQUEST, CREATE_SPECIALITIES_SUCCESS,
+    DELETE_SPECIALITIES_ERROR,
+    DELETE_SPECIALITIES_REQUEST,
+    DELETE_SPECIALITIES_SUCCESS,
     GET_SPECIALITIES_ERROR, GET_SPECIALITIES_REQUEST, GET_SPECIALITIES_SUCCESS,
     UPDATE_SPECIALITIES_ERROR, UPDATE_SPECIALITIES_REQUEST, UPDATE_SPECIALITIES_SUCCESS
 } from "../actiontypes";
@@ -137,5 +140,51 @@ export const updateSpecialitiesError = (error) => {
     return {
         type: UPDATE_SPECIALITIES_ERROR,
         payload: error
+    }
+}
+
+
+// -------------------------------------
+
+export const deleteSpecialities = (role_id) => {
+    const loggedInUser = localStorage.getItem('token').replace(/['"]+/g, '');
+    return async(dispatch) =>{
+        dispatch(deleteSpecialitiesRequest())
+        await axios.delete(`${Config.API_URL}api/organization/delete-speciality/${role_id}`, {
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': `Bearer ${loggedInUser}`
+            }
+        }).then(response => {
+            const data = response.data
+            if (data.status === true) {
+                dispatch(deleteSpecialitiesSuccess(data))
+                setTimeout(() => {
+                    dispatch(getSpecialities(1,''))
+                }, 2000);
+            } else {
+                dispatch(deleteSpecialitiesError(data))
+            }
+        }).catch(error => {
+            dispatch(deleteSpecialitiesError(error))
+        })
+    }
+}
+
+export const deleteSpecialitiesRequest = () => {
+    return {
+        type: DELETE_SPECIALITIES_REQUEST
+    }
+}
+export const deleteSpecialitiesSuccess = (data) => {
+    return {
+        type: DELETE_SPECIALITIES_SUCCESS,
+        payload:data
+    }
+}
+export const deleteSpecialitiesError = (error) => {
+    return {
+        type: DELETE_SPECIALITIES_ERROR,
+        payload:error
     }
 }

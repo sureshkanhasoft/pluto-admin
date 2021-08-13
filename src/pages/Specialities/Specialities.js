@@ -23,8 +23,9 @@ import SearchIcon from '@material-ui/icons/Search';
 import AlertDialog from '../../components/Alert/AlertDialog';
 import CreateSpeciality from './CreateSpeciality';
 import { useDispatch, useSelector } from 'react-redux';
-import { getSpecialities } from '../../store/action';
+import { deleteSpecialities, getSpecialities } from '../../store/action';
 import UpdateSpeciality from './UpdateSpeciality';
+import Notification from '../../components/Notification/Notification';
 
 const useStyle = makeStyles((theme) => ({
     root: {
@@ -96,11 +97,12 @@ const Specialities = () => {
     const [openUpdate, setOpenUpdate] = useState(false);
     const [Id, setId] = useState(false);
     const [deleteOpen, setDeleteOpen] = useState(false);
+    const [deleteNotify, SetDeleteNotify] = useState(false);
 
     const [page, setPage] = React.useState(1);
     const [searchData, setSearchData] = useState({ search: "", status: "" });
 
-    const { getSpecialityItem, loading} = useSelector(state => state.specialities)
+    const { getSpecialityItem, loading, deleteSuccess, deleteError } = useSelector(state => state.specialities)
 
     const handleClickOpen = (id) => {
         setOpen(true);
@@ -148,9 +150,27 @@ const Specialities = () => {
         getSpecialitiesData()
     }, [])
 
+    const deleteSpecialitiesData = (id) => {
+        dispatch(deleteSpecialities(id))
+        SetDeleteNotify(true)
+    }
+
     return (
         <>
-            
+            {deleteNotify && deleteSuccess?.message &&
+                <Notification
+                    data={deleteSuccess?.message}
+                    status="success"
+                />
+            }
+
+            {deleteNotify && deleteError?.message &&
+                <Notification
+                    data={deleteError?.message}
+                    status="error"
+                />
+            }
+
             <p className="mb-6">Welcome to your Pluto Software admin dashboard. Here you can get an overview of your account activity, or use navigation on the left hand side to get to your desired location.</p>
             <Paper className={`${classes.root} mb-6`}>
                 <Box className="mb-5" display="flex" alignItems="center">
@@ -189,7 +209,7 @@ const Specialities = () => {
                                         <TableCell align="right">
                                             <Box display="flex" alignItems="center" justifyContent="flex-end">
                                                 <IconButton onClick={() => handleUpdateClickOpen(row.id)}><EditIcon color="primary" /></IconButton>
-                                                <IconButton onClick={deleteSpeciality}><DeleteIcon color="secondary" /></IconButton>
+                                                <IconButton onClick={() => deleteSpecialitiesData(row.id)}><DeleteIcon color="secondary" /></IconButton>
                                             </Box>
                                         </TableCell>
                                     </TableRow>

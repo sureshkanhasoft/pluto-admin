@@ -9,7 +9,10 @@ const initialState = {
     specialityError:[],
     specialitySuccess:[],
     speUpdateSuccess:[],
-    speUpdateErrors:[]
+    speUpdateErrors:[],
+
+    deleteSuccess:[],
+    deleteError:[]
 }
 
 const specialitiesReducer = (state = initialState, action) => {
@@ -67,6 +70,25 @@ const specialitiesReducer = (state = initialState, action) => {
             return updateObject(state, {
                 loading: false,
                 speUpdateErrors: action.payload
+            })
+
+        case actionTypes.DELETE_SPECIALITIES_REQUEST:
+            return updateObject(state, {
+                loading: true,
+                deleteError: "",
+                deleteSuccess: "",
+            })
+
+        case actionTypes.DELETE_SPECIALITIES_SUCCESS:
+            return updateObject(state, {
+                loading: false,
+                deleteSuccess: action.payload
+            })
+
+        case actionTypes.DELETE_SPECIALITIES_ERROR:
+            return updateObject(state, {
+                loading: false,
+                deleteError: action.payload
             })
 
         default:

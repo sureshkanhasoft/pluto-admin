@@ -31,6 +31,7 @@ export {
 export {
     getSpecialities,
     createSpecialities,
-    updateSpecialities
+    updateSpecialities,
+    deleteSpecialities
 } from './specialities/specialitiesAction'
  
