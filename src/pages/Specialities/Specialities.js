@@ -135,13 +135,13 @@ const Specialities = () => {
         setTimeout(getSpecialitiesData(searchData.search), 1000);
     };
 
-    const handleChange = (event, value) => {
+    const handleChangePage = (event, value) => {
         setPage(value);
-        // setTimeout(getSpecialitiesData(value), 2000);
+        setTimeout(getSpecialitiesData(value), 2000);
     };
 
-    const getSpecialitiesData = () => {
-        dispatch(getSpecialities())
+    const getSpecialitiesData = (pageNo = 1, search = '') => {
+        dispatch(getSpecialities({ pageNo, search }))
     }
 
     useEffect(() => {
@@ -181,10 +181,10 @@ const Specialities = () => {
                     </TableHead>
                     <TableBody>
                         {
-                            getSpecialityItem?.data?.data && getSpecialityItem?.data?.data.map((row, index) => {
+                            getSpecialityItem?.data && getSpecialityItem?.data.map((row, index) => {
                                 return (
                                     <TableRow key={index} >
-                                        <TableCell scope="row">{index + 1}</TableCell>
+                                        <TableCell scope="row">{row.id}</TableCell>
                                         <TableCell align="left">{row.speciality_name}</TableCell>
                                         <TableCell align="right">
                                             <Box display="flex" alignItems="center" justifyContent="flex-end">
@@ -207,7 +207,7 @@ const Specialities = () => {
                     </TableBody>
                 </Table>
                 <Box className="mt-5" display="flex" justifyContent="flex-end">
-                    <Pagination onChange={handleChange} page={page} count={getSpecialityItem?.data?.last_page} showFirstButton showLastButton />
+                    <Pagination onChange={handleChangePage} page={page} count={getSpecialityItem?.last_page} showFirstButton showLastButton />
                 </Box>
             </Paper>
 

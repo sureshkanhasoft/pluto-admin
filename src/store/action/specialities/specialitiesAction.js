@@ -7,21 +7,21 @@ import {
 } from "../actiontypes";
 
 
-export const getSpecialities = () => {
+export const getSpecialities = ({pageNo=1, search = ''}) => {
     const loggedInUser = localStorage.getItem('token').replace(/['"]+/g, '');
     return async (dispatch) => {
         dispatch(getSpecialitiesRequest())
-        await axios.get(`${Config.API_URL}api/organization/get-all-speciality?search=`, {
+        await axios.get(`${Config.API_URL}api/organization/get-all-speciality?search=${search}&page=${pageNo}`, {
             headers: {
                 'content-type': 'application/json',
                 'Authorization': `Bearer ${loggedInUser}`
             }
         }).then(response => {
-            const data = response.data
-            if (data.status === true) {
-                dispatch(getSpecialitiesSuccess(data))
+            const dataItem = response.data
+            if (dataItem.status === true) {
+                dispatch(getSpecialitiesSuccess(dataItem.data))
             } else {
-                dispatch(getSpecialitiesError(data))
+                dispatch(getSpecialitiesError(dataItem.data))
             }
         }).catch(error => {
             dispatch(getSpecialitiesError(error))
@@ -63,7 +63,7 @@ export const createSpecialities = (data) => {
             if (data.status === true) {
                 dispatch(createSpecialitiesSuccess(data))
                 setTimeout(() => {
-                    dispatch(getSpecialities())
+                    dispatch(getSpecialities(1, ''))
                 }, 2000);
             } else {
                 dispatch(createSpecialitiesError(data))
@@ -112,7 +112,7 @@ export const updateSpecialities = (data) => {
             const data = response.data
             if (data.status === true) {
                 dispatch(updateSpecialitiesSuccess(data))
-                    dispatch(getSpecialities())
+                dispatch(getSpecialities(1, ''))
             } else {
                 dispatch(updateSpecialitiesError(data))
             }
