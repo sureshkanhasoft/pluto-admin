@@ -49,7 +49,7 @@ export const login = ({ email, password }) => {
 export const forgotpassword = ({ email }) => {
     return (dispatch) => {
         dispatch(getForgotRequest());
-        axios.post(`${Config.API_URL}api/superadmin/forgot`, {
+        axios.post(`${Config.API_URL}api/forgot`, {
             headers: {
                 'content-type': 'application/json',
             },
@@ -72,7 +72,7 @@ export const forgotpassword = ({ email }) => {
 export const changepassword = ({ decode_id, password, confirm_password }) => {
     return (dispatch) => {
         dispatch(getChangePasswordRequest());
-        axios.post(`${Config.API_URL}api/superadmin/reset-password`, {
+        axios.post(`${Config.API_URL}api/reset-password`, {
             headers: {
                 'content-type': 'application/json',
             },
