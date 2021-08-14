@@ -134,7 +134,7 @@ const Specialities = () => {
     }
 
     const handleClickSearch = (event, value) => {
-        setTimeout(getSpecialitiesData(searchData.search), 1000);
+        setTimeout(getSpecialitiesData(page, searchData.search), 1000);
     };
 
     const handleChangePage = (event, value) => {
