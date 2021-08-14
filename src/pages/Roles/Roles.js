@@ -45,9 +45,10 @@ const Roles = () => {
     const [open, setOpen] = useState(false);
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [deleteNotify, SetDeleteNotify] = useState(false);
+    const [Id, setId] = useState(false);
     // const [deleteConfirm, SetDeleteConfim] = useState(false);
 
-    const { getRolesItem, loading,deleteSuccess,deleteError } = useSelector(state => state.roles)
+    const { getRolesItem, loading, deleteSuccess, deleteError } = useSelector(state => state.roles)
 
     const handleClickOpen = (id) => {
         setOpen(true);
@@ -58,12 +59,17 @@ const Roles = () => {
     };
 
     const deleteRole = (role_id) => {
+        setId(role_id)
         setDeleteOpen(true)
-        dispatch(deleteRoles(role_id))
-        SetDeleteNotify(true)
+        // dispatch(deleteRoles(role_id))
+        
     }
     const deleteRoleClose = () => {
         setDeleteOpen(false)
+    }
+    const alertResponse = (id) => {
+        dispatch(deleteRoles(id))
+        SetDeleteNotify(true)
     }
 
     useEffect(() => {
@@ -112,7 +118,7 @@ const Roles = () => {
                                     <TableCell align="left">{row.role_name}</TableCell>
                                     <TableCell align="right">
                                         <Box display="flex" alignItems="center" justifyContent="flex-end">
-                                            <IconButton onClick={() => deleteRole(row.id, row.role_name)}><DeleteIcon color="secondary" /></IconButton>
+                                            <IconButton onClick={() => deleteRole(row.id)}><DeleteIcon color="secondary" /></IconButton>
                                         </Box>
                                     </TableCell>
                                 </TableRow>
@@ -133,6 +139,8 @@ const Roles = () => {
             />
 
             <AlertDialog
+                id={Id}
+                response={alertResponse}
                 open={deleteOpen}
                 close={deleteRoleClose}
                 title="Delete Role"

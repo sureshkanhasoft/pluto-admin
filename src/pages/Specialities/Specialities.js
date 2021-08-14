@@ -124,8 +124,9 @@ const Specialities = () => {
         setDeleteOpen(false)
     }
 
-    const alertResponse = () => {
-        console.log('responsce ok')
+    const alertResponse = (id) => {
+        dispatch(deleteSpecialities(id))
+        SetDeleteNotify(true)
     }
 
     // -----------------------------------
@@ -151,8 +152,10 @@ const Specialities = () => {
     }, [])
 
     const deleteSpecialitiesData = (id) => {
-        dispatch(deleteSpecialities(id))
-        SetDeleteNotify(true)
+        setId(id)
+        setDeleteOpen(true)
+        // dispatch(deleteSpecialities(id))
+        
     }
 
     return (
@@ -243,6 +246,7 @@ const Specialities = () => {
             />
 
             <AlertDialog
+                id={Id}
                 open={deleteOpen}
                 close={deleteRoleClose}
                 response={alertResponse}

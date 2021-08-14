@@ -13,17 +13,18 @@ import {
 const useStyle = makeStyles((theme) => ({
     dialogWidth: {
         width: "100%",
-        maxWidth:500
+        maxWidth: 500
     },
     radioGroup: {
         flexDirection: "row"
     }
 }))
 
-const AlertDialog = ({ open, close, title, description, buttonName }) => {
+const AlertDialog = ({ open, close, title, description, buttonName, id, response }) => {
     const classes = useStyle();
 
     const deleteResponse = () => {
+        response(id);
         close()
     }
 

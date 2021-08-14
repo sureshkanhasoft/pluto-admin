@@ -36,8 +36,12 @@ const CreateRoles = ({ open, handleClose }) => {
         setRoleMsg(true)
         handleClose();
         reset();
+        setData("")
+
     };
     const closeModal = () => {
+        reset()
+        setData("")
         handleClose();
     }
     return (
@@ -69,7 +73,7 @@ const CreateRoles = ({ open, handleClose }) => {
                                 label="Role Name"
                                 variant="outlined"
                                 name="role_name"
-                                value={data.role_name}
+                                value={data.role_name || ""}
                                 fullWidth
                                 {...register("role_name", {
                                     required: "Please enter role name",
