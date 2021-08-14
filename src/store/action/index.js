@@ -34,4 +34,8 @@ export {
     updateSpecialities,
     deleteSpecialities
 } from './specialities/specialitiesAction'
- 
+
+export {
+    getStaff,
+    createStaff
+} from './staff/staffAction'

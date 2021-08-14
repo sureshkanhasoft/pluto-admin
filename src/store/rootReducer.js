@@ -6,17 +6,19 @@ import orgProfileReducer from "./reducer/orgProfileReducer/orgProfileReducer";
 import profileReducer from "./reducer/profile/profileReducer"
 import rolesReducer from "./reducer/Roles/rolesReducer";
 import specialitiesReducer from "./reducer/specialities/specialitiesReducer";
+import staffReducer from "./reducer/staff/staffReducer";
 
 const rootReducer = combineReducers(
     {
-        authReducer:authReducer,
-        createOrganization:organizationReducer,
-        organizationReducer:organizationReducer,
-        profile:profileReducer,
-        orgProfile:orgProfileReducer,
-        notify:notifyReducer,
-        roles:rolesReducer,
-        specialities:specialitiesReducer
+        authReducer: authReducer,
+        createOrganization: organizationReducer,
+        organizationReducer: organizationReducer,
+        profile: profileReducer,
+        orgProfile: orgProfileReducer,
+        notify: notifyReducer,
+        roles: rolesReducer,
+        specialities: specialitiesReducer,
+        staff: staffReducer
     }
 );
 

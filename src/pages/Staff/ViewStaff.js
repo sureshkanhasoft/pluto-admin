@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
     Paper,
     makeStyles,
@@ -9,12 +9,16 @@ import {
     TableHead,
     TableRow,
     TableCell,
+    Backdrop,
+    CircularProgress,
 } from '@material-ui/core';
 import { Link } from "react-router-dom";
 import SearchIcon from '@material-ui/icons/Search';
 import { alpha } from '@material-ui/core/styles/colorManipulator';
 import AddIcon from '@material-ui/icons/Add';
 import { Pagination } from '@material-ui/lab';
+import { useDispatch, useSelector } from 'react-redux';
+import { getStaff } from '../../store/action';
 
 const useStyle = makeStyles((theme) => ({
     root: {
@@ -67,42 +71,42 @@ const useStyle = makeStyles((theme) => ({
         display: "flex",
         alignItems: "center",
     },
+
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff',
+    },
 }))
 
-const bookingList = [
-    {
-        name: "John Smithh",
-        number: "077777777777",
-        email: "john.smith@example.com",
-        status: "Active",
-        designation: "Compliance"
-    },
-    {
-        name: "Devid Smithh",
-        number: "077777777777",
-        email: "john.smith@example.com",
-        status: "Deactive",
-        designation: "Finance"
-    },
-    {
-        name: "Warner Smithh",
-        number: "077777777777",
-        email: "john.smith@example.com",
-        status: "Active",
-        designation: "Booking"
-    },
-]
 
 const ViewStaff = ({ match }) => {
     const classes = useStyle();
+    const dispatch = useDispatch();
+    const [page, setPage] = React.useState(1);
+    const { loading, getStaffItem } = useSelector(state => state.staff)
 
     const onhandlClick = (id) => {
         console.log('id: ', id);
 
     }
+
+    const handleChangePage = () => {
+        console.log('sdfds')
+    }
+
+
+    useEffect(() => {
+        dispatch(getStaff())
+    }, [dispatch])
+
     return (
         <>
-
+            {
+                loading ?
+                    <Backdrop className={classes.backdrop} open={loading}>
+                        <CircularProgress color="inherit" />
+                    </Backdrop> : ""
+            }
             <p className="mb-6">Welcome to your Pluto Software admin dashboard. Here you can get an overview of your account activity, or use navigation on the left hand side to get to your desired location.</p>
             <Paper className={`${classes.root} mb-6`}>
                 <Box className="mb-5" display="flex" alignItems="center">
@@ -137,25 +141,33 @@ const ViewStaff = ({ match }) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {bookingList.map((row, index) => {
+                        {getStaffItem?.data?.data && getStaffItem?.data?.data.map((row, index) => {
                             return (
                                 <TableRow key={index} onClick={e => onhandlClick(index)}>
-                                    <TableCell scope="row">{index + 1}</TableCell>
-                                    <TableCell align="left">{row.name}</TableCell>
+                                    <TableCell scope="row">{row.id}</TableCell>
+                                    <TableCell align="left">{`${row.first_name} ${row.last_name}`}</TableCell>
                                     <TableCell align="left">{row.email}</TableCell>
-                                    <TableCell align="left">{row.number}</TableCell>
-                                    <TableCell align="left">{row.designation}</TableCell>
+                                    <TableCell align="left">{row.contact_number}</TableCell>
+                                    <TableCell align="left">{row.designation_name}</TableCell>
                                     <TableCell align="right">
                                         <Link to={`${match.url}/detail`} className="btn btn-secondary btn-sm ml-auto" >View</Link>
                                     </TableCell>
                                 </TableRow>
                             )
-
                         })}
+
+                        {
+                            !getStaffItem?.data?.data &&
+                            <TableRow>
+                                <TableCell scope="row" colSpan="6">
+                                    <div className="" align="center">Sorry, staff  not available!</div>
+                                </TableCell>
+                            </TableRow>
+                        }
                     </TableBody>
                 </Table>
                 <Box className="mt-5" display="flex" justifyContent="flex-end">
-                    <Pagination count={10} />
+                    <Pagination onChange={handleChangePage} page={page} count={getStaffItem?.last_page} showFirstButton showLastButton />
                 </Box>
 
             </Paper>
