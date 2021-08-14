@@ -1,6 +1,6 @@
 import axios from "axios"
 import Config from "../../../config/config"
-import { CREATE_ORGANIZATION_SUCCESS, CREATE_STAFF_ERROR, CREATE_STAFF_REQUEST, GET_STAFF_ERROR, GET_STAFF_REQUEST, GET_STAFF_SUCCESS } from "../actiontypes";
+import { CREATE_STAFF_ERROR, CREATE_STAFF_REQUEST, CREATE_STAFF_SUCCESS, GET_STAFF_ERROR, GET_STAFF_REQUEST, GET_STAFF_SUCCESS } from "../actiontypes";
 
 
 export const getStaff = () => {
@@ -49,7 +49,7 @@ export const createStaff = (data) => {
     const loggedInUser = localStorage.getItem('token').replace(/['"]+/g, '');
     return async (dispatch) => {
         dispatch(createStaffRequest())
-        await axios.post(`${Config.API_URL}/api/organization/user/signup-user`, data, {
+        await axios.post(`${Config.API_URL}api/organization/user/signup-user`, data, {
             'headers': {
                 'Content-type': 'application/json',
                 'Authorization': 'Bearer ' + loggedInUser
@@ -58,7 +58,6 @@ export const createStaff = (data) => {
             const data = response.data
             if (data && data.status === true) {
                 dispatch(createStaffSuccess(data))
-                // dispatch(getStaff(1, '', ''))
             } else {
                 dispatch(createStaffFailure(data))
             }
@@ -76,7 +75,7 @@ const createStaffRequest = () => {
 
 const createStaffSuccess = (data) => {
     return {
-        type: CREATE_ORGANIZATION_SUCCESS,
+        type: CREATE_STAFF_SUCCESS,
         payload: data
     }
 }
