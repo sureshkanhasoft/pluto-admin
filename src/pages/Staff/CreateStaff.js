@@ -145,15 +145,13 @@ const CreateStaff = () => {
                     </Grid>
 
                     <Grid item xs={12} sm={6} lg={4}>
-                        <FormControl variant="outlined" className={classes.formControl}>
+                        <FormControl variant="outlined" className={classes.formControl} error={(errors.role_id ? true : false)}>
                             <InputLabel>Select Role</InputLabel>
                             <Select
                                 value={data.role_id}
                                 {...register('role_id', {
                                     required: "Please select role",
                                 })}
-                                // helperText={errors.role_id ? "Please select role" : false}
-                                error={(errors.role_id ? true : false)}
                                 onChange={handleChange}
                                 name="role_id"
                                 label="Role Required"
@@ -175,15 +173,13 @@ const CreateStaff = () => {
                     </Grid>
 
                     <Grid item xs={12} sm={6} lg={4}>
-                        <FormControl variant="outlined" className={classes.formControl}>
+                        <FormControl variant="outlined" className={classes.formControl}  error={(errors.designation_id ? true : false)}>
                             <InputLabel>Select Designation</InputLabel>
                             <Select
                                 value={data.designation_id}
                                 {...register('designation_id', {
                                     required: "Please select designation",
                                 })}
-                                // helperText={errors.role_id ? "Please select role" : false}
-                                error={(errors.designation_id ? true : false)}
                                 onChange={handleChange}
                                 label="Designation Required"
                                 name="designation_id"
