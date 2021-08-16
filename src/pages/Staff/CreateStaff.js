@@ -4,9 +4,10 @@ import {
     makeStyles,
     Button,
     Box,
-    Grid, TextField, Select, FormControl, MenuItem, InputLabel,
+    Grid, TextField, Select, FormControl, MenuItem, InputLabel, FormHelperText,
 } from '@material-ui/core';
 import axios from 'axios';
+import { useForm } from 'react-hook-form';
 import apiConfigs from '../../config/config';
 import { useDispatch } from 'react-redux';
 import { createStaff } from '../../store/action';
@@ -19,7 +20,10 @@ const useStyle = makeStyles((theme) => ({
     },
 
     formControl: {
-        width: "100%"
+        width: "100%",
+        '& > .MuiFormHelperText-root':{
+            color:'red'
+        }
     },
     footerBtn: {
         display: "flex",
@@ -35,6 +39,7 @@ const CreateStaff = () => {
     const classes = useStyle();
     const dispatch = useDispatch();
     const [roleItem, setRoleItem] = useState([])
+    const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const [data, setData] = useState({
         first_name: "",
         last_name: "",
@@ -65,13 +70,14 @@ const CreateStaff = () => {
         getRole();
     }, []);
 
-    const staffSubmit = (e) => {
-        e.preventDefault()
-        dispatch(createStaff(data))
+    const staffSubmit = async (datas) => {
+        dispatch(createStaff(datas))
+        reset()
     }
     return (
         <Paper className={classes.root}>
-            <form onSubmit={(e) => staffSubmit(e)}>
+            {/* <form onSubmit={handleSubmit(staffSubmit())}> */}
+            <form onSubmit={handleSubmit(staffSubmit)}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={6} lg={4}>
                         <TextField
@@ -80,6 +86,11 @@ const CreateStaff = () => {
                             variant="outlined"
                             name="first_name"
                             value={data.first_name}
+                            {...register('first_name', {
+                                required: "Please enter first name",
+                            })}
+                            helperText={errors.first_name ? "Please enter first name" : false}
+                            error={(errors.first_name ? true : false)}
                             onChange={handleChange}
                             fullWidth
                         />
@@ -91,6 +102,11 @@ const CreateStaff = () => {
                             variant="outlined"
                             name="last_name"
                             value={data.last_name}
+                            {...register('last_name', {
+                                required: "Please enter last name",
+                            })}
+                            helperText={errors.last_name ? "Please enter last name" : false}
+                            error={(errors.last_name ? true : false)}
                             onChange={handleChange}
                             fullWidth
                         />
@@ -102,6 +118,11 @@ const CreateStaff = () => {
                             variant="outlined"
                             name="email"
                             value={data.email}
+                            {...register('email', {
+                                required: "Please enter email address",
+                            })}
+                            helperText={errors.email ? "Please enter email address" : false}
+                            error={(errors.email ? true : false)}
                             onChange={handleChange}
                             fullWidth
                         />
@@ -113,6 +134,11 @@ const CreateStaff = () => {
                             variant="outlined"
                             name="contact_number"
                             value={data.contact_number}
+                            {...register('contact_number', {
+                                required: "Please enter contact number",
+                            })}
+                            helperText={errors.contact_number ? "Please enter contact number" : false}
+                            error={(errors.contact_number ? true : false)}
                             onChange={handleChange}
                             fullWidth
                         />
@@ -123,6 +149,11 @@ const CreateStaff = () => {
                             <InputLabel>Select Role</InputLabel>
                             <Select
                                 value={data.role_id}
+                                {...register('role_id', {
+                                    required: "Please select role",
+                                })}
+                                // helperText={errors.role_id ? "Please select role" : false}
+                                error={(errors.role_id ? true : false)}
                                 onChange={handleChange}
                                 name="role_id"
                                 label="Role Required"
@@ -139,6 +170,7 @@ const CreateStaff = () => {
                                 }
 
                             </Select>
+                            <FormHelperText>{errors.role_id ? "Please select role" : false}</FormHelperText>
                         </FormControl>
                     </Grid>
 
@@ -147,6 +179,11 @@ const CreateStaff = () => {
                             <InputLabel>Select Designation</InputLabel>
                             <Select
                                 value={data.designation_id}
+                                {...register('designation_id', {
+                                    required: "Please select designation",
+                                })}
+                                // helperText={errors.role_id ? "Please select role" : false}
+                                error={(errors.designation_id ? true : false)}
                                 onChange={handleChange}
                                 label="Designation Required"
                                 name="designation_id"
@@ -158,6 +195,7 @@ const CreateStaff = () => {
                                 <MenuItem value="2">Booking</MenuItem>
                                 <MenuItem value="3">Finance</MenuItem>
                             </Select>
+                            <FormHelperText>{errors.designation_id ? "Please select designation" : false}</FormHelperText>
                         </FormControl>
                     </Grid>
                 </Grid>
@@ -167,7 +205,7 @@ const CreateStaff = () => {
                         Cancel
                     </Button>
                     <Button color="secondary" variant="contained" type="submit">
-                        Save
+                        Add
                     </Button>
                 </Box>
             </form>
