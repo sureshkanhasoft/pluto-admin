@@ -158,9 +158,6 @@ const CreateBooking = () => {
                             value={data.rate}
                             onChange={handleChange}
                             fullWidth
-                            InputProps={{
-                                readOnly: true,
-                            }}
                         />
                     </Grid>
 

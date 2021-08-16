@@ -1,6 +1,6 @@
 import axios from "axios"
 import Config from "../../../config/config"
-import { CREATE_STAFF_ERROR, CREATE_STAFF_REQUEST, CREATE_STAFF_SUCCESS, GET_STAFF_ERROR, GET_STAFF_REQUEST, GET_STAFF_SUCCESS } from "../actiontypes";
+import { CREATE_STAFF_ERROR, CREATE_STAFF_REQUEST, CREATE_STAFF_SUCCESS, GET_STAFF_ERROR, GET_STAFF_REQUEST, GET_STAFF_SUCCESS, UPDATE_STAFF_ERROR, UPDATE_STAFF_REQUEST, UPDATE_STAFF_SUCCESS } from "../actiontypes";
 
 
 export const getStaff = () => {
@@ -83,6 +83,54 @@ const createStaffSuccess = (data) => {
 const createStaffFailure = (error) => {
     return {
         type: CREATE_STAFF_ERROR,
+        payload: error
+    }
+}
+
+
+// -----------------------------------
+
+export const updateStaff = (data) => {
+    const data1 = {...data, user_id:69}
+    const loggedInUser = localStorage.getItem('token').replace(/['"]+/g, '');
+    return async (dispatch) => {
+        dispatch(updateStaffRequest())
+        await axios.post(`${Config.API_URL}api/organization/user/edit-user`, data1, {
+            'headers': {
+                'Content-type': 'application/json',
+                'Authorization': 'Bearer ' + loggedInUser
+            }
+        }).then(response => {
+            const data = response.data
+            if (data && data.status === true) {
+                dispatch(updateStaffSuccess(data))
+            } else {
+                dispatch(updateStaffFailure(data))
+            }
+        }).catch(error => {
+            dispatch(updateStaffFailure(error))
+        })
+    }
+}
+
+
+
+const updateStaffRequest = () => {
+    return {
+        type: UPDATE_STAFF_REQUEST
+    }
+}
+
+const updateStaffSuccess = (data) => {
+    return {
+        type: UPDATE_STAFF_SUCCESS,
+        payload: data
+    }
+}
+
+const updateStaffFailure = (error) => {
+    return {
+        type: UPDATE_STAFF_ERROR,
         payload: error
     }
 }

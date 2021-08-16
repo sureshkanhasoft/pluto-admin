@@ -9,6 +9,7 @@ import {
 } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import history from '../../utils/HistoryUtils';
 
 
 const useStyle = makeStyles((theme) => ({
@@ -37,7 +38,12 @@ const useStyle = makeStyles((theme) => ({
     }
 }))
 
-const DetailStaff = () => {
+const DetailStaff = ({ match }) => {
+    const upadateLink = () => {
+        let dir = match.path;
+        const updateLink = dir.substring(0, dir.lastIndexOf('/'));
+        history.push(`${updateLink}/update`)
+    }
     const classes = useStyle();
     return (
         <Paper className={`${classes.root} mb-6`}>
@@ -68,7 +74,7 @@ const DetailStaff = () => {
                 </Grid>
                 <Grid item xs={12}>
                     <Box display="flex" justifyContent="flex-end" className={classes.btnContainer}>
-                        <Button variant="contained" color="primary">
+                        <Button variant="contained" color="primary" onClick={upadateLink}>
                             <EditIcon className="mr-2" />Edit
                         </Button>
                         <Button variant="contained" color="secondary">

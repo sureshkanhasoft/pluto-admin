@@ -7,6 +7,8 @@ const initialState = {
     getStaffError: [],
     staffSuccess: [],
     staffError: [],
+    staffUpdateError:[],
+    staffUpdateSuccess:[]
 }
 
 const staffReducer = (state = initialState, action) => {
@@ -47,7 +49,26 @@ const staffReducer = (state = initialState, action) => {
                 staffError: action.payload
             })
 
-        default: return state 
+        case actionTypes.UPDATE_STAFF_REQUEST:
+            return updateObject(state, {
+                loading: true,
+                staffUpdateError:"",
+                staffUpdateSuccess:""
+            })
+
+        case actionTypes.UPDATE_STAFF_SUCCESS:
+            return updateObject(state, {
+                loading: false,
+                staffUpdateSuccess: action.payload
+            })
+
+        case actionTypes.UPDATE_STAFF_REQUEST:
+            return updateObject(state, {
+                loading: false,
+                staffUpdateError: action.payload
+            })
+
+        default: return state
     }
 }
 
