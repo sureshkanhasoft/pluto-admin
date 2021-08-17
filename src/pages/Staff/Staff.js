@@ -10,8 +10,8 @@ const Staff = ({ match }) => {
         <>
             <Route exact path={`${match.url}/`} component={ViewStaff} />
             <Route exact path={`${match.url}/create`} component={CreateStaff} />
-            <Route exact path={`${match.url}/detail`} component={DetailStaff} />
-            <Route exact path={`${match.url}/update`} component={UpdateStaff} />
+            <Route exact path={`${match.url}/detail/:id`} component={DetailStaff} />
+            <Route exact path={`${match.url}/detail/:id/update`} component={UpdateStaff} />
         </>
     )
 }

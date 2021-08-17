@@ -88,7 +88,7 @@ const ViewStaff = ({ match }) => {
     console.log('getStaffItem: ', getStaffItem);
 
     const onhandlClick = (id) => {
-        history.push(`${match.url}/detail`)
+        history.push(`${match.url}/detail/${id}`)
     }
 
     const handleChangePage = (event, value) => {
@@ -156,7 +156,7 @@ const ViewStaff = ({ match }) => {
                                     <TableCell align="left">{row.contact_number}</TableCell>
                                     <TableCell align="left">{row.designation_name}</TableCell>
                                     <TableCell align="right">
-                                        <Link to="#" className="btn btn-secondary btn-sm ml-auto" onClick={e => onhandlClick(index)}>View</Link>
+                                        <Link to="#" className="btn btn-secondary btn-sm ml-auto" onClick={e => onhandlClick(row.id)}>View</Link>
                                     </TableCell>
                                 </TableRow>
                             )
