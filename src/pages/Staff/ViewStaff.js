@@ -19,6 +19,7 @@ import AddIcon from '@material-ui/icons/Add';
 import { Pagination } from '@material-ui/lab';
 import { useDispatch, useSelector } from 'react-redux';
 import { getStaff } from '../../store/action';
+import history from '../../utils/HistoryUtils';
 
 const useStyle = makeStyles((theme) => ({
     root: {
@@ -84,20 +85,25 @@ const ViewStaff = ({ match }) => {
     const dispatch = useDispatch();
     const [page, setPage] = React.useState(1);
     const { loading, getStaffItem } = useSelector(state => state.staff)
+    console.log('getStaffItem: ', getStaffItem);
 
     const onhandlClick = (id) => {
-        console.log('id: ', id);
-
+        history.push(`${match.url}/detail`)
     }
 
-    const handleChangePage = () => {
-        console.log('sdfds')
+    const handleChangePage = (event, value) => {
+        setPage(value);
+        setTimeout(getStaff1(value), 2000);
+    }
+
+    const getStaff1 = (pageNo = 1) => {
+        dispatch(getStaff({ pageNo}))
     }
 
 
     useEffect(() => {
-        dispatch(getStaff())
-    }, [dispatch])
+        getStaff1()
+    }, [])
 
     return (
         <>
@@ -143,14 +149,14 @@ const ViewStaff = ({ match }) => {
                     <TableBody>
                         {getStaffItem?.data?.data && getStaffItem?.data?.data.map((row, index) => {
                             return (
-                                <TableRow key={index} onClick={e => onhandlClick(index)}>
+                                <TableRow key={index}>
                                     <TableCell scope="row">{row.id}</TableCell>
                                     <TableCell align="left">{`${row.first_name} ${row.last_name}`}</TableCell>
                                     <TableCell align="left">{row.email}</TableCell>
                                     <TableCell align="left">{row.contact_number}</TableCell>
                                     <TableCell align="left">{row.designation_name}</TableCell>
                                     <TableCell align="right">
-                                        <Link to={`${match.url}/detail`} className="btn btn-secondary btn-sm ml-auto" >View</Link>
+                                        <Link to="#" className="btn btn-secondary btn-sm ml-auto" onClick={e => onhandlClick(index)}>View</Link>
                                     </TableCell>
                                 </TableRow>
                             )
@@ -167,7 +173,7 @@ const ViewStaff = ({ match }) => {
                     </TableBody>
                 </Table>
                 <Box className="mt-5" display="flex" justifyContent="flex-end">
-                    <Pagination onChange={handleChangePage} page={page} count={getStaffItem?.last_page} showFirstButton showLastButton />
+                    <Pagination onChange={handleChangePage} page={page} count={getStaffItem?.data?.last_page} showFirstButton showLastButton />
                 </Box>
 
             </Paper>

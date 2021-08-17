@@ -5,10 +5,15 @@ const initialState = {
     loading: false,
     getStaffItem: [],
     getStaffError: [],
+
     staffSuccess: [],
     staffError: [],
-    staffUpdateError:[],
-    staffUpdateSuccess:[]
+
+    staffUpdateError: [],
+    staffUpdateSuccess: [],
+
+    staffDeleteSuccess:[],
+    staffDeleteError:[],
 }
 
 const staffReducer = (state = initialState, action) => {
@@ -16,6 +21,8 @@ const staffReducer = (state = initialState, action) => {
         case actionTypes.GET_STAFF_REQUEST:
             return updateObject(state, {
                 loading: true,
+                staffSuccess:"",
+                staffError: ""
             })
 
         case actionTypes.GET_STAFF_SUCCESS:
@@ -52,8 +59,8 @@ const staffReducer = (state = initialState, action) => {
         case actionTypes.UPDATE_STAFF_REQUEST:
             return updateObject(state, {
                 loading: true,
-                staffUpdateError:"",
-                staffUpdateSuccess:""
+                staffUpdateError: "",
+                staffUpdateSuccess: ""
             })
 
         case actionTypes.UPDATE_STAFF_SUCCESS:
@@ -62,10 +69,29 @@ const staffReducer = (state = initialState, action) => {
                 staffUpdateSuccess: action.payload
             })
 
-        case actionTypes.UPDATE_STAFF_REQUEST:
+        case actionTypes.UPDATE_STAFF_ERROR:
             return updateObject(state, {
                 loading: false,
                 staffUpdateError: action.payload
+            })
+
+        case actionTypes.DELETE_STAFF_REQUEST:
+            return updateObject(state, {
+                loading: true,
+                staffDeleteError: "",
+                staffDeleteSuccess: ""
+            })
+
+        case actionTypes.DELETE_STAFF_SUCCESS:
+            return updateObject(state, {
+                loading: false,
+                staffDeleteSuccess: action.payload
+            })
+
+        case actionTypes.DELETE_STAFF_ERROR:
+            return updateObject(state, {
+                loading: false,
+                staffDeleteError: action.payload
             })
 
         default: return state

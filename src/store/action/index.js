@@ -38,5 +38,6 @@ export {
 export {
     getStaff,
     createStaff,
-    updateStaff
+    updateStaff,
+    deleteStaff
 } from './staff/staffAction'
