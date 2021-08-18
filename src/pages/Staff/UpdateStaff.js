@@ -10,6 +10,7 @@ import axios from 'axios';
 import apiConfigs from '../../config/config';
 import { useDispatch } from 'react-redux';
 import { updateStaff } from '../../store/action';
+import history from '../../utils/HistoryUtils';
 
 const useStyle = makeStyles((theme) => ({
     root: {
@@ -120,6 +121,9 @@ const UpdateStaff = ({ match }) => {
         e.preventDefault();
         dispatch(updateStaff(data))
     }
+    const backPage = () => {
+        history.goBack()
+    }
     return (
         <>
             {
@@ -177,7 +181,7 @@ const UpdateStaff = ({ match }) => {
                                 label="Contact Number"
                                 variant="outlined"
                                 name="contact_number"
-                                value={!data?.contact_number}
+                                value={data?.contact_number}
                                 helperText={!data?.contact_number ? "Please enter contact number" : false}
                                 error={(!data?.contact_number ? true : false)}
                                 onChange={handleChange}
@@ -229,9 +233,6 @@ const UpdateStaff = ({ match }) => {
                                             )
                                         })
                                     }
-                                    {/* <MenuItem value="1">Compliance</MenuItem>
-                                    <MenuItem value="2">Booking</MenuItem>
-                                    <MenuItem value="3">Finance</MenuItem> */}
                                 </Select>
                                 <FormHelperText>{!data?.designation_id ? "Please select designation" : false}</FormHelperText>
                             </FormControl>
@@ -239,7 +240,7 @@ const UpdateStaff = ({ match }) => {
                     </Grid>
 
                     <Box className={classes.footerBtn}>
-                        <Button color="primary">
+                        <Button color="primary" onClick={backPage}>
                             Cancel
                         </Button>
                         <Button color="secondary" variant="contained" type="submit">
