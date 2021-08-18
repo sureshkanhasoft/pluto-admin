@@ -8,9 +8,10 @@ import {
 } from '@material-ui/core';
 import axios from 'axios';
 import apiConfigs from '../../config/config';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { updateStaff } from '../../store/action';
 import history from '../../utils/HistoryUtils';
+import Notification from '../../components/Notification/Notification';
 
 const useStyle = makeStyles((theme) => ({
     root: {
@@ -46,7 +47,9 @@ const UpdateStaff = ({ match }) => {
     const dispatch = useDispatch();
     const [roleItem, setRoleItem] = useState([])
     const [loading, setLoading] = useState(false)
+    const [staffNotify, setStaffNotify] = useState(false)
     const [designationItem, setDesignationItem] = useState([])
+    const { staffUpdateError, staffUpdateSuccess } = useSelector(state => state.staff)
     // const [items, setItems] = useState([])
     const [data, setData] = useState({
         first_name: "",
@@ -120,6 +123,7 @@ const UpdateStaff = ({ match }) => {
     const staffUpdateSubmit = (e) => {
         e.preventDefault();
         dispatch(updateStaff(data))
+        setStaffNotify(true)
     }
     const backPage = () => {
         history.goBack()
@@ -132,6 +136,20 @@ const UpdateStaff = ({ match }) => {
                         <CircularProgress color="inherit" />
                     </Backdrop> : ""
             }
+            {
+                staffNotify && staffUpdateSuccess?.message &&
+                <Notification
+                    data={staffUpdateSuccess?.message}
+                    status="success"
+                />
+            }
+
+            {/* {staffNotify && staffUpdateError?.message &&
+                <Notification
+                    data={staffUpdateError?.message}
+                    status="error"
+                />
+            } */}
             <Paper className={classes.root}>
                 {/* <form onSubmit={handleSubmit(staffSubmit())}> */}
                 <form onSubmit={(e) => staffUpdateSubmit(e)}>
@@ -144,9 +162,10 @@ const UpdateStaff = ({ match }) => {
                                 name="first_name"
                                 value={data?.first_name ? data?.first_name : ""}
                                 onChange={handleChange}
-                                helperText={!data?.first_name ? "Please enter first name" : false}
-                                error={(!data?.first_name ? true : false)}
+                                helperText={staffUpdateError.message?.first_name}
+                                error={!!staffUpdateError.message?.first_name}
                                 fullWidth
+                                required
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
@@ -156,10 +175,11 @@ const UpdateStaff = ({ match }) => {
                                 variant="outlined"
                                 name="last_name"
                                 value={data?.last_name}
-                                helperText={!data?.last_name ? "Please enter last name" : false}
-                                error={(!data?.last_name ? true : false)}
+                                helperText={staffUpdateError?.message?.last_name}
+                                error={!!staffUpdateError.message?.last_name}
                                 onChange={handleChange}
                                 fullWidth
+                                required
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
@@ -169,10 +189,12 @@ const UpdateStaff = ({ match }) => {
                                 variant="outlined"
                                 name="email"
                                 value={data?.email}
-                                helperText={!data?.email ? "Please enter email address" : false}
-                                error={(!data?.email ? true : false)}
+                                helperText={staffUpdateError.message?.email}
+                                error={!!staffUpdateError.message?.email}
                                 onChange={handleChange}
                                 fullWidth
+                                required
+                                disabled
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
@@ -182,15 +204,16 @@ const UpdateStaff = ({ match }) => {
                                 variant="outlined"
                                 name="contact_number"
                                 value={data?.contact_number}
-                                helperText={!data?.contact_number ? "Please enter contact number" : false}
-                                error={(!data?.contact_number ? true : false)}
+                                helperText={staffUpdateError.message?.contact_number}
+                                error={!!staffUpdateError.message?.contact_number}
                                 onChange={handleChange}
                                 fullWidth
+                                required
                             />
                         </Grid>
 
                         <Grid item xs={12} sm={6} lg={4}>
-                            <FormControl variant="outlined" className={classes.formControl} error={(!data.role_id ? true : false)}>
+                            <FormControl variant="outlined" required className={classes.formControl} error={!!staffUpdateError?.message?.role_id}>
                                 <InputLabel>Select Role</InputLabel>
                                 <Select
                                     value={data?.role_id}
@@ -204,18 +227,17 @@ const UpdateStaff = ({ match }) => {
                                     {
                                         roleItem?.data && roleItem?.data.map((item) => {
                                             return (
-                                                <MenuItem value={item.id} key={item.id}>{item.role_name}</MenuItem>
+                                                <MenuItem value={item?.id ? item?.id : ""} key={item.id}>{item?.role_name ? item?.role_name : ""}</MenuItem>
                                             )
                                         })
                                     }
-
                                 </Select>
-                                <FormHelperText>{!data?.role_id ? "Please select role" : false}</FormHelperText>
+                                <FormHelperText>{staffUpdateError.message?.role_id ? "The role field is required." :""}</FormHelperText>
                             </FormControl>
                         </Grid>
 
                         <Grid item xs={12} sm={6} lg={4}>
-                            <FormControl variant="outlined" className={classes.formControl} error={(!data.designation_id ? true : false)}>
+                            <FormControl variant="outlined" required className={classes.formControl} error={!!staffUpdateError.message?.designation_id}>
                                 <InputLabel>Select Designation</InputLabel>
                                 <Select
                                     value={data.designation_id}
@@ -234,7 +256,7 @@ const UpdateStaff = ({ match }) => {
                                         })
                                     }
                                 </Select>
-                                <FormHelperText>{!data?.designation_id ? "Please select designation" : false}</FormHelperText>
+                                <FormHelperText>{staffUpdateError.message?.designation_id ? "The designation field is required." :""}</FormHelperText>
                             </FormControl>
                         </Grid>
                     </Grid>
@@ -243,7 +265,7 @@ const UpdateStaff = ({ match }) => {
                         <Button color="primary" onClick={backPage}>
                             Cancel
                         </Button>
-                        <Button color="secondary" variant="contained" type="submit">
+                        <Button color="secondary" variant="contained" type="submit" formNoValidate>
                             Update
                         </Button>
                     </Box>

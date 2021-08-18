@@ -137,6 +137,7 @@ const CreateStaff = () => {
                                 })}
                                 // helperText={errors.first_name ? "Please enter first name" : false}
                                 error={(errors.first_name ? true : false)}
+                                required
 
                             />
                         </Grid>
@@ -154,6 +155,7 @@ const CreateStaff = () => {
                                 })}
                                 // helperText={errors.last_name ? "Please enter last name" : false}
                                 error={(errors.last_name ? true : false)}
+                                required
 
                             />
                         </Grid>
@@ -175,6 +177,7 @@ const CreateStaff = () => {
                                 })}
                                 // helperText={errors.email ? "Please enter email address" : false}
                                 error={(errors.email ? true : false)}
+                                required
 
                             />
                         </Grid>
@@ -197,12 +200,13 @@ const CreateStaff = () => {
                                 })}
                                 // helperText={errors.contact_number ? "Please enter contact number" : false}
                                 error={(errors.contact_number ? true : false)}
+                                required
 
                             />
                         </Grid>
 
                         <Grid item xs={12} sm={6} lg={4}>
-                            <FormControl variant="outlined" className={classes.formControl} error={(errors.role_id ? true : false)}>
+                            <FormControl variant="outlined" required className={classes.formControl} error={(errors.role_id ? true : false)}>
                                 <InputLabel>Select Role</InputLabel>
                                 <Select
                                     value={data.role_id}
@@ -230,7 +234,7 @@ const CreateStaff = () => {
                         </Grid>
 
                         <Grid item xs={12} sm={6} lg={4}>
-                            <FormControl variant="outlined" className={classes.formControl} error={(errors.designation_id ? true : false)}>
+                            <FormControl variant="outlined" required className={classes.formControl} error={(errors.designation_id ? true : false)}>
                                 <InputLabel>Select Designation</InputLabel>
                                 <Select
                                     value={data.designation_id}

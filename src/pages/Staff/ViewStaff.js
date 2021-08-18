@@ -85,10 +85,9 @@ const ViewStaff = ({ match }) => {
     const dispatch = useDispatch();
     const [page, setPage] = React.useState(1);
     const { loading, getStaffItem } = useSelector(state => state.staff)
-    console.log('getStaffItem: ', getStaffItem);
 
     const onhandlClick = (id) => {
-        history.push(`${match.url}/detail/${id}`)
+        history.push(`${match.url}/${id}/detail`)
     }
 
     const handleChangePage = (event, value) => {

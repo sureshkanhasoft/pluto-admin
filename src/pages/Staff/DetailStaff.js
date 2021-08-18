@@ -56,7 +56,7 @@ const DetailStaff = ({ match }) => {
         // const updateLink = dir.substring(0, dir.lastIndexOf('/'));
         // console.log('updateLink: ', updateLink);
         // history.push(`${updateLink}/update`)
-        history.push(`${user_id}/update`)
+        history.push(`update`)
     }
 
     const getSingleStaff = async () => {

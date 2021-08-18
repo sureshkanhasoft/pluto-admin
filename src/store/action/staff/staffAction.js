@@ -99,7 +99,8 @@ const createStaffFailure = (error) => {
 // -----------------------------------
 
 export const updateStaff = (data) => {
-    const data1 = {...data, user_id:69}
+    const {user_id} = data;
+    const data1 = {...data, id:user_id}
     const loggedInUser = localStorage.getItem('token').replace(/['"]+/g, '');
     return async (dispatch) => {
         dispatch(updateStaffRequest())
