@@ -38,19 +38,36 @@ const CreateTrust = () => {
     const [inputFields, setInputFields] = useState([]);
     const [wardsFields, setWardsFields] = useState([]);
     const [data, setData] = useState({
-        trustName: "",
-        trustCode: "",
-        invoiceMethod: "",
-        trustEmail: "",
-        address1: "",
-        address2: "",
+        name: "",
+        code: "",
+        preference_invoive_method: "",
+        email_address: "",
+        address_line_1: "",
+        address_line_2: "",
         city: "",
-        postcode: "",
-        portalurl: "",
-        emailAddress: "",
-        password: "",
-        wardType: "",
-        wardName: ""
+        post_code: "",
+        trust_portal_url: "",
+        portal_email: "",
+        portal_password: "",
+        first_name: "",
+        last_name: "",
+        contact_email_address: "",
+        phone_number: "",
+        client: "",
+        department: "",
+        ward: [
+            {
+                ward_name: "",
+                ward_type: "",
+                ward_number: "",
+            }
+        ],
+
+        traning: [
+            {
+                traning_name: ""
+            }
+        ],
     })
     const handleChange = (event) => {
         setData({ ...data, [event.target.name]: event.target.value });
@@ -65,29 +82,34 @@ const CreateTrust = () => {
         values.push({ wards: '' });
         setWardsFields(values);
     }
+
+    const submitData = (e) => {
+        e.preventDefault();
+    }
+
     return (
         <>
             <Paper className={classes.root}>
-                <form>
+                <form onSubmit={(e) => submitData(e)}>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
                             <TextField
-                                id="trustName"
+                                id="name"
                                 label="Trust Name"
                                 variant="outlined"
-                                name="trustName"
-                                value={data.trustName}
+                                name="name"
+                                value={data?.name}
                                 onChange={handleChange}
                                 fullWidth
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField
-                                id="trustCode"
+                                id="code"
                                 label="Trust Code"
                                 variant="outlined"
-                                name="trustCode"
-                                value={data.trustCode}
+                                name="code"
+                                value={data?.code}
                                 onChange={handleChange}
                                 fullWidth
                             />
@@ -95,7 +117,7 @@ const CreateTrust = () => {
                         <Grid item xs={12}>
                             <Box className="mt-3">
                                 <Typography>Preferred Invoice Method</Typography>
-                                <RadioGroup name="invoiceMethod" value={data.invoiceMethod} onChange={handleChange} className={classes.radioGroup}>
+                                <RadioGroup name="preference_invoive_method" value={data?.preference_invoive_method} onChange={handleChange} className={classes.radioGroup}>
                                     <FormControlLabel value="byPost" control={<Radio />} label="By Post" />
                                     <FormControlLabel value="byEmail" control={<Radio />} label="By Email" />
                                 </RadioGroup>
@@ -104,11 +126,11 @@ const CreateTrust = () => {
 
                         <Grid item xs={12} sm={6} lg={6}>
                             <TextField
-                                id="trustEmail"
+                                id="email_address"
                                 label="Trust Email"
                                 variant="outlined"
-                                name="trustEmail"
-                                value={data.trustEmail}
+                                name="email_address"
+                                value={data?.email_address}
                                 onChange={handleChange}
                                 fullWidth
                             />
@@ -123,22 +145,22 @@ const CreateTrust = () => {
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
-                                id="address1"
+                                id="address_line_1"
                                 label="Address line 1"
                                 variant="outlined"
-                                name="address1"
-                                value={data.address1}
+                                name="address_line_1"
+                                value={data.address_line_1}
                                 onChange={handleChange}
                                 fullWidth
                             />
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
-                                id="address2"
+                                id="address_line_2"
                                 label="Address line 2"
                                 variant="outlined"
-                                name="address2"
-                                value={data.address2}
+                                name="address_line_2"
+                                value={data.address_line_2}
                                 onChange={handleChange}
                                 fullWidth
                             />
@@ -157,11 +179,11 @@ const CreateTrust = () => {
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
                             <TextField
-                                id="postcode"
+                                id="post_code"
                                 label="Postcode"
                                 variant="outlined"
-                                name="postcode"
-                                value={data.postcode}
+                                name="post_code"
+                                value={data.post_code}
                                 onChange={handleChange}
                                 fullWidth
                             />
@@ -177,34 +199,34 @@ const CreateTrust = () => {
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
                             <TextField
-                                id="portalurl"
+                                id="trust_portal_url"
                                 label="Trust Portal URl"
                                 variant="outlined"
-                                name="portalurl"
-                                value={data.portalurl}
+                                name="trust_portal_url"
+                                value={data.trust_portal_url}
                                 onChange={handleChange}
                                 fullWidth
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
                             <TextField
-                                id="emailAddress"
+                                id="portal_email"
                                 label="Email Address"
                                 variant="outlined"
-                                name="emailAddress"
-                                value={data.emailAddress}
+                                name="portal_email"
+                                value={data.portal_email}
                                 onChange={handleChange}
                                 fullWidth
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
                             <TextField
-                                id="password"
+                                id="portal_password"
                                 type="password"
                                 label="Password"
                                 variant="outlined"
-                                name="password"
-                                value={data.password}
+                                name="portal_password"
+                                value={data.portal_password}
                                 onChange={handleChange}
                                 fullWidth
                             />
@@ -223,11 +245,11 @@ const CreateTrust = () => {
                                 return (
                                     <Grid item xs={12} sm={6} key={`${inputField}~${index}`}>
                                         <TextField
-                                            id="trianing"
+                                            id="traning_name"
                                             label="Training example type"
                                             variant="outlined"
-                                            name="trianing"
-                                            value={data.trianing}
+                                            name="traning_name"
+                                            value={data.traning_name}
                                             onChange={handleChange}
                                             fullWidth
                                         />
@@ -257,11 +279,11 @@ const CreateTrust = () => {
                                     <Fragment key={`${wardsField}~${index}`}>
                                         <Grid item xs={12} sm={6}>
                                             <TextField
-                                                id="wardName"
+                                                id="ward_name"
                                                 label="Ward Name"
                                                 variant="outlined"
-                                                name="wardName"
-                                                value={data.wardName}
+                                                name="ward_name"
+                                                value={data.ward_name}
                                                 onChange={handleChange}
                                                 fullWidth
                                             />
@@ -270,10 +292,10 @@ const CreateTrust = () => {
                                             <FormControl variant="outlined" className={classes.formControl}>
                                                 <InputLabel>Type</InputLabel>
                                                 <Select
-                                                    value={data.wardType}
+                                                    value={data.ward_type}
                                                     onChange={handleChange}
                                                     label="Trust Name"
-                                                    name="wardType"
+                                                    name="ward_type"
                                                 >
                                                     <MenuItem value="">
                                                         Select Type
@@ -285,11 +307,11 @@ const CreateTrust = () => {
                                         </Grid>
                                         <Grid item xs={12} sm={2}>
                                             <TextField
-                                                id="wardNumber"
+                                                id="ward_number"
                                                 label="Ward Number"
                                                 variant="outlined"
-                                                name="wardNumber"
-                                                value={data.wardNumber}
+                                                name="ward_number"
+                                                value={data.ward_number}
                                                 onChange={handleChange}
                                                 fullWidth
                                             />
@@ -315,44 +337,44 @@ const CreateTrust = () => {
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
                             <TextField
-                                id="firstName"
+                                id="first_name"
                                 label="First Name"
                                 variant="outlined"
-                                name="firstName"
-                                value={data.firstName}
+                                name="first_name"
+                                value={data.first_name}
                                 onChange={handleChange}
                                 fullWidth
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
                             <TextField
-                                id="lastName"
+                                id="last_name"
                                 label="Last Name"
                                 variant="outlined"
-                                name="lastName"
-                                value={data.lastName}
+                                name="last_name"
+                                value={data.last_name}
                                 onChange={handleChange}
                                 fullWidth
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
                             <TextField
-                                id="contactEmail"
+                                id="contact_email_address"
                                 label="Email"
                                 variant="outlined"
-                                name="contactEmail"
-                                value={data.contactEmail}
+                                name="contact_email_address"
+                                value={data.contact_email_address}
                                 onChange={handleChange}
                                 fullWidth
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
                             <TextField
-                                id="number"
+                                id="phone_number"
                                 label="Contact Number"
                                 variant="outlined"
-                                name="number"
-                                value={data.number}
+                                name="phone_number"
+                                value={data.phone_number}
                                 onChange={handleChange}
                                 fullWidth
                             />
@@ -385,7 +407,7 @@ const CreateTrust = () => {
                         <Button color="primary">
                             Cancel
                         </Button>
-                        <Button color="secondary" variant="contained">
+                        <Button color="secondary" variant="contained" type="submit">
                             Save & Confirm
                         </Button>
                         <Button color="secondary" variant="contained">
