@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
     Paper,
     makeStyles,
@@ -9,18 +9,27 @@ import {
     TableHead,
     TableRow,
     TableCell,
-    TableBody
+    TableBody,
+    Backdrop,
+    CircularProgress
 } from '@material-ui/core';
 import { Link } from "react-router-dom";
 import { Pagination } from '@material-ui/lab';
 import AddIcon from '@material-ui/icons/Add';
 import SearchIcon from '@material-ui/icons/Search';
+import { useDispatch, useSelector } from 'react-redux';
+import { getTrust } from '../../store/action';
 
 const useStyle = makeStyles((theme) => ({
     root: {
         width: '100%',
         overflowX: 'auto',
         padding: 24,
+    },
+
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff',
     },
 
     search: {
@@ -69,28 +78,27 @@ const useStyle = makeStyles((theme) => ({
     },
 }))
 
-const trustList = [
-    {
-        name: "Ana Care Hospital",
-    },
-    {
-        name: "Apex care Hospital",
-    },
-    {
-        name: "Saviour Hospital",
-    },
-    {
-        name: "Aarna care Hsopital ",
-    },
-    {
-        name: "Sterling Hospital",
-    }
-]
-
 const ViewTrust = ({ match }) => {
     const classes = useStyle()
+    const dispatch = useDispatch();
+
+    const { getTrustItem, loading } = useSelector(state => state.trust)
+
+    const getTrustList = () => {
+        dispatch(getTrust(1))
+    }
+
+    useEffect(() => {
+        getTrustList()
+    }, [])
     return (
         <>
+            {
+                loading ?
+                    <Backdrop className={classes.backdrop} open={loading}>
+                        <CircularProgress color="inherit" />
+                    </Backdrop> : ""
+            }
             <p className="mb-6">Welcome to your Pluto Software admin dashboard. Here you can get an overview of your account activity, or use navigation on the left hand side to get to your desired location.</p>
             <Paper className={`${classes.root} mb-6`}>
                 <Box className="mb-5" display="flex" alignItems="center">
@@ -123,11 +131,11 @@ const ViewTrust = ({ match }) => {
                     </TableHead>
                     <TableBody>
                         {
-                            trustList.map((row, index) => {
+                            getTrustItem?.data && getTrustItem?.data.map((list, index) => {
                                 return (
                                     <TableRow key={index} >
-                                        <TableCell scope="row">{index + 1}</TableCell>
-                                        <TableCell align="left">{row.name}</TableCell>
+                                        <TableCell scope="row">{list.id}</TableCell>
+                                        <TableCell align="left">{list.name}</TableCell>
                                         <TableCell align="right">
                                             <Link to={`${match.url}/detail`} className="btn btn-secondary" >View</Link>
                                         </TableCell>
@@ -141,7 +149,6 @@ const ViewTrust = ({ match }) => {
                     <Pagination count={5} />
                 </Box>
             </Paper>
-
         </>
     )
 }

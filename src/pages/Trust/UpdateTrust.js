@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import { useDispatch, useSelector } from 'react-redux';
-import { createTrust } from '../../store/action';
+import { updateTrust } from '../../store/action/trust/trustAction';
 import Notification from '../../components/Notification/Notification';
 
 const useStyle = makeStyles((theme) => ({
@@ -36,12 +36,12 @@ const useStyle = makeStyles((theme) => ({
     }
 }))
 
-const CreateTrust = () => {
+const UpdateTrust = () => {
     const classes = useStyle();
     const dispatch = useDispatch()
     const [wardsFields, setWardsFields] = useState([{ ward_name: "", ward_type: "", ward_number: "" }]);
     const [inputList, setInputList] = useState([{ traning_name: "" }]);
-    const { createTrustError, createTrustSuccess } = useSelector(state => state.trust)
+    const { updateTrustError, updateTrustSuccess } = useSelector(state => state.trust)
     const [trustNotify, setTrustNotify] = useState(false)
     const [data, setData] = useState({
         name: "",
@@ -76,6 +76,7 @@ const CreateTrust = () => {
         ],
     })
 
+
     const handleChange = (event) => {
         setData({ ...data, [event.target.name]: event.target.value });
     };
@@ -84,7 +85,7 @@ const CreateTrust = () => {
         const { name, value } = e.target;
         const traning = [...inputList];
         traning[index][name] = value;
-        console.log(traning)
+        // console.log(traning)
         setData({ ...data, traning });
     };
 
@@ -92,7 +93,7 @@ const CreateTrust = () => {
         const { name, value } = e.target;
         const ward = [...wardsFields];
         ward[index][name] = value;
-        console.log(ward)
+        // console.log(ward)
         setData({ ...data, ward });
     };
 
@@ -106,22 +107,21 @@ const CreateTrust = () => {
 
     const submitData = (e) => {
         e.preventDefault();
-        dispatch(createTrust(data))
+        dispatch(updateTrust(data))
         setTrustNotify(true)
     }
-
     return (
         <>
-            {trustNotify && createTrustSuccess?.message &&
+            {trustNotify && updateTrustSuccess?.message &&
                 <Notification
-                    data={createTrustSuccess?.message}
+                    data={updateTrustSuccess?.message}
                     status="success"
                 />
             }
 
-            {trustNotify && createTrustError?.message &&
+            {trustNotify && updateTrustError?.message &&
                 <Notification
-                    data={createTrustError?.message}
+                    data={updateTrustError?.message}
                     status="error"
                 />
             }
@@ -296,7 +296,6 @@ const CreateTrust = () => {
 
                         }
                         <Grid item xs={12} sm={6} lg={4}>
-                            {/* <Button onClick={() => handleAddFields()} color="secondary"> */}
                             <Button onClick={handleAddClick} color="secondary">
                                 <AddCircleOutlineIcon className="mr-3" />
                                 <Typography >Add Training </Typography>
@@ -448,10 +447,7 @@ const CreateTrust = () => {
                             Cancel
                         </Button>
                         <Button color="secondary" variant="contained" type="submit">
-                            Save & Confirm
-                        </Button>
-                        <Button color="secondary" variant="contained">
-                            Save & Add another
+                            Update
                         </Button>
                     </Box>
                 </form>
@@ -460,4 +456,4 @@ const CreateTrust = () => {
     )
 }
 
-export default CreateTrust
+export default UpdateTrust

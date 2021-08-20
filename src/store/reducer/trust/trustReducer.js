@@ -1,9 +1,8 @@
-import React from 'react'
 import * as actionTypes from '../../action/actiontypes'
 import { updateObject } from '../../shared/utility';
 
 const initialState = {
-    loading: "false",
+    loading: false,
     getTrustItem: [],
     getTrustError: [],
 
@@ -21,7 +20,7 @@ const trustReducer = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.GET_TRUST_REQUEST:
             return updateObject(state, {
-                loading: false,
+                loading: true,
             })
 
         case actionTypes.GET_TRUST_SUCCESS:

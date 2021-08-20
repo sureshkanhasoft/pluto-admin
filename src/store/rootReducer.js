@@ -7,6 +7,7 @@ import profileReducer from "./reducer/profile/profileReducer"
 import rolesReducer from "./reducer/Roles/rolesReducer";
 import specialitiesReducer from "./reducer/specialities/specialitiesReducer";
 import staffReducer from "./reducer/staff/staffReducer";
+import trustReducer from "./reducer/trust/trustReducer"
 
 const rootReducer = combineReducers(
     {
@@ -18,7 +19,8 @@ const rootReducer = combineReducers(
         notify: notifyReducer,
         roles: rolesReducer,
         specialities: specialitiesReducer,
-        staff: staffReducer
+        staff: staffReducer,
+        trust: trustReducer,
     }
 );
 

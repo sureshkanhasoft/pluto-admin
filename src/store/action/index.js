@@ -41,3 +41,8 @@ export {
     updateStaff,
     deleteStaff
 } from './staff/staffAction'
+
+export {
+    getTrust,
+    createTrust,
+} from './trust/trustAction'

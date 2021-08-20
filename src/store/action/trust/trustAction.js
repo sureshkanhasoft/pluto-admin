@@ -1,7 +1,10 @@
 import axios from "axios"
 import Config from "../../../config/config"
-import history from "../../../utils/HistoryUtils";
-import { CREATE_TRUST_ERROR, CREATE_TRUST_REQUEST, CREATE_TRUST_SUCCESS, DELETE_TRUST_ERROR, DELETE_TRUST_REQUEST, DELETE_TRUST_SUCCESS, GET_TRUST_ERROR, GET_TRUST_REQUEST, GET_TRUST_SUCCESS, UPDATE_TRUST_ERROR, UPDATE_TRUST_REQUEST, UPDATE_TRUST_SUCCESS } from "../actiontypes";
+// import history from "../../../utils/HistoryUtils";
+import { CREATE_TRUST_ERROR, CREATE_TRUST_REQUEST, CREATE_TRUST_SUCCESS, 
+    DELETE_TRUST_ERROR, DELETE_TRUST_REQUEST, DELETE_TRUST_SUCCESS, 
+    GET_TRUST_ERROR, GET_TRUST_REQUEST, GET_TRUST_SUCCESS, 
+    UPDATE_TRUST_ERROR, UPDATE_TRUST_REQUEST, UPDATE_TRUST_SUCCESS } from "../actiontypes";
 
 
 export const getTrust = ({ pageNo = 1 }) => {
@@ -57,6 +60,7 @@ export const createTrust = (data) => {
             }
         }).then(response => {
             const data = response.data
+            console.log('data res: ', data);
             if (data && data.status === true) {
                 dispatch(createTrustSuccess(data))
                 // setTimeout(() => {
@@ -80,7 +84,7 @@ const createTrustRequest = () => {
 const createTrustSuccess = (data) => {
     return {
         type: CREATE_TRUST_SUCCESS,
-        payload: data
+        payload6: data
     }
 }
 
