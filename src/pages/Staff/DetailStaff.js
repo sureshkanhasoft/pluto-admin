@@ -14,6 +14,9 @@ import EditIcon from '@material-ui/icons/Edit';
 import history from '../../utils/HistoryUtils';
 import axios from 'axios';
 import apiConfigs from '../../config/config';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteStaff } from '../../store/action'
+import Notification from '../../components/Notification/Notification';
 
 
 const useStyle = makeStyles((theme) => ({
@@ -48,9 +51,12 @@ const useStyle = makeStyles((theme) => ({
 
 const DetailStaff = ({ match }) => {
     const classes = useStyle();
+    const dispatch = useDispatch()
     const user_id = match.params.id;
     const [items, setItems] = useState([])
     const [loading, setLoading] = useState(false)
+    const [staffNotify, setStaffNotify] = useState(false)
+    const { staffDeleteSuccess, staffDeleteError } = useSelector(state => state.staff)
     const upadateLink = () => {
         // let dir = match.path;
         // const updateLink = dir.substring(0, dir.lastIndexOf('/'));
@@ -76,6 +82,11 @@ const DetailStaff = ({ match }) => {
         });
     }
 
+    const deleteStaffItem = (id) => {
+        dispatch(deleteStaff(id))
+        setStaffNotify(true)
+    }
+
     useEffect(() => {
         getSingleStaff()
     }, [user_id])
@@ -87,6 +98,21 @@ const DetailStaff = ({ match }) => {
                     <Backdrop className={classes.backdrop} open={loading}>
                         <CircularProgress color="inherit" />
                     </Backdrop> : ""
+            }
+            {
+                staffNotify && staffDeleteSuccess?.message &&
+                <Notification
+                    data={staffDeleteSuccess?.message}
+                    status="success"
+                />
+            }
+
+            {
+                staffNotify && staffDeleteError?.message &&
+                <Notification
+                    data={staffDeleteError?.message}
+                    status="error"
+                />
             }
             <Paper className={`${classes.root} mb-6`}>
                 <Grid container spacing={4}>
@@ -119,7 +145,7 @@ const DetailStaff = ({ match }) => {
                             <Button variant="contained" color="primary" onClick={upadateLink}>
                                 <EditIcon className="mr-2" />Edit
                             </Button>
-                            <Button variant="contained" color="secondary">
+                            <Button variant="contained" color="secondary" onClick={(e) => deleteStaffItem(items.user_id)}>
                                 <DeleteIcon className="mr-2" />Delete
                             </Button>
                         </Box>

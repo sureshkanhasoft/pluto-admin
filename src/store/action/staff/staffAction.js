@@ -149,7 +149,7 @@ export const deleteStaff = (id) => {
     const loggedInUser = localStorage.getItem('token').replace(/['"]+/g, '');
     return async (dispatch) => {
         dispatch(deleteStaffRequest())
-        await axios.post(`${Config.API_URL}api/organization/user/edit-user`, id, {
+        await axios.delete(`${Config.API_URL}api/organization/user/delete-user/${id}`, {
             'headers': {
                 'Content-type': 'application/json',
                 'Authorization': 'Bearer ' + loggedInUser
@@ -158,6 +158,9 @@ export const deleteStaff = (id) => {
             const data = response.data
             if (data && data.status === true) {
                 dispatch(deleteStaffSuccess(data))
+                setTimeout(() => {
+                    history.go(-2)
+                }, 2000);
             } else {
                 dispatch(deleteStaffFailure(data))
             }
