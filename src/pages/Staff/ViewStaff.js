@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Paper,
     makeStyles,
@@ -85,6 +85,7 @@ const ViewStaff = ({ match }) => {
     const dispatch = useDispatch();
     const [page, setPage] = React.useState(1);
     const { loading, getStaffItem } = useSelector(state => state.staff)
+    const [searchData, setSearchData] = useState({ search: "" });
 
     const onhandlClick = (id) => {
         history.push(`${match.url}/${id}/detail`)
@@ -95,9 +96,18 @@ const ViewStaff = ({ match }) => {
         setTimeout(getStaff1(value), 2000);
     }
 
-    const getStaff1 = (pageNo = 1) => {
-        dispatch(getStaff({ pageNo}))
+    const getStaff1 = (pageNo = 1, search='') => {
+        console.log('search: ', search);
+        dispatch(getStaff({ pageNo, search }))
     }
+
+    const handleSearchChange = (event) => {
+        setSearchData({ ...searchData, [event.target.name]: event.target.value });
+    }
+
+    const handleClickSearch = (event, value) => {
+        setTimeout(getStaff1(page, searchData.search), 1000);
+    };
 
 
     useEffect(() => {
@@ -115,12 +125,10 @@ const ViewStaff = ({ match }) => {
             <p className="mb-6">Welcome to your Pluto Software admin dashboard. Here you can get an overview of your account activity, or use navigation on the left hand side to get to your desired location.</p>
             <Paper className={`${classes.root} mb-6`}>
                 <Box className="mb-5" display="flex" alignItems="center">
+                    <SearchIcon className={classes.searchIcondet} onClick={handleClickSearch} />
                     <div className={classes.search} >
-                        <div className={classes.searchIcon}>
-                            <SearchIcon />
-                        </div>
-                        <InputBase
-                            placeholder="Search…"
+                        <InputBase name="search"
+                            placeholder="Search…" onChange={handleSearchChange}
                             classes={{
                                 root: classes.inputRoot,
                                 input: classes.inputInput,

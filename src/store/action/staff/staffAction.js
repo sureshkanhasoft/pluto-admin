@@ -8,11 +8,11 @@ import { CREATE_STAFF_ERROR, CREATE_STAFF_REQUEST, CREATE_STAFF_SUCCESS,
     UPDATE_STAFF_ERROR, UPDATE_STAFF_REQUEST, UPDATE_STAFF_SUCCESS } from "../actiontypes";
 
 
-export const getStaff = ({pageNo=1}) => {
+export const getStaff = ({pageNo=1, search}) => {
     const loggedInUser = localStorage.getItem('token').replace(/['"]+/g, '');
     return async (dispatch) => {
         dispatch(getStaffRequest())
-        await axios.get(`${Config.API_URL}api/organization/user/get-user-list?page=${pageNo}`, {
+        await axios.get(`${Config.API_URL}api/organization/user/get-user-list?search=${search}&page=${pageNo}`, {
             headers: {
                 'content-type': 'application/json',
                 'Authorization': `Bearer ${loggedInUser}`
