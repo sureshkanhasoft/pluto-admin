@@ -60,7 +60,7 @@ const useStyle = makeStyles((theme) => ({
         paddingTop: theme.spacing(),
         paddingRight: theme.spacing(),
         paddingBottom: theme.spacing(),
-        paddingLeft: theme.spacing(6),
+        paddingLeft: theme.spacing(1),
         transition: theme.transitions.create('width'),
         width: '100%',
         borderBottom: "1px solid #ccc",
