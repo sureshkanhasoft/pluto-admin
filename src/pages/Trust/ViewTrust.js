@@ -19,6 +19,7 @@ import AddIcon from '@material-ui/icons/Add';
 import SearchIcon from '@material-ui/icons/Search';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTrust } from '../../store/action';
+import history from '../../utils/HistoryUtils';
 
 const useStyle = makeStyles((theme) => ({
     root: {
@@ -88,6 +89,10 @@ const ViewTrust = ({ match }) => {
         dispatch(getTrust(1))
     }
 
+    const onhandlClick = (id) => {
+        history.push(`${match.url}/${id}/detail`)
+    }
+
     useEffect(() => {
         getTrustList()
     }, [])
@@ -137,7 +142,7 @@ const ViewTrust = ({ match }) => {
                                         <TableCell scope="row">{list.id}</TableCell>
                                         <TableCell align="left">{list.name}</TableCell>
                                         <TableCell align="right">
-                                            <Link to={`${match.url}/detail`} className="btn btn-secondary" >View</Link>
+                                            <Link to="#" className="btn btn-secondary" onClick={e => onhandlClick(list.id)}>View</Link>
                                         </TableCell>
                                     </TableRow>
                                 )

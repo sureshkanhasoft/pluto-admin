@@ -10,7 +10,7 @@ const Trust = ({ match }) => {
         <>
             <Route exact path={`${match.url}/`} component={ViewTrust} />
             <Route exact path={`${match.url}/create`} component={CreateTrust} />
-            <Route exact path={`${match.url}/detail`} component={DetailTrust} />
+            <Route exact path={`${match.url}/:id/detail`} component={DetailTrust} />
             <Route exact path={`${match.url}/update`} component={UpdateTrust} />
         </>
     )
