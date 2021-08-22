@@ -10,6 +10,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import apiConfigs from '../../config/config';
+import history from '../../utils/HistoryUtils';
 
 const useStyle = makeStyles((theme) => ({
     root: {
@@ -76,6 +77,10 @@ const DetailTrust = ({ match }) => {
             console.log("error.message", error.message);
             setLoading(false)
         });
+    }
+
+    const upadateLink = () => {
+        history.push(`update`)
     }
 
     useEffect(() => {
@@ -206,7 +211,7 @@ const DetailTrust = ({ match }) => {
 
                     <Grid item xs={12}>
                         <Box display="flex" justifyContent="flex-end" className={classes.btnContainer}>
-                            <Button variant="contained" color="primary">
+                            <Button variant="contained" color="primary" onClick={upadateLink}>
                                 <EditIcon className="mr-2" />Edit
                             </Button>
                             <Button variant="contained" color="secondary">

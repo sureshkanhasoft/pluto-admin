@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import {
     Paper,
     makeStyles,
@@ -12,6 +12,8 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateTrust } from '../../store/action/trust/trustAction';
 import Notification from '../../components/Notification/Notification';
+import axios from 'axios';
+import apiConfigs from '../../config/config';
 
 const useStyle = makeStyles((theme) => ({
     root: {
@@ -36,9 +38,10 @@ const useStyle = makeStyles((theme) => ({
     }
 }))
 
-const UpdateTrust = () => {
+const UpdateTrust = ({match}) => {
     const classes = useStyle();
     const dispatch = useDispatch()
+    const id = match.params.id;
     const [wardsFields, setWardsFields] = useState([{ ward_name: "", ward_type: "", ward_number: "" }]);
     const [inputList, setInputList] = useState([{ traning_name: "" }]);
     const { updateTrustError, updateTrustSuccess } = useSelector(state => state.trust)
@@ -105,6 +108,28 @@ const UpdateTrust = () => {
         setWardsFields([...wardsFields, { ward_name: "", ward_type: "", ward_number: "" }])
     }
 
+    const getSingleTrust = async () => {    
+        const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, '');
+        // setLoading(true)
+        await axios.get(`${apiConfigs.API_URL}api/organization/get-trust/${id}`, {
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': `Bearer ${loggedInUser}`
+            }
+        }).then(response => {
+            console.log('response: ', response);
+            setData(response.data.data)
+            // setLoading(false)
+        }).catch(error => {
+            console.log("error.message", error.message);
+            // setLoading(false)
+        });
+    }
+
+    useEffect(() => {
+        getSingleTrust()
+    }, [id])
+
     const submitData = (e) => {
         e.preventDefault();
         dispatch(updateTrust(data))
@@ -154,8 +179,8 @@ const UpdateTrust = () => {
                             <Box className="mt-3">
                                 <Typography>Preferred Invoice Method</Typography>
                                 <RadioGroup name="preference_invoive_method" value={data?.preference_invoive_method} onChange={handleChange} className={classes.radioGroup}>
-                                    <FormControlLabel value="byPost" control={<Radio />} label="By Post" />
-                                    <FormControlLabel value="byEmail" control={<Radio />} label="By Email" />
+                                    <FormControlLabel value="BYPost" control={<Radio />} label="By Post" />
+                                    <FormControlLabel value="BYEmail" control={<Radio />} label="By Email" />
                                 </RadioGroup>
                             </Box>
                         </Grid>
