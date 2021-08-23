@@ -131,7 +131,12 @@ const Specialities = () => {
 
     // -----------------------------------
     const handleSearchChange = (event) => {
+        const d1 =  event.target.value
+        if(d1.length > 2){
+            setTimeout(getSpecialitiesData(page, d1), 100);
+        }
         setSearchData({ ...searchData, [event.target.name]: event.target.value });
+        
     }
 
     const handleClickSearch = (event, value) => {

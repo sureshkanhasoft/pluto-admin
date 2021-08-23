@@ -97,11 +97,15 @@ const ViewStaff = ({ match }) => {
     }
 
     const getStaff1 = (pageNo = 1, search='') => {
-        console.log('search: ', search);
+        // console.log('search: ', search);
         dispatch(getStaff({ pageNo, search }))
     }
 
     const handleSearchChange = (event) => {
+        const d1 =  event.target.value
+        if(d1.length > 2){
+            setTimeout(getStaff1(page, d1), 100);
+        }
         setSearchData({ ...searchData, [event.target.name]: event.target.value });
     }
 
