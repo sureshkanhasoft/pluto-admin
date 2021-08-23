@@ -56,7 +56,9 @@ export const updateProfile = (data) => {
             const data = response.data
             if (data.status === true) {
                 dispatch(updateProfileSuccess(data))
-                dispatch(getProfile())
+                setTimeout(() => {
+                    dispatch(getProfile())
+                }, 2000);
             } else {
                 dispatch(updateProfileError(data))
             }
