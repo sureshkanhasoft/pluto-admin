@@ -17,6 +17,7 @@ import apiConfigs from '../../config/config';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteStaff } from '../../store/action'
 import Notification from '../../components/Notification/Notification';
+import AlertDialog from '../../components/Alert/AlertDialog';
 
 
 const useStyle = makeStyles((theme) => ({
@@ -53,9 +54,11 @@ const DetailStaff = ({ match }) => {
     const classes = useStyle();
     const dispatch = useDispatch()
     const user_id = match.params.id;
+    const [Id, setId] = useState(false);
     const [items, setItems] = useState([])
     const [loading, setLoading] = useState(false)
     const [staffNotify, setStaffNotify] = useState(false)
+    const [deleteOpen, setDeleteOpen] = useState(false);
     const { staffDeleteSuccess, staffDeleteError } = useSelector(state => state.staff)
     const upadateLink = () => {
         // let dir = match.path;
@@ -83,8 +86,17 @@ const DetailStaff = ({ match }) => {
     }
 
     const deleteStaffItem = (id) => {
+        setDeleteOpen(true)
+        setId(id)
+    }
+
+    const alertResponse = (id) => {
         dispatch(deleteStaff(id))
         setStaffNotify(true)
+    }
+
+    const deleteRoleClose = () => {
+        setDeleteOpen(false)
     }
 
     useEffect(() => {
@@ -152,6 +164,16 @@ const DetailStaff = ({ match }) => {
                     </Grid>
                 </Grid>
             </Paper>
+
+            <AlertDialog
+                id={Id}
+                open={deleteOpen}
+                close={deleteRoleClose}
+                response={alertResponse}
+                title="Delete Speciality"
+                description="Are you sure you want to delete?"
+                buttonName="Delete"
+            />
         </>
     )
 }
