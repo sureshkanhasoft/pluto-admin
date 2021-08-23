@@ -8,6 +8,7 @@ import {
     RadioGroup, FormControlLabel, Radio, Typography, Divider,
     FormControl, InputLabel, Select, MenuItem
 } from '@material-ui/core';
+import { useForm } from 'react-hook-form';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import { useDispatch, useSelector } from 'react-redux';
 import { createTrust } from '../../store/action';
@@ -43,7 +44,9 @@ const CreateTrust = () => {
     const [inputList, setInputList] = useState([{ traning_name: "" }]);
     const { createTrustError, createTrustSuccess } = useSelector(state => state.trust)
     const [trustNotify, setTrustNotify] = useState(false)
+    const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const [data, setData] = useState({
+        
         name: "",
         code: "",
         preference_invoive_method: "",
@@ -104,10 +107,12 @@ const CreateTrust = () => {
         setWardsFields([...wardsFields, { ward_name: "", ward_type: "", ward_number: "" }])
     }
 
-    const submitData = (e) => {
-        e.preventDefault();
+    const submitData = async (data) => {
+        // e.preventDefault();
+        // console.log('data: ', data);
         dispatch(createTrust(data))
         setTrustNotify(true)
+        reset();
     }
 
     return (
@@ -126,7 +131,8 @@ const CreateTrust = () => {
                 />
             }
             <Paper className={classes.root}>
-                <form onSubmit={(e) => submitData(e)}>
+                {/* <form onSubmit={(e) => submitData(e)}> */}
+                <form onSubmit={handleSubmit(submitData)}>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
                             <TextField
@@ -134,9 +140,14 @@ const CreateTrust = () => {
                                 label="Trust Name"
                                 variant="outlined"
                                 name="name"
-                                value={data?.name}
+                                // value={data?.name}
+                                {...register('name', {
+                                    required: "The name field is required.",
+                                })}
+                                error={(errors.name ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
+                                required
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -145,17 +156,29 @@ const CreateTrust = () => {
                                 label="Trust Code"
                                 variant="outlined"
                                 name="code"
-                                value={data?.code}
+                                // value={data?.code}
+                                {...register('code', {
+                                    required: "Please enter code",
+                                })}
+                                error={(errors.code ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
+                                required
                             />
                         </Grid>
                         <Grid item xs={12}>
                             <Box className="mt-3">
                                 <Typography>Preferred Invoice Method</Typography>
-                                <RadioGroup name="preference_invoive_method" value={data?.preference_invoive_method} onChange={handleChange} className={classes.radioGroup}>
-                                    <FormControlLabel value="byPost" control={<Radio />} label="By Post" />
-                                    <FormControlLabel value="byEmail" control={<Radio />} label="By Email" />
+                                <RadioGroup 
+                                name="preference_invoive_method" 
+                                // value={data?.preference_invoive_method} 
+                                {...register('preference_invoive_method', {
+                                    required: "Please enter code",
+                                })}
+                                error={(errors?.preference_invoive_method)}
+                                onChange={handleChange} className={classes.radioGroup}>
+                                    <FormControlLabel value="BYPost" control={<Radio />} label="By Post" />
+                                    <FormControlLabel value="BYEmail" control={<Radio />} label="By Email" />
                                 </RadioGroup>
                             </Box>
                         </Grid>
@@ -166,7 +189,11 @@ const CreateTrust = () => {
                                 label="Trust Email"
                                 variant="outlined"
                                 name="email_address"
-                                value={data?.email_address}
+                                // value={data?.email_address}
+                                {...register('email_address', {
+                                    required: "Please enter code",
+                                })}
+                                error={(errors.email_address ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
                             />
@@ -185,7 +212,11 @@ const CreateTrust = () => {
                                 label="Address line 1"
                                 variant="outlined"
                                 name="address_line_1"
-                                value={data.address_line_1}
+                                // value={data.address_line_1}
+                                {...register('address_line_1', {
+                                    required: "Please enter code",
+                                })}
+                                error={(errors.address_line_1 ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
                             />
@@ -208,7 +239,11 @@ const CreateTrust = () => {
                                 label="Town / City"
                                 variant="outlined"
                                 name="city"
-                                value={data.city}
+                                // value={data.city}
+                                {...register('city', {
+                                    required: "Please enter city",
+                                })}
+                                error={(errors.city ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
                             />
@@ -219,7 +254,11 @@ const CreateTrust = () => {
                                 label="Postcode"
                                 variant="outlined"
                                 name="post_code"
-                                value={data.post_code}
+                                // value={data.post_code}
+                                {...register('post_code', {
+                                    required: "Please enter post code",
+                                })}
+                                error={(errors.post_code ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
                             />
@@ -239,7 +278,11 @@ const CreateTrust = () => {
                                 label="Trust Portal URl"
                                 variant="outlined"
                                 name="trust_portal_url"
-                                value={data.trust_portal_url}
+                                // value={data.trust_portal_url}
+                                {...register('trust_portal_url', {
+                                    required: "Please enter trust portal URL",
+                                })}
+                                error={(errors.trust_portal_url ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
                             />
@@ -250,7 +293,11 @@ const CreateTrust = () => {
                                 label="Email Address"
                                 variant="outlined"
                                 name="portal_email"
-                                value={data.portal_email}
+                                // value={data.portal_email}
+                                {...register('portal_email', {
+                                    required: "Please enter portal email",
+                                })}
+                                error={(errors.portal_email ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
                             />
@@ -262,7 +309,11 @@ const CreateTrust = () => {
                                 label="Password"
                                 variant="outlined"
                                 name="portal_password"
-                                value={data.portal_password}
+                                // value={data.portal_password}
+                                {...register('portal_password', {
+                                    required: "Please enter portal password",
+                                })}
+                                error={(errors.portal_password ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
                             />
@@ -285,7 +336,11 @@ const CreateTrust = () => {
                                             label="Training example type"
                                             variant="outlined"
                                             name="traning_name"
-                                            value={item.traning_name}
+                                            // value={item.traning_name}
+                                            {...register('traning_name', {
+                                                required: "Please enter phone number",
+                                            })}
+                                            error={(errors.traning_name ? true : false)}
                                             onChange={e => handleInputChange(e, index)}
                                             fullWidth
                                         />
@@ -381,7 +436,11 @@ const CreateTrust = () => {
                                 label="First Name"
                                 variant="outlined"
                                 name="first_name"
-                                value={data.first_name}
+                                // value={data.first_name}
+                                {...register('first_name', {
+                                    required: "Please enter first name",
+                                })}
+                                error={(errors.first_name ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
                             />
@@ -392,7 +451,11 @@ const CreateTrust = () => {
                                 label="Last Name"
                                 variant="outlined"
                                 name="last_name"
-                                value={data.last_name}
+                                // value={data.last_name}
+                                {...register('last_name', {
+                                    required: "Please enter last name",
+                                })}
+                                error={(errors.last_name ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
                             />
@@ -403,7 +466,11 @@ const CreateTrust = () => {
                                 label="Email"
                                 variant="outlined"
                                 name="contact_email_address"
-                                value={data.contact_email_address}
+                                // value={data.contact_email_address}
+                                {...register('contact_email_address', {
+                                    required: "Please enter contact email address",
+                                })}
+                                error={(errors.contact_email_address ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
                             />
@@ -414,7 +481,11 @@ const CreateTrust = () => {
                                 label="Contact Number"
                                 variant="outlined"
                                 name="phone_number"
-                                value={data.phone_number}
+                                // value={data.phone_number}
+                                {...register('phone_number', {
+                                    required: "Please enter phone number",
+                                })}
+                                error={(errors.phone_number ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
                             />
@@ -425,7 +496,11 @@ const CreateTrust = () => {
                                 label="Client"
                                 variant="outlined"
                                 name="client"
-                                value={data.client}
+                                // value={data.client}
+                                {...register('client', {
+                                    required: "Please enter client",
+                                })}
+                                error={(errors.client ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
                             />
@@ -436,7 +511,11 @@ const CreateTrust = () => {
                                 label="Department"
                                 variant="outlined"
                                 name="department"
-                                value={data.department}
+                                // value={data.department}
+                                {...register('department', {
+                                    required: "Please enter department",
+                                })}
+                                error={(errors.department ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
                             />
@@ -447,7 +526,7 @@ const CreateTrust = () => {
                         <Button color="primary">
                             Cancel
                         </Button>
-                        <Button color="secondary" variant="contained" type="submit">
+                        <Button color="secondary" variant="contained" type="submit" formNoValidate>
                             Save & Confirm
                         </Button>
                         <Button color="secondary" variant="contained">

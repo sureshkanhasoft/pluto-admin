@@ -121,7 +121,7 @@ const ViewTrust = ({ match }) => {
                     </div>
                     <div className="ml-5">
                         <Link to={`${match.url}/create`} className="btn btn-secondary">
-                            <AddIcon className="mr-2" />Add Booking
+                            <AddIcon className="mr-2" />Add Trust
                         </Link>
                     </div>
                 </Box>
