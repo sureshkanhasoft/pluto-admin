@@ -202,7 +202,7 @@ const Specialities = () => {
                 <Table className={classes.table}>
                     <TableHead>
                         <TableRow>
-                            <TableCell style={{ width: 80 }}>Id</TableCell>
+                            <TableCell style={{ width: 130 }}>Id</TableCell>
                             <TableCell align="left">Specialities</TableCell>
                             <TableCell align="right">Action</TableCell>
                         </TableRow>

@@ -89,7 +89,7 @@ const CreateStaff = () => {
     const staffSubmit = async (datas) => {
         dispatch(createStaff(datas))
         setStaffNotify(true)
-        // reset()
+        reset()
     }
 
     useEffect(() => {

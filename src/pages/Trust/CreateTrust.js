@@ -196,6 +196,7 @@ const CreateTrust = () => {
                                 error={(errors.email_address ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
+                                required
                             />
                         </Grid>
                         {/* <Grid item xs={12} >
@@ -219,6 +220,7 @@ const CreateTrust = () => {
                                 error={(errors.address_line_1 ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
+                                required
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -246,6 +248,7 @@ const CreateTrust = () => {
                                 error={(errors.city ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
+                                required
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
@@ -261,6 +264,7 @@ const CreateTrust = () => {
                                 error={(errors.post_code ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
+                                required
                             />
                         </Grid>
 
@@ -285,6 +289,7 @@ const CreateTrust = () => {
                                 error={(errors.trust_portal_url ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
+                                required
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
@@ -300,6 +305,7 @@ const CreateTrust = () => {
                                 error={(errors.portal_email ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
+                                required
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
@@ -316,6 +322,7 @@ const CreateTrust = () => {
                                 error={(errors.portal_password ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
+                                required
                             />
                         </Grid>
                         <Grid item xs={12} >
@@ -443,6 +450,7 @@ const CreateTrust = () => {
                                 error={(errors.first_name ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
+                                required
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
@@ -458,6 +466,7 @@ const CreateTrust = () => {
                                 error={(errors.last_name ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
+                                required
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
@@ -473,6 +482,7 @@ const CreateTrust = () => {
                                 error={(errors.contact_email_address ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
+                                required
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
@@ -488,6 +498,7 @@ const CreateTrust = () => {
                                 error={(errors.phone_number ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
+                                required
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
@@ -503,6 +514,7 @@ const CreateTrust = () => {
                                 error={(errors.client ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
+                                required
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
@@ -518,6 +530,7 @@ const CreateTrust = () => {
                                 error={(errors.department ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
+                                required
                             />
                         </Grid>
                     </Grid>

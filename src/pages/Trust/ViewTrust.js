@@ -129,7 +129,7 @@ const ViewTrust = ({ match }) => {
                 <Table className={classes.table}>
                     <TableHead>
                         <TableRow>
-                            <TableCell style={{ width: 80 }}>Id</TableCell>
+                            <TableCell style={{ width: 130 }}>Id</TableCell>
                             <TableCell align="left">Trust Name</TableCell>
                             <TableCell align="right" style={{ width: 140 }}></TableCell>
                         </TableRow>

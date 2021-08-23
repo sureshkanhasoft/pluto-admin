@@ -162,6 +162,7 @@ const UpdateTrust = ({match}) => {
                                 value={data?.name}
                                 onChange={handleChange}
                                 fullWidth
+                                required
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -173,6 +174,7 @@ const UpdateTrust = ({match}) => {
                                 value={data?.code}
                                 onChange={handleChange}
                                 fullWidth
+                                required
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -194,6 +196,7 @@ const UpdateTrust = ({match}) => {
                                 value={data?.email_address}
                                 onChange={handleChange}
                                 fullWidth
+                                required
                             />
                         </Grid>
                         {/* <Grid item xs={12} >
@@ -213,6 +216,7 @@ const UpdateTrust = ({match}) => {
                                 value={data.address_line_1}
                                 onChange={handleChange}
                                 fullWidth
+                                required
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -236,6 +240,7 @@ const UpdateTrust = ({match}) => {
                                 value={data.city}
                                 onChange={handleChange}
                                 fullWidth
+                                required
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
@@ -247,6 +252,7 @@ const UpdateTrust = ({match}) => {
                                 value={data.post_code}
                                 onChange={handleChange}
                                 fullWidth
+                                required
                             />
                         </Grid>
 
@@ -267,6 +273,7 @@ const UpdateTrust = ({match}) => {
                                 value={data.trust_portal_url}
                                 onChange={handleChange}
                                 fullWidth
+                                required
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
@@ -278,6 +285,7 @@ const UpdateTrust = ({match}) => {
                                 value={data.portal_email}
                                 onChange={handleChange}
                                 fullWidth
+                                required
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
@@ -290,6 +298,7 @@ const UpdateTrust = ({match}) => {
                                 value={data.portal_password}
                                 onChange={handleChange}
                                 fullWidth
+                                required
                             />
                         </Grid>
                         <Grid item xs={12} >
@@ -408,6 +417,7 @@ const UpdateTrust = ({match}) => {
                                 value={data.first_name}
                                 onChange={handleChange}
                                 fullWidth
+                                required
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
@@ -419,6 +429,7 @@ const UpdateTrust = ({match}) => {
                                 value={data.last_name}
                                 onChange={handleChange}
                                 fullWidth
+                                required
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
@@ -430,6 +441,7 @@ const UpdateTrust = ({match}) => {
                                 value={data.contact_email_address}
                                 onChange={handleChange}
                                 fullWidth
+                                required
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
@@ -441,6 +453,7 @@ const UpdateTrust = ({match}) => {
                                 value={data.phone_number}
                                 onChange={handleChange}
                                 fullWidth
+                                required
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
@@ -452,6 +465,7 @@ const UpdateTrust = ({match}) => {
                                 value={data.client}
                                 onChange={handleChange}
                                 fullWidth
+                                required
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
@@ -463,6 +477,7 @@ const UpdateTrust = ({match}) => {
                                 value={data.department}
                                 onChange={handleChange}
                                 fullWidth
+                                required
                             />
                         </Grid>
                     </Grid>

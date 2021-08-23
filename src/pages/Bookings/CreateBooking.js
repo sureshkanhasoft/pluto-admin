@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Paper,
     makeStyles,
@@ -7,6 +7,8 @@ import {
     Grid, TextField, Select, FormControl, MenuItem, InputLabel,
     FormGroup, FormControlLabel, Checkbox
 } from '@material-ui/core';
+import axios from 'axios';
+import apiConfigs from '../../config/config';
 
 const useStyle = makeStyles((theme) => ({
     root: {
@@ -18,10 +20,10 @@ const useStyle = makeStyles((theme) => ({
     formControl: {
         width: "100%"
     },
-    footerBtn:{
-        display:"flex",
-        justifyContent:"flex-end",
-        marginTop:"24px",
+    footerBtn: {
+        display: "flex",
+        justifyContent: "flex-end",
+        marginTop: "24px",
         '& > *': {
             margin: theme.spacing(1),
         },
@@ -30,6 +32,8 @@ const useStyle = makeStyles((theme) => ({
 
 const CreateBooking = () => {
     const classes = useStyle();
+    const [speciality, setSpeciality] = useState([])
+    const [trust, setTrust] = useState([])
     const [data, setData] = useState({
         referenceId: "12345",
         trust: "",
@@ -37,11 +41,49 @@ const CreateBooking = () => {
         grade: "",
         date: "",
         shiftTime: "",
-        rate:""
+        rate: ""
     })
     const handleChange = (event) => {
+        console.log('event: ', event.target.value);
         setData({ ...data, [event.target.name]: event.target.value });
     };
+
+    const getSpecialities = async () => {
+        const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, '');
+        await axios.get(`${apiConfigs.API_URL}api/organization/get-all-speciality`, {
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': `Bearer ${loggedInUser}`
+            }
+        }).then(response => {
+            setSpeciality(response.data.data)
+        }).catch(error => {
+            console.log('error: ', error);
+        })
+    }
+
+    const getTrust = async () => {
+        const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, '');
+        await axios.get(`${apiConfigs.API_URL}api/organization/get-trust`, {
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': `Bearer ${loggedInUser}`
+            }
+        }).then(response => {
+            setTrust(response.data)
+        }).catch(error => {
+            console.log('error: ', error);
+        })
+    }
+
+    useEffect(() => {
+        getSpecialities()
+    }, [])
+
+    useEffect(() => {
+        getTrust()
+    }, [])
+
     return (
         <Paper className={classes.root}>
 
@@ -74,8 +116,15 @@ const CreateBooking = () => {
                                 <MenuItem value="">
                                     Select Trust Hospital
                                 </MenuItem>
-                                <MenuItem value="Ana Care Hospital">Ana Care Hospital</MenuItem>
-                                <MenuItem value="Apex Care Hospital">Apex Care Hospital</MenuItem>
+                                {
+                                    trust?.data && trust?.data.map((trustList, index) => {
+                                        return (
+                                            <MenuItem value={trustList.name} key={index}>{trustList.name}</MenuItem>
+                                        )
+                                    })
+                                }
+                                
+                                {/* <MenuItem value="Apex Care Hospital">Apex Care Hospital</MenuItem> */}
                             </Select>
                         </FormControl>
                     </Grid>
@@ -130,7 +179,7 @@ const CreateBooking = () => {
                         />
                     </Grid>
 
-                    <Grid item xs={12} sm={6} lg={4}>
+                    <Grid item xs={12} sm={6} lg={2}>
                         <FormControl variant="outlined" className={classes.formControl}>
                             <InputLabel>Shift Time</InputLabel>
                             <Select
@@ -148,6 +197,25 @@ const CreateBooking = () => {
                             </Select>
                         </FormControl>
                     </Grid>
+                    <Grid item xs={12} sm={6} lg={2}>
+                        <FormControl variant="outlined" className={classes.formControl}>
+                            <InputLabel>Shift Type</InputLabel>
+                            <Select
+                                value={data.shiftTime}
+                                onChange={handleChange}
+                                label="Grade Required"
+                                name="shiftTime"
+                            >
+                                <MenuItem value="">
+                                    Select a shift type
+                                </MenuItem>
+                                <MenuItem value="07:30 - 13:00">Long Day</MenuItem>
+                                <MenuItem value="15:30 - 20:00">Night Shift</MenuItem>
+                                <MenuItem value="07:30 - 19:30">Day shift</MenuItem>
+                                <MenuItem value="07:30 - 19:30">twilight shifts</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Grid>
 
                     <Grid item xs={12} sm={6} lg={4}>
                         <TextField
@@ -161,60 +229,26 @@ const CreateBooking = () => {
                         />
                     </Grid>
 
-                    
+
 
                     <Grid item xs={12}>
                         <p className="mt-6">Specialities</p>
                         <FormGroup aria-label="position" row>
                             <Grid container>
-                                <Grid item xs={12} sm={6} md={4} lg={3}>
-                                    <FormControlLabel
-                                        control={<Checkbox color="primary" checked={data.checkedG} onChange={handleChange} name="checkedB" />}
-                                        label="Acute Assessment"
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={6} md={4} lg={3}>
-                                    <FormControlLabel
-                                        control={<Checkbox color="primary" checked={data.checkedG} onChange={handleChange} name="checkedB" />}
-                                        label="Allocation On Arrival"
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={6} md={4} lg={3}>
-                                    <FormControlLabel
-                                        control={<Checkbox color="primary" checked={data.checkedG} onChange={handleChange} name="checkedB" />}
-                                        label="Cardiology"
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={6} md={4} lg={3}>
-                                    <FormControlLabel
-                                        control={<Checkbox color="primary" checked={data.checkedG} onChange={handleChange} name="checkedB" />}
-                                        label="Emergency"
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={6} md={4} lg={3}>
-                                    <FormControlLabel
-                                        control={<Checkbox color="primary" checked={data.checkedG} onChange={handleChange} name="checkedB" />}
-                                        label="Endoscopy"
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={6} md={4} lg={3}>
-                                    <FormControlLabel
-                                        control={<Checkbox color="primary" checked={data.checkedG} onChange={handleChange} name="checkedB" />}
-                                        label="Isolation"
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={6} md={4} lg={3}>
-                                    <FormControlLabel
-                                        control={<Checkbox color="primary" checked={data.checkedG} onChange={handleChange} name="checkedB" />}
-                                        label="Respiratory"
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={6} md={4} lg={3}>
-                                    <FormControlLabel
-                                        control={<Checkbox color="primary" checked={data.checkedG} onChange={handleChange} name="checkedB" />}
-                                        label="Surgical"
-                                    />
-                                </Grid>
+                                {
+                                    speciality?.data && speciality?.data.map((items, index) => {
+                                        return (
+                                            <Grid item xs={12} sm={6} md={4} lg={3} key={items.id}>
+                                                <FormControlLabel
+                                                    control={<Checkbox color="primary" checked={data.checkedG} onChange={handleChange} name="checkedB" />}
+                                                    label={items.speciality_name}
+                                                />
+                                            </Grid>
+                                        )
+
+                                    })
+                                }
+
                             </Grid>
                         </FormGroup>
                     </Grid>

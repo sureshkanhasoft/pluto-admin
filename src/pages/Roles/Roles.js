@@ -105,7 +105,7 @@ const Roles = () => {
                 <Table className={classes.table}>
                     <TableHead>
                         <TableRow>
-                            <TableCell style={{ width: 80 }}>Id</TableCell>
+                            <TableCell style={{ width: 130 }}>Id</TableCell>
                             <TableCell align="left">Role</TableCell>
                             <TableCell align="right">Action</TableCell>
                         </TableRow>
