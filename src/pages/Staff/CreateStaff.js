@@ -109,7 +109,7 @@ const CreateStaff = () => {
         <>
             {staffNotify && staffSuccess?.message &&
                 <Notification
-                    data={staffSuccess?.message}
+                    data={staffSuccess?.message ? "Staff member added successfully" : ""}
                     status="success"
                 />
             }

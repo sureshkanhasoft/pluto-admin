@@ -99,6 +99,10 @@ const DetailStaff = ({ match }) => {
         setDeleteOpen(false)
     }
 
+    const backPage = () => {
+        history.go(-2)
+    }
+
     useEffect(() => {
         getSingleStaff()
     }, [user_id])
@@ -114,7 +118,7 @@ const DetailStaff = ({ match }) => {
             {
                 staffNotify && staffDeleteSuccess?.message &&
                 <Notification
-                    data={staffDeleteSuccess?.message}
+                    data={staffDeleteSuccess?.message ? "Staff member deleted successfully" : ""}
                     status="success"
                 />
             }
@@ -154,6 +158,9 @@ const DetailStaff = ({ match }) => {
                     </Grid>
                     <Grid item xs={12}>
                         <Box display="flex" justifyContent="flex-end" className={classes.btnContainer}>
+                            <Button color="primary" onClick={backPage}>
+                                Back
+                            </Button>
                             <Button variant="contained" color="primary" onClick={upadateLink}>
                                 <EditIcon className="mr-2" />Edit
                             </Button>
@@ -170,7 +177,7 @@ const DetailStaff = ({ match }) => {
                 open={deleteOpen}
                 close={deleteRoleClose}
                 response={alertResponse}
-                title="Delete Speciality"
+                title="Delete Staff Member"
                 description="Are you sure you want to delete?"
                 buttonName="Delete"
             />

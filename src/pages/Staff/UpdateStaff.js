@@ -139,7 +139,7 @@ const UpdateStaff = ({ match }) => {
             {
                 staffNotify && staffUpdateSuccess?.message &&
                 <Notification
-                    data={staffUpdateSuccess?.message}
+                    data={staffUpdateSuccess?.message ? "Staff member updated successfully":""}
                     status="success"
                 />
             }
