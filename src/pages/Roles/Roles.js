@@ -46,6 +46,7 @@ const Roles = () => {
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [deleteNotify, SetDeleteNotify] = useState(false);
     const [Id, setId] = useState(false);
+    const [disabled, setDisabled]= useState(false)
     // const [deleteConfirm, SetDeleteConfim] = useState(false);
 
     const { getRolesItem, loading, deleteSuccess, deleteError } = useSelector(state => state.roles)
@@ -59,6 +60,7 @@ const Roles = () => {
     };
 
     const deleteRole = (role_id) => {
+        setDisabled(true)
         setId(role_id)
         setDeleteOpen(true)
         // dispatch(deleteRoles(role_id))
@@ -68,7 +70,10 @@ const Roles = () => {
         setDeleteOpen(false)
     }
     const alertResponse = (id) => {
-        dispatch(deleteRoles(id))
+        if(disabled === true ) {
+            dispatch(deleteRoles(id))
+        }
+        setDisabled(false)
         SetDeleteNotify(true)
     }
 

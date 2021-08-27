@@ -98,6 +98,7 @@ const Specialities = () => {
     const [Id, setId] = useState(false);
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [deleteNotify, SetDeleteNotify] = useState(false);
+    const [disabled, setDisabled]= useState(false)
 
     const [page, setPage] = React.useState(1);
     const [searchData, setSearchData] = useState({ search: "", status: "" });
@@ -125,7 +126,10 @@ const Specialities = () => {
     }
 
     const alertResponse = (id) => {
-        dispatch(deleteSpecialities(id))
+        if(disabled === true ) {
+            dispatch(deleteSpecialities(id))
+        }
+        setDisabled(false)
         SetDeleteNotify(true)
     }
 
@@ -159,6 +163,7 @@ const Specialities = () => {
     const deleteSpecialitiesData = (id) => {
         setId(id)
         setDeleteOpen(true)
+        setDisabled(true)
         // dispatch(deleteSpecialities(id))
         
     }
