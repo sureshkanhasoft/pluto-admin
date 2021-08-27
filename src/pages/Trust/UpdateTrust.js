@@ -103,9 +103,9 @@ const UpdateTrust = ({ match }) => {
         phone_number: "",
         client: "",
         department: "",
-        traning: [
+        training: [
             {
-                traning_name: ""
+                training_name: ""
             }
         ],
 
@@ -148,9 +148,9 @@ const UpdateTrust = ({ match }) => {
 
     const addTraining = () => {
         const trainingData = JSON.parse(JSON.stringify(data));
-        trainingData.traning.push(
+        trainingData.training.push(
             {
-                traning_name: ""
+                training_name: ""
             }
         )
         setData(trainingData)
@@ -528,12 +528,12 @@ const UpdateTrust = ({ match }) => {
                                 return (
                                     <Grid item xs={12} sm={6} key={index}>
                                         <TextField
-                                            id="traning_name"
+                                            id="training_name"
                                             label="Training example type"
                                             variant="outlined"
-                                            name="traning_name"
-                                            value={item?.traning_name || ""}
-                                            onChange={(e) => handleChangeHospital(index, e, 'traning')}
+                                            name="training_name"
+                                            value={item?.training_name || ""}
+                                            onChange={(e) => handleChangeHospital(index, e, 'training')}
                                             fullWidth
                                         />
                                     </Grid>

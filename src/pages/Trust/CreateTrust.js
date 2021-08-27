@@ -102,9 +102,9 @@ const CreateTrust = () => {
         phone_number: "",
         client: "",
         department: "",
-        traning: [
+        training: [
             {
-                traning_name: ""
+                training_name: ""
             }
         ],
 
@@ -147,9 +147,9 @@ const CreateTrust = () => {
 
     const addTraining = () => {
         const trainingData = JSON.parse(JSON.stringify(data));
-        trainingData.traning.push(
+        trainingData.training.push(
             {
-                traning_name: ""
+                training_name: ""
             }
         )
         setData(trainingData)
@@ -611,20 +611,20 @@ const CreateTrust = () => {
                         </Grid>
 
                         {
-                            data.traning.map((item, index) => {
+                            data.training.map((item, index) => {
                                 return (
                                     <Grid item xs={12} sm={6} key={index}>
                                         <TextField
-                                            id="traning_name"
+                                            id="training_name"
                                             label="Training example type"
                                             variant="outlined"
-                                            name="traning_name"
-                                            value={item?.traning_name}
-                                            onChange={(e) => handleChangeHospital(index, e, 'traning')}
-                                            // {...register('traning_name', {
+                                            name="training_name"
+                                            value={item?.training_name}
+                                            onChange={(e) => handleChangeHospital(index, e, 'training')}
+                                            // {...register('training_name', {
                                             //     required: "Please enter phone number",
                                             // })}
-                                            // error={(errors.traning_name ? true : false)}
+                                            // error={(errors.training_name ? true : false)}
                                             // onChange={e => handleInputChange(e, index)}
                                             fullWidth
                                         />
