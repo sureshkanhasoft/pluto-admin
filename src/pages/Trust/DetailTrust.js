@@ -54,8 +54,10 @@ const useStyle = makeStyles((theme) => ({
     },
     hospitalBox: {
         background: "#f8fafc",
-        // width:"100%",
-        marginBottom: "10px"
+        margin: "30px 0",
+        // padding:"16px",
+        borderRadius: 8,
+        width: "100%"
     }
 }))
 
@@ -75,7 +77,6 @@ const DetailTrust = ({ match }) => {
                 'Authorization': `Bearer ${loggedInUser}`
             }
         }).then(response => {
-            console.log('response: ', response);
             setTrustItems(response.data.data)
             setLoading(false)
         }).catch(error => {
@@ -114,50 +115,50 @@ const DetailTrust = ({ match }) => {
                         <Typography variant="h6" className={classes.desc}>{trustItems.code}</Typography>
                     </Grid>
 
-                    </Grid>
+                </Grid>
 
-                    {
-                        trustItems?.hospital && trustItems?.hospital.map((items, index) => {
-                            return (
-                                <Grid container spacing={4} key={index} className={classes.hospitalBox}>
-                                    <Grid item xs={12}>
-                                        <Typography className={classes.mainTitle}>{`${index + 1}.`} Hospital</Typography>
-                                    </Grid>
-                                    <Grid item xs={12} className={classes.gridItem}>
-                                        <Typography variant="body2" className={classes.heading}>Hospital Name</Typography>
-                                        <Typography variant="h6" className={classes.desc}>{items.hospital_name}</Typography>
-                                    </Grid>
-
-                                    {
-                                        items?.ward && items?.ward.map((warditem, wIndex) => {
-                                            return (
-                                                <Fragment key={wIndex}>
-                                                    <Grid item xs={12} className={classes.mainWrapper}>
-                                                        <Typography className={classes.subTitle}>{`${wIndex + 1}.`} Wards</Typography>
-                                                    </Grid>
-                                                    <Grid item xs={12} sm={6} lg={6} className={classes.gridItem}>
-                                                        <Typography variant="body2" className={classes.heading}>Ward Name</Typography>
-                                                        <Typography variant="h6" className={classes.desc}>{warditem.ward_name}</Typography>
-                                                    </Grid>
-
-                                                    <Grid item xs={12} sm={6} lg={3} className={classes.gridItem}>
-                                                        <Typography variant="body2" className={classes.heading}>Type</Typography>
-                                                        <Typography variant="h6" className={classes.desc}>{warditem.ward_type_id}</Typography>
-                                                    </Grid>
-
-                                                    <Grid item xs={12} sm={6} lg={3} className={classes.gridItem}>
-                                                        <Typography variant="body2" className={classes.heading}>Number</Typography>
-                                                        <Typography variant="h6" className={classes.desc}>{warditem.ward_number}</Typography>
-                                                    </Grid>
-                                                </Fragment>
-                                            )
-                                        })
-                                    }
+                {
+                    trustItems?.hospital && trustItems?.hospital.map((items, index) => {
+                        return (
+                            <Grid container spacing={4} key={index} className={classes.hospitalBox}>
+                                <Grid item xs={12} className="mb-4">
+                                    <Typography className={classes.mainTitle}>{`${index + 1}.`} Hospital</Typography>
                                 </Grid>
-                            )
-                        })
-                    }
-                    <Grid container spacing={4}>
+                                <Grid item xs={12} className={classes.gridItem}>
+                                    <Typography variant="body2" className={classes.heading}>Hospital Name</Typography>
+                                    <Typography variant="h6" className={classes.desc}>{items.hospital_name}</Typography>
+                                </Grid>
+
+                                {
+                                    items?.ward && items?.ward.map((warditem, wIndex) => {
+                                        return (
+                                            <Fragment key={wIndex}>
+                                                <Grid item xs={12} className={classes.mainWrapper}>
+                                                    <Typography className={classes.subTitle}>{`${wIndex + 1}.`} Wards</Typography>
+                                                </Grid>
+                                                <Grid item xs={12} sm={6} lg={6} className={classes.gridItem}>
+                                                    <Typography variant="body2" className={classes.heading}>Ward Name</Typography>
+                                                    <Typography variant="h6" className={classes.desc}>{warditem.ward_name}</Typography>
+                                                </Grid>
+
+                                                <Grid item xs={12} sm={6} lg={3} className={classes.gridItem}>
+                                                    <Typography variant="body2" className={classes.heading}>Type</Typography>
+                                                    <Typography variant="h6" className={classes.desc}>{warditem.ward_type_id}</Typography>
+                                                </Grid>
+
+                                                <Grid item xs={12} sm={6} lg={3} className={classes.gridItem}>
+                                                    <Typography variant="body2" className={classes.heading}>Number</Typography>
+                                                    <Typography variant="h6" className={classes.desc}>{warditem.ward_number}</Typography>
+                                                </Grid>
+                                            </Fragment>
+                                        )
+                                    })
+                                }
+                            </Grid>
+                        )
+                    })
+                }
+                <Grid container spacing={4}>
 
                     <Grid item xs={12} className={classes.gridItem}>
                         <Typography variant="body2" className={classes.heading}>Preferred Invoice Method</Typography>

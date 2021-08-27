@@ -8,12 +8,14 @@ import {
     RadioGroup, FormControlLabel, Radio, Typography, Divider,
     FormControl, InputLabel, Select, MenuItem
 } from '@material-ui/core';
+import { useForm } from 'react-hook-form';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateTrust } from '../../store/action/trust/trustAction';
+import { updateTrust } from '../../store/action';
 import Notification from '../../components/Notification/Notification';
 import axios from 'axios';
 import apiConfigs from '../../config/config';
+import CloseIcon from '@material-ui/icons/Close';
 
 const useStyle = makeStyles((theme) => ({
     root: {
@@ -35,17 +37,54 @@ const useStyle = makeStyles((theme) => ({
     },
     radioGroup: {
         flexDirection: "row"
+    },
+    hospitalBox: {
+        padding: 8,
+        width: "100%",
+    },
+    lightGray: {
+        background: "#f4f5f6",
+        width: "100%",
+        margin: 0,
+        padding: "16px 12px"
+    },
+    wardBox: {
+        margin: 0,
+        width: "100%",
+        position: "relative"
+    },
+
+    addWards: {
+        fontSize: 12,
+        display: "flex",
+        alignItems: "center",
+        marginLeft: 'auto',
+        '& .MuiButton-label': {
+            display: "flex",
+            alignItems: "center",
+        },
+        '& .MuiSvgIcon-root': {
+            width: 18,
+            height: "auto"
+        }
+    },
+    removeWard: {
+        position: "absolute",
+        top: "50%",
+        transform: "translateY(-50%)",
+        right: "-24px",
+        cursor: "pointer"
     }
 }))
 
-const UpdateTrust = ({match}) => {
+const UpdateTrust = ({ match }) => {
     const classes = useStyle();
     const dispatch = useDispatch()
     const id = match.params.id;
-    const [wardsFields, setWardsFields] = useState([{ ward_name: "", ward_type: "", ward_number: "" }]);
-    const [inputList, setInputList] = useState([{ traning_name: "" }]);
     const { updateTrustError, updateTrustSuccess } = useSelector(state => state.trust)
     const [trustNotify, setTrustNotify] = useState(false)
+    const [wardList, setWardList] = useState([])
+    const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const [data, setData] = useState({
         name: "",
         code: "",
@@ -64,51 +103,101 @@ const UpdateTrust = ({match}) => {
         phone_number: "",
         client: "",
         department: "",
+        traning: [
+            {
+                traning_name: ""
+            }
+        ],
+
+        hospital: [
+            {
+                hospital_name: "",
+                ward: [
+                    {
+                        ward_name: "",
+                        ward_type: "",
+                        ward_number: ""
+                    }
+                ]
+            }
+        ],
         ward: [
             {
                 ward_name: "",
                 ward_type: "",
-                ward_number: "",
-            }
-        ],
-
-        traning: [
-            {
-                traning_name: ""
+                ward_number: ""
             }
         ],
     })
 
 
     const handleChange = (event) => {
+        // console.log('event: ', event.target.value);
         setData({ ...data, [event.target.name]: event.target.value });
     };
 
-    const handleInputChange = (e, index) => {
-        const { name, value } = e.target;
-        const traning = [...inputList];
-        traning[index][name] = value;
-        // console.log(traning)
-        setData({ ...data, traning });
+    const handleChangeHospital = (index, event, key) => {
+        data[key][index][event.target.name] = event.target.value
+        setData({ ...data });
     };
 
-    const handleInputWardChange = (e, index) => {
-        const { name, value } = e.target;
-        const ward = [...wardsFields];
-        ward[index][name] = value;
-        // console.log(ward)
-        setData({ ...data, ward });
+    const handleChangeWardOFHospital = (hIndex, wIndex, event) => {
+        data.hospital[hIndex].ward[wIndex][event.target.name] = event.target.value
+        setData({ ...data });
     };
 
-    const handleAddClick = () => {
-        setInputList([...inputList, { traning_name: "" }]);
+    const addTraining = () => {
+        const trainingData = JSON.parse(JSON.stringify(data));
+        trainingData.traning.push(
+            {
+                traning_name: ""
+            }
+        )
+        setData(trainingData)
     }
 
-    const wardHandleAddClick = () => {
-        setWardsFields([...wardsFields, { ward_name: "", ward_type: "", ward_number: "" }])
+    const addHospital = (e, index) => {
+        const hos = JSON.parse(JSON.stringify(data));
+        hos.hospital.push(
+            {
+                hospital_name: "",
+                ward: [
+                    {
+                        ward_name: "",
+                        ward_type: "",
+                        ward_number: ""
+                    }
+                ]
+            }
+        )
+        setData(hos);
     }
 
-    const getSingleTrust = async () => {    
+    const wards = (id) => {
+        const wards1 = JSON.parse(JSON.stringify(data));
+        wards1.hospital[id].ward.push(
+            {
+                ward_name: "",
+                ward_type: "",
+                ward_number: ""
+            }
+        )
+        setData(wards1);
+    }
+
+    const addWard1 = () => {
+        const hos = JSON.parse(JSON.stringify(data));
+        hos.ward.push(
+            {
+                ward_name: "",
+                ward_type: "",
+                ward_number: ""
+            }
+        )
+        setData(hos);
+    }
+
+    const getSingleTrust = async () => {
         const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, '');
         // setLoading(true)
         await axios.get(`${apiConfigs.API_URL}api/organization/get-trust/${id}`, {
@@ -117,7 +206,7 @@ const UpdateTrust = ({match}) => {
                 'Authorization': `Bearer ${loggedInUser}`
             }
         }).then(response => {
-            console.log('response: ', response);
+            console.log('response: ', response.data.data);
             setData(response.data.data)
             // setLoading(false)
         }).catch(error => {
@@ -126,15 +215,49 @@ const UpdateTrust = ({match}) => {
         });
     }
 
+
     useEffect(() => {
         getSingleTrust()
     }, [id])
 
-    const submitData = (e) => {
+    const removeWard = (e, data) => {
+        console.log('index: ', data);
+        const wards1 = JSON.parse(JSON.stringify(data));
+
+
+    }
+
+
+    const getWardType = async () => {
+        const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, '');
+        await axios.get(`${apiConfigs.API_URL}api/organization/get-all-ward-type`, {
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': `Bearer ${loggedInUser}`
+            }
+        }).then(response => {
+            setWardList(response.data)
+        }).catch(error => {
+            console.log("error.message", error.message);
+        });
+    }
+
+    useEffect(() => {
+        getWardType()
+    }, [])
+
+    const submitData = async (e) => {
         e.preventDefault();
+        console.log('data: ', data);
         dispatch(updateTrust(data))
         setTrustNotify(true)
+        // reset();
     }
+
+    // useEffect(() => {
+    //     console.log(data);
+    // }, [data])
+
     return (
         <>
             {trustNotify && updateTrustSuccess?.message &&
@@ -144,14 +267,15 @@ const UpdateTrust = ({match}) => {
                 />
             }
 
-            {trustNotify && updateTrustError?.message &&
+            {/* {trustNotify && updateTrustError?.message &&
                 <Notification
                     data={updateTrustError?.message}
                     status="error"
                 />
-            }
+            } */}
             <Paper className={classes.root}>
-                <form onSubmit={(e) => submitData(e)}>
+                {/* <form onSubmit={(e) => submitData(e)}> */}
+                <form onSubmit={submitData}>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
                             <TextField
@@ -177,10 +301,104 @@ const UpdateTrust = ({match}) => {
                                 required
                             />
                         </Grid>
+
+                        {
+                             data?.hospital && data?.hospital.map((item, index) => {
+
+                                return (
+                                    <div className={classes.hospitalBox} key={index}>
+                                        <Grid container spacing={2} className={classes.lightGray}>
+                                            <Grid item xs={12}>
+                                                <TextField
+                                                    id="hospital_name"
+                                                    label="Hospital name"
+                                                    variant="outlined"
+                                                    name="hospital_name"
+                                                    value={item?.hospital_name}
+                                                    onChange={(e) => handleChangeHospital(index, e, 'hospital')}
+
+                                                    fullWidth
+                                                    required
+                                                />
+                                            </Grid>
+                                            {
+                                                item.ward.map((wardsField, wIndex) => {
+                                                    return (
+                                                        <Grid container spacing={2} key={wIndex} className={classes.wardBox}>
+                                                            <Grid item xs={12} sm={6}>
+                                                                <TextField
+                                                                    id="ward_name"
+                                                                    label="Ward Name"
+                                                                    variant="outlined"
+                                                                    name="ward_name"
+                                                                    value={wardsField?.ward_name}
+                                                                    onChange={(e) => handleChangeWardOFHospital(index, wIndex, e)}
+                                                                    fullWidth
+                                                                />
+                                                            </Grid>
+                                                            <Grid item xs={12} sm={4}>
+                                                                <FormControl variant="outlined" className={classes.formControl}>
+                                                                    <InputLabel>Ward Type</InputLabel>
+                                                                    <Select
+                                                                        label="Trust Name"
+                                                                        name="ward_type"
+                                                                        value={wardsField?.ward_type || ""}
+                                                                        onChange={(e) => handleChangeWardOFHospital(index, wIndex, e)}
+                                                                    >
+                                                                        <MenuItem value="">
+                                                                            Select Type
+                                                                        </MenuItem>
+                                                                        {
+                                                                            wardList?.data && wardList?.data.map((list, index) => {
+                                                                                return (
+                                                                                    <MenuItem key={index} value={list.ward_id}>{list.ward_type}</MenuItem>
+                                                                                )
+                                                                            })
+                                                                        }
+                                                                    </Select>
+                                                                </FormControl>
+                                                            </Grid>
+                                                            <Grid item xs={12} sm={2}>
+                                                                <TextField
+                                                                    id="ward_number"
+                                                                    label="Ward Number"
+                                                                    variant="outlined"
+                                                                    name="ward_number"
+                                                                    value={wardsField?.ward_number}
+                                                                    onChange={(e) => handleChangeWardOFHospital(index, wIndex, e)}
+                                                                    fullWidth
+                                                                />
+                                                            </Grid>
+                                                        </Grid>
+                                                    )
+                                                })
+                                            }
+
+                                            <Grid item xs={12}>
+                                                <Button onClick={() => wards(index)} color="secondary" className={classes.addWards}>
+                                                    <AddCircleOutlineIcon className="mr-3" />
+                                                    <span>Add Wards</span>
+                                                </Button>
+                                            </Grid>
+                                        </Grid>
+                                    </div>
+                                )
+                            })
+                        }
+                        <Grid item xs={12}>
+                            <Button onClick={() => addHospital()} color="secondary">
+                                <AddCircleOutlineIcon className="mr-3" />
+                                <Typography >Add Hospital</Typography>
+                            </Button>
+                        </Grid>
+                        
                         <Grid item xs={12}>
                             <Box className="mt-3">
                                 <Typography>Preferred Invoice Method</Typography>
-                                <RadioGroup name="preference_invoive_method" value={data?.preference_invoive_method} onChange={handleChange} className={classes.radioGroup}>
+                                <RadioGroup
+                                    name="preference_invoive_method"
+                                    value={data?.preference_invoive_method}
+                                    onChange={handleChange} className={classes.radioGroup}>
                                     <FormControlLabel value="BYPost" control={<Radio />} label="By Post" />
                                     <FormControlLabel value="BYEmail" control={<Radio />} label="By Email" />
                                 </RadioGroup>
@@ -199,11 +417,6 @@ const UpdateTrust = ({match}) => {
                                 required
                             />
                         </Grid>
-                        {/* <Grid item xs={12} >
-                            <div className="pt-5 pb-4">
-                                <Divider />
-                            </div>
-                        </Grid> */}
                         <Grid item xs={12}>
                             <Typography>Trust Address</Typography>
                         </Grid>
@@ -213,7 +426,7 @@ const UpdateTrust = ({match}) => {
                                 label="Address line 1"
                                 variant="outlined"
                                 name="address_line_1"
-                                value={data.address_line_1}
+                                value={data?.address_line_1}
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -225,7 +438,7 @@ const UpdateTrust = ({match}) => {
                                 label="Address line 2"
                                 variant="outlined"
                                 name="address_line_2"
-                                value={data.address_line_2}
+                                value={data?.address_line_2}
                                 onChange={handleChange}
                                 fullWidth
                             />
@@ -237,7 +450,7 @@ const UpdateTrust = ({match}) => {
                                 label="Town / City"
                                 variant="outlined"
                                 name="city"
-                                value={data.city}
+                                value={data?.city}
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -249,7 +462,7 @@ const UpdateTrust = ({match}) => {
                                 label="Postcode"
                                 variant="outlined"
                                 name="post_code"
-                                value={data.post_code}
+                                value={data?.post_code}
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -270,7 +483,7 @@ const UpdateTrust = ({match}) => {
                                 label="Trust Portal URl"
                                 variant="outlined"
                                 name="trust_portal_url"
-                                value={data.trust_portal_url}
+                                value={data?.trust_portal_url}
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -282,7 +495,7 @@ const UpdateTrust = ({match}) => {
                                 label="Email Address"
                                 variant="outlined"
                                 name="portal_email"
-                                value={data.portal_email}
+                                value={data?.portal_email}
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -295,7 +508,7 @@ const UpdateTrust = ({match}) => {
                                 label="Password"
                                 variant="outlined"
                                 name="portal_password"
-                                value={data.portal_password}
+                                value={data?.portal_password}
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -311,7 +524,7 @@ const UpdateTrust = ({match}) => {
                         </Grid>
 
                         {
-                            inputList && inputList.map((item, index) => {
+                            data?.training && data?.training.map((item, index) => {
                                 return (
                                     <Grid item xs={12} sm={6} key={index}>
                                         <TextField
@@ -319,84 +532,18 @@ const UpdateTrust = ({match}) => {
                                             label="Training example type"
                                             variant="outlined"
                                             name="traning_name"
-                                            value={item.traning_name}
-                                            onChange={e => handleInputChange(e, index)}
+                                            value={item?.traning_name || ""}
+                                            onChange={(e) => handleChangeHospital(index, e, 'traning')}
                                             fullWidth
                                         />
                                     </Grid>
                                 )
                             })
-
-
                         }
                         <Grid item xs={12} sm={6} lg={4}>
-                            <Button onClick={handleAddClick} color="secondary">
+                            <Button color="secondary" onClick={addTraining}>
                                 <AddCircleOutlineIcon className="mr-3" />
                                 <Typography >Add Training </Typography>
-                            </Button>
-                        </Grid>
-                        <Grid item xs={12} >
-                            <div className="pt-5 pb-4">
-                                <Divider />
-                            </div>
-                        </Grid>
-
-                        <Grid item xs={12}>
-                            <Typography>Wards</Typography>
-                        </Grid>
-
-                        {
-                            wardsFields && wardsFields.map((wardsField, index) => {
-                                return (
-                                    <Fragment key={index}>
-                                        <Grid item xs={12} sm={6}>
-                                            <TextField
-                                                id="ward_name"
-                                                label="Ward Name"
-                                                variant="outlined"
-                                                name="ward_name"
-                                                value={wardsField?.ward_name}
-                                                onChange={e => handleInputWardChange(e, index)}
-                                                fullWidth
-                                            />
-                                        </Grid>
-                                        <Grid item xs={12} sm={4}>
-                                            <FormControl variant="outlined" className={classes.formControl}>
-                                                <InputLabel>Type</InputLabel>
-                                                <Select
-                                                    value={wardsField?.ward_type}
-                                                    onChange={e => handleInputWardChange(e, index)}
-                                                    label="Trust Name"
-                                                    name="ward_type"
-                                                >
-                                                    <MenuItem value="">
-                                                        Select Type
-                                                    </MenuItem>
-                                                    <MenuItem value="Hospital">Hospital</MenuItem>
-                                                    <MenuItem value="GPClinic">GP Clinic</MenuItem>
-                                                </Select>
-                                            </FormControl>
-                                        </Grid>
-                                        <Grid item xs={12} sm={2}>
-                                            <TextField
-                                                id="ward_number"
-                                                label="Ward Number"
-                                                variant="outlined"
-                                                name="ward_number"
-                                                value={wardsField?.ward_number}
-                                                onChange={e => handleInputWardChange(e, index)}
-                                                fullWidth
-                                            />
-                                        </Grid>
-                                    </Fragment>
-                                )
-                            })
-                        }
-                        <Grid item xs={12} sm={6} lg={4}>
-                            {/* <Button onClick={() => handleAddFieldsWard()} color="secondary"> */}
-                            <Button onClick={wardHandleAddClick} color="secondary">
-                                <AddCircleOutlineIcon className="mr-3" />
-                                <Typography >Add Another Wards</Typography>
                             </Button>
                         </Grid>
                         <Grid item xs={12} >
@@ -414,7 +561,7 @@ const UpdateTrust = ({match}) => {
                                 label="First Name"
                                 variant="outlined"
                                 name="first_name"
-                                value={data.first_name}
+                                value={data?.first_name || ""}
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -426,7 +573,7 @@ const UpdateTrust = ({match}) => {
                                 label="Last Name"
                                 variant="outlined"
                                 name="last_name"
-                                value={data.last_name}
+                                value={data?.last_name || ""}
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -438,7 +585,7 @@ const UpdateTrust = ({match}) => {
                                 label="Email"
                                 variant="outlined"
                                 name="contact_email_address"
-                                value={data.contact_email_address}
+                                value={data?.contact_email_address || ""}
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -450,7 +597,7 @@ const UpdateTrust = ({match}) => {
                                 label="Contact Number"
                                 variant="outlined"
                                 name="phone_number"
-                                value={data.phone_number}
+                                value={data?.phone_number || ""}
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -462,10 +609,9 @@ const UpdateTrust = ({match}) => {
                                 label="Client"
                                 variant="outlined"
                                 name="client"
-                                value={data.client}
+                                value={data?.client || ""}
                                 onChange={handleChange}
                                 fullWidth
-                                required
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
@@ -474,10 +620,9 @@ const UpdateTrust = ({match}) => {
                                 label="Department"
                                 variant="outlined"
                                 name="department"
-                                value={data.department}
+                                value={data?.department || ""}
                                 onChange={handleChange}
                                 fullWidth
-                                required
                             />
                         </Grid>
                     </Grid>
@@ -486,7 +631,7 @@ const UpdateTrust = ({match}) => {
                         <Button color="primary">
                             Cancel
                         </Button>
-                        <Button color="secondary" variant="contained" type="submit">
+                        <Button color="secondary" variant="contained" type="submit" formNoValidate>
                             Update
                         </Button>
                     </Box>

@@ -109,16 +109,16 @@ const CreateTrust = () => {
         ],
 
         hospital: [
-            // {
-            //     hospital_name: "",
-            //     ward: [
-            //         {
-            //             ward_name: "",
-            //             ward_type: "",
-            //             ward_number: ""
-            //         }
-            //     ]
-            // }
+            {
+                hospital_name: "",
+                ward: [
+                    {
+                        ward_name: "",
+                        ward_type: "",
+                        ward_number: ""
+                    }
+                ]
+            }
         ],
         ward: [
             {
@@ -223,8 +223,8 @@ const CreateTrust = () => {
     }, [])
 
     const submitData = async (e) => {
-        e.preventDefault();
-        console.log('data: ', data);
+        // e.preventDefault();
+        // console.log('data: ', data);
         dispatch(createTrust(data))
         setTrustNotify(true)
         // reset();
@@ -243,15 +243,15 @@ const CreateTrust = () => {
                 />
             }
 
-            {trustNotify && createTrustError?.message &&
+            {/* {trustNotify && createTrustError?.message &&
                 <Notification
                     data={createTrustError?.message}
                     status="error"
                 />
-            }
+            } */}
             <Paper className={classes.root}>
-                <form onSubmit={(e) => submitData(e)}>
-                    {/* <form onSubmit={handleSubmit(submitData)}> */}
+                {/* <form onSubmit={(e) => submitData(e)}> */}
+                    <form onSubmit={handleSubmit(submitData)}>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
                             <TextField
@@ -259,11 +259,11 @@ const CreateTrust = () => {
                                 label="Trust Name"
                                 variant="outlined"
                                 name="name"
-                                value={data?.name}
-                                // {...register('name', {
-                                //     required: "The name field is required.",
-                                // })}
-                                // error={(errors.name ? true : false)}
+                                // value={data?.name}
+                                {...register('name', {
+                                    required: "The name field is required.",
+                                })}
+                                error={(errors.name ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -275,11 +275,11 @@ const CreateTrust = () => {
                                 label="Trust Code"
                                 variant="outlined"
                                 name="code"
-                                value={data?.code}
-                                // {...register('code', {
-                                //     required: "Please enter code",
-                                // })}
-                                // error={(errors.code ? true : false)}
+                                // value={data?.code}
+                                {...register('code', {
+                                    required: "Please enter code",
+                                })}
+                                error={(errors.code ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -298,11 +298,11 @@ const CreateTrust = () => {
                                                     label="Hospital name"
                                                     variant="outlined"
                                                     name="hospital_name"
-                                                    value={item?.hospita_name}
-                                                    // {...register('hospital_name', {
-                                                    //     required: "Please enter code",
-                                                    // })}
-                                                    // error={(errors.hospital_name ? true : false)}
+                                                    // value={item?.hospital_name}
+                                                    {...register('hospital_name', {
+                                                        required: "Please enter code",
+                                                    })}
+                                                    error={(errors.hospital_name ? true : false)}
                                                     onChange={(e) => handleChangeHospital(index, e, 'hospital')}
 
                                                     fullWidth
@@ -339,7 +339,7 @@ const CreateTrust = () => {
                                                                         {
                                                                             wardList?.data && wardList?.data.map((list, index) => {
                                                                                 return (
-                                                                                    <MenuItem key={index} value={list.ward_type}>{list.ward_type}</MenuItem>
+                                                                                    <MenuItem key={index} value={list.ward_id}>{list.ward_type}</MenuItem>
                                                                                 )
                                                                             })
                                                                         }
@@ -465,11 +465,11 @@ const CreateTrust = () => {
                                 label="Trust Email"
                                 variant="outlined"
                                 name="email_address"
-                                value={data?.email_address}
-                                // {...register('email_address', {
-                                //     required: "Please enter code",
-                                // })}
-                                // error={(errors.email_address ? true : false)}
+                                // value={data?.email_address}
+                                {...register('email_address', {
+                                    required: "Please enter code",
+                                })}
+                                error={(errors.email_address ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -489,11 +489,11 @@ const CreateTrust = () => {
                                 label="Address line 1"
                                 variant="outlined"
                                 name="address_line_1"
-                                value={data.address_line_1}
-                                // {...register('address_line_1', {
-                                //     required: "Please enter code",
-                                // })}
-                                // error={(errors.address_line_1 ? true : false)}
+                                // value={data.address_line_1}
+                                {...register('address_line_1', {
+                                    required: "Please enter code",
+                                })}
+                                error={(errors.address_line_1 ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -517,11 +517,11 @@ const CreateTrust = () => {
                                 label="Town / City"
                                 variant="outlined"
                                 name="city"
-                                value={data.city}
-                                // {...register('city', {
-                                //     required: "Please enter city",
-                                // })}
-                                // error={(errors.city ? true : false)}
+                                // value={data.city}
+                                {...register('city', {
+                                    required: "Please enter city",
+                                })}
+                                error={(errors.city ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -533,11 +533,11 @@ const CreateTrust = () => {
                                 label="Postcode"
                                 variant="outlined"
                                 name="post_code"
-                                value={data.post_code}
-                                // {...register('post_code', {
-                                //     required: "Please enter post code",
-                                // })}
-                                // error={(errors.post_code ? true : false)}
+                                // value={data.post_code}
+                                {...register('post_code', {
+                                    required: "Please enter post code",
+                                })}
+                                error={(errors.post_code ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -558,11 +558,11 @@ const CreateTrust = () => {
                                 label="Trust Portal URl"
                                 variant="outlined"
                                 name="trust_portal_url"
-                                value={data.trust_portal_url}
-                                // {...register('trust_portal_url', {
-                                //     required: "Please enter trust portal URL",
-                                // })}
-                                // error={(errors.trust_portal_url ? true : false)}
+                                // value={data.trust_portal_url}
+                                {...register('trust_portal_url', {
+                                    required: "Please enter trust portal URL",
+                                })}
+                                error={(errors.trust_portal_url ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -574,11 +574,11 @@ const CreateTrust = () => {
                                 label="Email Address"
                                 variant="outlined"
                                 name="portal_email"
-                                value={data.portal_email}
-                                // {...register('portal_email', {
-                                //     required: "Please enter portal email",
-                                // })}
-                                // error={(errors.portal_email ? true : false)}
+                                // value={data.portal_email}
+                                {...register('portal_email', {
+                                    required: "Please enter portal email",
+                                })}
+                                error={(errors.portal_email ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -591,11 +591,11 @@ const CreateTrust = () => {
                                 label="Password"
                                 variant="outlined"
                                 name="portal_password"
-                                value={data.portal_password}
-                                // {...register('portal_password', {
-                                //     required: "Please enter portal password",
-                                // })}
-                                // error={(errors.portal_password ? true : false)}
+                                // value={data.portal_password}
+                                {...register('portal_password', {
+                                    required: "Please enter portal password",
+                                })}
+                                error={(errors.portal_password ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -666,11 +666,11 @@ const CreateTrust = () => {
                                 label="First Name"
                                 variant="outlined"
                                 name="first_name"
-                                value={data.first_name}
-                                // {...register('first_name', {
-                                //     required: "Please enter first name",
-                                // })}
-                                // error={(errors.first_name ? true : false)}
+                                // value={data.first_name}
+                                {...register('first_name', {
+                                    required: "Please enter first name",
+                                })}
+                                error={(errors.first_name ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -682,11 +682,11 @@ const CreateTrust = () => {
                                 label="Last Name"
                                 variant="outlined"
                                 name="last_name"
-                                value={data.last_name}
-                                // {...register('last_name', {
-                                //     required: "Please enter last name",
-                                // })}
-                                // error={(errors.last_name ? true : false)}
+                                // value={data.last_name}
+                                {...register('last_name', {
+                                    required: "Please enter last name",
+                                })}
+                                error={(errors.last_name ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -699,10 +699,10 @@ const CreateTrust = () => {
                                 variant="outlined"
                                 name="contact_email_address"
                                 value={data.contact_email_address}
-                                // {...register('contact_email_address', {
-                                //     required: "Please enter contact email address",
-                                // })}
-                                // error={(errors.contact_email_address ? true : false)}
+                                {...register('contact_email_address', {
+                                    required: "Please enter contact email address",
+                                })}
+                                error={(errors.contact_email_address ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -715,10 +715,10 @@ const CreateTrust = () => {
                                 variant="outlined"
                                 name="phone_number"
                                 value={data.phone_number}
-                                // {...register('phone_number', {
-                                //     required: "Please enter phone number",
-                                // })}
-                                // error={(errors.phone_number ? true : false)}
+                                {...register('phone_number', {
+                                    required: "Please enter phone number",
+                                })}
+                                error={(errors.phone_number ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
                                 required

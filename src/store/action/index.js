@@ -45,4 +45,5 @@ export {
 export {
     getTrust,
     createTrust,
+    updateTrust
 } from './trust/trustAction'
