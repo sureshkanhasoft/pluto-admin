@@ -84,7 +84,7 @@ const createTrustRequest = () => {
 const createTrustSuccess = (data) => {
     return {
         type: CREATE_TRUST_SUCCESS,
-        payload6: data
+        payload: data
     }
 }
 

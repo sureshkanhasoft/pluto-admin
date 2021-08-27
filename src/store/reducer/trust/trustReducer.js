@@ -52,7 +52,7 @@ const trustReducer = (state = initialState, action) => {
         case actionTypes.CREATE_TRUST_ERROR:
             return updateObject(state, {
                 loading: false,
-                createTrustError: action.payloadF
+                createTrustError: action.payload
             })
 
         case actionTypes.UPDATE_TRUST_REQUEST:
@@ -71,7 +71,7 @@ const trustReducer = (state = initialState, action) => {
         case actionTypes.UPDATE_TRUST_ERROR:
             return updateObject(state, {
                 loading: false,
-                updateTrustError: action.payloadF
+                updateTrustError: action.payload
             })
 
         case actionTypes.DELETE_TRUST_REQUEST:
@@ -90,7 +90,7 @@ const trustReducer = (state = initialState, action) => {
         case actionTypes.DELETE_TRUST_ERROR:
             return updateObject(state, {
                 loading: false,
-                deleteTrustError: action.payloadF
+                deleteTrustError: action.payload
             })
 
 
