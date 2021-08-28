@@ -34,14 +34,19 @@ const CreateBooking = () => {
     const classes = useStyle();
     const [speciality, setSpeciality] = useState([])
     const [trust, setTrust] = useState([])
+    const [wardList, setWardList] = useState([])
+    const [shiftTypeList, setShiftTypeList] = useState([])
+    console.log('shiftTypeList: ', shiftTypeList);
     const [data, setData] = useState({
-        referenceId: "12345",
-        trust: "",
-        ward: "",
-        grade: "",
+        reference_id: "12345",
+        trust_id: "",
+        ward_id: "",
+        grade_id: "",
         date: "",
-        shiftTime: "",
-        rate: ""
+        shift_id: "",
+        rate: "",
+        shift_type_id:"",
+        speciality:[]
     })
     const handleChange = (event) => {
         console.log('event: ', event.target.value);
@@ -76,6 +81,38 @@ const CreateBooking = () => {
         })
     }
 
+    const getWardType = async () => {
+        const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, '');
+        await axios.get(`${apiConfigs.API_URL}api/organization/get-all-ward-type`, {
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': `Bearer ${loggedInUser}`
+            }
+        }).then(response => {
+            setWardList(response.data)
+        }).catch(error => {
+            console.log("error.message", error.message);
+        });
+    }
+
+    const getShiftType = async () => {
+        const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, '');
+        await axios.get(`${apiConfigs.API_URL}api/organization/get-all-shift-type`, {
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': `Bearer ${loggedInUser}`
+            }
+        }).then(response => {
+            setShiftTypeList(response.data)
+        }).catch(error => {
+            console.log("error.message", error.message);
+        });
+    }
+
+    useEffect(() => {
+        getWardType()
+    }, [])
+
     useEffect(() => {
         getSpecialities()
     }, [])
@@ -84,18 +121,27 @@ const CreateBooking = () => {
         getTrust()
     }, [])
 
+    useEffect(() => {
+        getShiftType()
+    }, [])
+
+    const submitData = (e) => {
+        e.preventDefault();
+        console.log('data', data)
+    }
+
     return (
         <Paper className={classes.root}>
 
-            <form>
+            <form onSubmit={(e) => submitData(e)}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={6} lg={4}>
                         <TextField
-                            id="referenceId"
+                            id="reference_id"
                             label="Reference Id"
                             variant="outlined"
-                            name="referenceId"
-                            value={data.referenceId}
+                            name="reference_id"
+                            value={data?.reference_id}
                             onChange={handleChange}
                             fullWidth
                             InputProps={{
@@ -108,10 +154,10 @@ const CreateBooking = () => {
                         <FormControl variant="outlined" className={classes.formControl}>
                             <InputLabel>Trust Name</InputLabel>
                             <Select
-                                value={data.trust}
+                                value={data.trust_id}
                                 onChange={handleChange}
                                 label="Trust Name"
-                                name="trust"
+                                name="trust_id"
                             >
                                 <MenuItem value="">
                                     Select Trust Hospital
@@ -123,7 +169,7 @@ const CreateBooking = () => {
                                         )
                                     })
                                 }
-                                
+
                                 {/* <MenuItem value="Apex Care Hospital">Apex Care Hospital</MenuItem> */}
                             </Select>
                         </FormControl>
@@ -132,16 +178,23 @@ const CreateBooking = () => {
                         <FormControl variant="outlined" className={classes.formControl}>
                             <InputLabel>Ward Name</InputLabel>
                             <Select
-                                value={data.ward}
+                                value={data.ward_id}
                                 onChange={handleChange}
-                                name="ward"
+                                name="ward_id"
                                 label="Ward Name"
                             >
                                 <MenuItem value="">
                                     Select a ward
                                 </MenuItem>
-                                <MenuItem value="ward number one">ward number one</MenuItem>
-                                <MenuItem value="ward number two">ward number two</MenuItem>
+                                {
+                                    wardList?.data && wardList?.data.map((list, index) => {
+                                        return (
+                                            <MenuItem value={list.ward_type_id} key={index}>{list.ward_type}</MenuItem>
+                                        )
+                                    })
+                                }
+                                {/* <MenuItem value="ward number one">ward number one</MenuItem>
+                                <MenuItem value="ward number two">ward number two</MenuItem> */}
                             </Select>
                         </FormControl>
                     </Grid>
@@ -150,9 +203,9 @@ const CreateBooking = () => {
                         <FormControl variant="outlined" className={classes.formControl}>
                             <InputLabel>Grade Required</InputLabel>
                             <Select
-                                value={data.grade}
+                                value={data.grade_id}
                                 onChange={handleChange}
-                                name="grade"
+                                name="grade_id"
                                 label="Grade Required"
                             >
                                 <MenuItem value="">
@@ -183,10 +236,10 @@ const CreateBooking = () => {
                         <FormControl variant="outlined" className={classes.formControl}>
                             <InputLabel>Shift Time</InputLabel>
                             <Select
-                                value={data.shiftTime}
+                                value={data.shift_id}
                                 onChange={handleChange}
                                 label="Grade Required"
-                                name="shiftTime"
+                                name="shift_id"
                             >
                                 <MenuItem value="">
                                     Select a shift time
@@ -201,18 +254,21 @@ const CreateBooking = () => {
                         <FormControl variant="outlined" className={classes.formControl}>
                             <InputLabel>Shift Type</InputLabel>
                             <Select
-                                value={data.shiftTime}
+                                value={data.shift_type_id}
                                 onChange={handleChange}
                                 label="Grade Required"
-                                name="shiftTime"
+                                name="shift_type_id"
                             >
                                 <MenuItem value="">
                                     Select a shift type
                                 </MenuItem>
-                                <MenuItem value="07:30 - 13:00">Long Day</MenuItem>
-                                <MenuItem value="15:30 - 20:00">Night Shift</MenuItem>
-                                <MenuItem value="07:30 - 19:30">Day shift</MenuItem>
-                                <MenuItem value="07:30 - 19:30">twilight shifts</MenuItem>
+                                {
+                                    shiftTypeList?.data && shiftTypeList?.data.map((typeList, index) => {
+                                        return (
+                                            <MenuItem value={typeList.id} key={index}>{typeList.shift_type}</MenuItem>
+                                        )
+                                    })
+                                }
                             </Select>
                         </FormControl>
                     </Grid>
@@ -240,7 +296,7 @@ const CreateBooking = () => {
                                         return (
                                             <Grid item xs={12} sm={6} md={4} lg={3} key={items.id}>
                                                 <FormControlLabel
-                                                    control={<Checkbox color="primary" checked={data.checkedG} onChange={handleChange} name="checkedB" />}
+                                                    control={<Checkbox color="primary" checked={data.checkedG} onChange={handleChange} name="speciality" />}
                                                     label={items.speciality_name}
                                                 />
                                             </Grid>
@@ -258,7 +314,7 @@ const CreateBooking = () => {
                     <Button color="primary">
                         Cancel
                     </Button>
-                    <Button color="secondary" variant="contained">
+                    <Button color="secondary" variant="contained" type="submit">
                         Save & Confirm
                     </Button>
                     <Button color="secondary" variant="contained">

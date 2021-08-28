@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
     Paper,
     makeStyles,
@@ -16,6 +16,8 @@ import { Pagination } from '@material-ui/lab';
 import SearchIcon from '@material-ui/icons/Search';
 import { alpha } from '@material-ui/core/styles/colorManipulator';
 import AddIcon from '@material-ui/icons/Add';
+import { useDispatch, useSelector } from 'react-redux';
+import { getBooking } from '../../store/action';
 
 const useStyle = makeStyles((theme) => ({
     root: {
@@ -142,6 +144,18 @@ const bookingList = [
 
 const ViewBooking = ({ match }) => {
     const classes = useStyle();
+    const dispatch = useDispatch();
+
+    const { bookingItem, loading } = useSelector(state => state.booking)
+    console.log('bookingItem: ', bookingItem);
+
+    const getBookingList = () => {
+        dispatch(getBooking(1))
+    }
+
+    useEffect(() => {
+        getBookingList()
+    }, [])
     return (
         <>
             <p className="mb-6">Welcome to your Pluto Software admin dashboard. Here you can get an overview of your account activity, or use navigation on the left hand side to get to your desired location.</p>
@@ -198,6 +212,14 @@ const ViewBooking = ({ match }) => {
                                 </TableCell>
                             </TableRow>
                         ))}
+                        {
+                            !bookingItem?.data &&
+                            <TableRow>
+                                <TableCell scope="row" colSpan="8">
+                                    <div className="" align="center">Sorry, booking  not available!</div>
+                                </TableCell>
+                            </TableRow>
+                        }
                     </TableBody>
                 </Table>
                 <Box className="mt-5" display="flex" justifyContent="flex-end">

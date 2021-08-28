@@ -17,6 +17,7 @@ export const getBooking = () => {
                 'Authorization': `Bearer ${loggedInUser}`
             }
         }).then(response => {
+            console.log('response: ', response);
             dispatch(getBookingSuccess(response.data))
         }).catch(error => {
             dispatch(getBookingError(error))
@@ -37,10 +38,10 @@ const getBookingSuccess = (data) => {
     }
 }
 
-const getBookingError = () => {
+const getBookingError = (error) => {
     return {
         type: GET_BOOKING_ERROR,
-        payload: data
+        payload: error
     }
 }
 
@@ -124,11 +125,11 @@ const updateBookingError = (error) => {
 
 // -----------------------------------
 
-export const deleteBooking = () => {
+export const deleteBooking = (id) => {
     const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, '');
     return async (dispatch) => {
         dispatch(deleteBookingRequest())
-        await axios.post(`${apiConfigs.API_URL}api/organization/erwe`, data, {
+        await axios.post(`${apiConfigs.API_URL}api/organization/erwe`, id, {
             'headers': {
                 'content-type': 'application/type',
                 'Authorization': `Bearer ${loggedInUser}`

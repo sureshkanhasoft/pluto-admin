@@ -3,17 +3,17 @@ import { updateObject } from '../../shared/utility';
 
 const initialState = {
     loading: false,
-    bookingItem =[],
-    bookingError =[],
+    bookingItem: [],
+    bookingError: [],
 
-    createBookingSuccess=[],
-    createBookingError=[],
+    createBookingSuccess: [],
+    createBookingError: [],
 
-    updateBookingSuccess=[],
-    updateBookingError=[],
+    updateBookingSuccess: [],
+    updateBookingError: [],
 
-    deleteBookingSuccess=[],
-    deleteBookingError=[]
+    deleteBookingSuccess: [],
+    deleteBookingError: []
 }
 
 const bookingReducer = (state = initialState, action) => {

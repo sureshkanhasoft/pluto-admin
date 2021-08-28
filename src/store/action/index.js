@@ -45,5 +45,13 @@ export {
 export {
     getTrust,
     createTrust,
-    updateTrust
+    updateTrust,
+    deleteTrust
 } from './trust/trustAction'
+
+export {
+    getBooking,
+    createBooking,
+    updateBooking,
+    deleteBooking
+} from './booking/bookingAction'

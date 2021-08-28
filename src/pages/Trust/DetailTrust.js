@@ -7,10 +7,13 @@ import {
 } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import apiConfigs from '../../config/config';
 import history from '../../utils/HistoryUtils';
+import AlertDialog from '../../components/Alert/AlertDialog';
+import Notification from '../../components/Notification/Notification';
+import { deleteTrust } from '../../store/action';
 
 const useStyle = makeStyles((theme) => ({
     root: {
@@ -65,8 +68,12 @@ const DetailTrust = ({ match }) => {
     const classes = useStyle();
     const dispatch = useDispatch();
     const id = match.params.id;
+    const [Id, setId] = useState(false);
     const [loading, setLoading] = useState(false)
     const [trustItems, setTrustItems] = useState([])
+    const [deleteOpen, setDeleteOpen] = useState(false);
+    const [staffNotify, setStaffNotify] = useState(false)
+    const { deleteTrustSuccess } = useSelector(state => state.trust)
 
     const getSingleTrust = async () => {
         const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, '');
@@ -88,6 +95,23 @@ const DetailTrust = ({ match }) => {
     const upadateLink = () => {
         history.push(`update`)
     }
+    const backPage = () => {
+        history.go(-2)
+    }
+
+    const deleteTrustClose = () => {
+        setDeleteOpen(false)
+    }
+
+    const alertResponse = (id) => {
+        dispatch(deleteTrust(id))
+        setStaffNotify(true)
+    }
+
+    const deleteStaffItem = (id) => {
+        setDeleteOpen(true)
+        setId(id)
+    }
 
     useEffect(() => {
         getSingleTrust()
@@ -100,6 +124,14 @@ const DetailTrust = ({ match }) => {
                     <Backdrop className={classes.backdrop} open={loading}>
                         <CircularProgress color="inherit" />
                     </Backdrop> : ""
+            }
+
+            {
+                staffNotify && deleteTrustSuccess?.message &&
+                <Notification
+                    data={deleteTrustSuccess?.message}
+                    status="success"
+                />
             }
             <Paper className={`${classes.root} mb-6`}>
                 <Grid container spacing={4}>
@@ -143,7 +175,7 @@ const DetailTrust = ({ match }) => {
 
                                                 <Grid item xs={12} sm={6} lg={3} className={classes.gridItem}>
                                                     <Typography variant="body2" className={classes.heading}>Type</Typography>
-                                                    <Typography variant="h6" className={classes.desc}>{warditem.ward_type_id}</Typography>
+                                                    <Typography variant="h6" className={classes.desc}>{warditem.ward_type}</Typography>
                                                 </Grid>
 
                                                 <Grid item xs={12} sm={6} lg={3} className={classes.gridItem}>
@@ -206,10 +238,21 @@ const DetailTrust = ({ match }) => {
                         <Typography className={classes.mainTitle}>Training</Typography>
                     </Grid>
 
-                    <Grid item xs={12} sm={12} className={classes.gridItem}>
+                    {/* <Grid item xs={12} sm={12} className={classes.gridItem}>
                         <Typography variant="body2" className={classes.heading}>Training Example Type</Typography>
-                        <Typography variant="h6" className={classes.desc}>Test training</Typography>
-                    </Grid>
+                        <Typography variant="h6" className={classes.desc}></Typography>
+                    </Grid> */}
+
+                    {
+                        trustItems?.training && trustItems?.training.map((items, index) => {
+                            return (
+                                <Grid item xs={12} sm={12} className={classes.gridItem} key={index}>
+                                    <Typography variant="body2" className={classes.heading}>Training Example Type</Typography>
+                                    <Typography variant="h6" className={classes.desc}>{items.training_name}</Typography>
+                                </Grid>
+                            )
+                        })
+                    }
 
                     {/* <Grid item xs={12} className={classes.mainWrapper}>
                         <Typography className={classes.mainTitle}>Wards</Typography>
@@ -263,16 +306,29 @@ const DetailTrust = ({ match }) => {
 
                     <Grid item xs={12}>
                         <Box display="flex" justifyContent="flex-end" className={classes.btnContainer}>
+                            <Button color="primary" onClick={backPage}>
+                                Back
+                            </Button>
                             <Button variant="contained" color="primary" onClick={upadateLink}>
                                 <EditIcon className="mr-2" />Edit
                             </Button>
-                            <Button variant="contained" color="secondary">
+                            <Button variant="contained" color="secondary" onClick={(e) => deleteStaffItem(trustItems.id)}>
                                 <DeleteIcon className="mr-2" />Delete
                             </Button>
                         </Box>
                     </Grid>
                 </Grid>
             </Paper>
+
+            <AlertDialog
+                id={Id}
+                open={deleteOpen}
+                close={deleteTrustClose}
+                response={alertResponse}
+                title="Delete Trust"
+                description="Are you sure you want to delete?"
+                buttonName="Delete"
+            />
         </>
     )
 }

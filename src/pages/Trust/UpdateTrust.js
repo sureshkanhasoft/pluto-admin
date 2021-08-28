@@ -16,6 +16,7 @@ import Notification from '../../components/Notification/Notification';
 import axios from 'axios';
 import apiConfigs from '../../config/config';
 import CloseIcon from '@material-ui/icons/Close';
+import history from '../../utils/HistoryUtils';
 
 const useStyle = makeStyles((theme) => ({
     root: {
@@ -115,7 +116,7 @@ const UpdateTrust = ({ match }) => {
                 ward: [
                     {
                         ward_name: "",
-                        ward_type: "",
+                        ward_type_id: "",
                         ward_number: ""
                     }
                 ]
@@ -124,7 +125,7 @@ const UpdateTrust = ({ match }) => {
         ward: [
             {
                 ward_name: "",
-                ward_type: "",
+                ward_type_id: "",
                 ward_number: ""
             }
         ],
@@ -164,7 +165,7 @@ const UpdateTrust = ({ match }) => {
                 ward: [
                     {
                         ward_name: "",
-                        ward_type: "",
+                        ward_type_id: "",
                         ward_number: ""
                     }
                 ]
@@ -178,7 +179,7 @@ const UpdateTrust = ({ match }) => {
         wards1.hospital[id].ward.push(
             {
                 ward_name: "",
-                ward_type: "",
+                ward_type_id: "",
                 ward_number: ""
             }
         )
@@ -190,7 +191,7 @@ const UpdateTrust = ({ match }) => {
         hos.ward.push(
             {
                 ward_name: "",
-                ward_type: "",
+                ward_type_id: "",
                 ward_number: ""
             }
         )
@@ -254,9 +255,9 @@ const UpdateTrust = ({ match }) => {
         // reset();
     }
 
-    // useEffect(() => {
-    //     console.log(data);
-    // }, [data])
+    const backPage = () => {
+        history.goBack()
+    }
 
     return (
         <>
@@ -283,7 +284,7 @@ const UpdateTrust = ({ match }) => {
                                 label="Trust Name"
                                 variant="outlined"
                                 name="name"
-                                value={data?.name}
+                                value={data?.name || ""}
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -295,7 +296,7 @@ const UpdateTrust = ({ match }) => {
                                 label="Trust Code"
                                 variant="outlined"
                                 name="code"
-                                value={data?.code}
+                                value={data?.code || ""}
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -314,7 +315,7 @@ const UpdateTrust = ({ match }) => {
                                                     label="Hospital name"
                                                     variant="outlined"
                                                     name="hospital_name"
-                                                    value={item?.hospital_name}
+                                                    value={item?.hospital_name || ""}
                                                     onChange={(e) => handleChangeHospital(index, e, 'hospital')}
 
                                                     fullWidth
@@ -323,6 +324,7 @@ const UpdateTrust = ({ match }) => {
                                             </Grid>
                                             {
                                                 item.ward.map((wardsField, wIndex) => {
+                                                    console.log('wardsField: ', wardsField);
                                                     return (
                                                         <Grid container spacing={2} key={wIndex} className={classes.wardBox}>
                                                             <Grid item xs={12} sm={6}>
@@ -331,7 +333,7 @@ const UpdateTrust = ({ match }) => {
                                                                     label="Ward Name"
                                                                     variant="outlined"
                                                                     name="ward_name"
-                                                                    value={wardsField?.ward_name}
+                                                                    value={wardsField?.ward_name || ""}
                                                                     onChange={(e) => handleChangeWardOFHospital(index, wIndex, e)}
                                                                     fullWidth
                                                                 />
@@ -341,8 +343,8 @@ const UpdateTrust = ({ match }) => {
                                                                     <InputLabel>Ward Type</InputLabel>
                                                                     <Select
                                                                         label="Trust Name"
-                                                                        name="ward_type"
-                                                                        value={wardsField?.ward_type || ""}
+                                                                        name="ward_type_id"
+                                                                        value={wardsField?.ward_type_id || ""}
                                                                         onChange={(e) => handleChangeWardOFHospital(index, wIndex, e)}
                                                                     >
                                                                         <MenuItem value="">
@@ -351,7 +353,7 @@ const UpdateTrust = ({ match }) => {
                                                                         {
                                                                             wardList?.data && wardList?.data.map((list, index) => {
                                                                                 return (
-                                                                                    <MenuItem key={index} value={list.ward_id}>{list.ward_type}</MenuItem>
+                                                                                    <MenuItem key={index} value={list.ward_type_id}>{list.ward_type}</MenuItem>
                                                                                 )
                                                                             })
                                                                         }
@@ -364,7 +366,7 @@ const UpdateTrust = ({ match }) => {
                                                                     label="Ward Number"
                                                                     variant="outlined"
                                                                     name="ward_number"
-                                                                    value={wardsField?.ward_number}
+                                                                    value={wardsField?.ward_number || ""}
                                                                     onChange={(e) => handleChangeWardOFHospital(index, wIndex, e)}
                                                                     fullWidth
                                                                 />
@@ -397,7 +399,7 @@ const UpdateTrust = ({ match }) => {
                                 <Typography>Preferred Invoice Method</Typography>
                                 <RadioGroup
                                     name="preference_invoive_method"
-                                    value={data?.preference_invoive_method}
+                                    value={data?.preference_invoive_method || ""}
                                     onChange={handleChange} className={classes.radioGroup}>
                                     <FormControlLabel value="BYPost" control={<Radio />} label="By Post" />
                                     <FormControlLabel value="BYEmail" control={<Radio />} label="By Email" />
@@ -411,7 +413,7 @@ const UpdateTrust = ({ match }) => {
                                 label="Trust Email"
                                 variant="outlined"
                                 name="email_address"
-                                value={data?.email_address}
+                                value={data?.email_address || ""}
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -426,7 +428,7 @@ const UpdateTrust = ({ match }) => {
                                 label="Address line 1"
                                 variant="outlined"
                                 name="address_line_1"
-                                value={data?.address_line_1}
+                                value={data?.address_line_1 || ""}
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -438,7 +440,7 @@ const UpdateTrust = ({ match }) => {
                                 label="Address line 2"
                                 variant="outlined"
                                 name="address_line_2"
-                                value={data?.address_line_2}
+                                value={data?.address_line_2 || ""}
                                 onChange={handleChange}
                                 fullWidth
                             />
@@ -450,7 +452,7 @@ const UpdateTrust = ({ match }) => {
                                 label="Town / City"
                                 variant="outlined"
                                 name="city"
-                                value={data?.city}
+                                value={data?.city || ""}
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -462,7 +464,7 @@ const UpdateTrust = ({ match }) => {
                                 label="Postcode"
                                 variant="outlined"
                                 name="post_code"
-                                value={data?.post_code}
+                                value={data?.post_code || ""}
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -483,7 +485,7 @@ const UpdateTrust = ({ match }) => {
                                 label="Trust Portal URl"
                                 variant="outlined"
                                 name="trust_portal_url"
-                                value={data?.trust_portal_url}
+                                value={data?.trust_portal_url || ""}
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -495,7 +497,7 @@ const UpdateTrust = ({ match }) => {
                                 label="Email Address"
                                 variant="outlined"
                                 name="portal_email"
-                                value={data?.portal_email}
+                                value={data?.portal_email || ""}
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -508,7 +510,7 @@ const UpdateTrust = ({ match }) => {
                                 label="Password"
                                 variant="outlined"
                                 name="portal_password"
-                                value={data?.portal_password}
+                                value={data?.portal_password || ""}
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -628,7 +630,7 @@ const UpdateTrust = ({ match }) => {
                     </Grid>
 
                     <Box className={classes.footerBtn}>
-                        <Button color="primary">
+                    <Button color="primary" onClick={backPage}>
                             Cancel
                         </Button>
                         <Button color="secondary" variant="contained" type="submit" formNoValidate>

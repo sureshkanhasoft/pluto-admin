@@ -8,6 +8,7 @@ import rolesReducer from "./reducer/Roles/rolesReducer";
 import specialitiesReducer from "./reducer/specialities/specialitiesReducer";
 import staffReducer from "./reducer/staff/staffReducer";
 import trustReducer from "./reducer/trust/trustReducer"
+import bookingReducer from "./reducer/booking/bookingReducer"
 
 const rootReducer = combineReducers(
     {
@@ -21,6 +22,7 @@ const rootReducer = combineReducers(
         specialities: specialitiesReducer,
         staff: staffReducer,
         trust: trustReducer,
+        booking: bookingReducer,
     }
 );
 

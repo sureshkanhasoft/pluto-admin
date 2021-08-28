@@ -1,5 +1,6 @@
 import axios from "axios"
 import Config from "../../../config/config"
+import history from "../../../utils/HistoryUtils";
 // import history from "../../../utils/HistoryUtils";
 import { CREATE_TRUST_ERROR, CREATE_TRUST_REQUEST, CREATE_TRUST_SUCCESS, 
     DELETE_TRUST_ERROR, DELETE_TRUST_REQUEST, DELETE_TRUST_SUCCESS, 
@@ -148,7 +149,7 @@ export const deleteTrust = (id) => {
     const loggedInUser = localStorage.getItem('token').replace(/['"]+/g, '');
     return async (dispatch) => {
         dispatch(deleteTrustRequest())
-        await axios.post(`${Config.API_URL}api/organization/delete-trust/${id}`, {
+        await axios.delete(`${Config.API_URL}api/organization/delete-trust/${id}`, {
             'headers': {
                 'Content-type': 'application/json',
                 'Authorization': 'Bearer ' + loggedInUser
@@ -157,9 +158,9 @@ export const deleteTrust = (id) => {
             const data = response.data
             if (data && data.status === true) {
                 dispatch(deleteTrustSuccess(data))
-                // setTimeout(() => {
-                //     history.goBack();
-                // }, 2000);
+                setTimeout(() => {
+                    history.go(-2);
+                }, 2000);
             } else {
                 dispatch(deleteTrustFailure(data))
             }

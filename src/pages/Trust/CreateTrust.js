@@ -16,6 +16,7 @@ import Notification from '../../components/Notification/Notification';
 import axios from 'axios';
 import apiConfigs from '../../config/config';
 import CloseIcon from '@material-ui/icons/Close';
+import history from '../../utils/HistoryUtils';
 
 const useStyle = makeStyles((theme) => ({
     root: {
@@ -114,7 +115,7 @@ const CreateTrust = () => {
                 ward: [
                     {
                         ward_name: "",
-                        ward_type: "",
+                        ward_type_id: "",
                         ward_number: ""
                     }
                 ]
@@ -123,7 +124,7 @@ const CreateTrust = () => {
         ward: [
             {
                 ward_name: "",
-                ward_type: "",
+                ward_type_id: "",
                 ward_number: ""
             }
         ],
@@ -163,7 +164,7 @@ const CreateTrust = () => {
                 ward: [
                     {
                         ward_name: "",
-                        ward_type: "",
+                        ward_type_id: "",
                         ward_number: ""
                     }
                 ]
@@ -177,7 +178,7 @@ const CreateTrust = () => {
         wards1.hospital[id].ward.push(
             {
                 ward_name: "",
-                ward_type: "",
+                ward_type_id: "",
                 ward_number: ""
             }
         )
@@ -189,16 +190,17 @@ const CreateTrust = () => {
         hos.ward.push(
             {
                 ward_name: "",
-                ward_type: "",
+                ward_type_id: "",
                 ward_number: ""
             }
         )
         setData(hos);
     }
 
-    const removeWard = (e,data) => {
-        console.log('index: ', data);
+    const removeWard = (index, wIndex) => {
         const wards1 = JSON.parse(JSON.stringify(data));
+        // wards1.hospital[index].ward[wIndex].filter(item => item.)
+        const items = wards1.hospital[index].ward.filter(item => item.id !== wIndex);
 
 
     }
@@ -224,7 +226,7 @@ const CreateTrust = () => {
 
     const submitData = async (e) => {
         // e.preventDefault();
-        // console.log('data: ', data);
+        console.log('data: ', data);
         dispatch(createTrust(data))
         setTrustNotify(true)
         // reset();
@@ -233,6 +235,9 @@ const CreateTrust = () => {
     // useEffect(() => {
     //     console.log(data);
     // }, [data])
+    const backPage = () => {
+        history.goBack()
+    }
 
     return (
         <>
@@ -251,7 +256,7 @@ const CreateTrust = () => {
             } */}
             <Paper className={classes.root}>
                 {/* <form onSubmit={(e) => submitData(e)}> */}
-                    <form onSubmit={handleSubmit(submitData)}>
+                <form onSubmit={handleSubmit(submitData)}>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
                             <TextField
@@ -288,7 +293,6 @@ const CreateTrust = () => {
 
                         {
                             data.hospital.map((item, index) => {
-
                                 return (
                                     <div className={classes.hospitalBox} key={index}>
                                         <Grid container spacing={2} className={classes.lightGray}>
@@ -320,6 +324,10 @@ const CreateTrust = () => {
                                                                     variant="outlined"
                                                                     name="ward_name"
                                                                     value={wardsField?.ward_name}
+                                                                    {...register('ward_name', {
+                                                                        required: "Please enter ward name",
+                                                                    })}
+                                                                    error={(errors.ward_name ? true : false)}
                                                                     onChange={(e) => handleChangeWardOFHospital(index, wIndex, e)}
                                                                     fullWidth
                                                                 />
@@ -329,8 +337,8 @@ const CreateTrust = () => {
                                                                     <InputLabel>Ward Type</InputLabel>
                                                                     <Select
                                                                         label="Trust Name"
-                                                                        name="ward_type"
-                                                                        value={wardsField?.ward_type}
+                                                                        name="ward_type_id"
+                                                                        value={wardsField?.ward_type_id || ""}
                                                                         onChange={(e) => handleChangeWardOFHospital(index, wIndex, e)}
                                                                     >
                                                                         <MenuItem value="">
@@ -339,7 +347,7 @@ const CreateTrust = () => {
                                                                         {
                                                                             wardList?.data && wardList?.data.map((list, index) => {
                                                                                 return (
-                                                                                    <MenuItem key={index} value={list.ward_id}>{list.ward_type}</MenuItem>
+                                                                                    <MenuItem key={index} value={list.ward_type_id}>{list.ward_type}</MenuItem>
                                                                                 )
                                                                             })
                                                                         }
@@ -353,11 +361,15 @@ const CreateTrust = () => {
                                                                     variant="outlined"
                                                                     name="ward_number"
                                                                     value={wardsField?.ward_number}
+                                                                    {...register('ward_number', {
+                                                                        required: "Please enter ward number",
+                                                                    })}
+                                                                    error={(errors.ward_number ? true : false)}
                                                                     onChange={(e) => handleChangeWardOFHospital(index, wIndex, e)}
                                                                     fullWidth
                                                                 />
                                                             </Grid>
-                                                            {/* <CloseIcon className={classes.removeWard} onClick={(e) => removeWard(e, wIndex)} /> */}
+                                                            <CloseIcon className={classes.removeWard} onClick={() => removeWard(index, wIndex)} />
                                                         </Grid>
                                                     )
                                                 })
@@ -412,7 +424,7 @@ const CreateTrust = () => {
                                                         {
                                                             wardList?.data && wardList?.data.map((list, index) => {
                                                                 return (
-                                                                    <MenuItem key={index} value={list.ward_type}>{list.ward_type}</MenuItem>
+                                                                    <MenuItem key={index} value={list.ward_type_id}>{list.ward_type}</MenuItem>
                                                                 )
                                                             })
                                                         }
@@ -619,13 +631,12 @@ const CreateTrust = () => {
                                             label="Training example type"
                                             variant="outlined"
                                             name="training_name"
-                                            value={item?.training_name}
+                                            value={item?.training_name || ""}
+                                            {...register('training_name', {
+                                                required: "Please enter phone number",
+                                            })}
+                                            error={(errors.training_name ? true : false)}
                                             onChange={(e) => handleChangeHospital(index, e, 'training')}
-                                            // {...register('training_name', {
-                                            //     required: "Please enter phone number",
-                                            // })}
-                                            // error={(errors.training_name ? true : false)}
-                                            // onChange={e => handleInputChange(e, index)}
                                             fullWidth
                                         />
                                     </Grid>
@@ -749,7 +760,7 @@ const CreateTrust = () => {
                     </Grid>
 
                     <Box className={classes.footerBtn}>
-                        <Button color="primary">
+                        <Button color="primary" onClick={backPage}>
                             Cancel
                         </Button>
                         <Button color="secondary" variant="contained" type="submit" formNoValidate>
