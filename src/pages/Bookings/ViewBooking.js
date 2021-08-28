@@ -98,48 +98,48 @@ const useStyle = makeStyles((theme) => ({
     },
 }))
 
-const bookingList = [
-    {
-        trust: "Apex care Hospital",
-        ward: "ward number",
-        grade: "Critical Sector Band 4",
-        date: "05/07/2021",
-        shiftTime: "07:00 : 12:00",
-        status: "Created",
-    },
-    {
-        trust: "Apex care Hospital",
-        ward: "ward number",
-        grade: "Mental Health Sector Band 4",
-        date: "04/07/02021",
-        shiftTime: "07:00 : 12:00",
-        status: "Created",
-    },
-    {
-        trust: "Apex care Hospital",
-        ward: "ward number",
-        grade: "Critical Sector Band 4",
-        date: "01/07/2021",
-        shiftTime: "07:00 : 12:00",
-        status: "Cancel",
-    },
-    {
-        trust: "Apex care Hospital",
-        ward: "ward number ",
-        grade: "Critical Sector Band 4",
-        date: "10/07/2021",
-        shiftTime: "07:00 : 12:00",
-        status: "Confirmed",
-    },
-    {
-        trust: "Apex care Hospital",
-        ward: "ward number",
-        grade: "Mental Health Sector Band 4",
-        date: "11/07/2021",
-        shiftTime: "07:00 : 12:00",
-        status: "Created",
-    },
-]
+// const bookingList = [
+//     {
+//         trust: "Apex care Hospital",
+//         ward: "ward number",
+//         grade: "Critical Sector Band 4",
+//         date: "05/07/2021",
+//         shiftTime: "07:00 : 12:00",
+//         status: "Created",
+//     },
+//     {
+//         trust: "Apex care Hospital",
+//         ward: "ward number",
+//         grade: "Mental Health Sector Band 4",
+//         date: "04/07/02021",
+//         shiftTime: "07:00 : 12:00",
+//         status: "Created",
+//     },
+//     {
+//         trust: "Apex care Hospital",
+//         ward: "ward number",
+//         grade: "Critical Sector Band 4",
+//         date: "01/07/2021",
+//         shiftTime: "07:00 : 12:00",
+//         status: "Cancel",
+//     },
+//     {
+//         trust: "Apex care Hospital",
+//         ward: "ward number ",
+//         grade: "Critical Sector Band 4",
+//         date: "10/07/2021",
+//         shiftTime: "07:00 : 12:00",
+//         status: "Confirmed",
+//     },
+//     {
+//         trust: "Apex care Hospital",
+//         ward: "ward number",
+//         grade: "Mental Health Sector Band 4",
+//         date: "11/07/2021",
+//         shiftTime: "07:00 : 12:00",
+//         status: "Created",
+//     },
+// ]
 
 
 const ViewBooking = ({ match }) => {
@@ -181,8 +181,8 @@ const ViewBooking = ({ match }) => {
                 </Box>
                 <Box className={classes.statusButton}>
                     <NavLink to="/" className="btn active">Created</NavLink>
-                    <NavLink to="/unconfirmed" className="btn">Confirmed</NavLink>
-                    <NavLink to="/confirmed" className="btn">Cancel</NavLink>
+                    <NavLink to="/admin/bookings/1" className="btn">Confirmed</NavLink>
+                    <NavLink to="/admin/bookings/1" className="btn">Cancel</NavLink>
                 </Box>
                 <Table className={classes.table}>
                     <TableHead>
@@ -198,20 +198,21 @@ const ViewBooking = ({ match }) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {bookingList.map((row, index) => (
-                            <TableRow key={index}>
-                                <TableCell scope="row">{index + 1}</TableCell>
-                                <TableCell align="left">{row.trust}</TableCell>
-                                <TableCell align="left">{row.ward} {index + 1}</TableCell>
-                                <TableCell align="left">{row.grade}</TableCell>
-                                <TableCell align="left">{row.date}</TableCell>
-                                <TableCell align="left">{row.shiftTime} </TableCell>
-                                <TableCell align="left">{row.status} </TableCell>
-                                <TableCell align="right">
-                                    <Link to={`${match.url}/detail`} className="btn btn-secondary" >View</Link>
-                                </TableCell>
-                            </TableRow>
-                        ))}
+                        {
+                            bookingItem?.data && bookingItem?.data.map((row, index) => (
+                                <TableRow key={index}>
+                                    <TableCell scope="row">{index + 1}</TableCell>
+                                    <TableCell align="left">{row.name}</TableCell>
+                                    <TableCell align="left">{row.ward_name}</TableCell>
+                                    <TableCell align="left">{row.grade_name}</TableCell>
+                                    <TableCell align="left">{row.date}</TableCell>
+                                    <TableCell align="left">{row.start_time} - {row.end_time}</TableCell>
+                                    <TableCell align="left">{row.status} </TableCell>
+                                    <TableCell align="right">
+                                        <Link to={`${match.url}/detail`} className="btn btn-secondary" >View</Link>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
                         {
                             !bookingItem?.data &&
                             <TableRow>

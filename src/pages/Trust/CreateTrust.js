@@ -375,7 +375,7 @@ const CreateTrust = () => {
                                                                     fullWidth
                                                                 />
                                                             </Grid>
-                                                            <CloseIcon className={classes.removeWard} onClick={() => removeWard(index, wIndex)} />
+                                                            {/* <CloseIcon className={classes.removeWard} onClick={() => removeWard(index, wIndex)} /> */}
                                                         </Grid>
                                                     )
                                                 })

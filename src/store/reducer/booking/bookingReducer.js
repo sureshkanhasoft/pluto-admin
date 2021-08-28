@@ -83,7 +83,7 @@ const bookingReducer = (state = initialState, action) => {
                 deleteBookingSuccess: action.payload
             })
 
-        case actionTypes.DELETE_BOOKING_REQUEST:
+        case actionTypes.DELETE_BOOKING_ERROR:
             return updateObject(state, {
                 loading: false,
                 deleteBookingError: action.payload

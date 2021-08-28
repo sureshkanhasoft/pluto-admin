@@ -11,7 +11,7 @@ export const getBooking = () => {
     const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, '');
     return async (dispatch) => {
         dispatch(getBookingRequest())
-        await axios.get(`${apiConfigs.API_URL}api/organization/booking-by-status/OPEN`, {
+        await axios.get(`${apiConfigs.API_URL}api/organization/booking-by-status?status=OPEN&search=`, {
             'headers': {
                 'content-type': 'application/type',
                 'Authorization': `Bearer ${loggedInUser}`
@@ -53,7 +53,7 @@ export const createBooking = (data) => {
         dispatch(createBookingRequest())
         await axios.post(`${apiConfigs.API_URL}api/organization/add-booking`, data, {
             'headers': {
-                'content-type': 'application/type',
+                'Content-Type': 'application/json',
                 'Authorization': `Bearer ${loggedInUser}`
             }
         }).then(response => {

@@ -8,14 +8,13 @@ import {
     RadioGroup, FormControlLabel, Radio, Typography, Divider,
     FormControl, InputLabel, Select, MenuItem
 } from '@material-ui/core';
-import { useForm } from 'react-hook-form';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateTrust } from '../../store/action';
 import Notification from '../../components/Notification/Notification';
 import axios from 'axios';
 import apiConfigs from '../../config/config';
-import CloseIcon from '@material-ui/icons/Close';
+// import CloseIcon from '@material-ui/icons/Close';
 import history from '../../utils/HistoryUtils';
 
 const useStyle = makeStyles((theme) => ({
@@ -85,7 +84,6 @@ const UpdateTrust = ({ match }) => {
     const { updateTrustError, updateTrustSuccess } = useSelector(state => state.trust)
     const [trustNotify, setTrustNotify] = useState(false)
     const [wardList, setWardList] = useState([])
-    const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const [data, setData] = useState({
         name: "",
         code: "",
@@ -186,18 +184,6 @@ const UpdateTrust = ({ match }) => {
         setData(wards1);
     }
 
-    const addWard1 = () => {
-        const hos = JSON.parse(JSON.stringify(data));
-        hos.ward.push(
-            {
-                ward_name: "",
-                ward_type_id: "",
-                ward_number: ""
-            }
-        )
-        setData(hos);
-    }
-
     const getSingleTrust = async () => {
         const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, '');
         // setLoading(true)
@@ -220,13 +206,6 @@ const UpdateTrust = ({ match }) => {
     useEffect(() => {
         getSingleTrust()
     }, [id])
-
-    const removeWard = (e, data) => {
-        console.log('index: ', data);
-        const wards1 = JSON.parse(JSON.stringify(data));
-
-
-    }
 
 
     const getWardType = async () => {
