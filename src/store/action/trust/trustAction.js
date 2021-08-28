@@ -2,10 +2,12 @@ import axios from "axios"
 import Config from "../../../config/config"
 import history from "../../../utils/HistoryUtils";
 // import history from "../../../utils/HistoryUtils";
-import { CREATE_TRUST_ERROR, CREATE_TRUST_REQUEST, CREATE_TRUST_SUCCESS, 
-    DELETE_TRUST_ERROR, DELETE_TRUST_REQUEST, DELETE_TRUST_SUCCESS, 
-    GET_TRUST_ERROR, GET_TRUST_REQUEST, GET_TRUST_SUCCESS, 
-    UPDATE_TRUST_ERROR, UPDATE_TRUST_REQUEST, UPDATE_TRUST_SUCCESS } from "../actiontypes";
+import {
+    CREATE_TRUST_ERROR, CREATE_TRUST_REQUEST, CREATE_TRUST_SUCCESS,
+    DELETE_TRUST_ERROR, DELETE_TRUST_REQUEST, DELETE_TRUST_SUCCESS,
+    GET_TRUST_ERROR, GET_TRUST_REQUEST, GET_TRUST_SUCCESS,
+    UPDATE_TRUST_ERROR, UPDATE_TRUST_REQUEST, UPDATE_TRUST_SUCCESS
+} from "../actiontypes";
 
 
 export const getTrust = ({ pageNo = 1 }) => {
@@ -50,7 +52,7 @@ const getTrustError = (error) => {
     }
 }
 
-export const createTrust = (data) => {
+export const createTrust = (data, addAnother) => {
     const loggedInUser = localStorage.getItem('token').replace(/['"]+/g, '');
     return async (dispatch) => {
         dispatch(createTrustRequest())
@@ -63,10 +65,15 @@ export const createTrust = (data) => {
             const data = response.data
             console.log('data res: ', data);
             if (data && data.status === true) {
-                dispatch(createTrustSuccess(data))
-                // setTimeout(() => {
-                //     history.goBack();
-                // }, 2000);
+                if (addAnother === true) {
+                    dispatch(createTrustSuccess(data))
+                } else {
+                    dispatch(createTrustSuccess(data))
+                    setTimeout(() => {
+                        history.goBack();
+                    }, 2000);
+                }
+
             } else {
                 dispatch(createTrustFailure(data))
             }

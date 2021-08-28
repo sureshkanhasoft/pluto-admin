@@ -84,6 +84,8 @@ const CreateTrust = () => {
     const { createTrustError, createTrustSuccess } = useSelector(state => state.trust)
     const [trustNotify, setTrustNotify] = useState(false)
     const [wardList, setWardList] = useState([])
+    const [addAnother, setAddAnother] = useState(false)
+    
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const [data, setData] = useState({
         name: "",
@@ -227,9 +229,13 @@ const CreateTrust = () => {
     const submitData = async (e) => {
         // e.preventDefault();
         console.log('data: ', data);
-        dispatch(createTrust(data))
+        if(addAnother === true){
+            dispatch(createTrust(data, addAnother))
+        } else {
+            dispatch(createTrust(data, addAnother))
+        }
         setTrustNotify(true)
-        // reset();
+        reset();
     }
 
     // useEffect(() => {
@@ -763,10 +769,10 @@ const CreateTrust = () => {
                         <Button color="primary" onClick={backPage}>
                             Cancel
                         </Button>
-                        <Button color="secondary" variant="contained" type="submit" formNoValidate>
+                        <Button color="secondary" variant="contained" type="submit" name="btn1" formNoValidate onClick={() => setAddAnother(false)}>
                             Save & Confirm
                         </Button>
-                        <Button color="secondary" variant="contained">
+                        <Button color="secondary" variant="contained"type="submit" name="btn2s"  formNoValidate onClick={() => setAddAnother(true)}>
                             Save & Add another
                         </Button>
                     </Box>
