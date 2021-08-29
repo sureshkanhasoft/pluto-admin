@@ -32,7 +32,7 @@ const useStyle = makeStyles((theme) => ({
     }
 }))
 
-const UpdateBooking = ({match}) => {
+const UpdateBooking = ({ match }) => {
     const classes = useStyle();
     const booking_id = match.params.id;
     const dispatch = useDispatch()
@@ -54,10 +54,9 @@ const UpdateBooking = ({match}) => {
         shift_id: "",
         rate: "",
         shift_type_id: "",
-        hospital_id:"",
+        hospital_id: "",
         speciality: []
     })
-    console.log('data: ', data);
     const handleChange = (event) => {
         setData({ ...data, [event.target.name]: event.target.value });
     };
@@ -118,7 +117,6 @@ const UpdateBooking = ({match}) => {
                     'Authorization': `Bearer ${loggedInUser}`
                 }
             }).then(response => {
-                console.log('response: ', response);
                 setHospitalList(response.data)
             }).catch(error => {
                 console.log('error: ', error);
@@ -203,7 +201,6 @@ const UpdateBooking = ({match}) => {
     }, [])
 
     const getBookingDetail = async () => {
-        // setLoading(true)
         const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, '');
         await axios.get(`${apiConfigs.API_URL}api/organization/get-booking/${booking_id}`, {
             headers: {
@@ -212,10 +209,15 @@ const UpdateBooking = ({match}) => {
             }
         }).then(response => {
             setData(response.data.data)
-            // setLoading(false)
+            console.log('response.data.data: ', response.data.data);
+            setTimeout(() => {
+                setgetTrustId(response.data.data.trust_id)
+            }, 500);
+            setTimeout(() => {
+                setGetHospitalId(response.data.data.hospital_id)
+            }, 1000);
         }).catch(error => {
             console.log("error.message", error.message);
-            // setLoading(false)
         });
     }
     useEffect(() => {
@@ -225,7 +227,6 @@ const UpdateBooking = ({match}) => {
 
     const submitData = (e) => {
         e.preventDefault();
-        // console.log('data', data)
         dispatch(updateBooking(data))
     }
 
@@ -243,9 +244,9 @@ const UpdateBooking = ({match}) => {
                             value={data?.reference_id}
                             onChange={handleChange}
                             fullWidth
-                            // InputProps={{
-                            //     readOnly: true,
-                            // }}
+                        // InputProps={{
+                        //     readOnly: true,
+                        // }}
                         />
                     </Grid>
 
@@ -262,7 +263,7 @@ const UpdateBooking = ({match}) => {
                                     Select Trust
                                 </MenuItem>
                                 {
-                                    trust?.data && trust?.data.map((trustList, index) => {
+                                    trust?.data?.data && trust?.data?.data.map((trustList, index) => {
                                         return (
                                             <MenuItem value={trustList.id} key={index}>{trustList.name}</MenuItem>
                                         )
@@ -277,7 +278,7 @@ const UpdateBooking = ({match}) => {
                         <FormControl variant="outlined" className={classes.formControl}>
                             <InputLabel>Hospital Name</InputLabel>
                             <Select
-                                value={data.hospital_id}
+                                value={data?.hospital_id ? data?.hospital_id :"" }
                                 onChange={hospitalHandleChange}
                                 label="Hospital Name"
                                 name="hospital_id"
@@ -354,6 +355,7 @@ const UpdateBooking = ({match}) => {
                             className={classes.textField}
                             variant="outlined"
                             onChange={handleChange}
+                            value={data?.date}
                             InputLabelProps={{
                                 shrink: true,
                             }}

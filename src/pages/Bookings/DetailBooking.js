@@ -141,7 +141,6 @@ const DetailBooking = ({ match }) => {
     const [loading, setLoading] = useState(false)
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [staffNotify, setStaffNotify] = useState(false)
-    console.log('bookingDetail: ', bookingDetail);
 
     const { deleteBookingSuccess, deleteBookingError } = useSelector(state => state.booking)
 
