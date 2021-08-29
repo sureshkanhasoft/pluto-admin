@@ -11,6 +11,7 @@ import axios from 'axios';
 import apiConfigs from '../../config/config';
 import { useDispatch } from 'react-redux';
 import { updateBooking } from '../../store/action';
+import history from '../../utils/HistoryUtils';
 
 const useStyle = makeStyles((theme) => ({
     root: {
@@ -228,6 +229,9 @@ const UpdateBooking = ({ match }) => {
     const submitData = (e) => {
         e.preventDefault();
         dispatch(updateBooking(data))
+    }
+    const backPage = () => {
+        history.goBack()
     }
 
     return (
@@ -447,7 +451,7 @@ const UpdateBooking = ({ match }) => {
                 </Grid>
 
                 <Box className={classes.footerBtn}>
-                    <Button color="primary">
+                    <Button color="primary" onClick={backPage}>
                         Cancel
                     </Button>
                     <Button color="secondary" variant="contained" type="submit" formNoValidate>

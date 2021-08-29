@@ -213,6 +213,9 @@ const DetailBooking = ({ match }) => {
         dispatch(deleteBooking(id))
         setStaffNotify(true)
     }
+    const backPage = () => {
+        history.go(-2)
+    }
     return (
         <>
             {
@@ -288,6 +291,9 @@ const DetailBooking = ({ match }) => {
                     </Grid>
                     <Grid item xs={12}>
                         <Box display="flex" justifyContent="flex-end" className={classes.btnContainer}>
+                        <Button color="primary" onClick={backPage}>
+                                Back
+                            </Button>
                             <Button variant="contained" color="primary" onClick={upadateLink}>
                                 <EditIcon className="mr-2" />Edit
                             </Button>

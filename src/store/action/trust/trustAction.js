@@ -120,9 +120,9 @@ export const updateTrust = (data) => {
             const data = response.data
             if (data && data.status === true) {
                 dispatch(updateTrustSuccess(data))
-                // setTimeout(() => {
-                //     history.goBack();
-                // }, 2000);
+                setTimeout(() => {
+                    history.goBack();
+                }, 2000);
             } else {
                 dispatch(updateTrustFailure(data))
             }
