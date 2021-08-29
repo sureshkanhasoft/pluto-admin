@@ -1,5 +1,6 @@
 import axios from "axios";
 import apiConfigs from "../../../config/config";
+import history from "../../../utils/HistoryUtils";
 import {
     CREATE_BOOKING_ERROR, CREATE_BOOKING_REQUEST, CREATE_BOOKING_SUCCESS,
     DELETE_BOOKING_ERROR, DELETE_BOOKING_REQUEST, DELETE_BOOKING_SUCCESS,
@@ -17,7 +18,6 @@ export const getBooking = () => {
                 'Authorization': `Bearer ${loggedInUser}`
             }
         }).then(response => {
-            console.log('response: ', response);
             dispatch(getBookingSuccess(response.data))
         }).catch(error => {
             dispatch(getBookingError(error))
@@ -47,7 +47,7 @@ const getBookingError = (error) => {
 
 // -------------------------------
 
-export const createBooking = (data) => {
+export const createBooking = (data, addAnother) => {
     const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, '');
     return async (dispatch) => {
         dispatch(createBookingRequest())
@@ -57,7 +57,22 @@ export const createBooking = (data) => {
                 'Authorization': `Bearer ${loggedInUser}`
             }
         }).then(response => {
-            dispatch(createBookingSuccess(response.data))
+            if (data && data.status === true) {
+                if (addAnother === true) {
+                    dispatch(createBookingSuccess(response.data))
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1500);
+                } else {
+                    dispatch(createBookingSuccess(response.data))
+                    setTimeout(() => {
+                        history.goBack();
+                    }, 2000);
+                }
+
+            } else {
+                dispatch(createBookingError(data))
+            }
         }).catch(error => {
             dispatch(createBookingError(error))
         })
@@ -96,7 +111,12 @@ export const updateBooking = (data) => {
                 'Authorization': `Bearer ${loggedInUser}`
             }
         }).then(response => {
-            dispatch(updateBookingSuccess(response.data))
+            if (data && data.status === true) {
+                dispatch(updateBookingSuccess(response.data))
+            } else {
+                dispatch(updateBookingSuccess(data))
+            }
+
         }).catch(error => {
             dispatch(updateBookingError(error))
         })
@@ -129,13 +149,21 @@ export const deleteBooking = (id) => {
     const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, '');
     return async (dispatch) => {
         dispatch(deleteBookingRequest())
-        await axios.post(`${apiConfigs.API_URL}api/organization/erwe`, id, {
+        await axios.delete(`${apiConfigs.API_URL}api/organization/delete-booking/${id}`, {
             'headers': {
                 'content-type': 'application/type',
                 'Authorization': `Bearer ${loggedInUser}`
             }
         }).then(response => {
-            dispatch(deleteBookingSuccess(response.data))
+            const data = response.data
+            if (data && data.status === true) {
+                dispatch(deleteBookingSuccess(response.data))
+                setTimeout(() => {
+                    history.go(-2);
+                }, 2000);
+            } else {
+                dispatch(deleteBookingError(data))
+            }
         }).catch(error => {
             dispatch(deleteBookingError(error))
         })

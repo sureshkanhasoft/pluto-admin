@@ -18,6 +18,7 @@ import { alpha } from '@material-ui/core/styles/colorManipulator';
 import AddIcon from '@material-ui/icons/Add';
 import { useDispatch, useSelector } from 'react-redux';
 import { getBooking } from '../../store/action';
+import history from '../../utils/HistoryUtils';
 
 const useStyle = makeStyles((theme) => ({
     root: {
@@ -147,10 +148,13 @@ const ViewBooking = ({ match }) => {
     const dispatch = useDispatch();
 
     const { bookingItem, loading } = useSelector(state => state.booking)
-    console.log('bookingItem: ', bookingItem);
 
     const getBookingList = () => {
         dispatch(getBooking(1))
+    }
+
+    const onhandlClick = (id) => {
+        history.push(`${match.url}/${id}/detail`)
     }
 
     useEffect(() => {
@@ -199,9 +203,9 @@ const ViewBooking = ({ match }) => {
                     </TableHead>
                     <TableBody>
                         {
-                            bookingItem?.data && bookingItem?.data.map((row, index) => (
+                            bookingItem?.data?.data && bookingItem?.data?.data.map((row, index) => (
                                 <TableRow key={index}>
-                                    <TableCell scope="row">{index + 1}</TableCell>
+                                    <TableCell scope="row">{row.id}</TableCell>
                                     <TableCell align="left">{row.name}</TableCell>
                                     <TableCell align="left">{row.ward_name}</TableCell>
                                     <TableCell align="left">{row.grade_name}</TableCell>
@@ -209,7 +213,7 @@ const ViewBooking = ({ match }) => {
                                     <TableCell align="left">{row.start_time} - {row.end_time}</TableCell>
                                     <TableCell align="left">{row.status} </TableCell>
                                     <TableCell align="right">
-                                        <Link to={`${match.url}/detail`} className="btn btn-secondary" >View</Link>
+                                        <Link to="#" onClick={() => onhandlClick(row.id)} className="btn btn-secondary" >View</Link>
                                     </TableCell>
                                 </TableRow>
                             ))}

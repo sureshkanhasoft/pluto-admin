@@ -63,10 +63,12 @@ export const createTrust = (data, addAnother) => {
             }
         }).then(response => {
             const data = response.data
-            console.log('data res: ', data);
             if (data && data.status === true) {
                 if (addAnother === true) {
                     dispatch(createTrustSuccess(data))
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1500);
                 } else {
                     dispatch(createTrustSuccess(data))
                     setTimeout(() => {

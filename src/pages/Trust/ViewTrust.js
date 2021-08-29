@@ -136,7 +136,7 @@ const ViewTrust = ({ match }) => {
                     </TableHead>
                     <TableBody>
                         {
-                            getTrustItem?.data && getTrustItem?.data.map((list, index) => {
+                            getTrustItem?.data?.data && getTrustItem?.data?.data.map((list, index) => {
                                 return (
                                     <TableRow key={index} >
                                         <TableCell scope="row">{list.id}</TableCell>

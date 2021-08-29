@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Grid, Typography, makeStyles, Chip, Paper, Tab, Tabs, Box,
     Table,
@@ -10,7 +10,9 @@ import {
     Menu,
     MenuItem,
     Button,
-    Checkbox
+    Checkbox,
+    Backdrop,
+    CircularProgress
 } from "@material-ui/core";
 import { Link } from "react-router-dom"
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -20,6 +22,13 @@ import CloseIcon from '@material-ui/icons/Close';
 import CheckIcon from '@material-ui/icons/Check';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import axios from 'axios';
+import apiConfigs from '../../config/config';
+import history from '../../utils/HistoryUtils';
+import AlertDialog from '../../components/Alert/AlertDialog';
+import { useDispatch, useSelector } from 'react-redux';
+import Notification from '../../components/Notification/Notification';
+import { deleteBooking } from '../../store/action';
 
 const useStyle = makeStyles((theme) => ({
     root: {
@@ -29,6 +38,10 @@ const useStyle = makeStyles((theme) => ({
     },
     desc: {
         fontSize: 16
+    },
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff',
     },
     heading: {
         color: "#626161",
@@ -114,16 +127,30 @@ function a11yProps(index) {
     };
 }
 
-const DetailBooking = () => {
+const DetailBooking = ({ match }) => {
     const classes = useStyle();
+    const dispatch = useDispatch();
+    const booking_id = match.params.id;
+    const [Id, setId] = useState(false);
     const [value, setValue] = React.useState(0);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const [selected, setSelected] = React.useState([]);
 
+    const [bookingDetail, setBookingDetail] = useState([])
+    const [loading, setLoading] = useState(false)
+    const [deleteOpen, setDeleteOpen] = useState(false);
+    const [staffNotify, setStaffNotify] = useState(false)
+    console.log('bookingDetail: ', bookingDetail);
+
+    const { deleteBookingSuccess, deleteBookingError } = useSelector(state => state.booking)
+
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
+    const upadateLink = () => {
+        history.push(`update`)
+    }
 
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
@@ -154,47 +181,118 @@ const DetailBooking = () => {
     };
 
     const isSelected = (name) => selected.indexOf(name) !== -1;
+
+    const getBookingDetail = async () => {
+        setLoading(true)
+        const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, '');
+        await axios.get(`${apiConfigs.API_URL}api/organization/get-booking/${booking_id}`, {
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': `Bearer ${loggedInUser}`
+            }
+        }).then(response => {
+            setBookingDetail(response.data)
+            setLoading(false)
+        }).catch(error => {
+            console.log("error.message", error.message);
+            setLoading(false)
+        });
+    }
+    useEffect(() => {
+        getBookingDetail()
+    }, [])
+
+    const deleteBookingClose = () => {
+        setDeleteOpen(false)
+    }
+
+    const deleteStaffItem = (id) => {
+        setDeleteOpen(true)
+        setId(id)
+    }
+    const alertResponse = (id) => {
+        dispatch(deleteBooking(id))
+        setStaffNotify(true)
+    }
     return (
         <>
+            {
+                loading ?
+                    <Backdrop className={classes.backdrop} open={loading}>
+                        <CircularProgress color="inherit" />
+                    </Backdrop> : ""
+            }
+            {
+                staffNotify && deleteBookingSuccess?.message &&
+                <Notification
+                    data={deleteBookingSuccess?.message}
+                    status="success"
+                />
+            }
+            {
+                staffNotify && deleteBookingError?.message &&
+                <Notification
+                    data={deleteBookingError?.message}
+                    status="error"
+                />
+            }
             <Paper className={`${classes.root} mb-6`}>
                 <Grid container spacing={4}>
                     <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
                         <Typography variant="body2" className={classes.heading}>Reference ID:</Typography>
-                        <Typography variant="h6" className={classes.desc}>1234rr</Typography>
+                        <Typography variant="h6" className={classes.desc}>{bookingDetail?.data?.reference_id}</Typography>
                     </Grid>
                     <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
                         <Typography variant="body2" className={classes.heading}>Trust Code:</Typography>
-                        <Typography variant="h6" className={classes.desc}>Apex care Trust</Typography>
+                        <Typography variant="h6" className={classes.desc}>{bookingDetail?.data?.name}</Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
+                        <Typography variant="body2" className={classes.heading}>Hospital Code:</Typography>
+                        <Typography variant="h6" className={classes.desc}>{bookingDetail?.data?.hospital_name}</Typography>
                     </Grid>
                     <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
                         <Typography variant="body2" className={classes.heading}>Ward Code:</Typography>
-                        <Typography variant="h6" className={classes.desc}>ward number</Typography>
+                        <Typography variant="h6" className={classes.desc}>{bookingDetail?.data?.ward_name}</Typography>
                     </Grid>
                     <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
                         <Typography variant="body2" className={classes.heading}>Band Required:</Typography>
-                        <Typography variant="h6" className={classes.desc}>Midwifer Sector Band 5</Typography>
+                        <Typography variant="h6" className={classes.desc}>{bookingDetail?.data?.grade_name}</Typography>
                     </Grid>
                     <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
                         <Typography variant="body2" className={classes.heading}>Date:</Typography>
-                        <Typography variant="h6" className={classes.desc}>2021-07-15</Typography>
+                        <Typography variant="h6" className={classes.desc}>{bookingDetail?.data?.date}</Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={6} lg={2} className={classes.gridItem}>
+                        <Typography variant="body2" className={classes.heading}>Shift Time:</Typography>
+                        <Typography variant="h6" className={classes.desc}>{bookingDetail?.data?.start_time} - {bookingDetail?.data?.end_time}</Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={6} lg={2} className={classes.gridItem}>
+                        <Typography variant="body2" className={classes.heading}>Shift Type :</Typography>
+                        <Typography variant="h6" className={classes.desc}>{bookingDetail?.data?.shift_type}</Typography>
                     </Grid>
                     <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
-                        <Typography variant="body2" className={classes.heading}>Time:</Typography>
-                        <Typography variant="h6" className={classes.desc}>07:30 - 13:00</Typography>
+                        <Typography variant="body2" className={classes.heading}>Rate:</Typography>
+                        <Typography variant="h6" className={classes.desc}>{bookingDetail?.data?.rate}</Typography>
                     </Grid>
                     <Grid item xs={12}>
                         <Typography variant="body2" className={classes.heading}>Speciality:</Typography>
                         <div className={classes.chipContainer}>
-                            <Chip label="Acute Assessment" />
-                            <Chip label="Allocation on arrival" />
+
+                            {
+                                bookingDetail?.data?.speciality && bookingDetail?.data?.speciality.map((list, index) => {
+                                    return (
+                                        <Chip label={list.speciality_name} key={index} />
+                                    )
+                                })
+                            }
                         </div>
                     </Grid>
                     <Grid item xs={12}>
                         <Box display="flex" justifyContent="flex-end" className={classes.btnContainer}>
-                            <Button variant="contained" color="primary">
+                            <Button variant="contained" color="primary" onClick={upadateLink}>
                                 <EditIcon className="mr-2" />Edit
                             </Button>
-                            <Button variant="contained" color="secondary">
+                            <Button variant="contained" color="secondary" onClick={(e) => deleteStaffItem(bookingDetail?.data?.id)}>
                                 <DeleteIcon className="mr-2" />Delete
                             </Button>
                         </Box>
@@ -274,6 +372,16 @@ const DetailBooking = () => {
                     Item Two
                 </TabPanel>
             </Paper>
+
+            <AlertDialog
+                id={Id}
+                open={deleteOpen}
+                close={deleteBookingClose}
+                response={alertResponse}
+                title="Delete Trust"
+                description="Are you sure you want to delete?"
+                buttonName="Delete"
+            />
         </>
     )
 }
