@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Paper,
     makeStyles,
@@ -65,7 +65,7 @@ const useStyle = makeStyles((theme) => ({
         paddingTop: theme.spacing(),
         paddingRight: theme.spacing(),
         paddingBottom: theme.spacing(),
-        paddingLeft: theme.spacing(6),
+        paddingLeft: theme.spacing(1),
         transition: theme.transitions.create('width'),
         width: '100%',
         borderBottom: "1px solid #ccc",
@@ -82,16 +82,36 @@ const useStyle = makeStyles((theme) => ({
 const ViewTrust = ({ match }) => {
     const classes = useStyle()
     const dispatch = useDispatch();
+    const [page, setPage] = React.useState(1);
+    const [searchData, setSearchData] = useState({ search: "" });
 
     const { getTrustItem, loading } = useSelector(state => state.trust)
 
-    const getTrustList = () => {
-        dispatch(getTrust(1))
+    const getTrustList = (pageNo = 1, search = '') => {
+        dispatch(getTrust({ pageNo, search }))
     }
 
     const onhandlClick = (id) => {
         history.push(`${match.url}/${id}/detail`)
     }
+
+    const handleChangePage = (event, value) => {
+        setPage(value);
+        setTimeout(getTrustList(value), 2000);
+    };
+
+    const handleSearchChange = (event) => {
+        const d1 = event.target.value
+        if (d1.length > 2) {
+            setTimeout(getTrustList(page, d1), 100);
+        }
+        setSearchData({ ...searchData, [event.target.name]: event.target.value });
+
+    }
+
+    const handleClickSearch = (event, value) => {
+        setTimeout(getTrustList(page, searchData.search), 1000);
+    };
 
     useEffect(() => {
         getTrustList()
@@ -107,12 +127,10 @@ const ViewTrust = ({ match }) => {
             <p className="mb-6">Welcome to your Pluto Software admin dashboard. Here you can get an overview of your account activity, or use navigation on the left hand side to get to your desired location.</p>
             <Paper className={`${classes.root} mb-6`}>
                 <Box className="mb-5" display="flex" alignItems="center">
+                    <SearchIcon className={classes.searchIcondet} onClick={handleClickSearch} />
                     <div className={classes.search} >
-                        <div className={classes.searchIcon}>
-                            <SearchIcon />
-                        </div>
-                        <InputBase
-                            placeholder="Search…"
+                        <InputBase name="search"
+                            placeholder="Search…" onChange={handleSearchChange}
                             classes={{
                                 root: classes.inputRoot,
                                 input: classes.inputInput,
@@ -151,7 +169,7 @@ const ViewTrust = ({ match }) => {
                     </TableBody>
                 </Table>
                 <Box className="mt-5" display="flex" justifyContent="flex-end">
-                    <Pagination count={5} />
+                    <Pagination onChange={handleChangePage} page={page} count={getTrustItem?.last_page} showFirstButton showLastButton />
                 </Box>
             </Paper>
         </>

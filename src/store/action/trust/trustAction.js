@@ -10,11 +10,11 @@ import {
 } from "../actiontypes";
 
 
-export const getTrust = ({ pageNo = 1 }) => {
+export const getTrust = ({pageNo=1, search = ''}) => {
     const loggedInUser = localStorage.getItem('token').replace(/['"]+/g, '');
     return async (dispatch) => {
         dispatch(getTrustRequest())
-        await axios.get(`${Config.API_URL}api/organization/get-trust?page=${pageNo}`, {
+        await axios.get(`${Config.API_URL}api/organization/get-trust?search=${search}&page=${pageNo}`, {
             headers: {
                 'content-type': 'application/json',
                 'Authorization': `Bearer ${loggedInUser}`

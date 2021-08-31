@@ -8,11 +8,11 @@ import {
     UPDATE_BOOKING_ERROR, UPDATE_BOOKING_REQUEST, UPDATE_BOOKING_SUCCESS
 } from "../actiontypes";
 
-export const getBooking = () => {
+export const getBooking = ({pageNo=1, search = ''}) => {
     const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, '');
     return async (dispatch) => {
         dispatch(getBookingRequest())
-        await axios.get(`${apiConfigs.API_URL}api/organization/booking-by-status?status=OPEN&search=`, {
+        await axios.get(`${apiConfigs.API_URL}api/organization/booking-by-status?status=OPEN&search=${search}&page=${pageNo}`, {
             'headers': {
                 'content-type': 'application/type',
                 'Authorization': `Bearer ${loggedInUser}`
@@ -57,6 +57,7 @@ export const createBooking = (data, addAnother) => {
                 'Authorization': `Bearer ${loggedInUser}`
             }
         }).then(response => {
+            const data = response.data
             if (data && data.status === true) {
                 if (addAnother === true) {
                     dispatch(createBookingSuccess(response.data))
@@ -111,10 +112,12 @@ export const updateBooking = (data) => {
                 'Authorization': `Bearer ${loggedInUser}`
             }
         }).then(response => {
+            console.log('response: ', response);
+            const data = response.data
             if (data && data.status === true) {
                 dispatch(updateBookingSuccess(response.data))
             } else {
-                dispatch(updateBookingSuccess(data))
+                dispatch(updateBookingError(data))
             }
 
         }).catch(error => {

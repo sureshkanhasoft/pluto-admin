@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Paper,
     makeStyles,
@@ -10,6 +10,8 @@ import {
     TableHead,
     TableRow,
     TableCell,
+    Backdrop,
+    CircularProgress,
 } from '@material-ui/core';
 import { Link, NavLink } from "react-router-dom";
 import { Pagination } from '@material-ui/lab';
@@ -29,6 +31,10 @@ const useStyle = makeStyles((theme) => ({
 
     table: {
         minWidth: 700,
+    },
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff',
     },
 
     search: {
@@ -63,7 +69,7 @@ const useStyle = makeStyles((theme) => ({
         paddingTop: theme.spacing(),
         paddingRight: theme.spacing(),
         paddingBottom: theme.spacing(),
-        paddingLeft: theme.spacing(6),
+        paddingLeft: theme.spacing(1),
         transition: theme.transitions.create('width'),
         width: '100%',
         borderBottom: "1px solid #ccc",
@@ -99,78 +105,59 @@ const useStyle = makeStyles((theme) => ({
     },
 }))
 
-// const bookingList = [
-//     {
-//         trust: "Apex care Hospital",
-//         ward: "ward number",
-//         grade: "Critical Sector Band 4",
-//         date: "05/07/2021",
-//         shiftTime: "07:00 : 12:00",
-//         status: "Created",
-//     },
-//     {
-//         trust: "Apex care Hospital",
-//         ward: "ward number",
-//         grade: "Mental Health Sector Band 4",
-//         date: "04/07/02021",
-//         shiftTime: "07:00 : 12:00",
-//         status: "Created",
-//     },
-//     {
-//         trust: "Apex care Hospital",
-//         ward: "ward number",
-//         grade: "Critical Sector Band 4",
-//         date: "01/07/2021",
-//         shiftTime: "07:00 : 12:00",
-//         status: "Cancel",
-//     },
-//     {
-//         trust: "Apex care Hospital",
-//         ward: "ward number ",
-//         grade: "Critical Sector Band 4",
-//         date: "10/07/2021",
-//         shiftTime: "07:00 : 12:00",
-//         status: "Confirmed",
-//     },
-//     {
-//         trust: "Apex care Hospital",
-//         ward: "ward number",
-//         grade: "Mental Health Sector Band 4",
-//         date: "11/07/2021",
-//         shiftTime: "07:00 : 12:00",
-//         status: "Created",
-//     },
-// ]
-
 
 const ViewBooking = ({ match }) => {
     const classes = useStyle();
     const dispatch = useDispatch();
+    const [page, setPage] = React.useState(1);
+    const [searchData, setSearchData] = useState({ search: "" });
 
     const { bookingItem, loading } = useSelector(state => state.booking)
 
-    const getBookingList = () => {
-        dispatch(getBooking(1))
+    const getBookingList = (pageNo = 1, search = '') => {
+        dispatch(getBooking({ pageNo, search }))
     }
 
     const onhandlClick = (id) => {
         history.push(`${match.url}/${id}/detail`)
     }
 
+    const handleChangePage = (event, value) => {
+        setPage(value);
+        setTimeout(getBookingList(value), 2000);
+    };
+
+    const handleSearchChange = (event) => {
+        const d1 = event.target.value
+        if (d1.length > 2) {
+            setTimeout(getBookingList(page, d1), 100);
+        }
+        setSearchData({ ...searchData, [event.target.name]: event.target.value });
+
+    }
+
+    const handleClickSearch = (event, value) => {
+        setTimeout(getBookingList(page, searchData.search), 1000);
+    };
+
     useEffect(() => {
         getBookingList()
     }, [])
     return (
         <>
+            {
+                loading ?
+                    <Backdrop className={classes.backdrop} open={loading}>
+                        <CircularProgress color="inherit" />
+                    </Backdrop> : ""
+            }
             <p className="mb-6">Welcome to your Pluto Software admin dashboard. Here you can get an overview of your account activity, or use navigation on the left hand side to get to your desired location.</p>
             <Paper className={`${classes.root} mb-6`}>
                 <Box className="mb-5" display="flex" alignItems="center">
+                    <SearchIcon className={classes.searchIcondet} onClick={handleClickSearch} />
                     <div className={classes.search} >
-                        <div className={classes.searchIcon}>
-                            <SearchIcon />
-                        </div>
-                        <InputBase
-                            placeholder="Search…"
+                        <InputBase name="search"
+                            placeholder="Search…" onChange={handleSearchChange}
                             classes={{
                                 root: classes.inputRoot,
                                 input: classes.inputInput,
@@ -228,7 +215,7 @@ const ViewBooking = ({ match }) => {
                     </TableBody>
                 </Table>
                 <Box className="mt-5" display="flex" justifyContent="flex-end">
-                    <Pagination count={10} />
+                    <Pagination onChange={handleChangePage} page={page} count={bookingItem?.last_page} showFirstButton showLastButton />
                 </Box>
 
             </Paper>

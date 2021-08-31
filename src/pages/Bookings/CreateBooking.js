@@ -51,7 +51,7 @@ const CreateBooking = () => {
     const [trustNotify, setTrustNotify] = useState(false)
     const {createBookingSuccess} = useSelector(state => state.booking)
     const [data, setData] = useState({
-        reference_id: "12345",
+        reference_id: "",
         trust_id: "",
         ward_id: "",
         grade_id: "",
@@ -225,6 +225,7 @@ const CreateBooking = () => {
                     status="success"
                 />
             }
+            
             <Paper className={classes.root}>
                 <form onSubmit={handleSubmit(submitData)}>
                     <Grid container spacing={2}>
