@@ -14,8 +14,8 @@ export const getBooking = ({pageNo=1, search = ''}) => {
         dispatch(getBookingRequest())
         await axios.get(`${apiConfigs.API_URL}api/organization/booking-by-status?status=OPEN&search=${search}&page=${pageNo}`, {
             'headers': {
-                'content-type': 'application/type',
-                'Authorization': `Bearer ${loggedInUser}`
+                'Content-type': 'application/json',
+                'Authorization': 'Bearer ' + loggedInUser
             }
         }).then(response => {
             dispatch(getBookingSuccess(response.data))
@@ -53,8 +53,8 @@ export const createBooking = (data, addAnother) => {
         dispatch(createBookingRequest())
         await axios.post(`${apiConfigs.API_URL}api/organization/add-booking`, data, {
             'headers': {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${loggedInUser}`
+                'Content-type': 'application/json',
+                'Authorization': 'Bearer ' + loggedInUser
             }
         }).then(response => {
             const data = response.data
@@ -108,14 +108,13 @@ export const updateBooking = (data) => {
         dispatch(updateBookingRequest())
         await axios.post(`${apiConfigs.API_URL}api/organization/edit-booking`, data, {
             'headers': {
-                'content-type': 'application/type',
-                'Authorization': `Bearer ${loggedInUser}`
+                'Content-type': 'application/json',
+                'Authorization': 'Bearer ' + loggedInUser
             }
         }).then(response => {
-            console.log('response: ', response);
             const data = response.data
             if (data && data.status === true) {
-                dispatch(updateBookingSuccess(response.data))
+                dispatch(updateBookingSuccess(data))
             } else {
                 dispatch(updateBookingError(data))
             }
