@@ -67,10 +67,23 @@ const CreateBooking = () => {
         setData({ ...data, [event.target.name]: event.target.value });
     };
 
+    // const handleChangeCheck = (event) => {
+    //     const specialityData = JSON.parse(JSON.stringify(data));
+    //     specialityData.speciality.push(event.target.value);
+    //     setData(specialityData)
+    // };
     const handleChangeCheck = (event) => {
         const specialityData = JSON.parse(JSON.stringify(data));
-        specialityData.speciality.push(event.target.value);
-        setData(specialityData)
+        const isChecked = (event.target.checked);
+        if (isChecked) {
+            specialityData.speciality.push(parseFloat(event.target.value));
+            setData(specialityData)
+        } else {
+            const newData = (specialityData.speciality).filter(item => item !== parseFloat(event.target.value));
+            specialityData.speciality = newData;
+            setData(specialityData)
+        }
+
     };
 
     const getSpecialities = async () => {
