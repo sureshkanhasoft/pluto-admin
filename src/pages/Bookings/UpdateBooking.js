@@ -47,7 +47,7 @@ const UpdateBooking = ({ match }) => {
     const [gradeList, setGradeList] = useState([])
     const [shiftTime, setShiftTime] = useState([])
     const [data, setData] = useState({
-        reference_id: "12345",
+        reference_id: "",
         trust_id: "",
         ward_id: "",
         grade_id: "",
@@ -210,7 +210,6 @@ const UpdateBooking = ({ match }) => {
             }
         }).then(response => {
             setData(response.data.data)
-            console.log('response.data.data: ', response.data.data);
             setTimeout(() => {
                 setgetTrustId(response.data.data.trust_id)
             }, 500);
@@ -237,7 +236,8 @@ const UpdateBooking = ({ match }) => {
     return (
         <Paper className={classes.root}>
 
-            <form onSubmit={(e) => submitData(e)}>
+            <form>
+            {/* <form onSubmit={(e) => submitData(e)}> */}
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={6} lg={4}>
                         <TextField
@@ -454,7 +454,7 @@ const UpdateBooking = ({ match }) => {
                     <Button color="primary" onClick={backPage}>
                         Cancel
                     </Button>
-                    <Button color="secondary" variant="contained" type="submit" formNoValidate>
+                    <Button color="secondary" variant="contained" onClick={submitData} formNoValidate>
                         Update
                     </Button>
                 </Box>
