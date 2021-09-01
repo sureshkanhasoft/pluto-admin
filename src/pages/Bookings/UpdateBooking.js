@@ -340,7 +340,7 @@ const UpdateBooking = ({ match }) => {
                                     {
                                         wardList?.data && wardList?.data.map((list, index) => {
                                             return (
-                                                <MenuItem value={list.ward_type_id} key={index}>{list.ward_name}</MenuItem>
+                                                <MenuItem value={list.id} key={index}>{list.ward_name}</MenuItem>
                                             )
                                         })
                                     }

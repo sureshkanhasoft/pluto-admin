@@ -226,7 +226,8 @@ const CreateBooking = () => {
                 'Authorization': `Bearer ${loggedInUser}`
             }
         }).then(response => {
-            setReferenceId(response.data)
+            setData({ ...data, reference_id: parseFloat(response.data.data.reference_id) })
+            setReferenceId(response.data.data.reference_id)
         }).catch(error => {
             console.log("error.message", error.message);
         });
@@ -238,7 +239,6 @@ const CreateBooking = () => {
 
     const submitData = async (e) => {
         // e.preventDefault();
-        console.log('data', data)
         if (addAnother === true) {
             dispatch(createBooking(data, addAnother))
         } else {
@@ -266,11 +266,11 @@ const CreateBooking = () => {
                                 label="Reference Id"
                                 variant="outlined"
                                 name="reference_id"
-                                value={referenceId?.data?.reference_id || ""}
-                                {...register('reference_id', {
-                                    required: "The reference id field is required.",
-                                })}
-                                error={(errors.reference_id ? true : false)}
+                                value={referenceId || ""}
+                                // {...register('reference_id', {
+                                //     required: "The reference id field is required.",
+                                // })}
+                                // error={(errors.reference_id ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
                                 InputProps={{
@@ -354,7 +354,7 @@ const CreateBooking = () => {
                                     {
                                         wardList?.data && wardList?.data.map((list, index) => {
                                             return (
-                                                <MenuItem value={list.ward_type_id} key={index}>{list.ward_name}</MenuItem>
+                                                <MenuItem value={list.id} key={index}>{list.ward_name}</MenuItem>
                                             )
                                         })
                                     }
@@ -471,7 +471,7 @@ const CreateBooking = () => {
                                 label="Rate"
                                 variant="outlined"
                                 name="rate"
-                                value={data.rate}
+                                value={data?.rate}
                                 {...register('rate', {
                                     required: "The rate field is required.",
                                 })}
