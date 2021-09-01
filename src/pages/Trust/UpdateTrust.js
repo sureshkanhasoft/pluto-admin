@@ -267,6 +267,10 @@ const UpdateTrust = ({ match }) => {
                                 onChange={handleChange}
                                 fullWidth
                                 required
+                                helperText={updateTrustError.message?.name}
+                                error={
+                                    !!updateTrustError.message?.name
+                                }
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -276,14 +280,19 @@ const UpdateTrust = ({ match }) => {
                                 variant="outlined"
                                 name="code"
                                 value={data?.code || ""}
+                                helperText={updateTrustError.message?.code}
+                                error={
+                                    !!updateTrustError.message?.code
+                                }
                                 onChange={handleChange}
                                 fullWidth
                                 required
+
                             />
                         </Grid>
 
                         {
-                             data?.hospital && data?.hospital.map((item, index) => {
+                            data?.hospital && data?.hospital.map((item, index) => {
 
                                 return (
                                     <div className={classes.hospitalBox} key={index}>
@@ -295,6 +304,10 @@ const UpdateTrust = ({ match }) => {
                                                     variant="outlined"
                                                     name="hospital_name"
                                                     value={item?.hospital_name || ""}
+                                                    helperText={updateTrustError.message?.hospital_name}
+                                                    error={
+                                                        !!updateTrustError.message?.hospital_name
+                                                    }
                                                     onChange={(e) => handleChangeHospital(index, e, 'hospital')}
 
                                                     fullWidth
@@ -372,7 +385,7 @@ const UpdateTrust = ({ match }) => {
                                 <Typography >Add Hospital</Typography>
                             </Button>
                         </Grid>
-                        
+
                         <Grid item xs={12}>
                             <Box className="mt-3">
                                 <Typography>Preferred Invoice Method</Typography>
@@ -393,6 +406,10 @@ const UpdateTrust = ({ match }) => {
                                 variant="outlined"
                                 name="email_address"
                                 value={data?.email_address || ""}
+                                helperText={updateTrustError.message?.email_address}
+                                error={
+                                    !!updateTrustError.message?.email_address
+                                }
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -408,6 +425,10 @@ const UpdateTrust = ({ match }) => {
                                 variant="outlined"
                                 name="address_line_1"
                                 value={data?.address_line_1 || ""}
+                                helperText={updateTrustError.message?.address_line_1}
+                                error={
+                                    !!updateTrustError.message?.address_line_1
+                                }
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -432,6 +453,10 @@ const UpdateTrust = ({ match }) => {
                                 variant="outlined"
                                 name="city"
                                 value={data?.city || ""}
+                                helperText={updateTrustError.message?.city}
+                                error={
+                                    !!updateTrustError.message?.city
+                                }
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -444,6 +469,10 @@ const UpdateTrust = ({ match }) => {
                                 variant="outlined"
                                 name="post_code"
                                 value={data?.post_code || ""}
+                                helperText={updateTrustError.message?.post_code}
+                                error={
+                                    !!updateTrustError.message?.post_code
+                                }
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -465,6 +494,10 @@ const UpdateTrust = ({ match }) => {
                                 variant="outlined"
                                 name="trust_portal_url"
                                 value={data?.trust_portal_url || ""}
+                                helperText={updateTrustError.message?.trust_portal_url}
+                                error={
+                                    !!updateTrustError.message?.trust_portal_url
+                                }
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -477,6 +510,10 @@ const UpdateTrust = ({ match }) => {
                                 variant="outlined"
                                 name="portal_email"
                                 value={data?.portal_email || ""}
+                                helperText={updateTrustError.message?.portal_email}
+                                error={
+                                    !!updateTrustError.message?.portal_email
+                                }
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -490,6 +527,10 @@ const UpdateTrust = ({ match }) => {
                                 variant="outlined"
                                 name="portal_password"
                                 value={data?.portal_password || ""}
+                                helperText={updateTrustError.message?.portal_password}
+                                error={
+                                    !!updateTrustError.message?.portal_password
+                                }
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -514,6 +555,10 @@ const UpdateTrust = ({ match }) => {
                                             variant="outlined"
                                             name="training_name"
                                             value={item?.training_name || ""}
+                                            helperText={updateTrustError.message?.training_name}
+                                            error={
+                                                !!updateTrustError.message?.training_name
+                                            }
                                             onChange={(e) => handleChangeHospital(index, e, 'training')}
                                             fullWidth
                                         />
@@ -543,6 +588,10 @@ const UpdateTrust = ({ match }) => {
                                 variant="outlined"
                                 name="first_name"
                                 value={data?.first_name || ""}
+                                helperText={updateTrustError.message?.first_name}
+                                error={
+                                    !!updateTrustError.message?.first_name
+                                }
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -555,6 +604,10 @@ const UpdateTrust = ({ match }) => {
                                 variant="outlined"
                                 name="last_name"
                                 value={data?.last_name || ""}
+                                helperText={updateTrustError.message?.last_name}
+                                error={
+                                    !!updateTrustError.message?.last_name
+                                }
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -567,6 +620,10 @@ const UpdateTrust = ({ match }) => {
                                 variant="outlined"
                                 name="contact_email_address"
                                 value={data?.contact_email_address || ""}
+                                helperText={updateTrustError.message?.contact_email_address}
+                                error={
+                                    !!updateTrustError.message?.contact_email_address
+                                }
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -579,6 +636,10 @@ const UpdateTrust = ({ match }) => {
                                 variant="outlined"
                                 name="phone_number"
                                 value={data?.phone_number || ""}
+                                helperText={updateTrustError.message?.phone_number}
+                                error={
+                                    !!updateTrustError.message?.phone_number
+                                }
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -609,7 +670,7 @@ const UpdateTrust = ({ match }) => {
                     </Grid>
 
                     <Box className={classes.footerBtn}>
-                    <Button color="primary" onClick={backPage}>
+                        <Button color="primary" onClick={backPage}>
                             Cancel
                         </Button>
                         <Button color="secondary" variant="contained" type="submit" formNoValidate>
