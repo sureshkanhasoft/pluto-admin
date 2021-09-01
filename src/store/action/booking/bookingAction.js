@@ -115,6 +115,9 @@ export const updateBooking = (data) => {
             const data = response.data
             if (data && data.status === true) {
                 dispatch(updateBookingSuccess(data))
+                setTimeout(() => {
+                    history.goBack();
+                }, 2000);
             } else {
                 dispatch(updateBookingError(data))
             }

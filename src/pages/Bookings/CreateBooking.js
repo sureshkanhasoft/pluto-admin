@@ -49,7 +49,8 @@ const CreateBooking = () => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const [addAnother, setAddAnother] = useState(false)
     const [trustNotify, setTrustNotify] = useState(false)
-    const {createBookingSuccess} = useSelector(state => state.booking)
+    const [referenceId, setReferenceId] = useState([])
+    const { createBookingSuccess } = useSelector(state => state.booking)
     const [data, setData] = useState({
         reference_id: "",
         trust_id: "",
@@ -204,6 +205,23 @@ const CreateBooking = () => {
         getShift()
     }, [])
 
+    const getReference = async () => {
+        const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, '');
+        await axios.get(`${apiConfigs.API_URL}api/organization/get-reference`, {
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': `Bearer ${loggedInUser}`
+            }
+        }).then(response => {
+            setReferenceId(response.data)
+        }).catch(error => {
+            console.log("error.message", error.message);
+        });
+    }
+    useEffect(() => {
+        getReference()
+    }, [])
+
 
     const submitData = async (e) => {
         // e.preventDefault();
@@ -225,7 +243,7 @@ const CreateBooking = () => {
                     status="success"
                 />
             }
-            
+
             <Paper className={classes.root}>
                 <form onSubmit={handleSubmit(submitData)}>
                     <Grid container spacing={2}>
@@ -235,16 +253,16 @@ const CreateBooking = () => {
                                 label="Reference Id"
                                 variant="outlined"
                                 name="reference_id"
-                                // value={data?.reference_id}
+                                value={referenceId?.data?.reference_id || ""}
                                 {...register('reference_id', {
                                     required: "The reference id field is required.",
                                 })}
                                 error={(errors.reference_id ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
-                            // InputProps={{
-                            //     readOnly: true,
-                            // }}
+                                InputProps={{
+                                    readOnly: true,
+                                }}
                             />
                         </Grid>
 
