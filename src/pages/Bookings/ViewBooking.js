@@ -129,8 +129,10 @@ const ViewBooking = ({ match }) => {
 
     const handleSearchChange = (event) => {
         const d1 = event.target.value
-        if (d1.length > 2) {
+        if (d1) {
             setTimeout(getBookingList(page, d1), 100);
+        } else {
+            setTimeout(getBookingList(page, ""), 100);
         }
         setSearchData({ ...searchData, [event.target.name]: event.target.value });
 

@@ -130,8 +130,11 @@ const Organization = () => {
 
     const handleSearchChange = (event) => {
         const search =  event.target.value
-        if(search.length > 2){
+        if(search){
             setTimeout(getData(page, search), 100);
+        }
+        else {
+            setTimeout(getData(page, ""), 100);
         }
         setSearchData({ ...searchData, [event.target.name]: event.target.value });
     }

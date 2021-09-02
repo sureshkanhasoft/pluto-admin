@@ -102,8 +102,11 @@ const ViewTrust = ({ match }) => {
 
     const handleSearchChange = (event) => {
         const d1 = event.target.value
-        if (d1.length > 2) {
+        if (d1) {
             setTimeout(getTrustList(page, d1), 100);
+        }
+        else {
+            setTimeout(getTrustList(page, ""), 100);
         }
         setSearchData({ ...searchData, [event.target.name]: event.target.value });
 
