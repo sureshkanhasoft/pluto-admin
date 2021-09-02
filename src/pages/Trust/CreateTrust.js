@@ -6,7 +6,7 @@ import {
     Box,
     Grid, TextField,
     RadioGroup, FormControlLabel, Radio, Typography, Divider,
-    FormControl, InputLabel, Select, MenuItem
+    FormControl, InputLabel, Select, MenuItem, FormLabel
 } from '@material-ui/core';
 import { useForm } from 'react-hook-form';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
@@ -85,7 +85,7 @@ const CreateTrust = () => {
     const [trustNotify, setTrustNotify] = useState(false)
     const [wardList, setWardList] = useState([])
     const [addAnother, setAddAnother] = useState(false)
-    
+
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const [data, setData] = useState({
         name: "",
@@ -229,7 +229,7 @@ const CreateTrust = () => {
     const submitData = async (e) => {
         // e.preventDefault();
         console.log('data: ', data);
-        if(addAnother === true){
+        if (addAnother === true) {
             dispatch(createTrust(data, addAnother))
         } else {
             dispatch(createTrust(data, addAnother))
@@ -462,18 +462,20 @@ const CreateTrust = () => {
                         </Grid> */}
                         <Grid item xs={12}>
                             <Box className="mt-3">
-                                <Typography>Preferred Invoice Method</Typography>
-                                <RadioGroup
-                                    name="preference_invoice_method"
-                                    value={data?.preference_invoice_method}
-                                    // {...register('preference_invoice_method', {
-                                    //     required: "Please enter code",
-                                    // })}
-                                    // error={(errors?.preference_invoice_method)}
-                                    onChange={handleChange} className={classes.radioGroup}>
-                                    <FormControlLabel value="BYPost" control={<Radio />} label="By Post" />
-                                    <FormControlLabel value="BYEmail" control={<Radio />} label="By Email" />
-                                </RadioGroup>
+                                <FormControl required
+                                    {...register('preference_invoice_method', {
+                                        required: "Please enter code",
+                                    })}
+                                    error={(errors?.preference_invoice_method? true : false)}
+                                    component="fieldset" className={classes.formControl}>
+                                    <FormLabel component="legend">Preferred Invoice Method</FormLabel>
+                                    <RadioGroup
+                                        name="preference_invoice_method"
+                                        onChange={handleChange} className={classes.radioGroup}>
+                                        <FormControlLabel value="BYPost" control={<Radio />} label="By Post" />
+                                        <FormControlLabel value="BYEmail" control={<Radio />} label="By Email" />
+                                    </RadioGroup>
+                                </FormControl>
                             </Box>
                         </Grid>
 
@@ -772,7 +774,7 @@ const CreateTrust = () => {
                         <Button color="secondary" variant="contained" type="submit" name="btn1" formNoValidate onClick={() => setAddAnother(false)}>
                             Save & Confirm
                         </Button>
-                        <Button color="secondary" variant="contained"type="submit" name="btn2s"  formNoValidate onClick={() => setAddAnother(true)}>
+                        <Button color="secondary" variant="contained" type="submit" name="btn2s" formNoValidate onClick={() => setAddAnother(true)}>
                             Save & Add another
                         </Button>
                     </Box>
