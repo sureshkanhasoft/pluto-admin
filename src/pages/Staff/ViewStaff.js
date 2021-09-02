@@ -103,8 +103,10 @@ const ViewStaff = ({ match }) => {
 
     const handleSearchChange = (event) => {
         const d1 =  event.target.value
-        if(d1.length > 2){
+        if(d1){
             setTimeout(getStaff1(page, d1), 100);
+        }else {
+            setTimeout(getStaff1(page, ""), 100);
         }
         setSearchData({ ...searchData, [event.target.name]: event.target.value });
     }
