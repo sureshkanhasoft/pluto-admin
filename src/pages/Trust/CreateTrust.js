@@ -90,7 +90,7 @@ const CreateTrust = () => {
     const [data, setData] = useState({
         name: "",
         code: "",
-        preference_invoive_method: "",
+        preference_invoice_method: "",
         email_address: "",
         address_line_1: "",
         address_line_2: "",
@@ -464,12 +464,12 @@ const CreateTrust = () => {
                             <Box className="mt-3">
                                 <Typography>Preferred Invoice Method</Typography>
                                 <RadioGroup
-                                    name="preference_invoive_method"
-                                    value={data?.preference_invoive_method}
-                                    // {...register('preference_invoive_method', {
+                                    name="preference_invoice_method"
+                                    value={data?.preference_invoice_method}
+                                    // {...register('preference_invoice_method', {
                                     //     required: "Please enter code",
                                     // })}
-                                    // error={(errors?.preference_invoive_method)}
+                                    // error={(errors?.preference_invoice_method)}
                                     onChange={handleChange} className={classes.radioGroup}>
                                     <FormControlLabel value="BYPost" control={<Radio />} label="By Post" />
                                     <FormControlLabel value="BYEmail" control={<Radio />} label="By Email" />
