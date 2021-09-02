@@ -336,6 +336,7 @@ const CreateTrust = () => {
                                                                     error={(errors.ward_name ? true : false)}
                                                                     onChange={(e) => handleChangeWardOFHospital(index, wIndex, e)}
                                                                     fullWidth
+                                                                    required
                                                                 />
                                                             </Grid>
                                                             <Grid item xs={12} sm={4}>
@@ -373,6 +374,7 @@ const CreateTrust = () => {
                                                                     error={(errors.ward_number ? true : false)}
                                                                     onChange={(e) => handleChangeWardOFHospital(index, wIndex, e)}
                                                                     fullWidth
+                                                                    required
                                                                 />
                                                             </Grid>
                                                             {/* <CloseIcon className={classes.removeWard} onClick={() => removeWard(index, wIndex)} /> */}
@@ -466,7 +468,7 @@ const CreateTrust = () => {
                                     {...register('preference_invoice_method', {
                                         required: "Please enter code",
                                     })}
-                                    error={(errors?.preference_invoice_method? true : false)}
+                                    error={(errors?.preference_invoice_method ? true : false)}
                                     component="fieldset" className={classes.formControl}>
                                     <FormLabel component="legend">Preferred Invoice Method</FormLabel>
                                     <RadioGroup
@@ -646,6 +648,7 @@ const CreateTrust = () => {
                                             error={(errors.training_name ? true : false)}
                                             onChange={(e) => handleChangeHospital(index, e, 'training')}
                                             fullWidth
+                                            required
                                         />
                                     </Grid>
                                 )
