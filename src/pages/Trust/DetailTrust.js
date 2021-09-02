@@ -194,7 +194,7 @@ const DetailTrust = ({ match }) => {
 
                     <Grid item xs={12} className={classes.gridItem}>
                         <Typography variant="body2" className={classes.heading}>Preferred Invoice Method</Typography>
-                        <Typography variant="h6" className={classes.desc}>{trustItems.preference_invoive_method}</Typography>
+                        <Typography variant="h6" className={classes.desc}>{trustItems.preference_invoice_method}</Typography>
                     </Grid>
 
 
