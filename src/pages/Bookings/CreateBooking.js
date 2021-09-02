@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createBooking } from '../../store/action';
 import { useForm } from 'react-hook-form';
 import Notification from '../../components/Notification/Notification';
+import history from '../../utils/HistoryUtils';
 
 const useStyle = makeStyles((theme) => ({
     root: {
@@ -246,6 +247,9 @@ const CreateBooking = () => {
         }
         setTrustNotify(true)
         reset();
+    }
+    const backPage = () => {
+        history.goBack()
     }
 
     return (
@@ -508,7 +512,7 @@ const CreateBooking = () => {
                     </Grid>
 
                     <Box className={classes.footerBtn}>
-                        <Button color="primary">
+                        <Button color="primary" onClick={backPage}>
                             Cancel
                         </Button>
                         <Button color="secondary" variant="contained" type="submit" formNoValidate onClick={() => setAddAnother(false)}>
