@@ -14,7 +14,7 @@ import { updateTrust } from '../../store/action';
 import Notification from '../../components/Notification/Notification';
 import axios from 'axios';
 import apiConfigs from '../../config/config';
-// import CloseIcon from '@material-ui/icons/Close';
+import CloseIcon from '@material-ui/icons/Close';
 import history from '../../utils/HistoryUtils';
 
 const useStyle = makeStyles((theme) => ({
@@ -72,7 +72,7 @@ const useStyle = makeStyles((theme) => ({
         position: "absolute",
         top: "50%",
         transform: "translateY(-50%)",
-        right: "-24px",
+        right: "20px",
         cursor: "pointer"
     }
 }))
@@ -155,6 +155,13 @@ const UpdateTrust = ({ match }) => {
         setData(trainingData)
     }
 
+    const removeTraining = (index) => {
+        const trainingData = JSON.parse(JSON.stringify(data));
+        trainingData.training.splice(index, 1)
+        setData(trainingData)
+    }
+
+
     const addHospital = (e, index) => {
         const hos = JSON.parse(JSON.stringify(data));
         hos.hospital.push(
@@ -184,6 +191,14 @@ const UpdateTrust = ({ match }) => {
         setData(wards1);
     }
 
+    const removeWards = (index, wIndex) => {
+        // console.log('wIndex: ', wIndex);
+        // console.log('index: ', index);
+        const wards1 = JSON.parse(JSON.stringify(data));
+        wards1.hospital[index].ward.splice(wIndex, 1)
+        setData(wards1)
+    }
+
     const getSingleTrust = async () => {
         const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, '');
         // setLoading(true)
@@ -193,7 +208,7 @@ const UpdateTrust = ({ match }) => {
                 'Authorization': `Bearer ${loggedInUser}`
             }
         }).then(response => {
-            console.log('response: ', response.data.data);
+            // console.log('response: ', response.data.data);
             setData(response.data.data)
             // setLoading(false)
         }).catch(error => {
@@ -226,9 +241,22 @@ const UpdateTrust = ({ match }) => {
         getWardType()
     }, [])
 
+    // const validation = () => {
+    //     data.training.map(item => {
+    //         console.log('item1111: ', item);
+    //         if(item.training_name === ""){
+    //             console.log('sdfsdf')
+    //             setEr(true)
+    //         } else {
+    //             setEr(false)
+    //         }
+    //     })
+    // }
+
     const submitData = async (e) => {
         e.preventDefault();
-        console.log('data: ', data);
+        // console.log('data: ', data);
+        // validation();
         dispatch(updateTrust(data))
         setTrustNotify(true)
         // reset();
@@ -316,7 +344,7 @@ const UpdateTrust = ({ match }) => {
                                             </Grid>
                                             {
                                                 item.ward.map((wardsField, wIndex) => {
-                                                    console.log('wardsField: ', wardsField);
+                                                    // console.log('wardsField: ', wardsField);
                                                     return (
                                                         <Grid container spacing={2} key={wIndex} className={classes.wardBox}>
                                                             <Grid item xs={12} sm={6}>
@@ -328,6 +356,7 @@ const UpdateTrust = ({ match }) => {
                                                                     value={wardsField?.ward_name || ""}
                                                                     onChange={(e) => handleChangeWardOFHospital(index, wIndex, e)}
                                                                     fullWidth
+                                                                    required
                                                                 />
                                                             </Grid>
                                                             <Grid item xs={12} sm={4}>
@@ -361,8 +390,10 @@ const UpdateTrust = ({ match }) => {
                                                                     value={wardsField?.ward_number || ""}
                                                                     onChange={(e) => handleChangeWardOFHospital(index, wIndex, e)}
                                                                     fullWidth
+                                                                    required
                                                                 />
                                                             </Grid>
+                                                            <CloseIcon className={classes.removeWard} onClick={() => removeWards(index, wIndex)} />
                                                         </Grid>
                                                     )
                                                 })
@@ -547,8 +578,10 @@ const UpdateTrust = ({ match }) => {
 
                         {
                             data?.training && data?.training.map((item, index) => {
+                                // console.log('item: ', item);
                                 return (
-                                    <Grid item xs={12} sm={6} key={index}>
+                                    <>
+                                    <Grid item xs={12} sm={6} key={index} style={{position:"relative"}}>
                                         <TextField
                                             id="training_name"
                                             label="Training example type"
@@ -561,8 +594,11 @@ const UpdateTrust = ({ match }) => {
                                             }
                                             onChange={(e) => handleChangeHospital(index, e, 'training')}
                                             fullWidth
+                                            required
                                         />
+                                         <CloseIcon className={classes.removeWard} onClick={() => removeTraining(index)} />
                                     </Grid>
+                                         </>
                                 )
                             })
                         }
