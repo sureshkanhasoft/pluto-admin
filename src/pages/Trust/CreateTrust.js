@@ -375,6 +375,7 @@ const CreateTrust = () => {
                                                                     label="Ward Number"
                                                                     variant="outlined"
                                                                     name="ward_number"
+                                                                    type="number"
                                                                     value={wardsField?.ward_number}
                                                                     {...register('ward_number', {
                                                                         required: "Please enter ward number",
@@ -448,6 +449,10 @@ const CreateTrust = () => {
                                 // value={data?.email_address}
                                 {...register('email_address', {
                                     required: "Please enter code",
+                                    pattern: {
+                                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                                        message: "Enter a valid e-mail address",
+                                    },
                                 })}
                                 error={(errors.email_address ? true : false)}
                                 onChange={handleChange}
@@ -558,6 +563,10 @@ const CreateTrust = () => {
                                 // value={data.portal_email}
                                 {...register('portal_email', {
                                     required: "Please enter portal email",
+                                    pattern: {
+                                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                                        message: "Enter a valid e-mail address",
+                                    },
                                 })}
                                 error={(errors.portal_email ? true : false)}
                                 onChange={handleChange}
@@ -687,6 +696,10 @@ const CreateTrust = () => {
                                 value={data.contact_email_address}
                                 {...register('contact_email_address', {
                                     required: "Please enter contact email address",
+                                    pattern: {
+                                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                                        message: "Enter a valid e-mail address",
+                                    },
                                 })}
                                 error={(errors.contact_email_address ? true : false)}
                                 onChange={handleChange}
@@ -700,6 +713,7 @@ const CreateTrust = () => {
                                 label="Contact Number"
                                 variant="outlined"
                                 name="phone_number"
+                                type="number"
                                 value={data.phone_number}
                                 {...register('phone_number', {
                                     required: "Please enter phone number",
