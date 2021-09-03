@@ -194,7 +194,7 @@ const ViewBooking = ({ match }) => {
                         {
                             bookingItem?.data?.data && bookingItem?.data?.data.map((row, index) => (
                                 <TableRow key={index}>
-                                    <TableCell scope="row">{row.id}</TableCell>
+                                    <TableCell scope="row">{index + 1}</TableCell>
                                     <TableCell align="left">{row.name}</TableCell>
                                     <TableCell align="left">{row.ward_name}</TableCell>
                                     <TableCell align="left">{row.grade_name}</TableCell>

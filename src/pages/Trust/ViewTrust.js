@@ -160,7 +160,7 @@ const ViewTrust = ({ match }) => {
                             getTrustItem?.data?.data && getTrustItem?.data?.data.map((list, index) => {
                                 return (
                                     <TableRow key={index} >
-                                        <TableCell scope="row">{list.id}</TableCell>
+                                        <TableCell scope="row">{index + 1}</TableCell>
                                         <TableCell align="left">{list.name}</TableCell>
                                         <TableCell align="right">
                                             <Link to="#" className="btn btn-secondary" onClick={e => onhandlClick(list.id)}>View</Link>

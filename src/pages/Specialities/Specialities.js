@@ -219,7 +219,7 @@ const Specialities = () => {
                             getSpecialityItem?.data && getSpecialityItem?.data.map((row, index) => {
                                 return (
                                     <TableRow key={index} >
-                                        <TableCell scope="row">{row.id}</TableCell>
+                                        <TableCell scope="row">{index + 1}</TableCell>
                                         <TableCell align="left">{row.speciality_name}</TableCell>
                                         <TableCell align="right">
                                             <Box display="flex" alignItems="center" justifyContent="flex-end">
