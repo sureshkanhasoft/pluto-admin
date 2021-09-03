@@ -113,6 +113,9 @@ export const updateStaff = (data) => {
             const data = response.data
             if (data && data.status === true) {
                 dispatch(updateStaffSuccess(data))
+                setTimeout(() => {
+                    history.goBack();
+                }, 2000);
             } else {
                 dispatch(updateStaffFailure(data))
             }
