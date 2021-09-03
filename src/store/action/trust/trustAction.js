@@ -24,6 +24,7 @@ export const getTrust = ({pageNo=1, search = ''}) => {
             if (dataItem.status === true) {
                 dispatch(getTrustSuccess(dataItem))
             } else {
+                dispatch(getTrustSuccess(''))
                 dispatch(getTrustError(dataItem))
             }
         }).catch(error => {

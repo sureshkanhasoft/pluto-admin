@@ -236,7 +236,7 @@ const CreateTrust = () => {
             dispatch(createTrust(data, addAnother))
         }
         setTrustNotify(true)
-        reset();
+        // reset();
     }
     const backPage = () => {
         history.goBack()
@@ -405,74 +405,21 @@ const CreateTrust = () => {
                                 )
                             })
                         }
-                        <Grid item xs={12}>
-                            <Button onClick={() => addHospital()} color="secondary">
-                                <AddCircleOutlineIcon className="mr-3" />
-                                <Typography >Add Hospital</Typography>
-                            </Button>
-                        </Grid>
-                        {/* {
-                            data.ward.map((item, index) => {
-                                return (
-                                    <Fragment key={index}>
-                                        <Grid container spacing={2}>
-                                            <Grid item xs={12} sm={6}>
-                                                <TextField
-                                                    id="ward_name"
-                                                    label="Ward Name"
-                                                    variant="outlined"
-                                                    name="ward_name"
-                                                    value={item?.ward_name}
-                                                    onChange={(e) => handleChangeHospital(index, e, 'ward')}
-                                                    fullWidth
-                                                />
-                                            </Grid>
-                                            <Grid item xs={12} sm={4}>
-                                                <FormControl variant="outlined" className={classes.formControl}>
-                                                    <InputLabel>Ward Type</InputLabel>
-                                                    <Select
-                                                        label="Trust Name"
-                                                        name="ward_type"
-                                                        value={item?.ward_type}
-                                                        onChange={(e) => handleChangeHospital(index, e, 'ward')}
-
-                                                    >
-                                                        <MenuItem value="">
-                                                            Select Type
-                                                        </MenuItem>
-                                                        {
-                                                            wardList?.data && wardList?.data.map((list, index) => {
-                                                                return (
-                                                                    <MenuItem key={index} value={list.ward_type_id}>{list.ward_type}</MenuItem>
-                                                                )
-                                                            })
-                                                        }
-                                                    </Select>
-                                                </FormControl>
-                                            </Grid>
-                                            <Grid item xs={12} sm={2}>
-                                                <TextField
-                                                    id="ward_number"
-                                                    label="Ward Number"
-                                                    variant="outlined"
-                                                    name="ward_number"
-                                                    value={item?.ward_number}
-                                                    onChange={(e) => handleChangeHospital(index, e, 'ward')}
-
-                                                    fullWidth
-                                                />
-                                            </Grid>
-                                        </Grid>
-                                    </Fragment>
-                                )
-                            })
+                        {
+                            data.hospital[0].hospital_name !== "" && 
+                            data.hospital[0].ward[0].ward_name !=="" && data.hospital[0].ward[0].ward_type_id !=="" && data.hospital[0].ward[0].ward_number !==""
+                            ? 
+                            
+                            <Grid item xs={12}>
+                                <Button onClick={() => addHospital()} color="secondary">
+                                    <AddCircleOutlineIcon className="mr-3" />
+                                    <Typography >Add Hospital</Typography>
+                                </Button>
+                            </Grid>
+                            :''
                         }
-                        <Grid item xs={12}>
-                            <Button onClick={() => addWard1()} color="secondary">
-                                <AddCircleOutlineIcon className="mr-3" />
-                                <Typography >Add ward</Typography>
-                            </Button>
-                        </Grid> */}
+                       
+                        
                         <Grid item xs={12}>
                             <Box className="mt-3">
                                 <FormControl required
