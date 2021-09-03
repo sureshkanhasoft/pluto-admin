@@ -104,7 +104,7 @@ export const updateStaff = (data) => {
     const loggedInUser = localStorage.getItem('token').replace(/['"]+/g, '');
     return async (dispatch) => {
         dispatch(updateStaffRequest())
-        await axios.post(`${Config.API_URL}api/organization/user/edit-user`, data1, {
+        await axios.put(`${Config.API_URL}api/organization/user/edit-user`, data1, {
             'headers': {
                 'Content-type': 'application/json',
                 'Authorization': 'Bearer ' + loggedInUser
