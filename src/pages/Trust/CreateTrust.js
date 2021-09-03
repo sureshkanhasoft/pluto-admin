@@ -71,9 +71,14 @@ const useStyle = makeStyles((theme) => ({
     },
     removeWard: {
         position: "absolute",
-        top: "50%",
-        transform: "translateY(-50%)",
-        right: "-24px",
+        top: 24,
+        right: "-14px",
+        cursor: "pointer"
+    },
+    removeTraining: {
+        position: "absolute",
+        top: 24,
+        right: "20px",
         cursor: "pointer"
     }
 }))
@@ -158,6 +163,14 @@ const CreateTrust = () => {
         setData(trainingData)
     }
 
+    const removeTraining = (index) => {
+        const trainingData = JSON.parse(JSON.stringify(data));
+        if (trainingData.training.length > 1) {
+            trainingData.training.splice(index, 1)
+            setData(trainingData)
+        }
+    }
+
     const addHospital = (e, index) => {
         const hos = JSON.parse(JSON.stringify(data));
         hos.hospital.push(
@@ -187,24 +200,12 @@ const CreateTrust = () => {
         setData(wards1);
     }
 
-    const addWard1 = () => {
-        const hos = JSON.parse(JSON.stringify(data));
-        hos.ward.push(
-            {
-                ward_name: "",
-                ward_type_id: "",
-                ward_number: ""
-            }
-        )
-        setData(hos);
-    }
-
-    const removeWard = (index, wIndex) => {
+    const removeWards = (index, wIndex) => {
         const wards1 = JSON.parse(JSON.stringify(data));
-        // wards1.hospital[index].ward[wIndex].filter(item => item.)
-        const items = wards1.hospital[index].ward.filter(item => item.id !== wIndex);
-
-
+        if(wards1.hospital[index].ward.length > 1){
+            wards1.hospital[index].ward.splice(wIndex, 1)
+            setData(wards1)
+        }
     }
 
 
@@ -237,10 +238,6 @@ const CreateTrust = () => {
         setTrustNotify(true)
         reset();
     }
-
-    // useEffect(() => {
-    //     console.log(data);
-    // }, [data])
     const backPage = () => {
         history.goBack()
     }
@@ -261,7 +258,6 @@ const CreateTrust = () => {
                 />
             } */}
             <Paper className={classes.root}>
-                {/* <form onSubmit={(e) => submitData(e)}> */}
                 <form onSubmit={handleSubmit(submitData)}>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
@@ -323,7 +319,7 @@ const CreateTrust = () => {
                                                 item.ward.map((wardsField, wIndex) => {
                                                     return (
                                                         <Grid container spacing={2} key={wIndex} className={classes.wardBox}>
-                                                            <Grid item xs={12} sm={6}>
+                                                            <Grid item xs={12} sm={5}>
                                                                 <TextField
                                                                     id="ward_name"
                                                                     label="Ward Name"
@@ -340,7 +336,12 @@ const CreateTrust = () => {
                                                                 />
                                                             </Grid>
                                                             <Grid item xs={12} sm={4}>
-                                                                <FormControl variant="outlined" className={classes.formControl}>
+                                                                <FormControl variant="outlined" required className={classes.formControl}
+                                                                {...register('ward_type_id', {
+                                                                    required: "Please enter ward type",
+                                                                })}
+                                                                    error={(errors.ward_type_id ? true : false)}
+                                                                >
                                                                     <InputLabel>Ward Type</InputLabel>
                                                                     <Select
                                                                         label="Trust Name"
@@ -361,7 +362,7 @@ const CreateTrust = () => {
                                                                     </Select>
                                                                 </FormControl>
                                                             </Grid>
-                                                            <Grid item xs={12} sm={2}>
+                                                            <Grid item xs={12} sm={3}>
                                                                 <TextField
                                                                     id="ward_number"
                                                                     label="Ward Number"
@@ -377,7 +378,7 @@ const CreateTrust = () => {
                                                                     required
                                                                 />
                                                             </Grid>
-                                                            {/* <CloseIcon className={classes.removeWard} onClick={() => removeWard(index, wIndex)} /> */}
+                                                            <CloseIcon className={classes.removeWard} onClick={() => removeWards(index, wIndex)} />
                                                         </Grid>
                                                     )
                                                 })
@@ -635,7 +636,7 @@ const CreateTrust = () => {
                         {
                             data.training.map((item, index) => {
                                 return (
-                                    <Grid item xs={12} sm={6} key={index}>
+                                    <Grid item xs={12} sm={6} key={index} style={{position:"relative"}}>
                                         <TextField
                                             id="training_name"
                                             label="Training example type"
@@ -650,6 +651,7 @@ const CreateTrust = () => {
                                             fullWidth
                                             required
                                         />
+                                        <CloseIcon className={classes.removeTraining} onClick={() => removeTraining(index)} />
                                     </Grid>
                                 )
                             })

@@ -6,7 +6,7 @@ import {
     Box,
     Grid, TextField,
     RadioGroup, FormControlLabel, Radio, Typography, Divider,
-    FormControl, InputLabel, Select, MenuItem
+    FormControl, InputLabel, Select, MenuItem, FormHelperText
 } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import { useDispatch, useSelector } from 'react-redux';
@@ -70,8 +70,13 @@ const useStyle = makeStyles((theme) => ({
     },
     removeWard: {
         position: "absolute",
-        top: "50%",
-        transform: "translateY(-50%)",
+        top: 24,
+        right: "-14px",
+        cursor: "pointer"
+    },
+    removeTraining: {
+        position: "absolute",
+        top: 24,
         right: "20px",
         cursor: "pointer"
     }
@@ -157,8 +162,10 @@ const UpdateTrust = ({ match }) => {
 
     const removeTraining = (index) => {
         const trainingData = JSON.parse(JSON.stringify(data));
-        trainingData.training.splice(index, 1)
-        setData(trainingData)
+        if (trainingData.training.length > 1) {
+            trainingData.training.splice(index, 1)
+            setData(trainingData)
+        }
     }
 
 
@@ -192,11 +199,11 @@ const UpdateTrust = ({ match }) => {
     }
 
     const removeWards = (index, wIndex) => {
-        // console.log('wIndex: ', wIndex);
-        // console.log('index: ', index);
         const wards1 = JSON.parse(JSON.stringify(data));
-        wards1.hospital[index].ward.splice(wIndex, 1)
-        setData(wards1)
+        if(wards1.hospital[index].ward.length > 1){
+            wards1.hospital[index].ward.splice(wIndex, 1)
+            setData(wards1)
+        }
     }
 
     const getSingleTrust = async () => {
@@ -208,7 +215,6 @@ const UpdateTrust = ({ match }) => {
                 'Authorization': `Bearer ${loggedInUser}`
             }
         }).then(response => {
-            // console.log('response: ', response.data.data);
             setData(response.data.data)
             // setLoading(false)
         }).catch(error => {
@@ -282,7 +288,6 @@ const UpdateTrust = ({ match }) => {
                 />
             } */}
             <Paper className={classes.root}>
-                {/* <form onSubmit={(e) => submitData(e)}> */}
                 <form onSubmit={submitData}>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
@@ -332,9 +337,11 @@ const UpdateTrust = ({ match }) => {
                                                     variant="outlined"
                                                     name="hospital_name"
                                                     value={item?.hospital_name || ""}
-                                                    helperText={updateTrustError.message?.hospital_name}
+                                                    helperText={
+                                                        updateTrustError?.message ? (updateTrustError?.message[`hospital.${index}.hospital_name`] ? "The hospital name field is required." :false) : false
+                                                    }
                                                     error={
-                                                        !!updateTrustError.message?.hospital_name
+                                                        updateTrustError?.message ? (updateTrustError?.message[`hospital.${index}.hospital_name`] ? true :false) : false
                                                     }
                                                     onChange={(e) => handleChangeHospital(index, e, 'hospital')}
 
@@ -347,20 +354,31 @@ const UpdateTrust = ({ match }) => {
                                                     // console.log('wardsField: ', wardsField);
                                                     return (
                                                         <Grid container spacing={2} key={wIndex} className={classes.wardBox}>
-                                                            <Grid item xs={12} sm={6}>
+                                                            <Grid item xs={12} sm={5}>
                                                                 <TextField
                                                                     id="ward_name"
                                                                     label="Ward Name"
                                                                     variant="outlined"
                                                                     name="ward_name"
                                                                     value={wardsField?.ward_name || ""}
+                                                                    helperText={updateTrustError.message?.hospital_name}
+                                                                    helperText={
+                                                                        updateTrustError?.message ? (updateTrustError?.message[`hospital.${index}.ward.${wIndex}.ward_name`] ? "The ward number field is required." :false) : false
+                                                                    }
+                                                                    error={
+                                                                        updateTrustError?.message ? (updateTrustError?.message[`hospital.${index}.ward.${wIndex}.ward_name`] ? true :false) : false
+                                                                    }
                                                                     onChange={(e) => handleChangeWardOFHospital(index, wIndex, e)}
                                                                     fullWidth
                                                                     required
                                                                 />
                                                             </Grid>
                                                             <Grid item xs={12} sm={4}>
-                                                                <FormControl variant="outlined" className={classes.formControl}>
+                                                                <FormControl variant="outlined" required className={classes.formControl}
+                                                                    error={
+                                                                        updateTrustError?.message ? (updateTrustError?.message[`hospital.${index}.ward.${wIndex}.ward_type_id`] ? true :false) : false
+                                                                    }
+                                                                >
                                                                     <InputLabel>Ward Type</InputLabel>
                                                                     <Select
                                                                         label="Trust Name"
@@ -379,15 +397,22 @@ const UpdateTrust = ({ match }) => {
                                                                             })
                                                                         }
                                                                     </Select>
+                                                                    <FormHelperText>{updateTrustError?.message ? (updateTrustError?.message[`hospital.${index}.ward.${wIndex}.ward_type_id`] ? "The ward type field is required." :false) : false}</FormHelperText>
                                                                 </FormControl>
                                                             </Grid>
-                                                            <Grid item xs={12} sm={2}>
+                                                            <Grid item xs={12} sm={3}>
                                                                 <TextField
                                                                     id="ward_number"
                                                                     label="Ward Number"
                                                                     variant="outlined"
                                                                     name="ward_number"
                                                                     value={wardsField?.ward_number || ""}
+                                                                    helperText={
+                                                                        updateTrustError?.message ? (updateTrustError?.message[`hospital.${index}.ward.${wIndex}.ward_number`] ? "The ward number field is required." :false) : false
+                                                                    }
+                                                                    error={
+                                                                        updateTrustError?.message ? (updateTrustError?.message[`hospital.${index}.ward.${wIndex}.ward_number`] ? true :false) : false
+                                                                    }
                                                                     onChange={(e) => handleChangeWardOFHospital(index, wIndex, e)}
                                                                     fullWidth
                                                                     required
@@ -580,7 +605,6 @@ const UpdateTrust = ({ match }) => {
                             data?.training && data?.training.map((item, index) => {
                                 // console.log('item: ', item);
                                 return (
-                                    <>
                                     <Grid item xs={12} sm={6} key={index} style={{position:"relative"}}>
                                         <TextField
                                             id="training_name"
@@ -588,17 +612,16 @@ const UpdateTrust = ({ match }) => {
                                             variant="outlined"
                                             name="training_name"
                                             value={item?.training_name || ""}
-                                            helperText={updateTrustError.message?.training_name}
+                                            helperText={updateTrustError?.message ? (updateTrustError?.message[`training.${index}.training_name`] ? "The training field is required." :false) : false}
                                             error={
-                                                !!updateTrustError.message?.training_name
+                                                updateTrustError?.message ? (updateTrustError?.message[`training.${index}.training_name`] ? true :false) : false
                                             }
                                             onChange={(e) => handleChangeHospital(index, e, 'training')}
                                             fullWidth
                                             required
                                         />
-                                         <CloseIcon className={classes.removeWard} onClick={() => removeTraining(index)} />
+                                         <CloseIcon className={classes.removeTraining} onClick={() => removeTraining(index)} />
                                     </Grid>
-                                         </>
                                 )
                             })
                         }

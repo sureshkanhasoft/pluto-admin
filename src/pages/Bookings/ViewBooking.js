@@ -174,8 +174,8 @@ const ViewBooking = ({ match }) => {
                 </Box>
                 <Box className={classes.statusButton}>
                     <NavLink to="/" className="btn active">Created</NavLink>
-                    <NavLink to="/admin/bookings/1" className="btn">Confirmed</NavLink>
-                    <NavLink to="/admin/bookings/1" className="btn">Cancel</NavLink>
+                    {/* <NavLink to="/admin/bookings/1" className="btn">Confirmed</NavLink>
+                    <NavLink to="/admin/bookings/1" className="btn">Cancel</NavLink> */}
                 </Box>
                 <Table className={classes.table}>
                     <TableHead>
