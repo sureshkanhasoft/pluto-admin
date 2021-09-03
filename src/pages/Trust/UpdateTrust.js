@@ -71,7 +71,7 @@ const useStyle = makeStyles((theme) => ({
     removeWard: {
         position: "absolute",
         top: 24,
-        right: "-14px",
+        right: 24,
         cursor: "pointer"
     },
     removeTraining: {
@@ -354,7 +354,7 @@ const UpdateTrust = ({ match }) => {
                                                     // console.log('wardsField: ', wardsField);
                                                     return (
                                                         <Grid container spacing={2} key={wIndex} className={classes.wardBox}>
-                                                            <Grid item xs={12} sm={5}>
+                                                            <Grid item xs={12} sm={4}>
                                                                 <TextField
                                                                     id="ward_name"
                                                                     label="Ward Name"
@@ -418,7 +418,7 @@ const UpdateTrust = ({ match }) => {
                                                                     required
                                                                 />
                                                             </Grid>
-                                                            <CloseIcon className={classes.removeWard} onClick={() => removeWards(index, wIndex)} />
+                                                            {wIndex !== 0 ? <CloseIcon className={classes.removeWard} onClick={() => removeWards(index, wIndex)} /> :""}
                                                         </Grid>
                                                     )
                                                 })
@@ -620,7 +620,7 @@ const UpdateTrust = ({ match }) => {
                                             fullWidth
                                             required
                                         />
-                                         <CloseIcon className={classes.removeTraining} onClick={() => removeTraining(index)} />
+                                        {index !== 0 ?<CloseIcon className={classes.removeTraining} onClick={() => removeTraining(index)} /> :""   }
                                     </Grid>
                                 )
                             })

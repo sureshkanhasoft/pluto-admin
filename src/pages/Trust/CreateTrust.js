@@ -72,7 +72,7 @@ const useStyle = makeStyles((theme) => ({
     removeWard: {
         position: "absolute",
         top: 24,
-        right: "-14px",
+        right: 24,
         cursor: "pointer"
     },
     removeTraining: {
@@ -308,7 +308,10 @@ const CreateTrust = () => {
                                                     {...register('hospital_name', {
                                                         required: "Please enter code",
                                                     })}
-                                                    error={(errors.hospital_name ? true : false)}
+                                                    error={
+                                                        (errors.hospital_name ? true : (createTrustError && createTrustError?.message) ? (createTrustError && createTrustError?.message[`hospital.${index}.hospital_name`] ? true :false) : false)
+                                                        
+                                                    }
                                                     onChange={(e) => handleChangeHospital(index, e, 'hospital')}
 
                                                     fullWidth
@@ -319,7 +322,7 @@ const CreateTrust = () => {
                                                 item.ward.map((wardsField, wIndex) => {
                                                     return (
                                                         <Grid container spacing={2} key={wIndex} className={classes.wardBox}>
-                                                            <Grid item xs={12} sm={5}>
+                                                            <Grid item xs={12} sm={4}>
                                                                 <TextField
                                                                     id="ward_name"
                                                                     label="Ward Name"
@@ -329,7 +332,9 @@ const CreateTrust = () => {
                                                                     {...register('ward_name', {
                                                                         required: "Please enter ward name",
                                                                     })}
-                                                                    error={(errors.ward_name ? true : false)}
+                                                                    error={
+                                                                        (errors.ward_name ? true : (createTrustError && createTrustError?.message) ? (createTrustError?.message[`hospital.${index}.ward.${wIndex}.ward_name`] ? true :false) : false)
+                                                                    }
                                                                     onChange={(e) => handleChangeWardOFHospital(index, wIndex, e)}
                                                                     fullWidth
                                                                     required
@@ -340,7 +345,9 @@ const CreateTrust = () => {
                                                                 {...register('ward_type_id', {
                                                                     required: "Please enter ward type",
                                                                 })}
-                                                                    error={(errors.ward_type_id ? true : false)}
+                                                                    error={
+                                                                        (errors.ward_type_id ? true : (createTrustError && createTrustError?.message) ? (createTrustError?.message[`hospital.${index}.ward.${wIndex}.ward_type_id`] ? true :false) : false)
+                                                                    }
                                                                 >
                                                                     <InputLabel>Ward Type</InputLabel>
                                                                     <Select
@@ -372,13 +379,16 @@ const CreateTrust = () => {
                                                                     {...register('ward_number', {
                                                                         required: "Please enter ward number",
                                                                     })}
-                                                                    error={(errors.ward_number ? true : false)}
+                                                                    error={
+                                                                        (errors.ward_number ? true : (createTrustError && createTrustError?.message) ? (createTrustError?.message[`hospital.${index}.ward.${wIndex}.ward_number`] ? true :false) : false)
+                                                                    }
                                                                     onChange={(e) => handleChangeWardOFHospital(index, wIndex, e)}
                                                                     fullWidth
                                                                     required
                                                                 />
                                                             </Grid>
-                                                            <CloseIcon className={classes.removeWard} onClick={() => removeWards(index, wIndex)} />
+                                                            {wIndex !== 0 ? <CloseIcon className={classes.removeWard} onClick={() => removeWards(index, wIndex)} /> :""}
+                                                            
                                                         </Grid>
                                                     )
                                                 })
@@ -646,12 +656,15 @@ const CreateTrust = () => {
                                             {...register('training_name', {
                                                 required: "Please enter phone number",
                                             })}
-                                            error={(errors.training_name ? true : false)}
+                                            error={
+                                                (errors.training_name ? true : (createTrustError && createTrustError?.message) ? (createTrustError?.message[`training.${index}.training_name`] ? true :false) : false)
+                                            }
                                             onChange={(e) => handleChangeHospital(index, e, 'training')}
                                             fullWidth
                                             required
                                         />
-                                        <CloseIcon className={classes.removeTraining} onClick={() => removeTraining(index)} />
+                                        {index !== 0 ?<CloseIcon className={classes.removeTraining} onClick={() => removeTraining(index)} /> :""   }
+                                        
                                     </Grid>
                                 )
                             })
