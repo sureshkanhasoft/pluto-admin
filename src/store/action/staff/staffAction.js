@@ -22,6 +22,7 @@ export const getStaff = ({pageNo=1, search}) => {
             if (dataItem.status === true) {
                 dispatch(getStaffSuccess(dataItem))
             } else {
+                dispatch(getStaffSuccess(""))
                 dispatch(getStaffError(dataItem))
             }
         }).catch(error => {

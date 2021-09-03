@@ -176,7 +176,7 @@ const ViewStaff = ({ match }) => {
                         })}
 
                         {
-                            !getStaffItem?.data?.data &&
+                            !!getStaffItem?.data?.data &&
                             <TableRow>
                                 <TableCell scope="row" colSpan="6">
                                     <div className="" align="center">Sorry, staff  not available!</div>

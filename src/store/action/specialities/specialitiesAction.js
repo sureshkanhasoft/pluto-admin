@@ -24,6 +24,7 @@ export const getSpecialities = ({pageNo=1, search = ''}) => {
             if (dataItem.status === true) {
                 dispatch(getSpecialitiesSuccess(dataItem.data))
             } else {
+                dispatch(getSpecialitiesSuccess(""))
                 dispatch(getSpecialitiesError(dataItem.data))
             }
         }).catch(error => {

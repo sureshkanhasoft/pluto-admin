@@ -86,6 +86,7 @@ const ViewTrust = ({ match }) => {
     const [searchData, setSearchData] = useState({ search: "" });
 
     const { getTrustItem, loading } = useSelector(state => state.trust)
+    console.log('getTrustItem: ', getTrustItem);
 
     const getTrustList = (pageNo = 1, search = '') => {
         dispatch(getTrust({ pageNo, search }))
@@ -168,6 +169,13 @@ const ViewTrust = ({ match }) => {
                                     </TableRow>
                                 )
                             })
+                        }
+
+                        {
+                            getTrustItem?.data?.data !== "" &&
+                            <TableRow>
+                                <TableCell align="center" colSpan="3" scope=""> Sorry no record available</TableCell>
+                            </TableRow>
                         }
                     </TableBody>
                 </Table>

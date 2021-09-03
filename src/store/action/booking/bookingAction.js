@@ -20,6 +20,7 @@ export const getBooking = ({pageNo=1, search = ''}) => {
         }).then(response => {
             dispatch(getBookingSuccess(response.data))
         }).catch(error => {
+            dispatch(getBookingSuccess(""))
             dispatch(getBookingError(error))
         })
     }
