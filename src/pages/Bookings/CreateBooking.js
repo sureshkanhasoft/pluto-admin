@@ -5,7 +5,7 @@ import {
     Button,
     Box,
     Grid, TextField, Select, FormControl, MenuItem, InputLabel,
-    FormGroup, FormControlLabel, Checkbox
+    FormGroup, FormControlLabel, Checkbox, FormLabel
 } from '@material-ui/core';
 import axios from 'axios';
 import apiConfigs from '../../config/config';
@@ -284,7 +284,7 @@ const CreateBooking = () => {
                         </Grid>
 
                         <Grid item xs={12} sm={6} lg={4}>
-                            <FormControl variant="outlined" className={classes.formControl}>
+                            <FormControl variant="outlined" className={classes.formControl} required>
                                 <InputLabel>Trust Name</InputLabel>
                                 <Select
                                     value={data.trust_id}
@@ -312,7 +312,7 @@ const CreateBooking = () => {
                             </FormControl>
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
-                            <FormControl variant="outlined" className={classes.formControl}>
+                            <FormControl variant="outlined" className={classes.formControl} required>
                                 <InputLabel>Hospital Name</InputLabel>
                                 <Select
                                     value={data.hospital_id}
@@ -340,7 +340,7 @@ const CreateBooking = () => {
                             </FormControl>
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
-                            <FormControl variant="outlined" className={classes.formControl}>
+                            <FormControl variant="outlined" className={classes.formControl} required>
                                 <InputLabel>Ward Name</InputLabel>
                                 <Select
                                     value={data?.ward_id}
@@ -369,7 +369,7 @@ const CreateBooking = () => {
                         </Grid>
 
                         <Grid item xs={12} sm={6} lg={4}>
-                            <FormControl variant="outlined" className={classes.formControl}>
+                            <FormControl variant="outlined" className={classes.formControl} required>
                                 <InputLabel>Grade Required</InputLabel>
                                 <Select
                                     value={data.grade_id}
@@ -412,11 +412,12 @@ const CreateBooking = () => {
                                     shrink: true,
                                 }}
                                 fullWidth
+                                required
                             />
                         </Grid>
 
                         <Grid item xs={12} sm={6} lg={2}>
-                            <FormControl variant="outlined" className={classes.formControl}>
+                            <FormControl variant="outlined" className={classes.formControl} required>
                                 <InputLabel>Shift Time</InputLabel>
                                 <Select
                                     value={data.shift_id}
@@ -443,7 +444,7 @@ const CreateBooking = () => {
                             </FormControl>
                         </Grid>
                         <Grid item xs={12} sm={6} lg={2}>
-                            <FormControl variant="outlined" className={classes.formControl}>
+                            <FormControl variant="outlined" className={classes.formControl} required>
                                 <InputLabel>Shift Type</InputLabel>
                                 <Select
                                     value={data.shift_type_id}
@@ -488,26 +489,30 @@ const CreateBooking = () => {
 
 
                         <Grid item xs={12}>
-                            <p className="mt-6">Specialities</p>
-                            <FormGroup aria-label="position" row>
+                            <FormControl required
+                               {...register('speciality', {
+                                required: "The speciality field is required.",
+                            })}
+                            error={(errors.speciality ? true : false)}
+                                component="fieldset" className={classes.formControl}>
+                                <FormLabel component="legend">Specialities</FormLabel>
                                 <Grid container>
                                     {
-                                        speciality?.data && speciality?.data.map((items, index) => {
-                                            // console.log('items: ', items);
-                                            return (
-                                                <Grid item xs={12} sm={6} md={4} lg={3} key={items.id}>
-                                                    <FormControlLabel
-                                                        control={<Checkbox color="primary" value={items.id} checked={data.checkedG} onChange={handleChangeCheck} name="speciality" />}
-                                                        label={items.speciality_name}
-                                                    />
-                                                </Grid>
-                                            )
+                                            speciality?.data && speciality?.data.map((items, index) => {
+                                                return (
+                                                    <Grid item xs={12} sm={6} md={4} lg={3} key={items.id}>
+                                                        <FormControlLabel
+                                                            control={<Checkbox color="primary" value={items.id} checked={data.checkedG} onChange={handleChangeCheck} name="speciality" />}
+                                                            label={items.speciality_name}
+                                                        />
+                                                    </Grid>
+                                                )
 
-                                        })
-                                    }
-
+                                            })
+                                        }
                                 </Grid>
-                            </FormGroup>
+                                    {/* <FormHelperText>{updateBookingError?.message?.speciality ? "The specialities field is required." :""}</FormHelperText> */}
+                            </FormControl>
                         </Grid>
                     </Grid>
 

@@ -5,7 +5,7 @@ import {
     Button,
     Box,
     Grid, TextField, Select, FormControl, MenuItem, InputLabel,
-    FormGroup, FormControlLabel, Checkbox
+    FormGroup, FormControlLabel, Checkbox, FormHelperText, FormLabel
 } from '@material-ui/core';
 import axios from 'axios';
 import apiConfigs from '../../config/config';
@@ -48,7 +48,7 @@ const UpdateBooking = ({ match }) => {
     const [gradeList, setGradeList] = useState([])
     const [shiftTime, setShiftTime] = useState([])
     const [trustNotify, setTrustNotify] = useState(false)
-    const { updateBookingSuccess } = useSelector(state => state.booking)
+    const { updateBookingSuccess, updateBookingError } = useSelector(state => state.booking)
     const [data, setData] = useState({
         reference_id: "",
         trust_id: "",
@@ -278,7 +278,7 @@ const UpdateBooking = ({ match }) => {
                         </Grid>
 
                         <Grid item xs={12} sm={6} lg={4}>
-                            <FormControl variant="outlined" className={classes.formControl}>
+                            <FormControl variant="outlined" className={classes.formControl} required error={!!updateBookingError?.message?.trust_id}>
                                 <InputLabel>Trust Name</InputLabel>
                                 <Select
                                     value={data?.trust_id}
@@ -299,10 +299,11 @@ const UpdateBooking = ({ match }) => {
 
                                     {/* <MenuItem value="Apex Care Hospital">Apex Care Hospital</MenuItem> */}
                                 </Select>
+                                <FormHelperText>{updateBookingError?.message?.trust_id ? "The trust field is required." :""}</FormHelperText>
                             </FormControl>
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
-                            <FormControl variant="outlined" className={classes.formControl}>
+                            <FormControl variant="outlined" className={classes.formControl} required error={!!updateBookingError?.message?.hospital_id}>
                                 <InputLabel>Hospital Name</InputLabel>
                                 <Select
                                     value={data?.hospital_id ? data?.hospital_id : ""}
@@ -323,10 +324,11 @@ const UpdateBooking = ({ match }) => {
 
                                     {/* <MenuItem value="Apex Care Hospital">Apex Care Hospital</MenuItem> */}
                                 </Select>
+                                <FormHelperText>{updateBookingError?.message?.hospital_id ? "The hospital field is required." :""}</FormHelperText>
                             </FormControl>
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
-                            <FormControl variant="outlined" className={classes.formControl}>
+                            <FormControl variant="outlined" className={classes.formControl} required error={!!updateBookingError?.message?.ward_id}>
                                 <InputLabel>Ward Name</InputLabel>
                                 <Select
                                     value={data?.ward_id}
@@ -347,11 +349,12 @@ const UpdateBooking = ({ match }) => {
                                     {/* <MenuItem value="ward number one">ward number one</MenuItem>
                                 <MenuItem value="ward number two">ward number two</MenuItem> */}
                                 </Select>
+                                <FormHelperText>{updateBookingError?.message?.ward_id ? "The ward field is required." :""}</FormHelperText>
                             </FormControl>
                         </Grid>
 
                         <Grid item xs={12} sm={6} lg={4}>
-                            <FormControl variant="outlined" className={classes.formControl}>
+                            <FormControl variant="outlined" className={classes.formControl} required error={!!updateBookingError?.message?.grade_id}>
                                 <InputLabel>Grade Required</InputLabel>
                                 <Select
                                     value={data.grade_id}
@@ -370,6 +373,7 @@ const UpdateBooking = ({ match }) => {
                                         })
                                     }
                                 </Select>
+                                <FormHelperText>{updateBookingError?.message?.grade_id ? "The grade field is required." :""}</FormHelperText>
                             </FormControl>
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
@@ -387,11 +391,12 @@ const UpdateBooking = ({ match }) => {
                                     shrink: true,
                                 }}
                                 fullWidth
+                                required
                             />
                         </Grid>
 
                         <Grid item xs={12} sm={6} lg={2}>
-                            <FormControl variant="outlined" className={classes.formControl}>
+                            <FormControl variant="outlined" className={classes.formControl} required error={!!updateBookingError?.message?.shift_id}>
                                 <InputLabel>Shift Time</InputLabel>
                                 <Select
                                     value={data.shift_id}
@@ -410,10 +415,11 @@ const UpdateBooking = ({ match }) => {
                                         })
                                     }
                                 </Select>
+                                <FormHelperText>{updateBookingError?.message?.shift_id ? "The shift time field is required." :""}</FormHelperText>
                             </FormControl>
                         </Grid>
                         <Grid item xs={12} sm={6} lg={2}>
-                            <FormControl variant="outlined" className={classes.formControl}>
+                            <FormControl variant="outlined" className={classes.formControl} required error={!!updateBookingError?.message?.shift_type_id}>
                                 <InputLabel>Shift Type</InputLabel>
                                 <Select
                                     value={data.shift_type_id}
@@ -432,6 +438,7 @@ const UpdateBooking = ({ match }) => {
                                         })
                                     }
                                 </Select>
+                                <FormHelperText>{updateBookingError?.message?.shift_type_id ? "The shift type field is required." :""}</FormHelperText>
                             </FormControl>
                         </Grid>
 
@@ -448,8 +455,10 @@ const UpdateBooking = ({ match }) => {
                         </Grid>
 
                         <Grid item xs={12}>
-                            <p className="mt-6">Specialities</p>
-                            <FormGroup aria-label="position" row>
+                            <FormControl required
+                                error={updateBookingError?.message?.speciality}
+                                component="fieldset" className={classes.formControl}>
+                                <FormLabel component="legend">Specialities</FormLabel>
                                 <Grid container>
                                     {
                                         speciality?.data && speciality?.data.map((items, index) => {
@@ -462,12 +471,12 @@ const UpdateBooking = ({ match }) => {
                                                     />
                                                 </Grid>
                                             )
-
+                                            
                                         })
                                     }
-
                                 </Grid>
-                            </FormGroup>
+                                    <FormHelperText>{updateBookingError?.message?.speciality ? "The specialities field is required." :""}</FormHelperText>
+                            </FormControl>
                         </Grid>
                     </Grid>
 
