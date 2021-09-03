@@ -551,9 +551,9 @@ const UpdateTrust = ({ match }) => {
                                 variant="outlined"
                                 name="trust_portal_url"
                                 value={data?.trust_portal_url || ""}
-                                helperText={updateTrustError.message?.trust_portal_url}
+                                helperText={updateTrustError?.message ? (updateTrustError?.message[`trust_portal_url`] ? "The trust portal url format is invalid." :false) : false}
                                 error={
-                                    !!updateTrustError.message?.trust_portal_url
+                                    updateTrustError?.message ? (updateTrustError?.message[`trust_portal_url`] ? true :false) : false
                                 }
                                 onChange={handleChange}
                                 fullWidth

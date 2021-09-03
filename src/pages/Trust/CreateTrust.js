@@ -258,7 +258,7 @@ const CreateTrust = () => {
                 />
             } */}
             <Paper className={classes.root}>
-                <form onSubmit={handleSubmit(submitData)} autocomplete="off">
+                <form onSubmit={handleSubmit(submitData)} autoComplete="off">
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
                             <TextField
@@ -547,7 +547,10 @@ const CreateTrust = () => {
                                 {...register('trust_portal_url', {
                                     required: "Please enter trust portal URL",
                                 })}
-                                error={(errors.trust_portal_url ? true : false)}
+                                error={
+                                    // (errors.trust_portal_url ? true : false)
+                                    (errors.trust_portal_url ? true : (createTrustError && createTrustError?.message) ? (createTrustError?.message[`trust_portal_url`] ? true :false) : false)
+                                }
                                 onChange={handleChange}
                                 fullWidth
                                 required
@@ -559,7 +562,7 @@ const CreateTrust = () => {
                                 label="Email Address"
                                 variant="outlined"
                                 name="portal_email"
-                                autocomplete="new-password"
+                                autoComplete="new-password"
                                 // value={data.portal_email}
                                 {...register('portal_email', {
                                     required: "Please enter portal email",
@@ -581,7 +584,7 @@ const CreateTrust = () => {
                                 label="Password"
                                 variant="outlined"
                                 name="portal_password"
-                                autocomplete="new-password"
+                                autoComplete="new-password"
                                 // value={data.portal_password}
                                 {...register('portal_password', {
                                     required: "Please enter portal password",
