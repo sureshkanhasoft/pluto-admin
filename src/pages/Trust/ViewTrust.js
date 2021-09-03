@@ -172,7 +172,7 @@ const ViewTrust = ({ match }) => {
                         }
 
                         {
-                            getTrustItem?.data?.data !== "" &&
+                            typeof getTrustItem?.data?.data === 'undefined'  &&
                             <TableRow>
                                 <TableCell align="center" colSpan="3" scope=""> Sorry no record available</TableCell>
                             </TableRow>

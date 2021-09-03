@@ -85,6 +85,7 @@ const ViewStaff = ({ match }) => {
     const dispatch = useDispatch();
     const [page, setPage] = React.useState(1);
     const { loading, getStaffItem } = useSelector(state => state.staff)
+    console.log('getStaffItem: ', getStaffItem);
     const [searchData, setSearchData] = useState({ search: "" });
 
     const onhandlClick = (id) => {
@@ -176,7 +177,7 @@ const ViewStaff = ({ match }) => {
                         })}
 
                         {
-                            !!getStaffItem?.data?.data &&
+                            getStaffItem?.data?.data == '' && 
                             <TableRow>
                                 <TableCell scope="row" colSpan="6">
                                     <div className="" align="center">Sorry, staff  not available!</div>

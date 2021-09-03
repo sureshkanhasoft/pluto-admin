@@ -258,7 +258,7 @@ const CreateTrust = () => {
                 />
             } */}
             <Paper className={classes.root}>
-                <form onSubmit={handleSubmit(submitData)}>
+                <form onSubmit={handleSubmit(submitData)} autocomplete="off">
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
                             <TextField
@@ -554,6 +554,7 @@ const CreateTrust = () => {
                                 label="Email Address"
                                 variant="outlined"
                                 name="portal_email"
+                                autocomplete="new-password"
                                 // value={data.portal_email}
                                 {...register('portal_email', {
                                     required: "Please enter portal email",
@@ -571,6 +572,7 @@ const CreateTrust = () => {
                                 label="Password"
                                 variant="outlined"
                                 name="portal_password"
+                                autocomplete="new-password"
                                 // value={data.portal_password}
                                 {...register('portal_password', {
                                     required: "Please enter portal password",

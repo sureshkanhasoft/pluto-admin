@@ -363,7 +363,7 @@ const UpdateTrust = ({ match }) => {
                                                                     value={wardsField?.ward_name || ""}
                                                                     helperText={updateTrustError.message?.hospital_name}
                                                                     helperText={
-                                                                        updateTrustError?.message ? (updateTrustError?.message[`hospital.${index}.ward.${wIndex}.ward_name`] ? "The ward number field is required." :false) : false
+                                                                        updateTrustError?.message ? (updateTrustError?.message[`hospital.${index}.ward.${wIndex}.ward_name`] ? "The ward name field is required." :false) : false
                                                                     }
                                                                     error={
                                                                         updateTrustError?.message ? (updateTrustError?.message[`hospital.${index}.ward.${wIndex}.ward_name`] ? true :false) : false
