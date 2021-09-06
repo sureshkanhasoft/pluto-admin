@@ -55,3 +55,12 @@ export {
     updateBooking,
     deleteBooking
 } from './booking/bookingAction'
+
+
+export {
+    getSignee,
+    createSignee,
+    updateSignee,
+    getCandidateReferredFrom,
+    getSingleSignee
+} from './signee/signeeAction'

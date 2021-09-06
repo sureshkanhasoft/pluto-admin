@@ -11,6 +11,7 @@ import Staff from "./pages/Staff/Staff";
 import Trust from "./pages/Trust/Trust";
 import Profile from "./pages/Profile/Profile";
 import OrgProfile from "./pages/Profile/OrgProfile";
+import Signee from "./pages/Signee/Signee";
 
 const Routes = [
     {
@@ -61,7 +62,7 @@ const Routes = [
     {
         name:"Signee",
         path:"signee",
-        component:PlanManagement,
+        component:Signee,
         icon:"assignment",
         role:"admin"
     },
