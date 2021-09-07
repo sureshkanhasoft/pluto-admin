@@ -84,16 +84,17 @@ const ViewSignee = ({match}) => {
     const dispatch = useDispatch();
     const { getSigneeItem, loading } = useSelector(state => state.signee)
     const [page, setPage]= useState(1)
+    const [searchData, setSearchData] = useState({ search: "" });
 
     const handleSearchChange = (event) => {
-        // const d1 = event.target.value
-        // if (d1) {
-        //     setTimeout(getTrustList(page, d1), 100);
-        // }
-        // else {
-        //     setTimeout(getTrustList(page, ""), 100);
-        // }
-        // setSearchData({ ...searchData, [event.target.name]: event.target.value });
+        const d1 = event.target.value
+        if (d1) {
+            setTimeout(getSigneeList(page, d1), 100);
+        }
+        else {
+            setTimeout(getSigneeList(page, ""), 100);
+        }
+        setSearchData({ ...searchData, [event.target.name]: event.target.value });
 
     }
 
@@ -113,7 +114,7 @@ const ViewSignee = ({match}) => {
 
     const handleChangePage = (event, value) => {
         setPage(value);
-        setTimeout(getSignee(value), 2000);
+        setTimeout(getSigneeList(value), 2000);
     }
     return (
         <>
@@ -172,7 +173,7 @@ const ViewSignee = ({match}) => {
                             })
                         }
                         {
-                            typeof getSigneeItem === "undefined" &&
+                            getSigneeItem?.data?.data.length === 0 &&
                             <TableRow>
                                 <TableCell align="center" colSpan="6" scope=""> Sorry no record available</TableCell>
                             </TableRow>
@@ -181,7 +182,7 @@ const ViewSignee = ({match}) => {
                     </TableBody>
                 </Table>
                 <Box className="mt-5" display="flex" justifyContent="flex-end">
-                    <Pagination onChange={handleChangePage} page={page} count={getSigneeItem?.last_page} showFirstButton showLastButton />
+                    <Pagination onChange={handleChangePage} page={page} count={getSigneeItem?.data?.last_page} showFirstButton showLastButton />
                 </Box>
             </Paper>
         </>

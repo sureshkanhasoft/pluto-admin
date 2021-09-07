@@ -14,7 +14,8 @@ import EditIcon from '@material-ui/icons/Edit';
 import AlertDialog from '../../components/Alert/AlertDialog';
 import { useDispatch, useSelector } from 'react-redux';
 import history from '../../utils/HistoryUtils';
-import { getSingleSignee } from '../../store/action';
+import { deleteSignee, getSingleSignee } from '../../store/action';
+import Notification from '../../components/Notification/Notification';
 
 const useStyle = makeStyles((theme) => ({
     root: {
@@ -54,7 +55,7 @@ const DetailSignee = ({match}) => {
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [signeeNotify, setSigneeNotify] = useState(false)
 
-    const {getSingleSigneeItem, loading} = useSelector(state => state.signee)
+    const {getSingleSigneeItem, loading, deleteSigneeSuccess, deleteSigneeError} = useSelector(state => state.signee)
 
     const deleteStaffItem = (id) => {
         setDeleteOpen(true)
@@ -62,7 +63,7 @@ const DetailSignee = ({match}) => {
     }
 
     const alertResponse = (id) => {
-        // dispatch(deleteSignee(id))
+        dispatch(deleteSignee(id))
         setSigneeNotify(true)
     }
 
@@ -87,6 +88,18 @@ const DetailSignee = ({match}) => {
                     <Backdrop className={classes.backdrop} open={loading}>
                         <CircularProgress color="inherit" />
                     </Backdrop> : ""
+            }
+            {signeeNotify && deleteSigneeSuccess?.message &&
+                <Notification
+                    data={deleteSigneeSuccess?.message}
+                    status="success"
+                />
+            }
+            {signeeNotify && deleteSigneeError?.message &&
+                <Notification
+                    data={deleteSigneeError?.message}
+                    status="error"
+                />
             }
            <Paper className={`${classes.root} mb-6`}>
                 <Grid container spacing={4}>
@@ -162,7 +175,7 @@ const DetailSignee = ({match}) => {
                             <Button variant="contained" color="primary" onClick={upadateLink}>
                                 <EditIcon className="mr-2" />Edit
                             </Button>
-                            <Button variant="contained" color="secondary" onClick={(e) => deleteStaffItem(getSingleSigneeItem?.data?.user_id)}>
+                            <Button variant="contained" color="secondary" onClick={(e) => deleteStaffItem(getSingleSigneeItem?.data?.id)}>
                                 <DeleteIcon className="mr-2" />Delete
                             </Button>
                         </Box>

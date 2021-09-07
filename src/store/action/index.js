@@ -62,5 +62,6 @@ export {
     createSignee,
     updateSignee,
     getCandidateReferredFrom,
-    getSingleSignee
+    getSingleSignee,
+    deleteSignee
 } from './signee/signeeAction'

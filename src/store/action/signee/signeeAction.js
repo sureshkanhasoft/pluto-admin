@@ -3,7 +3,11 @@ import Config from "../../../config/config"
 import history from "../../../utils/HistoryUtils";
 import { 
     GET_SIGNEE_ERROR, GET_SIGNEE_REQUETS, GET_SIGNEE_SUCCESS,
-    CREATE_SIGNEE_ERROR, CREATE_SIGNEE_REQUETS, CREATE_SIGNEE_SUCCESS, GET_CANDIDATE_REFERRED_FROM_SUCCESS, UPDATE_SIGNEE_SUCCESS, UPDATE_SIGNEE_REQUETS, UPDATE_SIGNEE_ERROR, GET_SINGLE_SIGNEE_REQUETS, GET_SINGLE_SIGNEE_SUCCESS, GET_SINGLE_SIGNEE_ERROR 
+    CREATE_SIGNEE_ERROR, CREATE_SIGNEE_REQUETS, CREATE_SIGNEE_SUCCESS, 
+    GET_CANDIDATE_REFERRED_FROM_SUCCESS, 
+    UPDATE_SIGNEE_SUCCESS, UPDATE_SIGNEE_REQUETS, UPDATE_SIGNEE_ERROR, 
+    GET_SINGLE_SIGNEE_REQUETS, GET_SINGLE_SIGNEE_SUCCESS, GET_SINGLE_SIGNEE_ERROR, 
+    DELETE_SIGNEE_REQUETS, DELETE_SIGNEE_SUCCESS, DELETE_SIGNEE_ERROR 
 } from "../actiontypes";
 
 
@@ -226,5 +230,51 @@ const getCandidateReferredFromSuccess = (data) => {
     return {
         type: GET_CANDIDATE_REFERRED_FROM_SUCCESS,
         payload: data
+    }
+}
+
+
+// -------------------------------------
+
+export const deleteSignee = (role_id) => {
+    const loggedInUser = localStorage.getItem('token').replace(/['"]+/g, '');
+    return async(dispatch) =>{
+        dispatch(deleteSigneeRequest())
+        await axios.delete(`${Config.API_URL}api/organization/delete-signee/${role_id}`, {
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': `Bearer ${loggedInUser}`
+            }
+        }).then(response => {
+            const data = response.data
+            if (data.status === true) {
+                dispatch(deleteSigneeSuccess(data))
+                setTimeout(() => {
+                    history.go(-2)
+                }, 2000);
+            } else {
+                dispatch(deleteSigneeError(data))
+            }
+        }).catch(error => {
+            dispatch(deleteSigneeError(error))
+        })
+    }
+}
+
+export const deleteSigneeRequest = () => {
+    return {
+        type: DELETE_SIGNEE_REQUETS
+    }
+}
+export const deleteSigneeSuccess = (data) => {
+    return {
+        type: DELETE_SIGNEE_SUCCESS,
+        payload:data
+    }
+}
+export const deleteSigneeError = (error) => {
+    return {
+        type: DELETE_SIGNEE_ERROR,
+        payload:error
     }
 }

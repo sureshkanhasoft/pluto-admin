@@ -14,6 +14,9 @@ const initialState = {
     updateSigneeSuccess:[],
     updateSigneeError:[],
 
+    deleteSigneeSuccess:[],
+    deleteSigneeError:[],
+
     getCandidateReferrredForm:[]
 }
 
@@ -93,6 +96,26 @@ const signeeReducer = (state = initialState, action) => {
             return updateObject(state, {
                 loading: false,
                 getSingleSigneeError:action.payload
+            })
+
+
+        case actionTypes.DELETE_SIGNEE_REQUETS:
+            return updateObject(state, {
+                loading: true,
+                deleteSigneeSuccess:"",
+                deleteSigneeError:""
+            })
+
+        case actionTypes.DELETE_SIGNEE_SUCCESS:
+            return updateObject(state, {
+                loading: false,
+                deleteSigneeSuccess:action.payload
+            })
+
+        case actionTypes.DELETE_SIGNEE_ERROR:
+            return updateObject(state, {
+                loading: false,
+                deleteSigneeError:action.payload
             })
 
         case actionTypes.GET_CANDIDATE_REFERRED_FROM_SUCCESS:

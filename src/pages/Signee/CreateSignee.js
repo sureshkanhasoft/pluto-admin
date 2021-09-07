@@ -100,7 +100,7 @@ const CreateSignee = () => {
     }, [])
 
     const signeeSubmitData = () => {
-        // console.log('data', data);
+        console.log('data', data);
         dispatch(createSignee(data))
         setSigneeNotify(true)
     }
@@ -364,7 +364,7 @@ const CreateSignee = () => {
                                 label="Nmc Dmc Pin"
                                 variant="outlined"
                                 name="nmc_dmc_pin"
-                                value={data?.nmc_dmc_pin}
+                                // value={data?.nmc_dmc_pin}
                                 {...register('nmc_dmc_pin', {
                                     required: "Please enter nmc dmc pin",
                                 })}
@@ -383,7 +383,7 @@ const CreateSignee = () => {
                             >
                                 <InputLabel>Candidate Referred From</InputLabel>
                                 <Select
-                                    value={data?.candidate_referred_from}
+                                    value={data?.candidate_referred_from || ''}
                                     name="candidate_referred_from"
                                     label="Candidate Referred From"
                                     onChange={handleChange}
