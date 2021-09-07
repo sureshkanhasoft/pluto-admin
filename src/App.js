@@ -13,6 +13,7 @@ import ResetPassword from './pages/Auth/ForgottenPassword/ResetPassword';
 import history from './utils/HistoryUtils';
 import PrivateRoute from './config/PrivateRoute';
 import { useEffect } from 'react';
+import StaffUser from './layout/StaffUser';
 
 function App() {
 
@@ -43,6 +44,7 @@ function App() {
         <Route exact path="/login" component={Login} />
         <Route exact path="/forgotten-password" component={ForgottenPassword} />
         <Route exact path="/reset-password" component={ResetPassword} />
+        <PrivateRoute path="/staff" component={StaffUser} isAuthenticated={e => isAuthenticated()} />
         <PrivateRoute path="/admin" component={Admin}  isAuthenticated={e => isAuthenticated()}/>
         <PrivateRoute path="/super-admin" component={SuperAdmin} isAuthenticated={e => isAuthenticated()} />
         <Redirect from="/" to="/login" />

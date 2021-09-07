@@ -10,6 +10,7 @@ import staffReducer from "./reducer/staff/staffReducer";
 import trustReducer from "./reducer/trust/trustReducer"
 import bookingReducer from "./reducer/booking/bookingReducer"
 import signeeReducer from "./reducer/signee/signeeReducer";
+import StaffProfileReducer from "./reducer/staffProfile/StaffProfileReducer";
 
 const rootReducer = combineReducers(
     {
@@ -24,7 +25,8 @@ const rootReducer = combineReducers(
         staff: staffReducer,
         trust: trustReducer,
         booking: bookingReducer,
-        signee: signeeReducer
+        signee: signeeReducer,
+        staffProfile:StaffProfileReducer
     }
 );
 

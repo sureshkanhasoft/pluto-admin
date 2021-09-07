@@ -51,8 +51,10 @@ const Navbar = () => {
     // const loggedUser = localStorage.getItem("role").replace(/['"]+/g, '');
     if(loggedUser === "ORGANIZATION"){
       history.push('/admin/organization-profile')
-    } else {
+    } else if(loggedUser === "SUPERADMIN"){
       history.push('/super-admin/profile')
+    } else {
+      history.push('/staff/staff-profile')
     }
     handleClose()
   }

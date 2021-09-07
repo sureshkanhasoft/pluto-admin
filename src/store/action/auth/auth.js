@@ -26,7 +26,7 @@ export const login = ({ email, password }) => {
                     setTimeout(() => {
                         history.push('./super-admin')
                     }, 2000);
-                } else {
+                } else if(data.data.role === 'ORGANIZATION'){
                     if(data.data.password_change === 0){
                         setTimeout(() => {
                             history.push('./admin/change-password')
@@ -36,6 +36,10 @@ export const login = ({ email, password }) => {
                             history.push('./admin')
                         }, 2000);
                     }
+                } else {
+                    setTimeout(() => {
+                        history.push('./staff')
+                    }, 2000);
                 }
             } else {
                 dispatch(getLoginFailure(data))

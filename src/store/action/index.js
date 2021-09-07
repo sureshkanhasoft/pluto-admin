@@ -65,3 +65,11 @@ export {
     getSingleSignee,
     deleteSignee
 } from './signee/signeeAction'
+
+// -----------------------------
+
+export {
+    getStaffProfile,
+    updateStaffProfile,
+    staffChangePassword
+} from "./staffProfile/staffProfileAction"

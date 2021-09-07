@@ -12,6 +12,7 @@ import Trust from "./pages/Trust/Trust";
 import Profile from "./pages/Profile/Profile";
 import OrgProfile from "./pages/Profile/OrgProfile";
 import Signee from "./pages/Signee/Signee";
+import StaffUserProfile from "./pages/StaffUser/StaffUserProfile/StaffUserProfile";
 
 const Routes = [
     {
@@ -19,21 +20,21 @@ const Routes = [
         path:"dashboard",
         component:Dashboard,
         icon:"dashboard",
-        role:"superAdmin"
+        role:"superadmin"
     },
     {
         name:"Organizations",
         path:"organizations",
         component:Organization,
         icon:"business",
-        role:"superAdmin"
+        role:"superadmin"
     },
     {
         name:"Plan Management",
         path:"plan",
         component:PlanManagement,
         icon:"account_tree",
-        role:"superAdmin"
+        role:"superadmin"
     },
 
     {
@@ -41,7 +42,7 @@ const Routes = [
         path:"change-password",
         component:ChangePassword,
         icon:"assignment",
-        role:"admin",
+        role:"organization",
         sidebar:false
     },
 
@@ -50,7 +51,7 @@ const Routes = [
         path:"bookings",
         component:Bookings,
         icon:"bookmark",
-        role:"admin",
+        role:"organization",
         children:[
             {
                 name:"create-booking",
@@ -64,14 +65,14 @@ const Routes = [
         path:"signee",
         component:Signee,
         icon:"assignment",
-        role:"admin"
+        role:"organization"
     },
     {
         name:"Staff",
         path:"staff",
         component:Staff,
         icon:"people",
-        role:"admin",
+        role:"organization",
         children:[
             {
                 name:"Create Staff",
@@ -85,35 +86,35 @@ const Routes = [
         path:"Trust",
         component:Trust,
         icon:"shield",
-        role:"admin"
+        role:"organization"
     },
     {
         name:"Roles",
         path:"roles",
         component:Roles,
         icon:"manage_accounts",
-        role:"admin"
+        role:"organization"
     },
     {
         name:"Specialities",
         path:"specialities",
         component:Specialities,
         icon:"volunteer_activism",
-        role:"admin"
+        role:"organization"
     },
     {
         name:"Reports",
         path:"reports",
         component:PlanManagement,
         icon:"description",
-        role:"admin"
+        role:"organization"
     },
     {
         name:"Profile",
         path:"profile",
         component:Profile,
         // icon:"description",
-        role:"superAdmin",
+        role:"superadmin",
         sidebar:false
     },
     {
@@ -121,8 +122,16 @@ const Routes = [
         path:"organization-profile",
         component:OrgProfile,
         // icon:"description",
-        role:"admin",
+        role:"organization",
         sidebar:false
+    },
+    {
+        name:"Staff Profile",
+        path:"staff-profile",
+        component:StaffUserProfile,
+        icon:"people",
+        role:"staff",
+        sidebar:true
     },
 
 ]

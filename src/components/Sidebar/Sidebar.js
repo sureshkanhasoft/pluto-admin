@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     List,
     ListItem,
@@ -46,10 +46,23 @@ const useStyle = makeStyles({
 const Sidebar = (props) => {
     const { routes } = props;
     const classes = useStyle();
+    const [url, setUrl] = useState("")
     let authAdmin = localStorage.getItem('admin');
     // let authSuperAdmin = localStorage.getItem('super-admin');
      const loginUserInfo = JSON.parse(localStorage.getItem("loginUserInfo"));
      authAdmin = (loginUserInfo.role === 'SUPERADMIN') ? false : true;
+
+     const getAuthLogin = loginUserInfo.role
+     useEffect(() => {
+        if(getAuthLogin.toLowerCase() === "organization"){
+            setUrl("admin")
+         } else if(getAuthLogin.toLowerCase() === "superadmin"){
+            setUrl("super-admin")
+         } else {
+            setUrl("staff")
+         }
+     },[getAuthLogin])
+     
     return (
         <Drawer variant="permanent" classes={{ paper: classes.drawer }}>
             <Box className={classes.logoContainer}>
@@ -60,17 +73,8 @@ const Sidebar = (props) => {
 
             <List className={props.sidebarWidth}>
                 {
-                    authAdmin ? routes.filter(route => route.role === 'admin' && route.sidebar !== false).map((route, index) => (
-                        <NavLink to={`/admin/${route.path}`} key={index} className={classes.navLink} activeClassName="active">
-                            <ListItem button>
-                                <ListItemIcon className={`${classes.listItemIcon} activeIcon`}>
-                                    <Icon>{route.icon}</Icon>
-                                </ListItemIcon>
-                                <ListItemText primary={route.name} />
-                            </ListItem>
-                        </NavLink>
-                    )) : routes.filter(route => route.role === 'superAdmin' && route.sidebar !== false).map((route, index) => (
-                        <NavLink to={`/super-admin/${route.path}`} key={index} className={classes.navLink} activeClassName="active">
+                    routes.filter(route => route.role ==  getAuthLogin.toLowerCase() && route.sidebar !== false).map((route, index) => (
+                        <NavLink to={`/${url}/${route.path}`} key={index} className={classes.navLink} activeClassName="active">
                             <ListItem button>
                                 <ListItemIcon className={`${classes.listItemIcon} activeIcon`}>
                                     <Icon>{route.icon}</Icon>
