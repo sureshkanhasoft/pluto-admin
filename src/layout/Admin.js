@@ -38,7 +38,7 @@ const Admin = ({ match }) => {
                 <Navbar />
                 <div className={classes.innerMainContainer}>
                     <Switch>
-                        {routes.map((prop, key) => {
+                        {routes.filter(route => route.role ==  "organization").map((prop, key) => {
                             return (
                                 <Route
                                     path={`${match.url}/${prop.path}`}
@@ -47,7 +47,7 @@ const Admin = ({ match }) => {
                                 />
                             );
                         })}
-                        <Redirect from="/admin" to="/admin/dashboard" />
+                        <Redirect from="/admin" to="/admin/bookings" />
                     </Switch>
                 </div>
             </div>

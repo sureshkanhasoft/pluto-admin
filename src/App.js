@@ -15,8 +15,11 @@ import PrivateRoute from './config/PrivateRoute';
 import { useEffect } from 'react';
 import StaffUser from './layout/StaffUser';
 
-function App() {
 
+function App() {
+  // let url_string = window.location.href;
+  // let url = new URL(url_string);
+  // console.log('url: ', url.pathname);
   const isAuthenticated = () => {
     const token = localStorage.getItem('token');
     try {
@@ -33,8 +36,15 @@ function App() {
 
   useEffect(() => {
     const loggedInUser = localStorage.getItem("token");
-    if (loggedInUser) {
-      // history.push('/super-admin')
+    const getRole = localStorage.getItem('role') ? localStorage.getItem('role').replace(/['"]+/g, '') : "";
+    if (loggedInUser && getRole==='SUPERADMIN') {
+      history.push('/super-admin/dashboard')
+    } else if(loggedInUser && getRole==='ORGANIZATION'){
+      history.push('/admin/bookings')
+    } else if(loggedInUser && getRole==='STAFF'){
+      history.push('/staff/trust')
+    } else {
+      history.push('/login')
     }
   }, []);
 

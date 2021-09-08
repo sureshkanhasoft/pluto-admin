@@ -37,7 +37,7 @@ const SuperAdmin = ({ match }) => {
                 <Navbar />
                 <div className={classes.innerMainContainer}>
                     <Switch>
-                        {routes.map((prop, key) => {
+                        {routes.filter(route => route.role ==  "superadmin").map((prop, key) => {
                             return (
                                 <Route
                                     path={`${match.path}/${prop.path}`}

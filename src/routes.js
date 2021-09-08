@@ -52,13 +52,13 @@ const Routes = [
         component:Bookings,
         icon:"bookmark",
         role:"organization",
-        children:[
-            {
-                name:"create-booking",
-                path:"create",
-                component:CreateBooking
-            }
-        ]
+    },
+    {
+        name:"Bookings",
+        path:"bookings",
+        component:Bookings,
+        icon:"bookmark",
+        role:"staff",
     },
     {
         name:"Signee",
@@ -89,6 +89,13 @@ const Routes = [
         role:"organization"
     },
     {
+        name:"Trust",
+        path:"Trust",
+        component:Trust,
+        icon:"shield",
+        role:"staff"
+    },
+    {
         name:"Roles",
         path:"roles",
         component:Roles,
@@ -101,6 +108,13 @@ const Routes = [
         component:Specialities,
         icon:"volunteer_activism",
         role:"organization"
+    },
+    {
+        name:"Specialities",
+        path:"specialities",
+        component:Specialities,
+        icon:"volunteer_activism",
+        role:"staff"
     },
     {
         name:"Reports",
@@ -131,7 +145,7 @@ const Routes = [
         component:StaffUserProfile,
         icon:"people",
         role:"staff",
-        sidebar:true
+        sidebar:false
     },
 
 ]
