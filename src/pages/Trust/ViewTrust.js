@@ -161,7 +161,7 @@ const ViewTrust = ({ match }) => {
                             getTrustItem?.data?.data && getTrustItem?.data?.data.map((list, index) => {
                                 return (
                                     <TableRow key={index} >
-                                        <TableCell scope="row">{index + 1}</TableCell>
+                                        <TableCell scope="row">{getTrustItem?.data?.from + index}</TableCell>
                                         <TableCell align="left">{list.name}</TableCell>
                                         <TableCell align="right">
                                             <Link to="#" className="btn btn-secondary" onClick={e => onhandlClick(list.id)}>View</Link>
@@ -180,7 +180,7 @@ const ViewTrust = ({ match }) => {
                     </TableBody>
                 </Table>
                 <Box className="mt-5" display="flex" justifyContent="flex-end">
-                    <Pagination onChange={handleChangePage} page={page} count={getTrustItem?.last_page} showFirstButton showLastButton />
+                    <Pagination onChange={handleChangePage} page={page} count={getTrustItem?.data?.last_page} showFirstButton showLastButton />
                 </Box>
             </Paper>
         </>
