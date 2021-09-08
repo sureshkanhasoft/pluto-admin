@@ -1,4 +1,5 @@
 import axios from "axios"
+import { apiClient } from "../../../config/apiClient";
 import Config from "../../../config/config"
 import history from "../../../utils/HistoryUtils";
 // import history from "../../../utils/HistoryUtils";
@@ -10,16 +11,35 @@ import {
 } from "../actiontypes";
 
 
+// export const getTrust = ({pageNo=1, search = ''}) => {
+//     const loggedInUser = localStorage.getItem('token').replace(/['"]+/g, '');
+//     return async (dispatch) => {
+//         dispatch(getTrustRequest())
+//         await axios.get(`${Config.API_URL}api/organization/get-trust?search=${search}&page=${pageNo}`, {
+//             headers: {
+//                 'content-type': 'application/json',
+//                 'Authorization': `Bearer ${loggedInUser}`
+//             }
+//         }).then(response => {
+//             const dataItem = response.data
+//             if (dataItem.status === true) {
+//                 dispatch(getTrustSuccess(dataItem))
+//             } else {
+//                 dispatch(getTrustSuccess(''))
+//                 dispatch(getTrustError(dataItem))
+//             }
+//         }).catch(error => {
+//             dispatch(getTrustError(error))
+//         })
+//     }
+// }
+
+
 export const getTrust = ({pageNo=1, search = ''}) => {
-    const loggedInUser = localStorage.getItem('token').replace(/['"]+/g, '');
     return async (dispatch) => {
         dispatch(getTrustRequest())
-        await axios.get(`${Config.API_URL}api/organization/get-trust?search=${search}&page=${pageNo}`, {
-            headers: {
-                'content-type': 'application/json',
-                'Authorization': `Bearer ${loggedInUser}`
-            }
-        }).then(response => {
+        await apiClient(true).get(`api/organization/get-trust?search=${search}&page=${pageNo}`)
+       .then(response => {
             const dataItem = response.data
             if (dataItem.status === true) {
                 dispatch(getTrustSuccess(dataItem))

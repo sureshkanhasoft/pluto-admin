@@ -1,4 +1,5 @@
 import axios from "axios";
+import { apiClient } from "../../../config/apiClient";
 import Config from '../../../config/config'
 import {
     CREATE_SPECIALITIES_ERROR, CREATE_SPECIALITIES_REQUEST, CREATE_SPECIALITIES_SUCCESS,
@@ -53,16 +54,36 @@ export const getSpecialitiesError = (error) => {
 
 // -----------------------------
 
+// export const createSpecialities = (data) => {
+//     const loggedInUser = localStorage.getItem('token').replace(/['"]+/g, '');
+//     return async (dispatch) => {
+//         dispatch(createSpecialitiesRequest())
+//         await axios.post(`${Config.API_URL}api/organization/add-speciality`, data, {
+//             headers: {
+//                 'content-type': 'application/json',
+//                 'Authorization': `Bearer ${loggedInUser}`
+//             }
+//         }).then(response => {
+//             const data = response.data
+//             if (data.status === true) {
+//                 dispatch(createSpecialitiesSuccess(data))
+//                 setTimeout(() => {
+//                     dispatch(getSpecialities(1, ''))
+//                 }, 2000);
+//             } else {
+//                 dispatch(createSpecialitiesError(data))
+//             }
+//         }).catch(error => {
+//             dispatch(createSpecialitiesError(error))
+//         })
+//     }
+// }
+
 export const createSpecialities = (data) => {
-    const loggedInUser = localStorage.getItem('token').replace(/['"]+/g, '');
     return async (dispatch) => {
         dispatch(createSpecialitiesRequest())
-        await axios.post(`${Config.API_URL}api/organization/add-speciality`, data, {
-            headers: {
-                'content-type': 'application/json',
-                'Authorization': `Bearer ${loggedInUser}`
-            }
-        }).then(response => {
+        await apiClient(true).post(`api/organization/add-speciality`,data)
+        .then(response => {
             const data = response.data
             if (data.status === true) {
                 dispatch(createSpecialitiesSuccess(data))
