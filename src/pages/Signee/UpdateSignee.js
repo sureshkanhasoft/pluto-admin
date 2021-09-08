@@ -187,49 +187,59 @@ const UpdateSignee = ({match}) => {
                         </Grid> */}
                         <Grid item xs={12} sm={6}>
                             <TextField
+                                id="contact_number"
+                                label="Contact number"
+                                variant="outlined"
+                                name="contact_number"
+                                type="number"
+                                value={data?.contact_number || ''}
+                                // helperText={updateSigneeError.message?.contact_number}
+                                // error={!!updateSigneeError.message?.contact_number}
+                                onChange={handleChange}
+                                fullWidth
+                                // required
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <TextField
                                 id="date_of_birth"
                                 label="Date of birth"
                                 type="date"
                                 name="date_of_birth"
                                 variant="outlined"
                                 value={data?.date_of_birth || ''}
-                                helperText={updateSigneeError.message?.date_of_birth}
-                                error={!!updateSigneeError.message?.date_of_birth}
+                                // helperText={updateSigneeError.message?.date_of_birth}
+                                // error={!!updateSigneeError.message?.date_of_birth}
                                 onChange={handleChangeDate}
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
                                 fullWidth
-                                required
+                                // required
                             />
                         </Grid>
+
                         <Grid item xs={12} sm={6}>
                             <TextField
-                                id="mobile_number"
-                                label="Mobile number"
+                                id="date_registered"
+                                label="Date Registered"
+                                type="date"
+                                name="date_registered"
                                 variant="outlined"
-                                name="mobile_number"
-                                type="number"
-                                value={data?.mobile_number || ''}
-                                helperText={updateSigneeError.message?.mobile_number}
-                                error={!!updateSigneeError.message?.mobile_number}
+                                value={data?.date_of_birth || ''}
                                 onChange={handleChange}
-                                fullWidth
-                                required
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                id="phone_number"
-                                label="Phone number"
-                                variant="outlined"
-                                name="phone_number"
-                                type="number"
-                                value={data?.phone_number || ''}
-                                onChange={handleChange}
+                                // helperText={updateSigneeError.message?.date_of_birth}
+                                // error={!!updateSigneeError.message?.date_of_birth}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                InputProps={{
+                                    readOnly: true,
+                                }}
                                 fullWidth
                             />
                         </Grid>
+                        
                         <Grid item xs={12} sm={12}>
                             <TextField
                                 id="address_line_1"
@@ -237,11 +247,11 @@ const UpdateSignee = ({match}) => {
                                 variant="outlined"
                                 name="address_line_1"
                                 value={data?.address_line_1 || ''}
-                                helperText={updateSigneeError.message?.address_line_1}
-                                error={!!updateSigneeError.message?.address_line_1}
+                                // helperText={updateSigneeError.message?.address_line_1}
+                                // error={!!updateSigneeError.message?.address_line_1}
                                 onChange={handleChange}
                                 fullWidth
-                                required
+                                // required
                             />
                         </Grid>
                         <Grid item xs={12} sm={12}>
@@ -262,11 +272,11 @@ const UpdateSignee = ({match}) => {
                                 variant="outlined"
                                 name="city"
                                 value={data?.city || ''}
-                                helperText={updateSigneeError.message?.city}
-                                error={!!updateSigneeError.message?.city}
+                                // helperText={updateSigneeError.message?.city}
+                                // error={!!updateSigneeError.message?.city}
                                 onChange={handleChange}
                                 fullWidth
-                                required
+                                // required
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -276,11 +286,11 @@ const UpdateSignee = ({match}) => {
                                 variant="outlined"
                                 name="postcode"
                                 value={data?.postcode || ''}
-                                helperText={updateSigneeError.message?.postcode}
-                                error={!!updateSigneeError.message?.postcode}
+                                // helperText={updateSigneeError.message?.postcode}
+                                // error={!!updateSigneeError.message?.postcode}
                                 onChange={handleChange}
                                 fullWidth
-                                required
+                                // required
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -291,32 +301,13 @@ const UpdateSignee = ({match}) => {
                                 name="nationality"
                                 value={data?.nationality || ''}
                                 onChange={handleChange}
-                                helperText={updateSigneeError.message?.nationality}
-                                error={!!updateSigneeError.message?.nationality}
+                                // helperText={updateSigneeError.message?.nationality}
+                                // error={!!updateSigneeError.message?.nationality}
                                 fullWidth
-                                required
+                                // required
                             />
                         </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                id="date_registered"
-                                label="Date Registered"
-                                type="date"
-                                name="date_registered"
-                                variant="outlined"
-                                value={data?.date_of_birth || ''}
-                                onChange={handleChange}
-                                helperText={updateSigneeError.message?.date_of_birth}
-                                error={!!updateSigneeError.message?.date_of_birth}
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                                InputProps={{
-                                    readOnly: true,
-                                }}
-                                fullWidth
-                            />
-                        </Grid>
+                        
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 id="nmc_dmc_pin"
@@ -325,15 +316,16 @@ const UpdateSignee = ({match}) => {
                                 name="nmc_dmc_pin"
                                 value={data?.nmc_dmc_pin || ''}
                                 onChange={handleChange}
-                                helperText={updateSigneeError.message?.nmc_dmc_pin}
-                                error={!!updateSigneeError.message?.nmc_dmc_pin}
+                                // helperText={updateSigneeError.message?.nmc_dmc_pin}
+                                // error={!!updateSigneeError.message?.nmc_dmc_pin}
                                 fullWidth
-                                required
+                                // required
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
-                            <FormControl variant="outlined" className={classes.formControl} required 
-                             error={!!updateSigneeError.message?.candidate_referred_from}
+                            <FormControl variant="outlined" className={classes.formControl} 
+                            // required 
+                            //  error={!!updateSigneeError.message?.candidate_referred_from}
                             >
                                 <InputLabel>Candidate Referred From</InputLabel>
                                 <Select
@@ -353,7 +345,7 @@ const UpdateSignee = ({match}) => {
                                         })
                                     }
                                 </Select>
-                                <FormHelperText>{updateSigneeError.message?.candidate_referred_from ? updateSigneeError.message?.candidate_referred_from :""}</FormHelperText>
+                                {/* <FormHelperText>{updateSigneeError.message?.candidate_referred_from ? updateSigneeError.message?.candidate_referred_from :""}</FormHelperText> */}
                             </FormControl>
                         </Grid>
                     </Grid>

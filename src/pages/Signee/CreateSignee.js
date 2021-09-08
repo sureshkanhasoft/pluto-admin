@@ -49,11 +49,9 @@ const CreateSignee = () => {
     // for today date selection
 
     const [data, setData] = useState({
-        password:"",
-        mobile_number:"",
         first_name:"",
         last_name:"",
-        phone_number:"",
+        contact_number:"",
         date_of_birth:"",
         candidate_id:"",
         address_line_1:"",
@@ -136,7 +134,7 @@ const CreateSignee = () => {
                                 value={data?.candidate_id}
                                 onChange={handleChange}
                                 fullWidth
-                                required
+                                // required
                                 InputProps={{
                                     readOnly: true,
                                 }}
@@ -196,21 +194,27 @@ const CreateSignee = () => {
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField
-                                id="password"
-                                label="Password"
-                                type="password"
+                                id="contact_number"
+                                label="Contact number"
                                 variant="outlined"
-                                name="password"
-                                // value={data?.password}
-                                {...register('password', {
-                                    required: "Please enter password",
-                                })}
-                                error={(errors.password ? true : false)}
+                                name="contact_number"
+                                type="number"
+                                value={data?.contact_number}
+                                // {...register('contact_number', {
+                                //     required: "Please enter contact number",
+                                //     minLength:{
+                                //         value:10,
+                                //         message: "Number must have at least 10 digit"
+                                //     },
+                                //     pattern: /[0-9]/
+                                // })}
+                                // error={(errors.contact_number ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
-                                required
+                                // required
                             />
                         </Grid>
+                        
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 id="date_of_birth"
@@ -218,41 +222,21 @@ const CreateSignee = () => {
                                 type="date"
                                 name="date_of_birth"
                                 variant="outlined"
-                                {...register('date_of_birth', {
-                                    required: "Please enter DOB",
-                                })}
-                                error={(errors.date_of_birth ? true : false)}
+                                // {...register('date_of_birth', {
+                                //     required: "Please enter DOB",
+                                // })}
+                                // error={(errors.date_of_birth ? true : false)}
                                 onChange={handleChangeDate}
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
                                 fullWidth
-                                required
+                                // required
                             />
                         </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                id="mobile_number"
-                                label="Mobile number"
-                                variant="outlined"
-                                name="mobile_number"
-                                type="number"
-                                // value={data?.mobile_number}
-                                {...register('mobile_number', {
-                                    required: "Please enter mobile number",
-                                    minLength:{
-                                        value:10,
-                                        message: "Number must have at least 10 digit"
-                                    },
-                                    pattern: /[0-9]/
-                                })}
-                                error={(errors.mobile_number ? true : false)}
-                                onChange={handleChange}
-                                fullWidth
-                                required
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
+                        
+                        
+                        {/* <Grid item xs={12} sm={6}>
                             <TextField
                                 id="phone_number"
                                 label="Phone number"
@@ -263,21 +247,21 @@ const CreateSignee = () => {
                                 onChange={handleChange}
                                 fullWidth
                             />
-                        </Grid>
+                        </Grid> */}
                         <Grid item xs={12} sm={12}>
                             <TextField
                                 id="address_line_1"
                                 label="Address line 1"
                                 variant="outlined"
                                 name="address_line_1"
-                                // value={data?.address_line_1}
-                                {...register('address_line_1', {
-                                    required: "Please enter address",
-                                })}
-                                error={(errors.address_line_1 ? true : false)}
+                                value={data?.address_line_1}
+                                // {...register('address_line_1', {
+                                //     required: "Please enter address",
+                                // })}
+                                // error={(errors.address_line_1 ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
-                                required
+                                // required
                             />
                         </Grid>
                         <Grid item xs={12} sm={12}>
@@ -297,14 +281,14 @@ const CreateSignee = () => {
                                 label="City"
                                 variant="outlined"
                                 name="city"
-                                // value={data?.city}
-                                {...register('city', {
-                                    required: "Please enter city",
-                                })}
-                                error={(errors.city ? true : false)}
+                                value={data?.city}
+                                // {...register('city', {
+                                //     required: "Please enter city",
+                                // })}
+                                // error={(errors.city ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
-                                required
+                                // required
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -313,17 +297,17 @@ const CreateSignee = () => {
                                 label="Postcode"
                                 variant="outlined"
                                 name="postcode"
-                                // value={data?.postcode}
-                                {...register('postcode', {
-                                    required: "Please enter postcode",
-                                    minLength:{
-                                        value:5
-                                    }
-                                })}
-                                error={(errors.postcode ? true : false)}
+                                value={data?.postcode}
+                                // {...register('postcode', {
+                                //     required: "Please enter postcode",
+                                //     minLength:{
+                                //         value:5
+                                //     }
+                                // })}
+                                // error={(errors.postcode ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
-                                required
+                                // required
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -332,14 +316,14 @@ const CreateSignee = () => {
                                 label="Nationality"
                                 variant="outlined"
                                 name="nationality"
-                                // value={data?.nationality}
-                                {...register('nationality', {
-                                    required: "Please enter nationality",
-                                })}
-                                error={(errors.nationality ? true : false)}
+                                value={data?.nationality}
+                                // {...register('nationality', {
+                                //     required: "Please enter nationality",
+                                // })}
+                                // error={(errors.nationality ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
-                                required
+                                // required
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -358,28 +342,30 @@ const CreateSignee = () => {
                                 fullWidth
                             />
                         </Grid>
+                        
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 id="nmc_dmc_pin"
                                 label="Nmc Dmc Pin"
                                 variant="outlined"
                                 name="nmc_dmc_pin"
-                                // value={data?.nmc_dmc_pin}
-                                {...register('nmc_dmc_pin', {
-                                    required: "Please enter nmc dmc pin",
-                                })}
-                                error={(errors.nmc_dmc_pin ? true : false)}
+                                value={data?.nmc_dmc_pin}
+                                // {...register('nmc_dmc_pin', {
+                                //     required: "Please enter nmc dmc pin",
+                                // })}
+                                // error={(errors.nmc_dmc_pin ? true : false)}
                                 onChange={handleChange}
                                 fullWidth
-                                required
+                                // required
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
-                            <FormControl variant="outlined" className={classes.formControl} required 
-                            {...register('candidate_referred_from', {
-                                required: "Please enter candidate referred from",
-                            })}
-                            error={(errors.candidate_referred_from ? true : false)}
+                            <FormControl variant="outlined" className={classes.formControl} 
+                            // required 
+                            // {...register('candidate_referred_from', {
+                            //     required: "Please enter candidate referred from",
+                            // })}
+                            // error={(errors.candidate_referred_from ? true : false)}
                             >
                                 <InputLabel>Candidate Referred From</InputLabel>
                                 <Select

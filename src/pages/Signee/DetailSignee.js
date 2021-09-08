@@ -123,45 +123,46 @@ const DetailSignee = ({match}) => {
                         <Typography variant="body2" className={classes.heading}>Password</Typography>
                         <Typography variant="h6" className={classes.desc}>{getSingleSigneeItem?.data?.candidate_id}</Typography>
                     </Grid> */}
+                     <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
+                        <Typography variant="body2" className={classes.heading}>Contact Number</Typography>
+                        <Typography variant="h6" className={classes.desc}>{getSingleSigneeItem?.data?.contact_number? getSingleSigneeItem?.data?.contact_number : "-"}</Typography>
+                    </Grid>
                     <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
                         <Typography variant="body2" className={classes.heading}>Date of birth</Typography>
-                        <Typography variant="h6" className={classes.desc}>{getSingleSigneeItem?.data?.date_of_birth}</Typography>
+                        <Typography variant="h6" className={classes.desc}>{getSingleSigneeItem?.data?.date_of_birth ? getSingleSigneeItem?.data?.date_of_birth :"-"}</Typography>
                     </Grid>
-                    <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
-                        <Typography variant="body2" className={classes.heading}>Mobile Number</Typography>
-                        <Typography variant="h6" className={classes.desc}>{getSingleSigneeItem?.data?.mobile_number}</Typography>
-                    </Grid>
-                    <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
+                   
+                    {/* <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
                         <Typography variant="body2" className={classes.heading}>Phone Number</Typography>
                         <Typography variant="h6" className={classes.desc}>{getSingleSigneeItem?.data?.phone_number}</Typography>
-                    </Grid>
+                    </Grid> */}
                    
                     
                     <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
                         <Typography variant="body2" className={classes.heading}>Address</Typography>
-                        <Typography variant="h6" className={classes.desc}>{getSingleSigneeItem?.data?.address_line_1} {getSingleSigneeItem?.data?.address_line_2}</Typography>
+                        <Typography variant="h6" className={classes.desc}>{getSingleSigneeItem?.data?.address_line_1 ? getSingleSigneeItem?.data?.address_line_1 : '-'} {getSingleSigneeItem?.data?.address_line_2}</Typography>
                     </Grid>
                     <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
                         <Typography variant="body2" className={classes.heading}>City</Typography>
-                        <Typography variant="h6" className={classes.desc}>{getSingleSigneeItem?.data?.city}</Typography>
+                        <Typography variant="h6" className={classes.desc}>{getSingleSigneeItem?.data?.city ? getSingleSigneeItem?.data?.city : "-"}</Typography>
                     </Grid>
                     <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
                         <Typography variant="body2" className={classes.heading}>Postcode</Typography>
-                        <Typography variant="h6" className={classes.desc}>{getSingleSigneeItem?.data?.postcode}</Typography>
+                        <Typography variant="h6" className={classes.desc}>{getSingleSigneeItem?.data?.postcode ? getSingleSigneeItem?.data?.postcode : "-"}</Typography>
                     </Grid>
                     <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
                         <Typography variant="body2" className={classes.heading}>Date Registration</Typography>
-                        <Typography variant="h6" className={classes.desc}>{getSingleSigneeItem?.data?.date_registered}</Typography>
+                        <Typography variant="h6" className={classes.desc}>{getSingleSigneeItem?.data?.date_registered ? getSingleSigneeItem?.data?.date_registered : "-"}</Typography>
                     </Grid>
                     <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
                         <Typography variant="body2" className={classes.heading}>Nationality</Typography>
-                        <Typography variant="h6" className={classes.desc}>{getSingleSigneeItem?.data?.nationality}</Typography>
+                        <Typography variant="h6" className={classes.desc}>{getSingleSigneeItem?.data?.nationality ? getSingleSigneeItem?.data?.nationality :"-"}</Typography>
                     </Grid>
                     
                    
                     <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
                         <Typography variant="body2" className={classes.heading}>NMC DMC pin</Typography>
-                        <Typography variant="h6" className={classes.desc}>{getSingleSigneeItem?.data?.nmc_dmc_pin}</Typography>
+                        <Typography variant="h6" className={classes.desc}>{getSingleSigneeItem?.data?.nmc_dmc_pin? getSingleSigneeItem?.data?.nmc_dmc_pin :"-"}</Typography>
                     </Grid>
                     <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
                         <Typography variant="body2" className={classes.heading}>Candidate Referred from</Typography>

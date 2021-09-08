@@ -150,7 +150,7 @@ const ViewSignee = ({match}) => {
                             <TableCell style={{ width: 80 }}>Id</TableCell>
                             <TableCell align="left">Signee Name</TableCell>
                             <TableCell align="left">Email</TableCell>
-                            <TableCell align="left">Mobile no.</TableCell>
+                            <TableCell align="left">Contact number</TableCell>
                             <TableCell align="left">DOB</TableCell>
                             <TableCell align="right" style={{ width: 140 }}></TableCell>
                         </TableRow>
@@ -163,7 +163,7 @@ const ViewSignee = ({match}) => {
                                         <TableCell scope="row">{index + 1}</TableCell>
                                         <TableCell align="left">{`${list.first_name} ${list.last_name}`}</TableCell>
                                         <TableCell align="left">{list.email}</TableCell>
-                                        <TableCell align="left">{list.mobile_number}</TableCell>
+                                        <TableCell align="left">{list.contact_number}</TableCell>
                                         <TableCell align="left">{list.date_of_birth}</TableCell>
                                         <TableCell align="right">
                                             <Link to="#" className="btn btn-secondary" onClick={e => onhandlClick(list.id)}>View</Link>
