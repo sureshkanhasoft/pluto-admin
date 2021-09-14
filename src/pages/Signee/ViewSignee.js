@@ -85,6 +85,7 @@ const ViewSignee = ({match}) => {
     const { getSigneeItem, loading } = useSelector(state => state.signee)
     const [page, setPage]= useState(1)
     const [searchData, setSearchData] = useState({ search: "" });
+    const staffDetail = JSON.parse(localStorage.getItem("staffDetail"));
 
     const handleSearchChange = (event) => {
         const d1 = event.target.value
@@ -137,11 +138,15 @@ const ViewSignee = ({match}) => {
                             }}
                         />
                     </div>
-                    <div className="ml-5">
-                        <Link to={`${match.url}/create`} className="btn btn-secondary">
-                            <AddIcon className="mr-2" />Add Signee
-                        </Link>
-                    </div>
+                    {
+                        (staffDetail !== "Finance") && 
+                        <div className="ml-5">
+                            <Link to={`${match.url}/create`} className="btn btn-secondary">
+                                <AddIcon className="mr-2" />Add Signee
+                            </Link>
+                        </div>
+                    }
+                    
                 </Box>
 
                 <Table className={classes.table}>
@@ -160,7 +165,7 @@ const ViewSignee = ({match}) => {
                             getSigneeItem?.data?.data && getSigneeItem?.data?.data.map((list, index) => {
                                 return (
                                     <TableRow key={index} >
-                                        <TableCell scope="row">{index + 1}</TableCell>
+                                        <TableCell scope="row">{getSigneeItem?.data?.from + index}</TableCell>
                                         <TableCell align="left">{`${list.first_name} ${list.last_name}`}</TableCell>
                                         <TableCell align="left">{list.email}</TableCell>
                                         <TableCell align="left">{list.contact_number}</TableCell>

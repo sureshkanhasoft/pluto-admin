@@ -111,6 +111,7 @@ const ViewBooking = ({ match }) => {
     const dispatch = useDispatch();
     const [page, setPage] = React.useState(1);
     const [searchData, setSearchData] = useState({ search: "" });
+    const staffDetail = JSON.parse(localStorage.getItem("staffDetail"));
 
     const { bookingItem, loading } = useSelector(state => state.booking)
 
@@ -166,11 +167,14 @@ const ViewBooking = ({ match }) => {
                             }}
                         />
                     </div>
-                    <div className="ml-5">
-                        <Link to={`${match.url}/create`} className="btn btn-secondary">
-                            <AddIcon className="mr-2" />Add Booking
-                        </Link>
-                    </div>
+                    {
+                        (staffDetail !== "Finance") && 
+                        <div className="ml-5">
+                            <Link to={`${match.url}/create`} className="btn btn-secondary">
+                                <AddIcon className="mr-2" />Add Booking
+                            </Link>
+                        </div>
+                    }
                 </Box>
                 <Box className={classes.statusButton}>
                     <NavLink to="#" className="btn active">Created</NavLink>
@@ -194,7 +198,7 @@ const ViewBooking = ({ match }) => {
                         {
                             bookingItem?.data?.data && bookingItem?.data?.data.map((row, index) => (
                                 <TableRow key={index}>
-                                    <TableCell scope="row">{index + 1}</TableCell>
+                                    <TableCell scope="row">{bookingItem?.data?.from + index}</TableCell>
                                     <TableCell align="left">{row.name}</TableCell>
                                     <TableCell align="left">{row.ward_name}</TableCell>
                                     <TableCell align="left">{row.grade_name}</TableCell>

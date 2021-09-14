@@ -99,6 +99,7 @@ const Specialities = () => {
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [deleteNotify, SetDeleteNotify] = useState(false);
     const [disabled, setDisabled]= useState(false)
+    const staffDetail = JSON.parse(localStorage.getItem("staffDetail"));
 
     const [page, setPage] = React.useState(1);
     const [searchData, setSearchData] = useState({ search: "", status: "" });
@@ -199,11 +200,15 @@ const Specialities = () => {
                             }}
                         />
                     </div>
-                    <div className="ml-5">
-                        <Button variant="contained" color="secondary" onClick={handleClickOpen}>
-                            <AddIcon className="mr-2" />Add Speciality
-                        </Button>
-                    </div>
+                    {
+                        (staffDetail !== "Booking" && staffDetail !== "Finance") &&
+                        <div className="ml-5">
+                            <Button variant="contained" color="secondary" onClick={handleClickOpen}>
+                                <AddIcon className="mr-2" />Add Speciality
+                            </Button>
+                        </div>
+                    }
+                    
                 </Box>
 
                 <Table className={classes.table}>
@@ -211,7 +216,10 @@ const Specialities = () => {
                         <TableRow>
                             <TableCell style={{ width: 130 }}>Id</TableCell>
                             <TableCell align="left">Specialities</TableCell>
-                            <TableCell align="right">Action</TableCell>
+                            {
+                                (staffDetail !== "Booking" && staffDetail !== "Finance") &&  <TableCell align="right">Action</TableCell>
+                            }
+                           
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -219,14 +227,18 @@ const Specialities = () => {
                             getSpecialityItem?.data && getSpecialityItem?.data.map((row, index) => {
                                 return (
                                     <TableRow key={index} >
-                                        <TableCell scope="row">{index + 1}</TableCell>
+                                        <TableCell scope="row">{getSpecialityItem?.from + index}</TableCell>
                                         <TableCell align="left">{row.speciality_name}</TableCell>
-                                        <TableCell align="right">
-                                            <Box display="flex" alignItems="center" justifyContent="flex-end">
-                                                <IconButton onClick={() => handleUpdateClickOpen(row.id)}><EditIcon color="primary" /></IconButton>
-                                                <IconButton onClick={() => deleteSpecialitiesData(row.id)}><DeleteIcon color="secondary" /></IconButton>
-                                            </Box>
-                                        </TableCell>
+                                            {
+                                                (staffDetail !== "Booking" && staffDetail !== "Finance") && 
+                                                <TableCell align="right">
+                                                    <Box display="flex" alignItems="center" justifyContent="flex-end">
+                                                        <IconButton onClick={() => handleUpdateClickOpen(row.id)}><EditIcon color="primary" /></IconButton>
+                                                        <IconButton onClick={() => deleteSpecialitiesData(row.id)}><DeleteIcon color="secondary" /></IconButton>
+                                                    </Box>
+                                                </TableCell>
+                                            }
+                                            
                                     </TableRow>
                                 )
                             })

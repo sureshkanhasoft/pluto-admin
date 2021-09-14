@@ -74,6 +74,7 @@ const DetailTrust = ({ match }) => {
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [staffNotify, setStaffNotify] = useState(false)
     const { deleteTrustSuccess } = useSelector(state => state.trust)
+    const staffDetail = JSON.parse(localStorage.getItem("staffDetail"));
 
     const getSingleTrust = async () => {
         const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, '');
@@ -309,12 +310,18 @@ const DetailTrust = ({ match }) => {
                             <Button color="primary" onClick={backPage}>
                                 Back
                             </Button>
-                            <Button variant="contained" color="primary" onClick={upadateLink}>
-                                <EditIcon className="mr-2" />Edit
-                            </Button>
-                            <Button variant="contained" color="secondary" onClick={(e) => deleteStaffItem(trustItems.id)}>
-                                <DeleteIcon className="mr-2" />Delete
-                            </Button>
+                            {
+                                (staffDetail !== "Booking" && staffDetail !== "Finance") && 
+                                <>
+                                <Button variant="contained" color="primary" onClick={upadateLink}>
+                                    <EditIcon className="mr-2" />Edit
+                                </Button>
+                                <Button variant="contained" color="secondary" onClick={(e) => deleteStaffItem(trustItems.id)}>
+                                    <DeleteIcon className="mr-2" />Delete
+                                </Button>
+                                </>
+                            }
+                            
                         </Box>
                     </Grid>
                 </Grid>

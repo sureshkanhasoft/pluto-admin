@@ -127,9 +127,9 @@ const Login = () => {
                 </div>
 
                 <Card className={classes.loginCard}>
-                    {loginNotify && loginErrors?.message &&
+                    {loginNotify && (loginErrors?.message || loginErrors) && 
                         <Notification
-                            data= {loginErrors?.message}
+                            data= {loginErrors?.message || loginErrors?.message ? loginErrors?.message : loginErrors ? "Sorry, your account does't exists" :""}
                             status="error"
                         />
                     }

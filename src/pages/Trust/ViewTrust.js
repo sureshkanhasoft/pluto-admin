@@ -84,6 +84,7 @@ const ViewTrust = ({ match }) => {
     const dispatch = useDispatch();
     const [page, setPage] = React.useState(1);
     const [searchData, setSearchData] = useState({ search: "" });
+    const staffDetail = JSON.parse(localStorage.getItem("staffDetail"));
 
     const { getTrustItem, loading } = useSelector(state => state.trust)
     console.log('getTrustItem: ', getTrustItem);
@@ -141,11 +142,15 @@ const ViewTrust = ({ match }) => {
                             }}
                         />
                     </div>
-                    <div className="ml-5">
-                        <Link to={`${match.url}/create`} className="btn btn-secondary">
-                            <AddIcon className="mr-2" />Add Trust
-                        </Link>
-                    </div>
+                    {
+                        (staffDetail !== "Booking" && staffDetail !== "Finance") && 
+                        <div className="ml-5">
+                            <Link to={`${match.url}/create`} className="btn btn-secondary">
+                                <AddIcon className="mr-2" />Add Trust
+                            </Link>
+                        </div>
+                    }
+                    
                 </Box>
 
                 <Table className={classes.table}>

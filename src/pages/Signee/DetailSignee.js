@@ -54,6 +54,7 @@ const DetailSignee = ({match}) => {
     const [Id, setId] = useState(false);
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [signeeNotify, setSigneeNotify] = useState(false)
+    const staffDetail = JSON.parse(localStorage.getItem("staffDetail"));
 
     const {getSingleSigneeItem, loading, deleteSigneeSuccess, deleteSigneeError} = useSelector(state => state.signee)
 
@@ -173,12 +174,18 @@ const DetailSignee = ({match}) => {
                             <Button color="primary" onClick={backPage}>
                                 Back
                             </Button>
-                            <Button variant="contained" color="primary" onClick={upadateLink}>
-                                <EditIcon className="mr-2" />Edit
-                            </Button>
-                            <Button variant="contained" color="secondary" onClick={(e) => deleteStaffItem(getSingleSigneeItem?.data?.id)}>
-                                <DeleteIcon className="mr-2" />Delete
-                            </Button>
+                            {
+                                (staffDetail !== "Finance") && 
+                                <>
+                                     <Button variant="contained" color="primary" onClick={upadateLink}>
+                                        <EditIcon className="mr-2" />Edit
+                                    </Button>
+                                    <Button variant="contained" color="secondary" onClick={(e) => deleteStaffItem(getSingleSigneeItem?.data?.id)}>
+                                        <DeleteIcon className="mr-2" />Delete
+                                    </Button>
+                                </>
+                            }
+                           
                         </Box>
                     </Grid>
                 </Grid>

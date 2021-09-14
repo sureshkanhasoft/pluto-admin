@@ -42,7 +42,7 @@ function App() {
     } else if(loggedInUser && getRole==='ORGANIZATION'){
       history.push('/admin/bookings')
     } else if(loggedInUser && getRole==='STAFF'){
-      history.push('/staff/trust')
+      history.push('/staff/bookings')
     } else {
       history.push('/login')
     }

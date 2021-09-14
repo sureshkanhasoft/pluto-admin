@@ -136,6 +136,7 @@ const DetailBooking = ({ match }) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const [selected, setSelected] = React.useState([]);
+    const staffDetail = JSON.parse(localStorage.getItem("staffDetail"));
 
     const [bookingDetail, setBookingDetail] = useState([])
     const [loading, setLoading] = useState(false)
@@ -292,14 +293,19 @@ const DetailBooking = ({ match }) => {
                     <Grid item xs={12}>
                         <Box display="flex" justifyContent="flex-end" className={classes.btnContainer}>
                         <Button color="primary" onClick={backPage}>
-                                Back
-                            </Button>
-                            <Button variant="contained" color="primary" onClick={upadateLink}>
+                            Back
+                        </Button>
+                        <Button variant="contained" color="primary" onClick={upadateLink}>
                                 <EditIcon className="mr-2" />Edit
-                            </Button>
+                        </Button>
+                        {
+                            (staffDetail !== "Finance") && 
                             <Button variant="contained" color="secondary" onClick={(e) => deleteStaffItem(bookingDetail?.data?.id)}>
                                 <DeleteIcon className="mr-2" />Delete
                             </Button>
+                           
+                        }
+                          
                         </Box>
                     </Grid>
                 </Grid>

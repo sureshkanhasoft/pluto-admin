@@ -52,7 +52,7 @@ const useStyle = makeStyles((theme) => ({
 const StaffUserProfile = () => {
     const classes = useStyle();
     const dispatch = useDispatch();
-    const { passChange, passerrors, profileErrors, profileData, profile, loading,profileStaffErrors } = useSelector(state => state.staffProfile)
+    const { passChange, passerrors, profileErrors, profileData, profile, loading,profileStaffErrors, profileStaffSuccess } = useSelector(state => state.staffProfile)
     const [profileNotify, setProfileNotify] = useState(false)
     const [passNotify, setPassNotify] = useState(false)
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
@@ -130,6 +130,13 @@ const StaffUserProfile = () => {
                         status="error"
                 />
             }
+            {profileNotify && profileStaffSuccess?.message &&
+                <Notification
+                        data={profileStaffSuccess?.message}
+                        status="success"
+                />
+            }
+
             {passNotify && passChange?.message &&
                 <Notification
                         data={passChange?.message}

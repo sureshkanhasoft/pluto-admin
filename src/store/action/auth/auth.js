@@ -37,9 +37,16 @@ export const login = ({ email, password }) => {
                         }, 2000);
                     }
                 } else {
-                    setTimeout(() => {
-                        history.push('./staff')
-                    }, 2000);
+                    localStorage.setItem('staffDetail', JSON.stringify(data.data.staffdetails));
+                    if(data.data.password_change === 0){
+                        setTimeout(() => {
+                            history.push('./staff/staff-profile')
+                        }, 2000);
+                    } else {
+                        setTimeout(() => {
+                            history.push('./staff')
+                        }, 2000);
+                    }
                 }
             } else {
                 dispatch(getLoginFailure(data))

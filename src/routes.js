@@ -68,6 +68,13 @@ const Routes = [
         role:"organization"
     },
     {
+        name:"Signee",
+        path:"signee",
+        component:Signee,
+        icon:"assignment",
+        role:"staff"
+    },
+    {
         name:"Staff",
         path:"staff",
         component:Staff,

@@ -97,7 +97,7 @@ export const updateStaffProfile = (data) => {
     const loggedInUser = localStorage.getItem('token').replace(/['"]+/g, '');
     return async(dispatch) =>{
         dispatch(updateStaffProfileRequest())
-        await axios.post(`${Config.API_URL}api/organization/update`, data,{
+        await axios.post(`${Config.API_URL}api/organization/user/staff-profile-update`, data,{
             headers: {
                 'content-type': 'application/json',
                 'Authorization': `Bearer ${loggedInUser}`

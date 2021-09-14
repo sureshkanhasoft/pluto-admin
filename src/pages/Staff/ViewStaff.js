@@ -164,7 +164,7 @@ const ViewStaff = ({ match }) => {
                         {getStaffItem?.data?.data && getStaffItem?.data?.data.map((row, index) => {
                             return (
                                 <TableRow key={index}>
-                                    <TableCell scope="row">{index +1}</TableCell>
+                                    <TableCell scope="row">{getStaffItem?.data?.from + index}</TableCell>
                                     <TableCell align="left">{`${row.first_name} ${row.last_name}`}</TableCell>
                                     <TableCell align="left">{row.email}</TableCell>
                                     <TableCell align="left">{row.contact_number}</TableCell>

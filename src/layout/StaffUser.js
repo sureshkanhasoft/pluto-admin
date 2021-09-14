@@ -46,7 +46,7 @@ const StaffUser = ({ match }) => {
                                 />
                             );
                         })}
-                        <Redirect from="/staff" to="/staff" />
+                        <Redirect from="/staff" to="/staff/bookings" />
                     </Switch>
                 </div>
             </div>
