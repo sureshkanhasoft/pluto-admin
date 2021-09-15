@@ -14,6 +14,7 @@ import { createBooking } from '../../store/action';
 import { useForm } from 'react-hook-form';
 import Notification from '../../components/Notification/Notification';
 import history from '../../utils/HistoryUtils';
+import UtilService from '../../helper/service';
 
 const useStyle = makeStyles((theme) => ({
     root: {
@@ -40,9 +41,9 @@ const CreateBooking = () => {
     const dispatch = useDispatch()
     const [speciality, setSpeciality] = useState([])
     const [trust, setTrust] = useState([])
-    const [getTrustId, setgetTrustId] = useState([])
+    const [getTrustId, setgetTrustId] = useState()
     const [getHospitalId, setGetHospitalId] = useState([])
-    const [hospitalList, setHospitalList] = useState([])
+    const [hospitalList, setHospitalList] = useState()
     const [wardList, setWardList] = useState([])
     const [shiftTypeList, setShiftTypeList] = useState([])
     const [gradeList, setGradeList] = useState([])
@@ -52,6 +53,7 @@ const CreateBooking = () => {
     const [trustNotify, setTrustNotify] = useState(false)
     const [referenceId, setReferenceId] = useState([])
     const { createBookingSuccess } = useSelector(state => state.booking)
+    const disPastDate = UtilService.disabledPastDate()
     const [data, setData] = useState({
         reference_id: "",
         trust_id: "",
@@ -413,6 +415,9 @@ const CreateBooking = () => {
                                 }}
                                 fullWidth
                                 required
+                                inputProps={{ 
+                                    min: disPastDate
+                                }}
                             />
                         </Grid>
 

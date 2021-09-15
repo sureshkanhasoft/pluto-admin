@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateBooking } from '../../store/action';
 import history from '../../utils/HistoryUtils';
 import Notification from '../../components/Notification/Notification';
+import UtilService from '../../helper/service';
 
 const useStyle = makeStyles((theme) => ({
     root: {
@@ -40,8 +41,8 @@ const UpdateBooking = ({ match }) => {
     const dispatch = useDispatch()
     const [speciality, setSpeciality] = useState([])
     const [trust, setTrust] = useState([])
-    const [getTrustId, setgetTrustId] = useState([])
-    const [getHospitalId, setGetHospitalId] = useState([])
+    const [getTrustId, setgetTrustId] = useState()
+    const [getHospitalId, setGetHospitalId] = useState()
     const [hospitalList, setHospitalList] = useState([])
     const [wardList, setWardList] = useState([])
     const [shiftTypeList, setShiftTypeList] = useState([])
@@ -49,6 +50,7 @@ const UpdateBooking = ({ match }) => {
     const [shiftTime, setShiftTime] = useState([])
     const [trustNotify, setTrustNotify] = useState(false)
     const { updateBookingSuccess, updateBookingError } = useSelector(state => state.booking)
+    const disPastDate = UtilService.disabledPastDate()
     const [data, setData] = useState({
         reference_id: "",
         trust_id: "",
@@ -392,6 +394,9 @@ const UpdateBooking = ({ match }) => {
                                 }}
                                 fullWidth
                                 required
+                                inputProps ={{
+                                    min:disPastDate
+                                }}
                             />
                         </Grid>
 

@@ -11,6 +11,7 @@ import Notification from '../../components/Notification/Notification';
 import axios from 'axios';
 import apiConfigs from '../../config/config';
 import history from '../../utils/HistoryUtils';
+import UtilService from '../../helper/service';
 
 const useStyle = makeStyles((theme) => ({
     root: {
@@ -46,6 +47,7 @@ const CreateSignee = () => {
     const month = monthWithOffset.toString().length < 2 ? `0${monthWithOffset}`: monthWithOffset;
     const date = dateNow.getUTCDate().toString().length < 2 ? `0${dateNow.getUTCDate()}`: dateNow.getUTCDate();
     const materialDateInput = `${year}-${month}-${date}`;
+    const disFutureDate = UtilService.disabledPastDate()
     // for today date selection
 
     const [data, setData] = useState({
@@ -231,6 +233,9 @@ const CreateSignee = () => {
                                     shrink: true,
                                 }}
                                 fullWidth
+                                inputProps = {{
+                                    max:disFutureDate
+                                }}
                                 // required
                             />
                         </Grid>
