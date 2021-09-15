@@ -170,7 +170,8 @@ const UpdateSignee = ({match}) => {
                                 helperText={updateSigneeError.message?.email}
                                 error={!!updateSigneeError.message?.email}
                                 fullWidth
-                                required
+                                disabled
+                                // required
                             />
                         </Grid>
                         {/* <Grid item xs={12} sm={6}>
