@@ -40,6 +40,7 @@ const UpdateSignee = ({match}) => {
     const user_id = match.params.id;
     const [signeeNotify, setSigneeNotify] = useState(false)
     const {getCandidateReferrredForm, loading, getSingleSigneeItem, updateSigneeSuccess, updateSigneeError} = useSelector(state => state.signee)
+    console.log('getSingleSigneeItem: ', getSingleSigneeItem);
     const [data, setData] = useState({
         password:"",
         mobile_number:"",
@@ -56,7 +57,7 @@ const UpdateSignee = ({match}) => {
         email:"",
         candidate_referred_from:"",
         nationality:"",
-        date_registered:"2021/09/06",
+        date_registered:"",
         organization_id:"",
         nmc_dmc_pin:"",
         speciality:[]
@@ -226,7 +227,7 @@ const UpdateSignee = ({match}) => {
                                 type="date"
                                 name="date_registered"
                                 variant="outlined"
-                                value={data?.date_of_birth || ''}
+                                value={data?.date_registered || ''}
                                 onChange={handleChange}
                                 // helperText={updateSigneeError.message?.date_of_birth}
                                 // error={!!updateSigneeError.message?.date_of_birth}
