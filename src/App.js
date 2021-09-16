@@ -37,15 +37,15 @@ function App() {
   useEffect(() => {
     const loggedInUser = localStorage.getItem("token");
     const getRole = localStorage.getItem('role') ? localStorage.getItem('role').replace(/['"]+/g, '') : "";
-    if (loggedInUser && getRole==='SUPERADMIN') {
-      history.push('/super-admin/dashboard')
-    } else if(loggedInUser && getRole==='ORGANIZATION'){
-      history.push('/admin/bookings')
-    } else if(loggedInUser && getRole==='STAFF'){
-      history.push('/staff/bookings')
-    } else {
-      history.push('/login')
-    }
+    // if (loggedInUser && getRole==='SUPERADMIN') {
+    //   history.push('/super-admin/dashboard')
+    // } else if(loggedInUser && getRole==='ORGANIZATION'){
+    //   history.push('/admin/bookings')
+    // } else if(loggedInUser && getRole==='STAFF'){
+    //   history.push('/staff/bookings')
+    // } else {
+    //   history.push('/login')
+    // }
   }, []);
 
   return (
