@@ -452,6 +452,7 @@ const UpdateBooking = ({ match }) => {
                                 id="rate"
                                 label="Rate"
                                 variant="outlined"
+                                type="number"
                                 name="rate"
                                 value={data.rate}
                                 onChange={handleChange}

@@ -481,6 +481,7 @@ const CreateBooking = () => {
                                 label="Rate"
                                 variant="outlined"
                                 name="rate"
+                                type="number"
                                 value={data?.rate}
                                 {...register('rate', {
                                     required: "The rate field is required.",
