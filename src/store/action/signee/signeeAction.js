@@ -160,7 +160,7 @@ export const getSingleSignee = (id) => {
     const loggedInUser = localStorage.getItem('token').replace(/['"]+/g, '');
     return async (dispatch) => {
         dispatch(getSingleSigneeRequest())
-        await axios.get(`${Config.API_URL}api/organization/get-signee/${id}`, {
+        await axios.get(`${Config.API_URL}api/organization/get-my-signee/${id}`, {
             'headers': {
                 'Content-type': 'application/json',
                 'Authorization': 'Bearer ' + loggedInUser
