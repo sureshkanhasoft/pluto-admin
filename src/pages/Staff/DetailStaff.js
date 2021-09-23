@@ -164,7 +164,7 @@ const DetailStaff = ({ match }) => {
                             <Button variant="contained" color="primary" onClick={upadateLink}>
                                 <EditIcon className="mr-2" />Edit
                             </Button>
-                            <Button variant="contained" color="secondary" onClick={(e) => deleteStaffItem(items.user_id)}>
+                            <Button variant="contained" color="secondary" onClick={(e) => deleteStaffItem(items.id)}>
                                 <DeleteIcon className="mr-2" />Delete
                             </Button>
                         </Box>
