@@ -62,7 +62,7 @@ const CreateSignee = () => {
         city:"",
         postcode:"",
         email:"",
-        candidate_referred_from:"",
+        // candidate_referred_from:"",
         nationality:"",
         date_registered:materialDateInput,
         organization_id:"",
@@ -364,13 +364,8 @@ const CreateSignee = () => {
                                 // required
                             />
                         </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <FormControl variant="outlined" className={classes.formControl} 
-                            // required 
-                            // {...register('candidate_referred_from', {
-                            //     required: "Please enter candidate referred from",
-                            // })}
-                            // error={(errors.candidate_referred_from ? true : false)}
+                        {/* <Grid item xs={12} sm={6}>
+                            <FormControl variant="outlined" className={classes.formControl}
                             >
                                 <InputLabel>Candidate Referred From</InputLabel>
                                 <Select
@@ -391,7 +386,7 @@ const CreateSignee = () => {
                                     }
                                 </Select>
                             </FormControl>
-                        </Grid>
+                        </Grid> */}
                     </Grid>
                     <Box className={classes.footerBtn}>
                         <Button color="primary" onClick={backPage}>

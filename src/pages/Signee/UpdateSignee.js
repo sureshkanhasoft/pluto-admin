@@ -56,7 +56,7 @@ const UpdateSignee = ({match}) => {
         city:"",
         postcode:"",
         email:"",
-        candidate_referred_from:"",
+        // candidate_referred_from:"",
         nationality:"",
         date_registered:"",
         organization_id:"",
@@ -328,10 +328,8 @@ const UpdateSignee = ({match}) => {
                                 // required
                             />
                         </Grid>
-                        <Grid item xs={12} sm={6}>
+                        {/* <Grid item xs={12} sm={6}>
                             <FormControl variant="outlined" className={classes.formControl} 
-                            // required 
-                            //  error={!!updateSigneeError.message?.candidate_referred_from}
                             >
                                 <InputLabel>Candidate Referred From</InputLabel>
                                 <Select
@@ -351,9 +349,9 @@ const UpdateSignee = ({match}) => {
                                         })
                                     }
                                 </Select>
-                                {/* <FormHelperText>{updateSigneeError.message?.candidate_referred_from ? updateSigneeError.message?.candidate_referred_from :""}</FormHelperText> */}
+                                <FormHelperText>{updateSigneeError.message?.candidate_referred_from ? updateSigneeError.message?.candidate_referred_from :""}</FormHelperText>
                             </FormControl>
-                        </Grid>
+                        </Grid> */}
                     </Grid>
                     <Box className={classes.footerBtn}>
                         <Button color="primary" onClick={backPage}>

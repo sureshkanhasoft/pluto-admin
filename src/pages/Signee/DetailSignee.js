@@ -165,10 +165,10 @@ const DetailSignee = ({match}) => {
                         <Typography variant="body2" className={classes.heading}>NMC DMC pin</Typography>
                         <Typography variant="h6" className={classes.desc}>{getSingleSigneeItem?.data?.nmc_dmc_pin? getSingleSigneeItem?.data?.nmc_dmc_pin :"-"}</Typography>
                     </Grid>
-                    <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
+                    {/* <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
                         <Typography variant="body2" className={classes.heading}>Candidate Referred from</Typography>
                         <Typography variant="h6" className={classes.desc}>{getSingleSigneeItem?.data?.candidate_referred_name ? getSingleSigneeItem?.data?.candidate_referred_name : "-"}</Typography>
-                    </Grid>
+                    </Grid> */}
                     <Grid item xs={12}>
                         <Box display="flex" justifyContent="flex-end" className={classes.btnContainer}>
                             <Button color="primary" onClick={backPage}>
