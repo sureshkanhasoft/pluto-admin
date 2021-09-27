@@ -232,9 +232,9 @@ const Specialities = () => {
                                             {
                                                 (staffDetail !== "Booking" && staffDetail !== "Finance") && 
                                                 <TableCell align="right">
-                                                    <Box display="flex" alignItems="center" justifyContent="flex-end">
-                                                        <IconButton onClick={() => handleUpdateClickOpen(row.id)}><EditIcon color="primary" /></IconButton>
-                                                        <IconButton onClick={() => deleteSpecialitiesData(row.id)}><DeleteIcon color="secondary" /></IconButton>
+                                                    <Box display="flex" alignItems="center" justifyContent="flex-end" >
+                                                        <IconButton onClick={() => handleUpdateClickOpen(row.id)} style={{padding:6}}><EditIcon color="primary"  /></IconButton>
+                                                        <IconButton onClick={() => deleteSpecialitiesData(row.id)} style={{padding:6}}><DeleteIcon color="secondary" /></IconButton>
                                                     </Box>
                                                 </TableCell>
                                             }

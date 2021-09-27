@@ -251,12 +251,12 @@ const CreateTrust = () => {
                 />
             }
 
-            {/* {trustNotify && createTrustError?.message &&
+            {trustNotify && (createTrustError?.message?.code || createTrustError?.message) &&
                 <Notification
-                    data={createTrustError?.message}
+                    data={createTrustError?.message?.code ? createTrustError?.message?.code : createTrustError?.message}
                     status="error"
                 />
-            } */}
+            }
             <Paper className={classes.root}>
                 <form onSubmit={handleSubmit(submitData)} autoComplete="off">
                     <Grid container spacing={2}>
