@@ -113,6 +113,8 @@ const UpdateBooking = ({ match }) => {
         })
     }
     const trustHandleChange = (event) => {
+        data.hospital_id=""
+        data.ward_id=""
         setgetTrustId(event.target.value)
         setData({ ...data, [event.target.name]: event.target.value });
     }
@@ -136,6 +138,7 @@ const UpdateBooking = ({ match }) => {
         }
     }
     const hospitalHandleChange = (event) => {
+        data.ward_id=""
         setGetHospitalId(event.target.value)
         setData({ ...data, [event.target.name]: event.target.value });
     }
