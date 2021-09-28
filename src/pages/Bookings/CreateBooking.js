@@ -52,7 +52,8 @@ const CreateBooking = () => {
     const [addAnother, setAddAnother] = useState(false)
     const [trustNotify, setTrustNotify] = useState(false)
     const [referenceId, setReferenceId] = useState([])
-    const { createBookingSuccess } = useSelector(state => state.booking)
+    const { createBookingSuccess, createBookingError } = useSelector(state => state.booking)
+    console.log('createBookingError: ', createBookingError);
     const disPastDate = UtilService.disabledPastDate()
     const [data, setData] = useState({
         reference_id: "",
@@ -121,6 +122,8 @@ const CreateBooking = () => {
         })
     }
     const trustHandleChange = (event) => {
+        data.hospital_id="";
+        data.ward_id="";
         setgetTrustId(event.target.value)
         setData({ ...data, [event.target.name]: event.target.value });
     }
@@ -145,6 +148,7 @@ const CreateBooking = () => {
         }
     }
     const hospitalHandleChange = (event) => {
+        data.ward_id="";
         setGetHospitalId(event.target.value)
         setData({ ...data, [event.target.name]: event.target.value });
     }
@@ -241,6 +245,7 @@ const CreateBooking = () => {
 
 
     const submitData = async (e) => {
+        // console.log('data: ', data);
         // e.preventDefault();
         if (addAnother === true) {
             dispatch(createBooking(data, addAnother))
@@ -323,7 +328,7 @@ const CreateBooking = () => {
                                     {...register('hospital_id', {
                                         required: "The hospital field is required.",
                                     })}
-                                    error={(errors.hospital_id ? true : false)}
+                                    error={(errors.hospital_id ? true : createBookingError?.message?.hospital_id ? true : false)}
                                     onChange={hospitalHandleChange}
                                 >
                                     <MenuItem value="">
@@ -351,7 +356,7 @@ const CreateBooking = () => {
                                     {...register('ward_id', {
                                         required: "The ward field is required.",
                                     })}
-                                    error={(errors.ward_id ? true : false)}
+                                    error={(errors.ward_id ? true : createBookingError?.message?.ward_id ? true : false)}
                                     onChange={handleChange}
                                 >
                                     <MenuItem value="">

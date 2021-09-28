@@ -246,15 +246,15 @@ const DetailBooking = ({ match }) => {
                         <Typography variant="h6" className={classes.desc}>{bookingDetail?.data?.reference_id}</Typography>
                     </Grid>
                     <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
-                        <Typography variant="body2" className={classes.heading}>Trust Code:</Typography>
+                        <Typography variant="body2" className={classes.heading}>Trust Name:</Typography>
                         <Typography variant="h6" className={classes.desc}>{bookingDetail?.data?.name}</Typography>
                     </Grid>
                     <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
-                        <Typography variant="body2" className={classes.heading}>Hospital Code:</Typography>
+                        <Typography variant="body2" className={classes.heading}>Hospital Name:</Typography>
                         <Typography variant="h6" className={classes.desc}>{bookingDetail?.data?.hospital_name}</Typography>
                     </Grid>
                     <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
-                        <Typography variant="body2" className={classes.heading}>Ward Code:</Typography>
+                        <Typography variant="body2" className={classes.heading}>Ward Name:</Typography>
                         <Typography variant="h6" className={classes.desc}>{bookingDetail?.data?.ward_name}</Typography>
                     </Grid>
                     <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
