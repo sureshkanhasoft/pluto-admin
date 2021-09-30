@@ -79,6 +79,22 @@ const useStyle = makeStyles((theme) => ({
         top: 24,
         right: "20px",
         cursor: "pointer"
+    },
+    removehospital:{
+        position: "absolute",
+        top: -9,
+        right: -9,
+        cursor: "pointer",
+        background:"#ff8b46",
+        borderRadius:"50%",
+        width:26,
+        height:26,
+        display:"flex",
+        alignItems:"center",
+        justifyContent:"center",
+        '& svg':{
+            fontSize:16
+        }
     }
 }))
 
@@ -198,6 +214,14 @@ const UpdateTrust = ({ match }) => {
         setData(wards1);
     }
 
+    const removehospital = (index) => {
+        const hos = JSON.parse(JSON.stringify(data));
+        if(hos.hospital.length > 1){
+            hos.hospital.splice(index, 1)
+            setData(hos)
+        }
+    }
+
     const removeWards = (index, wIndex) => {
         const wards1 = JSON.parse(JSON.stringify(data));
         if(wards1.hospital[index].ward.length > 1){
@@ -262,10 +286,8 @@ const UpdateTrust = ({ match }) => {
     const submitData = async (e) => {
         e.preventDefault();
         // console.log('data: ', data);
-        // validation();
         dispatch(updateTrust(data))
         setTrustNotify(true)
-        // reset();
     }
 
     const backPage = () => {
@@ -329,8 +351,8 @@ const UpdateTrust = ({ match }) => {
 
                                 return (
                                     <div className={classes.hospitalBox} key={index}>
-                                        <Grid container spacing={2} className={classes.lightGray}>
-                                            <Grid item xs={12}>
+                                        <Grid container spacing={2} className={classes.lightGray} style={{position:"relative"}}>
+                                            <Grid item xs={12} >
                                                 <TextField
                                                     id="hospital_name"
                                                     label="Hospital name"
@@ -348,6 +370,10 @@ const UpdateTrust = ({ match }) => {
                                                     fullWidth
                                                     required
                                                 />
+                                                {
+                                                    index !==0 && <div className={classes.removehospital}><CloseIcon  onClick={() => removehospital(index)} /></div>
+                                                }
+                                                
                                             </Grid>
                                             {
                                                 item.ward.map((wardsField, wIndex) => {
