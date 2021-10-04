@@ -53,7 +53,6 @@ const CreateBooking = () => {
     const [trustNotify, setTrustNotify] = useState(false)
     const [referenceId, setReferenceId] = useState([])
     const { createBookingSuccess, createBookingError } = useSelector(state => state.booking)
-    console.log('createBookingError: ', createBookingError);
     const disPastDate = UtilService.disabledPastDate()
     const [data, setData] = useState({
         reference_id: "",
@@ -122,8 +121,8 @@ const CreateBooking = () => {
         })
     }
     const trustHandleChange = (event) => {
-        data.hospital_id="";
-        data.ward_id="";
+        data.hospital_id = "";
+        data.ward_id = "";
         setgetTrustId(event.target.value)
         setData({ ...data, [event.target.name]: event.target.value });
     }
@@ -148,7 +147,7 @@ const CreateBooking = () => {
         }
     }
     const hospitalHandleChange = (event) => {
-        data.ward_id="";
+        data.ward_id = "";
         setGetHospitalId(event.target.value)
         setData({ ...data, [event.target.name]: event.target.value });
     }
@@ -420,7 +419,7 @@ const CreateBooking = () => {
                                 }}
                                 fullWidth
                                 required
-                                inputProps={{ 
+                                inputProps={{
                                     min: disPastDate
                                 }}
                             />
@@ -501,28 +500,31 @@ const CreateBooking = () => {
 
                         <Grid item xs={12}>
                             <FormControl required
-                               {...register('speciality', {
-                                required: "The speciality field is required.",
-                            })}
-                            error={(errors.speciality ? true : false)}
+                                {...register('speciality', {
+                                    required: "The speciality field is required.",
+                                })}
+                                error={(errors.speciality ? true : false)}
                                 component="fieldset" className={classes.formControl}>
-                                <FormLabel component="legend">Specialities</FormLabel>
+                                    {
+                                        speciality?.data && speciality?.data.length >0 && <FormLabel component="legend">Specialities</FormLabel>
+                                    }
+                                
                                 <Grid container>
                                     {
-                                            speciality?.data && speciality?.data.map((items, index) => {
-                                                return (
-                                                    <Grid item xs={12} sm={6} md={4} lg={3} key={items.id}>
-                                                        <FormControlLabel
-                                                            control={<Checkbox color="primary" value={items.id} checked={data.checkedG} onChange={handleChangeCheck} name="speciality" />}
-                                                            label={items.speciality_name}
-                                                        />
-                                                    </Grid>
-                                                )
+                                        speciality?.data && speciality?.data.map((items, index) => {
+                                            return (
+                                                <Grid item xs={12} sm={6} md={4} lg={3} key={items.id}>
+                                                    <FormControlLabel
+                                                        control={<Checkbox color="primary" value={items.id} checked={data.checkedG} onChange={handleChangeCheck} name="speciality" />}
+                                                        label={items.speciality_name}
+                                                    />
+                                                </Grid>
+                                            )
 
-                                            })
-                                        }
+                                        })
+                                    }
                                 </Grid>
-                                    {/* <FormHelperText>{updateBookingError?.message?.speciality ? "The specialities field is required." :""}</FormHelperText> */}
+                                {/* <FormHelperText>{updateBookingError?.message?.speciality ? "The specialities field is required." :""}</FormHelperText> */}
                             </FormControl>
                         </Grid>
                     </Grid>
