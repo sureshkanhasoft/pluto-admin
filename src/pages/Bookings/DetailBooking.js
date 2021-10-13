@@ -217,6 +217,12 @@ const DetailBooking = ({ match }) => {
     const backPage = () => {
         history.go(-2)
     }
+
+    const signeePage = (e) => {
+        e.preventDefault();
+        // console.log('details')
+        history.push('/admin/signee/214/detail')
+    }
     return (
         <>
             {
@@ -351,7 +357,7 @@ const DetailBooking = ({ match }) => {
                                         <TableCell align="left">{row.number}</TableCell>
                                         <TableCell align="left">{row.email}</TableCell>
                                         <TableCell align="right">
-                                            <Link to="bookings/detail" className={classes.viewBtn}>
+                                            <Link onClick={(e) => signeePage(e)} className={classes.viewBtn}>
                                                 <VisibilityIcon className="mr-2" />view
                                             </Link>
                                         </TableCell>
