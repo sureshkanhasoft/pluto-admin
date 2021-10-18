@@ -1,4 +1,5 @@
 import axios from "axios"
+import { apiClient } from "../../../config/apiClient";
 import Config from "../../../config/config"
 import history from "../../../utils/HistoryUtils";
 import { 
@@ -7,7 +8,9 @@ import {
     GET_CANDIDATE_REFERRED_FROM_SUCCESS, 
     UPDATE_SIGNEE_SUCCESS, UPDATE_SIGNEE_REQUETS, UPDATE_SIGNEE_ERROR, 
     GET_SINGLE_SIGNEE_REQUETS, GET_SINGLE_SIGNEE_SUCCESS, GET_SINGLE_SIGNEE_ERROR, 
-    DELETE_SIGNEE_REQUETS, DELETE_SIGNEE_SUCCESS, DELETE_SIGNEE_ERROR 
+    DELETE_SIGNEE_REQUETS, DELETE_SIGNEE_SUCCESS, DELETE_SIGNEE_ERROR, 
+    CHANGE_SIGNEE_PRO_STATUS_REQUEST, CHANGE_SIGNEE_PRO_STATUS_SUCCESS, CHANGE_SIGNEE_PRO_STATUS_ERROR, 
+    CHANGE_SIGNEE_COMP_STATUS_REQUEST, CHANGE_SIGNEE_COMP_STATUS_SUCCESS, CHANGE_SIGNEE_COMP_STATUS_ERROR 
 } from "../actiontypes";
 
 
@@ -276,5 +279,76 @@ export const deleteSigneeError = (error) => {
     return {
         type: DELETE_SIGNEE_ERROR,
         payload:error
+    }
+}
+
+// -------------------------------------
+
+export const signeeProStatus = (data) => {
+    return async (dispatch) => {
+        dispatch(signeeProStatusRequest())
+        await apiClient(true).put(`api/organization/user/change-signee-profile-status`, data)
+            .then(response => {
+                const dataItem = response.data;
+                dispatch(signeeProStatusSuccess(dataItem))
+            }).catch(error => {
+                dispatch(signeeProStatusFailure(error))
+            });
+    }
+}
+
+const signeeProStatusRequest = () => {
+    return {
+        type: CHANGE_SIGNEE_PRO_STATUS_REQUEST
+    }
+}
+
+const signeeProStatusSuccess = (data) => {
+    return {
+        type: CHANGE_SIGNEE_PRO_STATUS_SUCCESS,
+        payload: data
+    }
+}
+
+const signeeProStatusFailure = (error) => {
+    return {
+        type: CHANGE_SIGNEE_PRO_STATUS_ERROR,
+        payload: error
+    }
+}
+
+// -------------------------------------
+
+export const signeeCompStatus = (data) => {
+    console.log('data: ', data);
+    return async (dispatch) => {
+        dispatch(signeeCompStatusRequest())
+        await apiClient(true).post(`api/organization/change-signee-compliance-status`, data)
+            .then(response => {
+                const dataItem = response.data;
+                dispatch(signeeCompStatusSuccess(dataItem))
+            }).catch(error => {
+                dispatch(signeeCompStatusFailure(error))
+            });
+    }
+}
+
+const signeeCompStatusRequest = () => {
+    return {
+        type: CHANGE_SIGNEE_COMP_STATUS_REQUEST
+    }
+}
+
+const signeeCompStatusSuccess = (data) => {
+    return {
+        type: CHANGE_SIGNEE_COMP_STATUS_SUCCESS,
+        payload: data
+    }
+}
+
+const signeeCompStatusFailure = (error) => {
+    return {
+        type: CHANGE_SIGNEE_COMP_STATUS_ERROR,
+        payload: error
     }
 }

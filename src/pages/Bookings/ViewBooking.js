@@ -12,6 +12,7 @@ import {
     TableCell,
     Backdrop,
     CircularProgress,
+    FormControl, Select, MenuItem
 } from '@material-ui/core';
 import { Link, NavLink } from "react-router-dom";
 import { Pagination } from '@material-ui/lab';
@@ -19,8 +20,9 @@ import SearchIcon from '@material-ui/icons/Search';
 import { alpha } from '@material-ui/core/styles/colorManipulator';
 import AddIcon from '@material-ui/icons/Add';
 import { useDispatch, useSelector } from 'react-redux';
-import { getBooking } from '../../store/action';
+import { changeShiftStatus, getBooking } from '../../store/action';
 import history from '../../utils/HistoryUtils';
+import Notification from '../../components/Notification/Notification';
 
 const useStyle = makeStyles((theme) => ({
     root: {
@@ -112,11 +114,18 @@ const ViewBooking = ({ match }) => {
     const [page, setPage] = React.useState(1);
     const [searchData, setSearchData] = useState({ search: "" });
     const staffDetail = JSON.parse(localStorage.getItem("staffDetail"));
+    const [activeIndex, setActiveIndex] = useState(0);
+    const [bookingNotify, setBookingNotify] = useState(false);
 
-    const { bookingItem, loading } = useSelector(state => state.booking)
+    const { bookingItem, loading, shiftStatusSuccess } = useSelector(state => state.booking)
 
-    const getBookingList = (pageNo = 1, search = '') => {
-        dispatch(getBooking({ pageNo, search }))
+    const [bookingStatus, setBookingStatus] = useState({
+        booking_id: "",
+        status: ""
+    });
+
+    const getBookingList = (pageNo = 1, search = '', status) => {
+        dispatch(getBooking({ pageNo, search, status }))
     }
 
     const onhandlClick = (id) => {
@@ -146,6 +155,28 @@ const ViewBooking = ({ match }) => {
     useEffect(() => {
         getBookingList()
     }, [])
+
+    const tabChange = (index, list) => {
+        setActiveIndex(index)
+        getBookingList(page, "", list)
+
+    }
+
+    const handleBookingStatus = (event, id) => {
+        setBookingStatus({ ...bookingStatus, [event.target.name]: event.target.value, booking_id: id });
+    };
+
+    useEffect(() => {
+        if (bookingStatus.booking_id !== "") {
+            dispatch(changeShiftStatus(bookingStatus))
+            setBookingNotify(true)
+            setTimeout(() => {
+                getBookingList()
+            }, 4000);
+        }
+
+    }, [bookingStatus])
+
     return (
         <>
             {
@@ -153,6 +184,12 @@ const ViewBooking = ({ match }) => {
                     <Backdrop className={classes.backdrop} open={loading}>
                         <CircularProgress color="inherit" />
                     </Backdrop> : ""
+            }
+            {bookingNotify && shiftStatusSuccess?.message &&
+                <Notification
+                    data={shiftStatusSuccess?.message}
+                    status="success"
+                />
             }
             <p className="mb-6">Welcome to your Pluto Software admin dashboard. Here you can get an overview of your account activity, or use navigation on the left hand side to get to your desired location.</p>
             <Paper className={`${classes.root} mb-6`}>
@@ -168,7 +205,7 @@ const ViewBooking = ({ match }) => {
                         />
                     </div>
                     {
-                        (staffDetail !== "Finance") && 
+                        (staffDetail !== "Finance") &&
                         <div className="ml-5">
                             <Link to={`${match.url}/create`} className="btn btn-secondary">
                                 <AddIcon className="mr-2" />Add Booking
@@ -177,7 +214,12 @@ const ViewBooking = ({ match }) => {
                     }
                 </Box>
                 <Box className={classes.statusButton}>
-                    <NavLink to="#" className="btn active">Created</NavLink>
+                    {
+                        ['Created', 'Confirmed', 'Cancel'].map((list, index) => (
+
+                            <span className={`btn ${activeIndex === index ? "active" : ""}`} key={index} onClick={() => tabChange(index, list)}>{list}</span>
+                        ))
+                    }
                     {/* <NavLink to="/admin/bookings/1" className="btn">Confirmed</NavLink>
                     <NavLink to="/admin/bookings/1" className="btn">Cancel</NavLink> */}
                 </Box>
@@ -185,11 +227,12 @@ const ViewBooking = ({ match }) => {
                     <TableHead>
                         <TableRow>
                             <TableCell>Id</TableCell>
-                            <TableCell align="left">Trust name</TableCell>
+                            <TableCell align="left">Trust Name</TableCell>
+                            <TableCell align="left">Hospital Name</TableCell>
                             <TableCell align="left">Ward Name</TableCell>
                             <TableCell align="left">Grade</TableCell>
                             <TableCell align="left">Date</TableCell>
-                            <TableCell align="left">Shift time</TableCell>
+                            <TableCell align="left">Shift Time</TableCell>
                             <TableCell align="left">Status</TableCell>
                             <TableCell align="right"></TableCell>
                         </TableRow>
@@ -200,11 +243,31 @@ const ViewBooking = ({ match }) => {
                                 <TableRow key={index}>
                                     <TableCell scope="row">{bookingItem?.data?.from + index}</TableCell>
                                     <TableCell align="left">{row.name}</TableCell>
+                                    <TableCell align="left">{row.hospital_name}</TableCell>
                                     <TableCell align="left">{row.ward_name}</TableCell>
                                     <TableCell align="left">{row.grade_name}</TableCell>
                                     <TableCell align="left">{row.date}</TableCell>
-                                    <TableCell align="left">{row.start_time} - {row.end_time}</TableCell>
-                                    <TableCell align="left">{row.status} </TableCell>
+                                    <TableCell align="left">{row.start_time} <br/> {row.end_time}</TableCell>
+                                    <TableCell align="left">
+                                        <FormControl variant="outlined" className={classes.formControl1} fullWidth>
+                                            <Select
+                                                value={row?.status || ""}
+                                                name="status"
+                                                onChange={(e) => handleBookingStatus(e, row.id)}
+                                                disabled = {row.status === "CANCEL"? true: false}
+                                            >
+                                                {
+                                                    row.status === "CREATED" && <MenuItem value="CREATED">Created</MenuItem>
+                                                }
+                                                {
+                                                   ( row.status === "CREATED" || row.status === "CONFIRMED") && <MenuItem value="CONFIRMED">Confirmed</MenuItem>
+                                                }
+                                                
+                                                {/* <MenuItem value="CONFIRMED">Confirmed</MenuItem> */}
+                                                <MenuItem value="CANCEL">Cancel</MenuItem>
+                                            </Select>
+                                        </FormControl>
+                                    </TableCell>
                                     <TableCell align="right">
                                         <Link to="#" onClick={() => onhandlClick(row.id)} className="btn btn-secondary" >View</Link>
                                     </TableCell>
@@ -214,7 +277,7 @@ const ViewBooking = ({ match }) => {
                             !bookingItem?.data &&
                             <TableRow>
                                 <TableCell scope="row" colSpan="8">
-                                    <div className="" align="center">Sorry, booking  not available!</div>
+                                    <div className="" align="center">Sorry, booking not available!</div>
                                 </TableCell>
                             </TableRow>
                         }

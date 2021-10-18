@@ -12,14 +12,16 @@ import {
     TableBody,
     Backdrop,
     CircularProgress,
+    FormControl, Select, MenuItem
 } from '@material-ui/core';
 import { Pagination } from '@material-ui/lab';
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import AddIcon from '@material-ui/icons/Add';
 import SearchIcon from '@material-ui/icons/Search';
-import { getSignee } from '../../store/action';
+import { getSignee, signeeCompStatus, signeeProStatus } from '../../store/action';
 import history from '../../utils/HistoryUtils';
+import Notification from '../../components/Notification/Notification';
 
 const useStyle = makeStyles((theme) => ({
     root: {
@@ -77,15 +79,61 @@ const useStyle = makeStyles((theme) => ({
         display: "flex",
         alignItems: "center",
     },
+    formControl: {
+        width: 190
+    },
+    formControl1: {
+        width: 120
+    }
 }))
 
-const ViewSignee = ({match}) => {
+const ViewSignee = ({ match }) => {
     const classes = useStyle()
     const dispatch = useDispatch();
-    const { getSigneeItem, loading } = useSelector(state => state.signee)
-    const [page, setPage]= useState(1)
+    const { getSigneeItem, loading, signeeComStatusSuccess, signeeProStatusSuccess } = useSelector(state => state.signee)
+    const [page, setPage] = useState(1)
     const [searchData, setSearchData] = useState({ search: "" });
     const staffDetail = JSON.parse(localStorage.getItem("staffDetail"));
+    const [compNotify, setCompNotify] = useState(false);
+
+    const [profileStatus, setProfileStatus] = useState({
+        signee_id: "",
+        status: ""
+    });
+    const [complainceStatus, setComplainceStatus] = useState({
+        signee_id: "",
+        status: ""
+    });
+
+    const handleProfileStatus = (event, id) => {
+        setProfileStatus({ ...profileStatus, [event.target.name]: event.target.value, signee_id: id });
+    };
+    const handleComplianceStatus = (event, id) => {
+        setComplainceStatus({ ...complainceStatus, [event.target.name]: event.target.value, signee_id: id });
+    };
+
+    useEffect(() => {
+        if(complainceStatus.signee_id !== ""){
+            dispatch(signeeCompStatus(complainceStatus))
+            setCompNotify(true)
+            setTimeout(() => {
+                getSigneeList()
+            }, 4000);
+        }
+
+    },[complainceStatus])
+
+    useEffect(() => {
+        if(profileStatus.signee_id !== ""){
+            dispatch(signeeProStatus(profileStatus))
+            setCompNotify(true)
+            setTimeout(() => {
+                getSigneeList()
+            }, 4000);
+        }
+
+    },[profileStatus])
+
 
     const handleSearchChange = (event) => {
         const d1 = event.target.value
@@ -125,6 +173,12 @@ const ViewSignee = ({match}) => {
                         <CircularProgress color="inherit" />
                     </Backdrop> : ""
             }
+            {compNotify && (signeeComStatusSuccess?.message || signeeProStatusSuccess?.message) &&
+                <Notification
+                    data={signeeComStatusSuccess?.message || signeeProStatusSuccess?.message}
+                    status="success"
+                />
+            }
             <p className="mb-6">Welcome to your Pluto Software admin dashboard. Here you can get an overview of your account activity, or use navigation on the left hand side to get to your desired location.</p>
             <Paper className={`${classes.root} mb-6`}>
                 <Box className="mb-5" display="flex" alignItems="center">
@@ -139,14 +193,14 @@ const ViewSignee = ({match}) => {
                         />
                     </div>
                     {
-                        (staffDetail !== "Finance") && 
+                        (staffDetail !== "Finance") &&
                         <div className="ml-5">
                             <Link to={`${match.url}/create`} className="btn btn-secondary">
                                 <AddIcon className="mr-2" />Add Signee
                             </Link>
                         </div>
                     }
-                    
+
                 </Box>
 
                 <Table className={classes.table}>
@@ -156,6 +210,8 @@ const ViewSignee = ({match}) => {
                             <TableCell align="left">Signee Name</TableCell>
                             <TableCell align="left">Email</TableCell>
                             <TableCell align="left">Contact number</TableCell>
+                            <TableCell align="left">Profile Status</TableCell>
+                            <TableCell align="left">Complaince Status</TableCell>
                             {/* <TableCell align="left">DOB</TableCell> */}
                             <TableCell align="right" style={{ width: 140 }}></TableCell>
                         </TableRow>
@@ -169,6 +225,35 @@ const ViewSignee = ({match}) => {
                                         <TableCell align="left">{`${list.first_name} ${list.last_name}`}</TableCell>
                                         <TableCell align="left">{list.email}</TableCell>
                                         <TableCell align="left">{list.contact_number ? list.contact_number : "-"}</TableCell>
+                                        <TableCell align="left">
+                                            <FormControl variant="outlined" className={classes.formControl1} fullWidth>
+                                                <Select
+                                                    value={list?.signee_status || ""}
+                                                    name="status"
+                                                    onChange={(e) => handleProfileStatus(e, list.id)}
+                                                >
+                                                    <MenuItem value="Active">Active</MenuItem>
+                                                    <MenuItem value="Inactive">Inactive</MenuItem>
+                                                    <MenuItem value="Dormant">Dormart</MenuItem>
+                                                </Select>
+                                            </FormControl>
+                                        </TableCell>
+                                        <TableCell align="left">
+                                            <FormControl variant="outlined" className={classes.formControl} fullWidth>
+                                                <Select
+                                                    value={list?.compliance_status || ""}
+                                                    name="status"
+                                                    onChange={(e) => handleComplianceStatus(e, list.id)}
+                                                    defaultValue={0}
+                                                >
+                                                    <MenuItem value="NEW SIGNUP">New Signup</MenuItem>
+                                                    <MenuItem value="COMPLIANCE REVIEW">Complaince review</MenuItem>
+                                                    <MenuItem value="NOT COMPLIANT">Not Complaint</MenuItem>
+                                                    <MenuItem value="COMPLIANT">Complaint</MenuItem>
+                                                    <MenuItem value="ON HOLD">On Hold</MenuItem>
+                                                </Select>
+                                            </FormControl>
+                                        </TableCell>
                                         {/* <TableCell align="left">{list.date_of_birth}</TableCell> */}
                                         <TableCell align="right">
                                             <Link to="#" className="btn btn-secondary" onClick={e => onhandlClick(list.id)}>View</Link>
@@ -183,7 +268,7 @@ const ViewSignee = ({match}) => {
                                 <TableCell align="center" colSpan="6" scope=""> Sorry no record available</TableCell>
                             </TableRow>
                         }
-                        
+
                     </TableBody>
                 </Table>
                 <Box className="mt-5" display="flex" justifyContent="flex-end">

@@ -1,5 +1,4 @@
 import Bookings from "./pages/Bookings/Bookings";
-import CreateBooking from "./pages/Bookings/CreateBooking";
 import ChangePassword from "./pages/ChangePassword/ChangePassword";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Organization from "./pages/Organization/Organization";

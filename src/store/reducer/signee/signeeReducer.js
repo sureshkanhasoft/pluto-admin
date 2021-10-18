@@ -6,18 +6,24 @@ const initialState = {
     getSigneeItem: [],
     getSigneeError: [],
 
-    getSingleSigneeItem:[],
-    getSingleSigneeError:[],
+    getSingleSigneeItem: [],
+    getSingleSigneeError: [],
 
-    createSigneeSuccess:[],
-    createSigneeError:[],
-    updateSigneeSuccess:[],
-    updateSigneeError:[],
+    createSigneeSuccess: [],
+    createSigneeError: [],
+    updateSigneeSuccess: [],
+    updateSigneeError: [],
 
-    deleteSigneeSuccess:[],
-    deleteSigneeError:[],
+    deleteSigneeSuccess: [],
+    deleteSigneeError: [],
 
-    getCandidateReferrredForm:[]
+    getCandidateReferrredForm: [],
+
+    signeeProStatusSuccess:[],
+    signeeProStatusError:[],
+
+    signeeComStatusSuccess:[],
+    signeeComStatusError:[]
 }
 
 const signeeReducer = (state = initialState, action) => {
@@ -30,102 +36,145 @@ const signeeReducer = (state = initialState, action) => {
         case actionTypes.GET_SIGNEE_SUCCESS:
             return updateObject(state, {
                 loading: false,
-                getSigneeItem:action.payload
+                getSigneeItem: action.payload
             })
 
         case actionTypes.GET_SIGNEE_ERROR:
             return updateObject(state, {
                 loading: false,
-                getSigneeError:action.payload
+                getSigneeError: action.payload
             })
 
         case actionTypes.CREATE_SIGNEE_REQUETS:
             return updateObject(state, {
                 loading: true,
-                createSigneeSuccess:"",
-                createSigneeError:""
+                createSigneeSuccess: "",
+                createSigneeError: ""
             })
 
         case actionTypes.CREATE_SIGNEE_SUCCESS:
             return updateObject(state, {
                 loading: false,
-                createSigneeSuccess:action.payload
+                createSigneeSuccess: action.payload
             })
 
         case actionTypes.CREATE_SIGNEE_ERROR:
             return updateObject(state, {
                 loading: false,
-                createSigneeError:action.payload
+                createSigneeError: action.payload
             })
 
 
         case actionTypes.UPDATE_SIGNEE_REQUETS:
             return updateObject(state, {
                 loading: true,
-                updateSigneeSuccess:"",
-                updateSigneeError:""
+                updateSigneeSuccess: "",
+                updateSigneeError: ""
             })
 
         case actionTypes.UPDATE_SIGNEE_SUCCESS:
             return updateObject(state, {
                 loading: false,
-                updateSigneeSuccess:action.payload
+                updateSigneeSuccess: action.payload
             })
 
         case actionTypes.UPDATE_SIGNEE_ERROR:
             return updateObject(state, {
                 loading: false,
-                updateSigneeError:action.payload
+                updateSigneeError: action.payload
             })
 
 
         case actionTypes.GET_SINGLE_SIGNEE_REQUETS:
             return updateObject(state, {
                 loading: true,
-                getSingleSigneeItem:"",
-                getSingleSigneeError:""
+                getSingleSigneeItem: "",
+                getSingleSigneeError: ""
             })
 
         case actionTypes.GET_SINGLE_SIGNEE_SUCCESS:
             return updateObject(state, {
                 loading: false,
-                getSingleSigneeItem:action.payload
+                getSingleSigneeItem: action.payload
             })
 
         case actionTypes.GET_SINGLE_SIGNEE_ERROR:
             return updateObject(state, {
                 loading: false,
-                getSingleSigneeError:action.payload
+                getSingleSigneeError: action.payload
             })
 
 
         case actionTypes.DELETE_SIGNEE_REQUETS:
             return updateObject(state, {
                 loading: true,
-                deleteSigneeSuccess:"",
-                deleteSigneeError:""
+                deleteSigneeSuccess: "",
+                deleteSigneeError: ""
             })
 
         case actionTypes.DELETE_SIGNEE_SUCCESS:
             return updateObject(state, {
                 loading: false,
-                deleteSigneeSuccess:action.payload
+                deleteSigneeSuccess: action.payload
             })
 
         case actionTypes.DELETE_SIGNEE_ERROR:
             return updateObject(state, {
                 loading: false,
-                deleteSigneeError:action.payload
+                deleteSigneeError: action.payload
             })
 
         case actionTypes.GET_CANDIDATE_REFERRED_FROM_SUCCESS:
             return updateObject(state, {
                 loading: false,
-                getCandidateReferrredForm:action.payload
+                getCandidateReferrredForm: action.payload
             })
-            
-    
-        default:return state
+
+        // -------------------------------------------
+
+        case actionTypes.CHANGE_SIGNEE_PRO_STATUS_REQUEST:
+            return updateObject(state, {
+                loading: true,
+                signeeProStatusSuccess: "",
+                signeeProStatusError: ""
+            })
+
+        case actionTypes.CHANGE_SIGNEE_PRO_STATUS_SUCCESS:
+            return updateObject(state, {
+                loading: false,
+                signeeProStatusSuccess: action.payload
+            })
+
+        case actionTypes.CHANGE_SIGNEE_PRO_STATUS_ERROR:
+            return updateObject(state, {
+                loading: false,
+                signeeProStatusError: action.payload
+            })
+
+
+         // -------------------------------------------
+
+         case actionTypes.CHANGE_SIGNEE_COMP_STATUS_REQUEST:
+            return updateObject(state, {
+                loading: false,
+                signeeComStatusSuccess: "",
+                signeeComStatusError: ""
+            })
+
+        case actionTypes.CHANGE_SIGNEE_COMP_STATUS_SUCCESS:
+            return updateObject(state, {
+                loading: false,
+                signeeComStatusSuccess: action.payload
+            })
+
+        case actionTypes.CHANGE_SIGNEE_COMP_STATUS_ERROR:
+            return updateObject(state, {
+                loading: false,
+                signeeComStatusError: action.payload
+            })
+
+
+        default: return state
     }
 };
 

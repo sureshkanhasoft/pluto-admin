@@ -1,28 +1,26 @@
 import axios from "axios";
+import { apiClient } from "../../../config/apiClient";
 import apiConfigs from "../../../config/config";
 import history from "../../../utils/HistoryUtils";
 import {
+    CHANGE_SHIFT_STATUS_ERROR, CHANGE_SHIFT_STATUS_REQUEST, CHANGE_SHIFT_STATUS_SUCCESS,
+    CONFIRM_BOOKING_ERROR, CONFIRM_BOOKING_REQUEST, CONFIRM_BOOKING_SUCCESS,
     CREATE_BOOKING_ERROR, CREATE_BOOKING_REQUEST, CREATE_BOOKING_SUCCESS,
     DELETE_BOOKING_ERROR, DELETE_BOOKING_REQUEST, DELETE_BOOKING_SUCCESS,
     GET_BOOKING_ERROR, GET_BOOKING_REQUEST, GET_BOOKING_SUCCESS,
     UPDATE_BOOKING_ERROR, UPDATE_BOOKING_REQUEST, UPDATE_BOOKING_SUCCESS
 } from "../actiontypes";
 
-export const getBooking = ({pageNo=1, search = ''}) => {
-    const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, '');
+export const getBooking = ({ pageNo = 1, search = '', status = "CREATED" }) => {
     return async (dispatch) => {
         dispatch(getBookingRequest())
-        await axios.get(`${apiConfigs.API_URL}api/organization/booking-by-status?status=OPEN&search=${search}&page=${pageNo}`, {
-            'headers': {
-                'Content-type': 'application/json',
-                'Authorization': 'Bearer ' + loggedInUser
-            }
-        }).then(response => {
-            dispatch(getBookingSuccess(response.data))
-        }).catch(error => {
-            dispatch(getBookingSuccess(""))
-            dispatch(getBookingError(error))
-        })
+        await apiClient(true).get(`api/organization/booking-by-status?status=${status}&search=${search}&page=${pageNo}`)
+            .then(response => {
+                dispatch(getBookingSuccess(response.data))
+            }).catch(error => {
+                dispatch(getBookingSuccess(""))
+                dispatch(getBookingError(error))
+            })
     }
 }
 
@@ -192,6 +190,79 @@ const deleteBookingSuccess = (data) => {
 const deleteBookingError = (error) => {
     return {
         type: DELETE_BOOKING_ERROR,
+        payload: error
+    }
+}
+
+
+// --------------------------------------------
+
+export const confirmBooking = (data) => {
+    return async (dispatch) => {
+        dispatch(confirmBookingRequest())
+        await apiClient(true).post(`api/organization/user/confirm-booking`, data)
+            .then(response => {
+                const dataItem = response.data;
+                dispatch(confirmBookingSuccess(dataItem))
+            }).catch(error => {
+                dispatch(confirmBookingSuccess([]))
+                dispatch(confirmBookingFailure(error))
+            });
+    }
+}
+
+const confirmBookingRequest = () => {
+    return {
+        type: CONFIRM_BOOKING_REQUEST
+    }
+}
+
+const confirmBookingSuccess = (data) => {
+    return {
+        type: CONFIRM_BOOKING_SUCCESS,
+        payload: data
+    }
+}
+
+const confirmBookingFailure = (error) => {
+    return {
+        type: CONFIRM_BOOKING_ERROR,
+        payload: error
+    }
+}
+
+
+// --------------------------------------------
+
+export const changeShiftStatus = (data) => {
+    return async (dispatch) => {
+        dispatch(changeShiftStatusRequest())
+        await apiClient(true).post(`api/organization/user/change-shift-status`, data)
+            .then(response => {
+                const dataItem = response.data;
+                dispatch(changeShiftStatusSuccess(dataItem))
+            }).catch(error => {
+                dispatch(changeShiftStatusFailure(error))
+            });
+    }
+}
+
+const changeShiftStatusRequest = () => {
+    return {
+        type: CHANGE_SHIFT_STATUS_REQUEST
+    }
+}
+
+const changeShiftStatusSuccess = (data) => {
+    return {
+        type: CHANGE_SHIFT_STATUS_SUCCESS,
+        payload: data
+    }
+}
+
+const changeShiftStatusFailure = (error) => {
+    return {
+        type: CHANGE_SHIFT_STATUS_ERROR,
         payload: error
     }
 }

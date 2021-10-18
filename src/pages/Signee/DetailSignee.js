@@ -9,6 +9,7 @@ import {
     Backdrop,
     CircularProgress,
 } from "@material-ui/core";
+import { Link } from 'react-router-dom';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import AlertDialog from '../../components/Alert/AlertDialog';
@@ -16,12 +17,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import history from '../../utils/HistoryUtils';
 import { deleteSignee, getSingleSignee } from '../../store/action';
 import Notification from '../../components/Notification/Notification';
+import InsertPhotoOutlinedIcon from '@material-ui/icons/InsertPhotoOutlined';
+import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
+import InfoIcon from '@material-ui/icons/Info';
+import { SpaRounded } from '@material-ui/icons';
 
 const useStyle = makeStyles((theme) => ({
     root: {
         width: '100%',
         overflowX: 'auto',
         padding: 24,
+    },
+    root1: {
+        padding: 24,
+        marginBottom: 16
     },
     desc: {
         fontSize: 16
@@ -44,10 +53,21 @@ const useStyle = makeStyles((theme) => ({
                 height: "auto"
             }
         },
+    },
+    mainTitle: {
+        fontSize: 18,
+        color: "#ff8b46",
+        fontWeight: "500",
+    },
+    boxContainer: {
+        borderBottom: "1px solid #ccc",
+        '&:last-child': {
+            borderBottom: "none"
+        }
     }
 }))
 
-const DetailSignee = ({match}) => {
+const DetailSignee = ({ match }) => {
     const classes = useStyle();
     const dispatch = useDispatch()
     const user_id = match.params.id;
@@ -55,8 +75,9 @@ const DetailSignee = ({match}) => {
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [signeeNotify, setSigneeNotify] = useState(false)
     const staffDetail = JSON.parse(localStorage.getItem("staffDetail"));
+    const baseUrl = "http://backendbooking.kanhasoftdev.com/public/uploads/signee_docs/"
 
-    const {getSingleSigneeItem, loading, deleteSigneeSuccess, deleteSigneeError} = useSelector(state => state.signee)
+    const { getSingleSigneeItem, loading, deleteSigneeSuccess, deleteSigneeError } = useSelector(state => state.signee)
 
     const deleteStaffItem = (id) => {
         setDeleteOpen(true)
@@ -73,7 +94,7 @@ const DetailSignee = ({match}) => {
     }
     useEffect(() => {
         dispatch(getSingleSignee(user_id))
-        
+
     }, [user_id])
 
     const backPage = () => {
@@ -82,6 +103,11 @@ const DetailSignee = ({match}) => {
     const upadateLink = () => {
         history.push(`update`)
     }
+
+    // useEffect(() => {
+    //     console.log(' getSingleSigneeItem?.data?.documents: ',  getSingleSigneeItem?.data?.documents);
+    //     console.log(Object.keys(getSingleSigneeItem?.data?.documents));
+    // }, [])
     return (
         <>
             {
@@ -102,7 +128,7 @@ const DetailSignee = ({match}) => {
                     status="error"
                 />
             }
-           <Paper className={`${classes.root} mb-6`}>
+            <Paper className={`${classes.root} mb-6`}>
                 <Grid container spacing={4}>
                     {/* <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
                         <Typography variant="body2" className={classes.heading}>Candidate Id</Typography>
@@ -124,21 +150,21 @@ const DetailSignee = ({match}) => {
                         <Typography variant="body2" className={classes.heading}>Password</Typography>
                         <Typography variant="h6" className={classes.desc}>{getSingleSigneeItem?.data?.candidate_id}</Typography>
                     </Grid> */}
-                     <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
+                    <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
                         <Typography variant="body2" className={classes.heading}>Contact Number</Typography>
-                        <Typography variant="h6" className={classes.desc}>{getSingleSigneeItem?.data?.contact_number? getSingleSigneeItem?.data?.contact_number : "-"}</Typography>
+                        <Typography variant="h6" className={classes.desc}>{getSingleSigneeItem?.data?.contact_number ? getSingleSigneeItem?.data?.contact_number : "-"}</Typography>
                     </Grid>
                     <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
                         <Typography variant="body2" className={classes.heading}>Date of birth</Typography>
-                        <Typography variant="h6" className={classes.desc}>{getSingleSigneeItem?.data?.date_of_birth ? getSingleSigneeItem?.data?.date_of_birth :"-"}</Typography>
+                        <Typography variant="h6" className={classes.desc}>{getSingleSigneeItem?.data?.date_of_birth ? getSingleSigneeItem?.data?.date_of_birth : "-"}</Typography>
                     </Grid>
-                   
+
                     {/* <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
                         <Typography variant="body2" className={classes.heading}>Phone Number</Typography>
                         <Typography variant="h6" className={classes.desc}>{getSingleSigneeItem?.data?.phone_number}</Typography>
                     </Grid> */}
-                   
-                    
+
+
                     <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
                         <Typography variant="body2" className={classes.heading}>Address</Typography>
                         <Typography variant="h6" className={classes.desc}>{getSingleSigneeItem?.data?.address_line_1 ? getSingleSigneeItem?.data?.address_line_1 : '-'} {getSingleSigneeItem?.data?.address_line_2}</Typography>
@@ -157,13 +183,13 @@ const DetailSignee = ({match}) => {
                     </Grid>
                     <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
                         <Typography variant="body2" className={classes.heading}>Nationality</Typography>
-                        <Typography variant="h6" className={classes.desc}>{getSingleSigneeItem?.data?.nationality ? getSingleSigneeItem?.data?.nationality :"-"}</Typography>
+                        <Typography variant="h6" className={classes.desc}>{getSingleSigneeItem?.data?.nationality ? getSingleSigneeItem?.data?.nationality : "-"}</Typography>
                     </Grid>
-                    
-                   
+
+
                     <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
                         <Typography variant="body2" className={classes.heading}>NMC DMC pin</Typography>
-                        <Typography variant="h6" className={classes.desc}>{getSingleSigneeItem?.data?.nmc_dmc_pin? getSingleSigneeItem?.data?.nmc_dmc_pin :"-"}</Typography>
+                        <Typography variant="h6" className={classes.desc}>{getSingleSigneeItem?.data?.nmc_dmc_pin ? getSingleSigneeItem?.data?.nmc_dmc_pin : "-"}</Typography>
                     </Grid>
                     {/* <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
                         <Typography variant="body2" className={classes.heading}>Candidate Referred from</Typography>
@@ -175,9 +201,9 @@ const DetailSignee = ({match}) => {
                                 Back
                             </Button>
                             {
-                                (staffDetail !== "Finance") && 
+                                (staffDetail !== "Finance") &&
                                 <>
-                                     <Button variant="contained" color="primary" onClick={upadateLink}>
+                                    <Button variant="contained" color="primary" onClick={upadateLink}>
                                         <EditIcon className="mr-2" />Edit
                                     </Button>
                                     <Button variant="contained" color="secondary" onClick={(e) => deleteStaffItem(getSingleSigneeItem?.data?.id)}>
@@ -185,11 +211,69 @@ const DetailSignee = ({match}) => {
                                     </Button>
                                 </>
                             }
-                           
+
                         </Box>
                     </Grid>
                 </Grid>
             </Paper>
+
+            <Typography variant="h5" style={{ marginBottom: 16 }}>Document Details</Typography>
+            {
+                getSingleSigneeItem?.data && getSingleSigneeItem?.data?.documents && Object.entries(getSingleSigneeItem?.data?.documents).map((list, index) => {
+                    console.log('list: ', list[1]);
+                    return (
+                        <Paper className={`${classes.root1}`} key={index}>
+                            <Grid container spacing={2}>
+                                <Grid item xs={12} style={{ display: "flex" }}>
+                                    <InfoIcon style={{ marginRight: 12, opacity: "0.6" }} />
+                                    <Typography className={classes.mainTitle}>
+                                        {list[0] === 'passport' ? "Copy of Passport in Colour including front cover. (Right to work)" : ""}
+                                        {list[0] === "immunisation_record" ? "Immunisation records - Proof of immunity for (Varicella, Tuberculosis, Rubella, Measles, Hep B Level 100). Blood results needs to be traceable to exact Clinic/ source. For EPP clearance ( HIV 1 & 2) Hep C and Hep B surface antigen ( IVS)" : ""}
+                                        {list[0] === "training_certificates" ? "Mandatory training certificates- Fire safety, BLS,MH, Infection control, safeguarding child/Adult etc" : ""}
+                                        {list[0] === "nursing_certificates" ? "Nursing Certificates/ Diploma/NVQ" : ""}
+                                        {list[0] === "professional_indemnity_insurance" ? "Proof of Current Professional Indemnity Insurance" : ""}
+                                        {list[0] === "nmc_statement" ? "NMC statement of entry" : ""}
+                                        {list[0] === "dbs_disclosure_certificate" ? "DBS disclosure certificate- Front and back" : ""}
+                                        {list[0] === "cv" ? "CV- Work history from school leaving age with no gaps. Please ensure that all dates are in (DD/MM/YY) format" : ""}
+                                        {list[0] === "employment" ? "TWO references covering the last 3 years of employment (must include hospital/company stamp or company/hospital logo letter head)" : ""}
+                                        {list[0] === "address_proof" ? "TWO proofs of address dated within last 3 months (bank statement, utility bill, official government letter etc.)" : ""}
+                                        {list[0] === "passport_photo" ? "X1 passport Photo for ID badge" : ""}
+                                        {list[0] === 'ni_proof' ? "Proof of NI- Any letter from HMRC showing NI number or Copy of NI card ( front & back Copy ) -We don’t accept payslips" : ""}
+                                    </Typography>
+                                </Grid>
+                                {
+                                    list[1].map((fileList, index2) => {
+                                        const filename = `${fileList.file_name}`
+                                        const extension = filename.split('.').pop()
+                                        return (
+                                            <Grid item xs={12} className={classes.boxContainer} key={index2}>
+                                                <div className="compliance-container">
+                                                    <div className="image-icon" style={{ marginRight: 12, opacity: "0.6" }}>
+                                                        {extension === "pdf" ? <PictureAsPdfIcon /> : <InsertPhotoOutlinedIcon />}
+                                                    </div>
+                                                    <Link to={{ pathname: `${baseUrl}${filename}` }} target="_blank" >{filename}</Link>
+                                                </div>
+                                            </Grid>
+                                        )
+                                    })
+                                }
+                                {
+                                    list[1].length === 0 &&
+                                    <Grid item xs={12} className={classes.boxContainer}>
+                                        <div className="compliance-container">
+                                            <div className="image-icon" style={{ marginRight: 12, opacity: "0.6" }}></div>
+                                            <span >Sorry, file does't exits</span>
+                                        </div>
+                                    </Grid>
+                                }
+
+                            </Grid>
+                        </Paper>
+                    )
+                })
+            }
+
+
 
             <AlertDialog
                 id={Id}

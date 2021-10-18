@@ -53,7 +53,9 @@ export {
     getBooking,
     createBooking,
     updateBooking,
-    deleteBooking
+    deleteBooking,
+    confirmBooking,
+    changeShiftStatus
 } from './booking/bookingAction'
 
 
@@ -63,7 +65,9 @@ export {
     updateSignee,
     getCandidateReferredFrom,
     getSingleSignee,
-    deleteSignee
+    deleteSignee,
+    signeeProStatus,
+    signeeCompStatus,
 } from './signee/signeeAction'
 
 // -----------------------------

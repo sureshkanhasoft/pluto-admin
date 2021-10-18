@@ -13,7 +13,13 @@ const initialState = {
     updateBookingError: [],
 
     deleteBookingSuccess: [],
-    deleteBookingError: []
+    deleteBookingError: [],
+
+    confirmBookingSuccess: [],
+    confirmBookingError: [],
+
+    shiftStatusSuccess: [],
+    shiftStatusError: []
 }
 
 const bookingReducer = (state = initialState, action) => {
@@ -75,8 +81,8 @@ const bookingReducer = (state = initialState, action) => {
         case actionTypes.DELETE_BOOKING_REQUEST:
             return updateObject(state, {
                 loading: true,
-                deleteBookingSuccess:"",
-                deleteBookingError:""
+                deleteBookingSuccess: "",
+                deleteBookingError: ""
             })
 
         case actionTypes.DELETE_BOOKING_SUCCESS:
@@ -89,6 +95,52 @@ const bookingReducer = (state = initialState, action) => {
             return updateObject(state, {
                 loading: false,
                 deleteBookingError: action.payload
+            })
+
+
+        // -------------------------------------
+
+        case actionTypes.CONFIRM_BOOKING_REQUEST:
+            return updateObject(state, {
+                loading: true,
+                confirmBookingSuccess: "",
+                confirmBookingError: ""
+
+            })
+
+        case actionTypes.CONFIRM_BOOKING_SUCCESS:
+            return updateObject(state, {
+                loading: false,
+                confirmBookingSuccess: action.payload
+            })
+
+        case actionTypes.CONFIRM_BOOKING_ERROR:
+            return updateObject(state, {
+                loading: false,
+                confirmBookingError: action.payload
+            })
+
+
+        // -------------------------------------
+
+        case actionTypes.CHANGE_SHIFT_STATUS_REQUEST:
+            return updateObject(state, {
+                loading: true,
+                shiftStatusSuccess: "",
+                shiftStatusError: ""
+
+            })
+
+        case actionTypes.CHANGE_SHIFT_STATUS_SUCCESS:
+            return updateObject(state, {
+                loading: false,
+                shiftStatusSuccess: action.payload
+            })
+
+        case actionTypes.CHANGE_SHIFT_STATUS_ERROR:
+            return updateObject(state, {
+                loading: false,
+                shiftStatusError: action.payload
             })
 
         default:
