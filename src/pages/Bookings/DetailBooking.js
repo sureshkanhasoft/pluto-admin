@@ -28,7 +28,7 @@ import history from '../../utils/HistoryUtils';
 import AlertDialog from '../../components/Alert/AlertDialog';
 import { useDispatch, useSelector } from 'react-redux';
 import Notification from '../../components/Notification/Notification';
-import { deleteBooking } from '../../store/action';
+import { confirmBooking, deleteBooking } from '../../store/action';
 
 const useStyle = makeStyles((theme) => ({
     root: {
@@ -69,6 +69,8 @@ const useStyle = makeStyles((theme) => ({
     viewBtn: {
         display: "flex",
         alignItems: "center",
+        width: "max-content",
+        cursor: "pointer"
     },
     btnContainer: {
         '& > *': {
@@ -78,26 +80,16 @@ const useStyle = makeStyles((theme) => ({
                 height: "auto"
             }
         },
+    },
+    tabChip: {
+        padding: 0,
+        height: 26,
+        '& .MuiChip-label': {
+            padding: '0 8px',
+            minWidth: 26,
+        }
     }
 }))
-
-const bookingList = [
-    {
-        name: "John Smithh",
-        number: "077777777777",
-        email: "john.smith@example.com",
-    },
-    {
-        name: "Devid Smithh",
-        number: "077777777777",
-        email: "john.smith@example.com",
-    },
-    {
-        name: "Warner Smithh",
-        number: "077777777777",
-        email: "john.smith@example.com",
-    },
-]
 
 
 function TabPanel(props) {
@@ -137,13 +129,21 @@ const DetailBooking = ({ match }) => {
     const open = Boolean(anchorEl);
     const [selected, setSelected] = React.useState([]);
     const staffDetail = JSON.parse(localStorage.getItem("staffDetail"));
+    const loginDetail = JSON.parse(localStorage.getItem("loginUserInfo"));
 
     const [bookingDetail, setBookingDetail] = useState([])
     const [loading, setLoading] = useState(false)
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [staffNotify, setStaffNotify] = useState(false)
+    const [confirmNotify, setConfirmNotify] = useState(false);
 
-    const { deleteBookingSuccess, deleteBookingError } = useSelector(state => state.booking)
+    const { deleteBookingSuccess, deleteBookingError, confirmBookingSuccess, confirmBookingError } = useSelector(state => state.booking)
+
+    const [bookingData, setBookingData] = useState({
+        booking_id: booking_id,
+        signee_id: "",
+        status: ""
+    })
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -156,9 +156,24 @@ const DetailBooking = ({ match }) => {
         setAnchorEl(event.currentTarget);
     };
 
-    const handleClose = () => {
+    const handleClose = (data) => {
         setAnchorEl(null);
     };
+    const handleClose1 = (data, signeeId) => {
+        setBookingData({ ...bookingData, status: data, signee_id: signeeId })
+        setAnchorEl(null);
+    };
+
+    useEffect(() => {
+        if (bookingData.status !== "") {
+            dispatch(confirmBooking(bookingData))
+            setConfirmNotify(true)
+            setTimeout(() => {
+                getBookingDetail()
+            }, 4000);
+        }
+
+    }, [bookingData])
 
     const handleCheckboxClick = (event, name) => {
         const selectedIndex = selected.indexOf(name);
@@ -218,10 +233,11 @@ const DetailBooking = ({ match }) => {
         history.go(-2)
     }
 
-    const signeePage = (e) => {
+    const signeePage = (e, signeeId) => {
         e.preventDefault();
-        // console.log('details')
-        history.push('/admin/signee/214/detail')
+        const adminUrl = loginDetail.role === "ORGANIZATION" ? 'admin' : 'staff'
+        // console.log(`/${(adminUrl).toLowerCase()}/signee/${signeeId}/detail`)
+        history.push(`/${(adminUrl).toLowerCase()}/signee/${signeeId}/detail`)
     }
     return (
         <>
@@ -243,6 +259,12 @@ const DetailBooking = ({ match }) => {
                 <Notification
                     data={deleteBookingError?.message}
                     status="error"
+                />
+            }
+            {confirmNotify && confirmBookingSuccess?.message &&
+                <Notification
+                    data={confirmBookingSuccess?.message}
+                    status="success"
                 />
             }
             <Paper className={`${classes.root} mb-6`}>
@@ -298,20 +320,20 @@ const DetailBooking = ({ match }) => {
                     </Grid>
                     <Grid item xs={12}>
                         <Box display="flex" justifyContent="flex-end" className={classes.btnContainer}>
-                        <Button color="primary" onClick={backPage}>
-                            Back
-                        </Button>
-                        <Button variant="contained" color="primary" onClick={upadateLink}>
-                                <EditIcon className="mr-2" />Edit
-                        </Button>
-                        {
-                            (staffDetail !== "Finance") && 
-                            <Button variant="contained" color="secondary" onClick={(e) => deleteStaffItem(bookingDetail?.data?.id)}>
-                                <DeleteIcon className="mr-2" />Delete
+                            <Button color="primary" onClick={backPage}>
+                                Back
                             </Button>
-                           
-                        }
-                          
+                            <Button variant="contained" color="primary" onClick={upadateLink}>
+                                <EditIcon className="mr-2" />Edit
+                            </Button>
+                            {
+                                (staffDetail !== "Finance") &&
+                                <Button variant="contained" color="secondary" onClick={(e) => deleteStaffItem(bookingDetail?.data?.id)}>
+                                    <DeleteIcon className="mr-2" />Delete
+                                </Button>
+
+                            }
+
                         </Box>
                     </Grid>
                 </Grid>
@@ -319,8 +341,12 @@ const DetailBooking = ({ match }) => {
 
             <Paper className={`mb-6`}>
                 <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
-                    <Tab label="Matching Candidates" {...a11yProps(0)} />
-                    <Tab label="Interested Candidates" {...a11yProps(1)} />
+                    <Tab
+                        label={<span className={classes.tabLabel}>Matching Candidates {bookingDetail?.data?.matching.length > 0 ? <Chip label={bookingDetail?.data?.matching.length} color="primary" className={classes.tabChip} /> : ""}</span>}
+                        {...a11yProps(0)} />
+                    <Tab label=
+                        {<span className={classes.tabLabel}>Interested Candidates {bookingDetail?.data?.interested.length > 0 ? <Chip label={bookingDetail?.data?.interested.length} color="primary" className={classes.tabChip} /> : ""}</span>}
+                        {...a11yProps(1)} />
                 </Tabs>
                 <TabPanel value={value} index={0}>
                     <Table className={classes.table}>
@@ -336,7 +362,7 @@ const DetailBooking = ({ match }) => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {bookingList.map((row, index) => {
+                            {bookingDetail?.data?.matching && bookingDetail?.data?.matching.map((row, index) => {
                                 const isItemSelected = isSelected(row.name);
                                 // const labelId = `enhanced-table-checkbox-${index}`;
                                 return (
@@ -353,13 +379,13 @@ const DetailBooking = ({ match }) => {
                                             />
                                         </TableCell>
                                         <TableCell scope="row">{index + 1}</TableCell>
-                                        <TableCell align="left">{row.name}</TableCell>
-                                        <TableCell align="left">{row.number}</TableCell>
+                                        <TableCell align="left">{row.first_name} {row.last_name}</TableCell>
+                                        <TableCell align="left">{row.contact_number}</TableCell>
                                         <TableCell align="left">{row.email}</TableCell>
                                         <TableCell align="right">
-                                            <Link onClick={(e) => signeePage(e)} className={classes.viewBtn}>
+                                            <span onClick={(e) => signeePage(e, row.signeeId)} className={classes.viewBtn}>
                                                 <VisibilityIcon className="mr-2" />view
-                                            </Link>
+                                            </span>
                                         </TableCell>
                                         <TableCell align="right">
                                             <IconButton onClick={handleMenu}>
@@ -373,20 +399,106 @@ const DetailBooking = ({ match }) => {
                                                 open={open}
                                                 onClose={handleClose}
                                             >
-                                                <MenuItem onClick={handleClose} className={classes.menuItem}><CheckIcon className="mr-2" />Offer</MenuItem>
-                                                <MenuItem onClick={handleClose} className={classes.menuItem}><StarIcon className="mr-2" />Super Assign</MenuItem>
-                                                <MenuItem onClick={handleClose} className={classes.menuItem}><CloseIcon className="mr-2" />Reject</MenuItem>
+                                                {
+                                                    bookingDetail?.data?.status !== "CONFIRMED" &&
+                                                    <MenuItem onClick={() => handleClose1('OFFER', row.signeeId)} className={classes.menuItem}><CheckIcon className="mr-2" />Offer</MenuItem>
+                                                }
+                                                {
+                                                    bookingDetail?.data?.status !== "CONFIRMED" &&
+                                                    <MenuItem onClick={() => handleClose1('CONFIRMED', row.signeeId)} className={classes.menuItem}><StarIcon className="mr-2" />Super Assign</MenuItem>
+                                                }
+
+                                                <MenuItem onClick={() => handleClose1('CANCEL', row.signeeId)} className={classes.menuItem}><CloseIcon className="mr-2" />Reject</MenuItem>
                                             </Menu>
                                         </TableCell>
                                     </TableRow>
                                 )
 
                             })}
+
+                            {
+                                bookingDetail?.data?.matching.length === 0 &&
+                                <TableRow>
+                                    <TableCell colSpan="7" align="center">No records found</TableCell>
+                                </TableRow>
+                            }
                         </TableBody>
                     </Table>
                 </TabPanel>
                 <TabPanel value={value} index={1}>
-                    Item Two
+                    <Table className={classes.table}>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell style={{ width: 70 }}></TableCell>
+                                <TableCell>Id</TableCell>
+                                <TableCell align="left">Name</TableCell>
+                                <TableCell align="left">Contact Number</TableCell>
+                                <TableCell align="left">Email</TableCell>
+                                <TableCell align="left">Detail</TableCell>
+                                <TableCell align="right">Action</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {bookingDetail?.data?.interested && bookingDetail?.data?.interested.map((row, index) => {
+                                const isItemSelected = isSelected(row.name);
+                                // const labelId = `enhanced-table-checkbox-${index}`;
+                                return (
+                                    <TableRow key={index}>
+                                        <TableCell scope="row">
+                                            <Checkbox
+                                                onClick={event =>
+                                                    handleCheckboxClick(event, row.name)
+                                                }
+                                                className="selectCheckbox"
+                                                checked={isItemSelected}
+                                            // inputProps={{ 'aria-labelledby': labelId }}
+
+                                            />
+                                        </TableCell>
+                                        <TableCell scope="row">{index + 1}</TableCell>
+                                        <TableCell align="left">{row.first_name} {row.last_name}</TableCell>
+                                        <TableCell align="left">{row.contact_number}</TableCell>
+                                        <TableCell align="left">{row.email}</TableCell>
+                                        <TableCell align="right">
+                                            <span onClick={(e) => signeePage(e, row.signeeId)} className={classes.viewBtn}>
+                                                <VisibilityIcon className="mr-2" />view
+                                            </span>
+                                        </TableCell>
+                                        <TableCell align="right">
+                                            <IconButton onClick={handleMenu}>
+                                                <MoreVertIcon />
+                                            </IconButton>
+                                            <Menu
+                                                id="menu-appbar"
+                                                anchorEl={anchorEl}
+                                                getContentAnchorEl={null}
+                                                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                                                open={open}
+                                                onClose={handleClose}
+                                            >
+                                                {
+                                                    bookingDetail?.data?.status !== "CONFIRMED" &&
+                                                    <MenuItem onClick={() => handleClose1('OFFER', row.signeeId)} className={classes.menuItem}><CheckIcon className="mr-2" />Offer</MenuItem>
+                                                }
+                                                {
+                                                    bookingDetail?.data?.status !== "CONFIRMED" &&
+                                                    <MenuItem onClick={() => handleClose1('CONFIRMED', row.signeeId)} className={classes.menuItem}><StarIcon className="mr-2" />Super Assign</MenuItem>
+                                                }
+                                                <MenuItem onClick={() => handleClose1('CANCEL', row.signeeId)} className={classes.menuItem}><CloseIcon className="mr-2" />Reject</MenuItem>
+                                            </Menu>
+                                        </TableCell>
+                                    </TableRow>
+                                )
+
+                            })}
+                            {
+                                bookingDetail?.data?.interested.length === 0 &&
+                                <TableRow>
+                                    <TableCell colSpan="7" align="center">No records found</TableCell>
+                                </TableRow>
+                            }
+                        </TableBody>
+                    </Table>
                 </TabPanel>
             </Paper>
 
@@ -395,7 +507,7 @@ const DetailBooking = ({ match }) => {
                 open={deleteOpen}
                 close={deleteBookingClose}
                 response={alertResponse}
-                title="Delete Trust"
+                title="Delete Booking"
                 description="Are you sure you want to delete?"
                 buttonName="Delete"
             />

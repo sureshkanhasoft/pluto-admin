@@ -257,11 +257,13 @@ const ViewBooking = ({ match }) => {
                                                 disabled = {row.status === "CANCEL"? true: false}
                                             >
                                                 {
-                                                    row.status === "CREATED" && <MenuItem value="CREATED">Created</MenuItem>
+                                                    row.status === "CREATED" && <MenuItem value="CREATED" disabled>Created</MenuItem>
                                                 }
                                                 {
-                                                   ( row.status === "CREATED" || row.status === "CONFIRMED") && <MenuItem value="CONFIRMED">Confirmed</MenuItem>
+                                                    row.status === "CONFIRMED" && <MenuItem value="CONFIRMED" disabled >Confirmed</MenuItem>
                                                 }
+                                                {/* <MenuItem value="CREATED" >Created</MenuItem>
+                                                <MenuItem value="CONFIRMED" >Confirmed</MenuItem> */}
                                                 
                                                 {/* <MenuItem value="CONFIRMED">Confirmed</MenuItem> */}
                                                 <MenuItem value="CANCEL">Cancel</MenuItem>
