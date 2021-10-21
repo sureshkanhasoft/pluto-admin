@@ -8,6 +8,7 @@ import {
     Button,
     Backdrop,
     CircularProgress,
+    FormControl,Select, MenuItem
 } from "@material-ui/core";
 import { Link } from 'react-router-dom';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -15,13 +16,11 @@ import EditIcon from '@material-ui/icons/Edit';
 import AlertDialog from '../../components/Alert/AlertDialog';
 import { useDispatch, useSelector } from 'react-redux';
 import history from '../../utils/HistoryUtils';
-import { deleteSignee, getSingleSignee } from '../../store/action';
+import { changeDocStatus, deleteSignee, getSingleSignee } from '../../store/action';
 import Notification from '../../components/Notification/Notification';
 import InsertPhotoOutlinedIcon from '@material-ui/icons/InsertPhotoOutlined';
 import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
 import InfoIcon from '@material-ui/icons/Info';
-import { SpaRounded } from '@material-ui/icons';
-
 const useStyle = makeStyles((theme) => ({
     root: {
         width: '100%',
@@ -64,6 +63,15 @@ const useStyle = makeStyles((theme) => ({
         '&:last-child': {
             borderBottom: "none"
         }
+    },
+    selectCon:{
+        marginLeft:"auto",
+        minWidth:140
+    },
+    statusSelect:{
+        '& .MuiSelect-select':{
+            padding: "10px 32px 10px 10px"
+        }
     }
 }))
 
@@ -74,10 +82,19 @@ const DetailSignee = ({ match }) => {
     const [Id, setId] = useState(false);
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [signeeNotify, setSigneeNotify] = useState(false)
+    const [docNotify, setDocNotify] = useState(false)
     const staffDetail = JSON.parse(localStorage.getItem("staffDetail"));
     const baseUrl = "http://backendbooking.kanhasoftdev.com/public/uploads/signee_docs/"
 
-    const { getSingleSigneeItem, loading, deleteSigneeSuccess, deleteSigneeError } = useSelector(state => state.signee)
+    const { getSingleSigneeItem, loading, deleteSigneeSuccess, deleteSigneeError, changeDocStatusSuccess } = useSelector(state => state.signee)
+
+    const [complainceStatus, setComplainceStatus] = useState({
+        
+        signee_id: user_id,
+        organization_id: "",
+        key:"",
+        document_status:""
+    });
 
     const deleteStaffItem = (id) => {
         setDeleteOpen(true)
@@ -104,10 +121,20 @@ const DetailSignee = ({ match }) => {
         history.push(`update`)
     }
 
-    // useEffect(() => {
-    //     console.log(' getSingleSigneeItem?.data?.documents: ',  getSingleSigneeItem?.data?.documents);
-    //     console.log(Object.keys(getSingleSigneeItem?.data?.documents));
-    // }, [])
+    const handleComplianceStatus = (event, org_id) => {
+        setComplainceStatus({ ...complainceStatus, key: event.target.name, document_status: event.target.value, organization_id:org_id});
+    };
+    
+    useEffect(() => {
+        if(complainceStatus.key !== ""){
+            dispatch(changeDocStatus(complainceStatus))
+            setDocNotify(true)
+            setTimeout(() => {
+                dispatch(getSingleSignee(user_id))
+            }, 4000);
+        }
+    }, [complainceStatus])
+
     return (
         <>
             {
@@ -116,9 +143,9 @@ const DetailSignee = ({ match }) => {
                         <CircularProgress color="inherit" />
                     </Backdrop> : ""
             }
-            {signeeNotify && deleteSigneeSuccess?.message &&
+            {(signeeNotify || docNotify) && (deleteSigneeSuccess?.message || changeDocStatusSuccess.message) &&
                 <Notification
-                    data={deleteSigneeSuccess?.message}
+                    data={deleteSigneeSuccess?.message || changeDocStatusSuccess.message}
                     status="success"
                 />
             }
@@ -220,7 +247,6 @@ const DetailSignee = ({ match }) => {
             <Typography variant="h5" style={{ marginBottom: 16 }}>Document Details</Typography>
             {
                 getSingleSigneeItem?.data && getSingleSigneeItem?.data?.documents && Object.entries(getSingleSigneeItem?.data?.documents).map((list, index) => {
-                    console.log('list: ', list[1]);
                     return (
                         <Paper className={`${classes.root1}`} key={index}>
                             <Grid container spacing={2}>
@@ -228,7 +254,7 @@ const DetailSignee = ({ match }) => {
                                     <InfoIcon style={{ marginRight: 12, opacity: "0.6" }} />
                                     <Typography className={classes.mainTitle}>
                                         {list[0] === 'passport' ? "Copy of Passport in Colour including front cover. (Right to work)" : ""}
-                                        {list[0] === "immunisation_record" ? "Immunisation records - Proof of immunity for (Varicella, Tuberculosis, Rubella, Measles, Hep B Level 100). Blood results needs to be traceable to exact Clinic/ source. For EPP clearance ( HIV 1 & 2) Hep C and Hep B surface antigen ( IVS)" : ""}
+                                        {list[0] === "immunisation_records" ? "Immunisation records - Proof of immunity for (Varicella, Tuberculosis, Rubella, Measles, Hep B Level 100). Blood results needs to be traceable to exact Clinic/ source. For EPP clearance ( HIV 1 & 2) Hep C and Hep B surface antigen ( IVS)" : ""}
                                         {list[0] === "training_certificates" ? "Mandatory training certificates- Fire safety, BLS,MH, Infection control, safeguarding child/Adult etc" : ""}
                                         {list[0] === "nursing_certificates" ? "Nursing Certificates/ Diploma/NVQ" : ""}
                                         {list[0] === "professional_indemnity_insurance" ? "Proof of Current Professional Indemnity Insurance" : ""}
@@ -238,8 +264,29 @@ const DetailSignee = ({ match }) => {
                                         {list[0] === "employment" ? "TWO references covering the last 3 years of employment (must include hospital/company stamp or company/hospital logo letter head)" : ""}
                                         {list[0] === "address_proof" ? "TWO proofs of address dated within last 3 months (bank statement, utility bill, official government letter etc.)" : ""}
                                         {list[0] === "passport_photo" ? "X1 passport Photo for ID badge" : ""}
-                                        {list[0] === 'ni_proof' ? "Proof of NI- Any letter from HMRC showing NI number or Copy of NI card ( front & back Copy ) -We don’t accept payslips" : ""}
+                                        {list[0] === 'proof_of_ni' ? "Proof of NI- Any letter from HMRC showing NI number or Copy of NI card ( front & back Copy ) -We don’t accept payslips" : ""}
                                     </Typography>
+
+                                    <div className={classes.selectCon}>
+                                        {
+                                            list[1].length > 0 &&
+                                            <FormControl variant="outlined" className={classes.formControl} fullWidth>
+                                            
+                                            <Select
+                                                value={list[1][0]?.document_status || ""}
+                                                name={list[0]}
+                                                onChange={(e) => handleComplianceStatus(e, getSingleSigneeItem?.data?.parent_id)}
+                                                defaultValue={0}
+                                                className={classes.statusSelect}
+                                            >
+                                                <MenuItem value="PENDING">PENDING</MenuItem>
+                                                <MenuItem value="SUCCESS">SUCCESS</MenuItem>
+                                                <MenuItem value="REJECTED">REJECTED</MenuItem>
+                                            </Select>
+                                        </FormControl>
+                                        }
+                                       
+                                    </div>
                                 </Grid>
                                 {
                                     list[1].map((fileList, index2) => {
@@ -261,8 +308,7 @@ const DetailSignee = ({ match }) => {
                                     list[1].length === 0 &&
                                     <Grid item xs={12} className={classes.boxContainer}>
                                         <div className="compliance-container">
-                                            <div className="image-icon" style={{ marginRight: 12, opacity: "0.6" }}></div>
-                                            <span >Sorry, file does't exits</span>
+                                            <span style={{ paddingLeft: 35, opacity: "0.6" }}>Sorry, document does't exits</span>
                                         </div>
                                     </Grid>
                                 }

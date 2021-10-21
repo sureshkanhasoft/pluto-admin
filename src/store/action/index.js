@@ -68,6 +68,7 @@ export {
     deleteSignee,
     signeeProStatus,
     signeeCompStatus,
+    changeDocStatus
 } from './signee/signeeAction'
 
 // -----------------------------

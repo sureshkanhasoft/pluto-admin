@@ -23,7 +23,10 @@ const initialState = {
     signeeProStatusError:[],
 
     signeeComStatusSuccess:[],
-    signeeComStatusError:[]
+    signeeComStatusError:[],
+
+    changeDocStatusSuccess:[],
+    changeDocStatusError:[]
 }
 
 const signeeReducer = (state = initialState, action) => {
@@ -171,6 +174,26 @@ const signeeReducer = (state = initialState, action) => {
             return updateObject(state, {
                 loading: false,
                 signeeComStatusError: action.payload
+            })
+         // -------------------------------------------
+
+         case actionTypes.CHANGE_DOC_STATUS_REQUEST:
+            return updateObject(state, {
+                loading: false,
+                changeDocStatusSuccess: "",
+                changeDocStatusError: ""
+            })
+
+        case actionTypes.CHANGE_DOC_STATUS_SUCCESS:
+            return updateObject(state, {
+                loading: false,
+                changeDocStatusSuccess: action.payload
+            })
+
+        case actionTypes.CHANGE_DOC_STATUS_ERROR:
+            return updateObject(state, {
+                loading: false,
+                changeDocStatusError: action.payload
             })
 
 

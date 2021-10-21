@@ -10,7 +10,7 @@ import {
     GET_SINGLE_SIGNEE_REQUETS, GET_SINGLE_SIGNEE_SUCCESS, GET_SINGLE_SIGNEE_ERROR, 
     DELETE_SIGNEE_REQUETS, DELETE_SIGNEE_SUCCESS, DELETE_SIGNEE_ERROR, 
     CHANGE_SIGNEE_PRO_STATUS_REQUEST, CHANGE_SIGNEE_PRO_STATUS_SUCCESS, CHANGE_SIGNEE_PRO_STATUS_ERROR, 
-    CHANGE_SIGNEE_COMP_STATUS_REQUEST, CHANGE_SIGNEE_COMP_STATUS_SUCCESS, CHANGE_SIGNEE_COMP_STATUS_ERROR 
+    CHANGE_SIGNEE_COMP_STATUS_REQUEST, CHANGE_SIGNEE_COMP_STATUS_SUCCESS, CHANGE_SIGNEE_COMP_STATUS_ERROR, CHANGE_DOC_STATUS_REQUEST, CHANGE_DOC_STATUS_SUCCESS, CHANGE_DOC_STATUS_ERROR 
 } from "../actiontypes";
 
 
@@ -320,7 +320,6 @@ const signeeProStatusFailure = (error) => {
 // -------------------------------------
 
 export const signeeCompStatus = (data) => {
-    console.log('data: ', data);
     return async (dispatch) => {
         dispatch(signeeCompStatusRequest())
         await apiClient(true).post(`api/organization/change-signee-compliance-status`, data)
@@ -349,6 +348,42 @@ const signeeCompStatusSuccess = (data) => {
 const signeeCompStatusFailure = (error) => {
     return {
         type: CHANGE_SIGNEE_COMP_STATUS_ERROR,
+        payload: error
+    }
+}
+
+
+// -------------------------------------
+
+export const changeDocStatus = (data) => {
+    return async (dispatch) => {
+        dispatch(changeDocStatusRequest())
+        await apiClient(true).post(`api/organization/user/change-document-status`, data)
+            .then(response => {
+                const dataItem = response.data;
+                dispatch(changeDocStatusSuccess(dataItem))
+            }).catch(error => {
+                dispatch(changeDocStatusFailure(error))
+            });
+    }
+}
+
+const changeDocStatusRequest = () => {
+    return {
+        type: CHANGE_DOC_STATUS_REQUEST
+    }
+}
+
+const changeDocStatusSuccess = (data) => {
+    return {
+        type: CHANGE_DOC_STATUS_SUCCESS,
+        payload: data
+    }
+}
+
+const changeDocStatusFailure = (error) => {
+    return {
+        type: CHANGE_DOC_STATUS_ERROR,
         payload: error
     }
 }
