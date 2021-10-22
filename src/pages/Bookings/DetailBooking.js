@@ -29,6 +29,7 @@ import AlertDialog from '../../components/Alert/AlertDialog';
 import { useDispatch, useSelector } from 'react-redux';
 import Notification from '../../components/Notification/Notification';
 import { confirmBooking, deleteBooking } from '../../store/action';
+import { apiClient } from '../../config/apiClient';
 
 const useStyle = makeStyles((theme) => ({
     root: {
@@ -145,6 +146,11 @@ const DetailBooking = ({ match }) => {
         status: ""
     })
 
+    const [pdfData, setPdfData] = useState({
+        booking_id: booking_id,
+        signee_id: [138, 256],
+    })
+
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
@@ -176,23 +182,27 @@ const DetailBooking = ({ match }) => {
     }, [bookingData])
 
     const handleCheckboxClick = (event, name) => {
-        const selectedIndex = selected.indexOf(name);
-        let newSelected = [];
+        // console.log('event: ', event.target);
+        // console.log('name: ', name);
 
-        if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, name);
-        } else if (selectedIndex === 0) {
-            newSelected = newSelected.concat(selected.slice(1));
-        } else if (selectedIndex === selected.length - 1) {
-            newSelected = newSelected.concat(selected.slice(0, -1));
-        } else if (selectedIndex > 0) {
-            newSelected = newSelected.concat(
-                selected.slice(0, selectedIndex),
-                selected.slice(selectedIndex + 1),
-            );
-        }
+        // setPdfData({...pdfData, [event.target.name]:event.target.value})
+        // const selectedIndex = selected.indexOf(name);
+        // let newSelected = [];
 
-        setSelected(newSelected);
+        // if (selectedIndex === -1) {
+        //     newSelected = newSelected.concat(selected, name);
+        // } else if (selectedIndex === 0) {
+        //     newSelected = newSelected.concat(selected.slice(1));
+        // } else if (selectedIndex === selected.length - 1) {
+        //     newSelected = newSelected.concat(selected.slice(0, -1));
+        // } else if (selectedIndex > 0) {
+        //     newSelected = newSelected.concat(
+        //         selected.slice(0, selectedIndex),
+        //         selected.slice(selectedIndex + 1),
+        //     );
+        // }
+
+        // setSelected(newSelected);
     };
 
     const isSelected = (name) => selected.indexOf(name) !== -1;
@@ -238,6 +248,55 @@ const DetailBooking = ({ match }) => {
         const adminUrl = loginDetail.role === "ORGANIZATION" ? 'admin' : 'staff'
         // console.log(`/${(adminUrl).toLowerCase()}/signee/${signeeId}/detail`)
         history.push(`/${(adminUrl).toLowerCase()}/signee/${signeeId}/detail`)
+    }
+    const downloadPdf = async () => {
+        // await apiClient(true).post(`api/organization/user/pdf`, pdfData)\
+        const getToken = localStorage.getItem("token") ? localStorage.getItem("token").replace(/['"]+/g, '') : "";
+        await axios.post(`${apiConfigs.API_URL}api/organization/user/pdf`, pdfData,{
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': getToken ? `Bearer ${getToken}` : "",
+                'Accept': 'application/pdf',
+            },
+            //  responseType: 'json', 
+            //  headers: headers
+        })
+        .then(response => {
+            console.log('response: ', response);
+            const dataItem = response.data.data.pdf_path.blob();
+            // const file = new Blob([dataItem],{ type: 'application/pdf' });
+            
+            const fileURL = URL.createObjectURL(dataItem);
+            const link = document.createElement('a');
+            link.href = fileURL;
+            link.download = "FileName" + new Date() + ".pdf";
+            document.body.appendChild(link);
+            link.click();
+            // var element = document.createElement("a");
+            // element.download = "image.pdf";
+            // document.body.appendChild(element);
+            // element.click();
+        }).catch(error => {
+            console.log('error: ', error);
+        });
+
+
+        // var element = document.createElement("a");
+        // var file = new Blob(
+        //     [
+        //         "http://backendbooking.kanhasoftdev.com/public/uploads/signee_docs/sample-pdf_9359_1633007406.pdf"
+        //     ],
+        //     { type: 'application/pdf' }
+        // );
+        // var file = "http://backendbooking.kanhasoftdev.com/public/uploads/signee_docs/sample-pdf_9359_1633007406.pdf";
+        // element.href = URL.createObjectURL(file);
+        // element.download = "image.pdf";
+        // document.body.appendChild(element);
+        // element.click();
+
+
+        
+           
     }
     return (
         <>
@@ -348,6 +407,7 @@ const DetailBooking = ({ match }) => {
                         {<span className={classes.tabLabel}>Interested Candidates {bookingDetail?.data?.interested.length > 0 ? <Chip label={bookingDetail?.data?.interested.length} color="primary" className={classes.tabChip} /> : ""}</span>}
                         {...a11yProps(1)} />
                 </Tabs>
+                {/* <span onClick={downloadPdf}>Download</span> */}
                 <TabPanel value={value} index={0}>
                     <Table className={classes.table}>
                         <TableHead>
@@ -370,7 +430,7 @@ const DetailBooking = ({ match }) => {
                                         <TableCell scope="row">
                                             <Checkbox
                                                 onClick={event =>
-                                                    handleCheckboxClick(event, row.name)
+                                                    handleCheckboxClick(event, row.signeeId)
                                                 }
                                                 className="selectCheckbox"
                                                 checked={isItemSelected}
@@ -447,10 +507,11 @@ const DetailBooking = ({ match }) => {
                                         <TableCell scope="row">
                                             <Checkbox
                                                 onClick={event =>
-                                                    handleCheckboxClick(event, row.name)
+                                                    handleCheckboxClick(event, row.signeeId)
                                                 }
                                                 className="selectCheckbox"
-                                                checked={isItemSelected}
+                                                checked={pdfData?.signee_id ? true : false}
+                                                name="signee_id"
                                             // inputProps={{ 'aria-labelledby': labelId }}
 
                                             />

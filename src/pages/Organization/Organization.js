@@ -125,13 +125,13 @@ const Organization = () => {
 
     const handleChange = (event, value) => {
         setPage(value);
-        setTimeout(getData(value), 2000);
+        setTimeout(getData(value, searchData.search), 2000);
     };
 
     const handleSearchChange = (event) => {
         const search =  event.target.value
         if(search){
-            setTimeout(getData(page, search), 100);
+            setTimeout(getData(1, search), 100);
         }
         else {
             setTimeout(getData(page, ""), 100);

@@ -211,7 +211,7 @@ const ViewSignee = ({ match }) => {
                             <TableCell align="left">Email</TableCell>
                             <TableCell align="left">Contact number</TableCell>
                             <TableCell align="left">Profile Status</TableCell>
-                            <TableCell align="left">Complaince Status</TableCell>
+                            <TableCell align="left">Compliance Status</TableCell>
                             {/* <TableCell align="left">DOB</TableCell> */}
                             <TableCell align="right" style={{ width: 140 }}></TableCell>
                         </TableRow>
@@ -234,7 +234,7 @@ const ViewSignee = ({ match }) => {
                                                 >
                                                     <MenuItem value="Active">Active</MenuItem>
                                                     <MenuItem value="Inactive">Inactive</MenuItem>
-                                                    <MenuItem value="Dormant">Dormart</MenuItem>
+                                                    <MenuItem value="Dormant">Dormant</MenuItem>
                                                 </Select>
                                             </FormControl>
                                         </TableCell>
@@ -247,7 +247,7 @@ const ViewSignee = ({ match }) => {
                                                     defaultValue={0}
                                                 >
                                                     <MenuItem value="NEW SIGNUP">New Signup</MenuItem>
-                                                    <MenuItem value="COMPLIANCE REVIEW">Complaince review</MenuItem>
+                                                    <MenuItem value="COMPLIANCE REVIEW">Compliance review</MenuItem>
                                                     <MenuItem value="NOT COMPLIANT">Not Complaint</MenuItem>
                                                     <MenuItem value="COMPLIANT">Complaint</MenuItem>
                                                     <MenuItem value="ON HOLD">On Hold</MenuItem>
