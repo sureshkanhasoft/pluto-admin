@@ -8,7 +8,8 @@ import {
     CREATE_BOOKING_ERROR, CREATE_BOOKING_REQUEST, CREATE_BOOKING_SUCCESS,
     DELETE_BOOKING_ERROR, DELETE_BOOKING_REQUEST, DELETE_BOOKING_SUCCESS,
     GET_BOOKING_ERROR, GET_BOOKING_REQUEST, GET_BOOKING_SUCCESS,
-    UPDATE_BOOKING_ERROR, UPDATE_BOOKING_REQUEST, UPDATE_BOOKING_SUCCESS
+    UPDATE_BOOKING_ERROR, UPDATE_BOOKING_REQUEST, UPDATE_BOOKING_SUCCESS, 
+    USER_INVITATION_ERROR, USER_INVITATION_REQUEST, USER_INVITATION_SUCCESS
 } from "../actiontypes";
 
 export const getBooking = ({ pageNo = 1, search = '', status = "CREATED" }) => {
@@ -263,6 +264,41 @@ const changeShiftStatusSuccess = (data) => {
 const changeShiftStatusFailure = (error) => {
     return {
         type: CHANGE_SHIFT_STATUS_ERROR,
+        payload: error
+    }
+}
+
+// -----------------------------------------------------
+
+export const userInvitation = (data) => {
+    return async (dispatch) => {
+        dispatch(userInvitationRequest())
+        await apiClient(true).post(`api/organization/user/send-invitation`, data)
+            .then(response => {
+                const dataItem = response.data;
+                dispatch(userInvitationSuccess(dataItem))
+            }).catch(error => {
+                dispatch(userInvitationFailure(error))
+            });
+    }
+}
+
+const userInvitationRequest = () => {
+    return {
+        type: USER_INVITATION_REQUEST
+    }
+}
+
+const userInvitationSuccess = (data) => {
+    return {
+        type: USER_INVITATION_SUCCESS,
+        payload: data
+    }
+}
+
+const userInvitationFailure = (error) => {
+    return {
+        type: USER_INVITATION_ERROR,
         payload: error
     }
 }

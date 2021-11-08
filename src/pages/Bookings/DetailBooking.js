@@ -28,7 +28,7 @@ import history from '../../utils/HistoryUtils';
 import AlertDialog from '../../components/Alert/AlertDialog';
 import { useDispatch, useSelector } from 'react-redux';
 import Notification from '../../components/Notification/Notification';
-import { confirmBooking, deleteBooking } from '../../store/action';
+import { confirmBooking, deleteBooking, userInvitation } from '../../store/action';
 import { apiClient } from '../../config/apiClient';
 
 const useStyle = makeStyles((theme) => ({
@@ -89,6 +89,16 @@ const useStyle = makeStyles((theme) => ({
             padding: '0 8px',
             minWidth: 26,
         }
+    },
+    downloadButton:{
+        position:"absolute",
+        right:16,
+        top:16
+    },
+    invitationButton:{
+        position:"absolute",
+        right:200,
+        top:16
     }
 }))
 
@@ -137,8 +147,9 @@ const DetailBooking = ({ match }) => {
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [staffNotify, setStaffNotify] = useState(false)
     const [confirmNotify, setConfirmNotify] = useState(false);
+    const [downloadBtn, setDownloadBtn] = useState(false);
 
-    const { deleteBookingSuccess, deleteBookingError, confirmBookingSuccess, confirmBookingError } = useSelector(state => state.booking)
+    const { deleteBookingSuccess, deleteBookingError, confirmBookingSuccess, confirmBookingError, invitationSuccess } = useSelector(state => state.booking)
 
     const [bookingData, setBookingData] = useState({
         booking_id: booking_id,
@@ -182,15 +193,14 @@ const DetailBooking = ({ match }) => {
         }
 
     }, [bookingData])
-    
+
     const newSelected = [];
     const handleCheckboxClick = (event, name) => {
         console.log('event: ', event.target.checked);
-        console.log('name: ', name);
         if (event.target.checked === false) {
             pdfData.signee_id = [];
             const filteredArray = pdfData.signee_id.filter(item => item !== name)
-            if(filteredArray.length > 0){
+            if (filteredArray.length > 0) {
                 pdfData.signee_id.push(filteredArray);
                 setPdfData(pdfData)
             }
@@ -199,9 +209,9 @@ const DetailBooking = ({ match }) => {
             pdfData.signee_id.push(name);
             setPdfData(pdfData)
         }
-        console.log("pdfData.signee_id length", pdfData.signee_id)
-        console.log("pdfData.signee_id length", pdfData?.signee_id.length)
-        
+
+        pdfData.signee_id.length > 0 ? setDownloadBtn(true) : setDownloadBtn(false)
+
     };
 
     const isSelected = (name) => selected.indexOf(name) !== -1;
@@ -245,11 +255,10 @@ const DetailBooking = ({ match }) => {
     const signeePage = (e, signeeId) => {
         e.preventDefault();
         const adminUrl = loginDetail.role === "ORGANIZATION" ? 'admin' : 'staff'
-        // console.log(`/${(adminUrl).toLowerCase()}/signee/${signeeId}/detail`)
         history.push(`/${(adminUrl).toLowerCase()}/signee/${signeeId}/detail`)
     }
     const downloadPdf = async () => {
-        if(pdfData.signee_id.length  === 0){
+        if (pdfData.signee_id.length === 0) {
             setSigneeSize("Please selected at least one candidate to download pdf");
             return;
         }
@@ -270,6 +279,11 @@ const DetailBooking = ({ match }) => {
             console.log('error: ', error);
         });
     }
+    const usersInvitation = () => {
+        dispatch(userInvitation(pdfData))
+        setConfirmNotify(true)
+    }
+
     return (
         <>
             {
@@ -292,13 +306,13 @@ const DetailBooking = ({ match }) => {
                     status="error"
                 />
             }
-            {confirmNotify && confirmBookingSuccess?.message &&
+            {confirmNotify && (confirmBookingSuccess?.message || invitationSuccess?.message) &&
                 <Notification
-                    data={confirmBookingSuccess?.message}
+                    data={confirmBookingSuccess?.message || invitationSuccess?.message}
                     status="success"
                 />
             }
-              {signeeSizeMsg &&
+            {signeeSizeMsg &&
                 <Notification
                     data={signeeSizeMsg}
                     status="error"
@@ -376,7 +390,7 @@ const DetailBooking = ({ match }) => {
                 </Grid>
             </Paper>
 
-            <Paper className={`mb-6`}>
+            <Paper className={`mb-6`} style={{position:"relative"}}>
                 <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
                     <Tab
                         label={<span className={classes.tabLabel}>Matching Candidates {bookingDetail?.data?.matching.length > 0 ? <Chip label={bookingDetail?.data?.matching.length} color="primary" className={classes.tabChip} /> : ""}</span>}
@@ -385,7 +399,18 @@ const DetailBooking = ({ match }) => {
                         {<span className={classes.tabLabel}>Interested Candidates {bookingDetail?.data?.interested.length > 0 ? <Chip label={bookingDetail?.data?.interested.length} color="primary" className={classes.tabChip} /> : ""}</span>}
                         {...a11yProps(1)} />
                 </Tabs>
-                <span onClick={downloadPdf}>Download PDF</span>
+
+                {
+                    downloadBtn && <Button variant="contained" color="secondary" onClick={usersInvitation} className={classes.invitationButton}>
+                        <span className="material-icons mr-2">mail</span> Send invitation
+                    </Button>
+                }
+                {
+                    downloadBtn && <Button variant="contained" color="secondary" onClick={downloadPdf} className={classes.downloadButton}>
+                        <span className="material-icons mr-2">download</span> Download PDF
+                    </Button>
+                }
+
                 <TabPanel value={value} index={0}>
                     <Table className={classes.table}>
                         <TableHead>

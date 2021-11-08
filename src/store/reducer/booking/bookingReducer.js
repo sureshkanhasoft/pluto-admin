@@ -19,7 +19,10 @@ const initialState = {
     confirmBookingError: [],
 
     shiftStatusSuccess: [],
-    shiftStatusError: []
+    shiftStatusError: [],
+
+    invitationSuccess:[],
+    invitationError:[],
 }
 
 const bookingReducer = (state = initialState, action) => {
@@ -141,6 +144,29 @@ const bookingReducer = (state = initialState, action) => {
             return updateObject(state, {
                 loading: false,
                 shiftStatusError: action.payload
+            })
+
+
+        // -------------------------------------
+
+        case actionTypes.USER_INVITATION_REQUEST:
+            return updateObject(state, {
+                loading: true,
+                invitationSuccess: "",
+                invitationError: ""
+
+            })
+
+        case actionTypes.USER_INVITATION_SUCCESS:
+            return updateObject(state, {
+                loading: false,
+                invitationSuccess: action.payload
+            })
+
+        case actionTypes.USER_INVITATION_ERROR:
+            return updateObject(state, {
+                loading: false,
+                invitationError: action.payload
             })
 
         default:
