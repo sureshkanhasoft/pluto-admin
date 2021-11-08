@@ -51,6 +51,7 @@ const CreateBooking = () => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const [addAnother, setAddAnother] = useState(false)
     const [trustNotify, setTrustNotify] = useState(false)
+    const [specError, setSpecError] = useState(false)
     const [referenceId, setReferenceId] = useState([])
     const { createBookingSuccess, createBookingError } = useSelector(state => state.booking)
     const disPastDate = UtilService.disabledPastDate()
@@ -244,15 +245,20 @@ const CreateBooking = () => {
 
 
     const submitData = async (e) => {
-        // console.log('data: ', data);
         // e.preventDefault();
-        if (addAnother === true) {
-            dispatch(createBooking(data, addAnother))
+        // console.log('data ward_id: ', typeof data.ward_id);
+        if (data.speciality.length > 0) {
+
+            if (addAnother === true) {
+                dispatch(createBooking(data, addAnother))
+            } else {
+                dispatch(createBooking(data, addAnother))
+            }
+            setTrustNotify(true)
+            reset();
         } else {
-            dispatch(createBooking(data, addAnother))
+            setSpecError(true)
         }
-        setTrustNotify(true)
-        reset();
     }
     const backPage = () => {
         history.goBack()
@@ -290,7 +296,9 @@ const CreateBooking = () => {
                         </Grid>
 
                         <Grid item xs={12} sm={6} lg={4}>
-                            <FormControl variant="outlined" className={classes.formControl} required>
+                            <FormControl variant="outlined" className={classes.formControl} required
+                                error={(errors.trust_id ? true : false)}
+                            >
                                 <InputLabel>Trust Name</InputLabel>
                                 <Select
                                     value={data.trust_id}
@@ -299,7 +307,7 @@ const CreateBooking = () => {
                                     {...register('trust_id', {
                                         required: "The trust field is required.",
                                     })}
-                                    error={(errors.trust_id ? true : false)}
+                                    // error={(errors.trust_id ? true : false)}
                                     onChange={trustHandleChange}
                                 >
                                     <MenuItem value="">
@@ -318,7 +326,9 @@ const CreateBooking = () => {
                             </FormControl>
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
-                            <FormControl variant="outlined" className={classes.formControl} required>
+                            <FormControl variant="outlined" className={classes.formControl} required 
+                                error={(errors.hospital_id ? true : createBookingError?.message?.hospital_id ? true : false)}
+                            >
                                 <InputLabel>Hospital Name</InputLabel>
                                 <Select
                                     value={data.hospital_id}
@@ -327,7 +337,7 @@ const CreateBooking = () => {
                                     {...register('hospital_id', {
                                         required: "The hospital field is required.",
                                     })}
-                                    error={(errors.hospital_id ? true : createBookingError?.message?.hospital_id ? true : false)}
+                                    // error={(errors.hospital_id ? true : createBookingError?.message?.hospital_id ? true : false)}
                                     onChange={hospitalHandleChange}
                                 >
                                     <MenuItem value="">
@@ -346,7 +356,9 @@ const CreateBooking = () => {
                             </FormControl>
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
-                            <FormControl variant="outlined" className={classes.formControl} required>
+                            <FormControl variant="outlined" className={classes.formControl} required 
+                                error={(errors.ward_id ? true : createBookingError?.message?.ward_id ? true : false)}
+                                >
                                 <InputLabel>Ward Name</InputLabel>
                                 <Select
                                     value={data?.ward_id}
@@ -355,7 +367,7 @@ const CreateBooking = () => {
                                     {...register('ward_id', {
                                         required: "The ward field is required.",
                                     })}
-                                    error={(errors.ward_id ? true : createBookingError?.message?.ward_id ? true : false)}
+                                    // error={(errors.ward_id ? true : createBookingError?.message?.ward_id ? true : false)}
                                     onChange={handleChange}
                                 >
                                     <MenuItem value="">
@@ -375,7 +387,9 @@ const CreateBooking = () => {
                         </Grid>
 
                         <Grid item xs={12} sm={6} lg={4}>
-                            <FormControl variant="outlined" className={classes.formControl} required>
+                            <FormControl variant="outlined" className={classes.formControl} required 
+                                error={(errors.grade_id ? true : false)}
+                                >
                                 <InputLabel>Grade Required</InputLabel>
                                 <Select
                                     value={data.grade_id}
@@ -384,7 +398,7 @@ const CreateBooking = () => {
                                     {...register('grade_id', {
                                         required: "The grade field is required.",
                                     })}
-                                    error={(errors.grade_id ? true : false)}
+                                    // error={(errors.grade_id ? true : false)}
                                     onChange={handleChange}
                                 >
                                     <MenuItem value="">
@@ -426,7 +440,9 @@ const CreateBooking = () => {
                         </Grid>
 
                         <Grid item xs={12} sm={6} lg={2}>
-                            <FormControl variant="outlined" className={classes.formControl} required>
+                            <FormControl variant="outlined" className={classes.formControl} required 
+                                error={(errors.shift_id ? true : false)}
+                                >
                                 <InputLabel>Shift Time</InputLabel>
                                 <Select
                                     value={data.shift_id}
@@ -435,9 +451,9 @@ const CreateBooking = () => {
                                     {...register('shift_id', {
                                         required: "The shift time field is required.",
                                     })}
-                                    error={(errors.shift_id ? true : false)}
+                                    // error={(errors.shift_id ? true : false)}
                                     onChange={handleChange}
-                                    onChange={handleChange}
+                                    // onChange={handleChange}
                                 >
                                     <MenuItem value="">
                                         Select a shift time
@@ -453,7 +469,9 @@ const CreateBooking = () => {
                             </FormControl>
                         </Grid>
                         <Grid item xs={12} sm={6} lg={2}>
-                            <FormControl variant="outlined" className={classes.formControl} required>
+                            <FormControl variant="outlined" className={classes.formControl} required 
+                                error={(errors.shift_type_id ? true : false)}
+                                >
                                 <InputLabel>Shift Type</InputLabel>
                                 <Select
                                     value={data.shift_type_id}
@@ -462,7 +480,7 @@ const CreateBooking = () => {
                                     {...register('shift_type_id', {
                                         required: "The shift type field is required.",
                                     })}
-                                    error={(errors.shift_type_id ? true : false)}
+                                    // error={(errors.shift_type_id ? true : false)}
                                     onChange={handleChange}
                                 >
                                     <MenuItem value="">
@@ -503,12 +521,12 @@ const CreateBooking = () => {
                                 {...register('speciality', {
                                     required: "The speciality field is required.",
                                 })}
-                                error={(errors.speciality ? true : false)}
+                                error={(errors.speciality ? true : false || specError === true ? true : false)}
                                 component="fieldset" className={classes.formControl}>
-                                    {
-                                        speciality?.data && speciality?.data.length >0 && <FormLabel component="legend">Specialities</FormLabel>
-                                    }
-                                
+                                {
+                                    speciality?.data && speciality?.data.length > 0 && <FormLabel component="legend">Specialities</FormLabel>
+                                }
+
                                 <Grid container>
                                     {
                                         speciality?.data && speciality?.data.map((items, index) => {
