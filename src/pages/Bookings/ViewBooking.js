@@ -215,9 +215,9 @@ const ViewBooking = ({ match }) => {
                 </Box>
                 <Box className={classes.statusButton}>
                     {
-                        ['Created', 'Confirmed', 'Cancel'].map((list, index) => (
+                        ['CREATED', 'CONFIRMED', 'CANCEL'].map((list, index) => (
 
-                            <span className={`btn ${activeIndex === index ? "active" : ""}`} key={index} onClick={() => tabChange(index, list)}>{list}</span>
+                            <span style={{textTransform:"capitalize"}} className={`btn ${activeIndex === index ? "active" : ""}`} key={index} onClick={() => tabChange(index, list)}>{list.toLowerCase()}</span>
                         ))
                     }
                     {/* <NavLink to="/admin/bookings/1" className="btn">Confirmed</NavLink>
@@ -233,7 +233,7 @@ const ViewBooking = ({ match }) => {
                             <TableCell align="left">Grade</TableCell>
                             <TableCell align="left">Date</TableCell>
                             <TableCell align="left">Shift Time</TableCell>
-                            <TableCell align="left">Status</TableCell>
+                            {/* <TableCell align="left">Status</TableCell> */}
                             <TableCell align="right"></TableCell>
                         </TableRow>
                     </TableHead>
@@ -248,7 +248,7 @@ const ViewBooking = ({ match }) => {
                                     <TableCell align="left">{row.grade_name}</TableCell>
                                     <TableCell align="left">{row.date}</TableCell>
                                     <TableCell align="left">{row.start_time} <br/> {row.end_time}</TableCell>
-                                    <TableCell align="left">
+                                    {/* <TableCell align="left">
                                         <FormControl variant="outlined" className={classes.formControl1} fullWidth>
                                             <Select
                                                 value={row?.status || ""}
@@ -262,14 +262,10 @@ const ViewBooking = ({ match }) => {
                                                 {
                                                     row.status === "CONFIRMED" && <MenuItem value="CONFIRMED" disabled >Confirmed</MenuItem>
                                                 }
-                                                {/* <MenuItem value="CREATED" >Created</MenuItem>
-                                                <MenuItem value="CONFIRMED" >Confirmed</MenuItem> */}
-                                                
-                                                {/* <MenuItem value="CONFIRMED">Confirmed</MenuItem> */}
                                                 <MenuItem value="CANCEL">Cancel</MenuItem>
                                             </Select>
                                         </FormControl>
-                                    </TableCell>
+                                    </TableCell> */}
                                     <TableCell align="right">
                                         <Link to="#" onClick={() => onhandlClick(row.id)} className="btn btn-secondary" >View</Link>
                                     </TableCell>

@@ -12,7 +12,7 @@ import {
     Button,
     Checkbox,
     Backdrop,
-    CircularProgress
+    CircularProgress, FormControl, Select
 } from "@material-ui/core";
 import { Link } from "react-router-dom"
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -28,7 +28,7 @@ import history from '../../utils/HistoryUtils';
 import AlertDialog from '../../components/Alert/AlertDialog';
 import { useDispatch, useSelector } from 'react-redux';
 import Notification from '../../components/Notification/Notification';
-import { confirmBooking, deleteBooking, userInvitation } from '../../store/action';
+import { changeShiftStatus, confirmBooking, deleteBooking, userInvitation } from '../../store/action';
 import { apiClient } from '../../config/apiClient';
 
 const useStyle = makeStyles((theme) => ({
@@ -90,15 +90,51 @@ const useStyle = makeStyles((theme) => ({
             minWidth: 26,
         }
     },
-    downloadButton:{
-        position:"absolute",
-        right:16,
-        top:16
+    downloadButton: {
+        position: "absolute",
+        right: 16,
+        top: 16
     },
-    invitationButton:{
-        position:"absolute",
-        right:200,
-        top:16
+    invitationButton: {
+        position: "absolute",
+        right: 200,
+        top: 16
+    },
+
+    statusContainer: {
+        width: "100%",
+        maxWidth: "100%",
+        flex: "0 0 100%",
+        padding: '6px !important',
+        background: "#eaebed",
+        marginBottom: 24,
+        display: "flex",
+        justifyContent: "flex-end",
+        alignItems: "center",
+    },
+    statusLabel: {
+        marginRight: 16,
+        fontWeight: "500",
+        color: "#184a7b",
+    },
+    formControl1: {
+        width: 200,
+        display: "flex",
+        border: "none",
+        background: "#184a7b",
+        color: "#fff",
+        padding: 8,
+        paddingLeft: 12,
+        borderRadius: 6,
+        "& .MuiInputBase-root": {
+            color: "#fff",
+            "&:before": {
+                border: "none !important"
+            }
+        },
+        "& svg": {
+            fill: "#fff"
+        }
     }
 }))
 
@@ -148,8 +184,9 @@ const DetailBooking = ({ match }) => {
     const [staffNotify, setStaffNotify] = useState(false)
     const [confirmNotify, setConfirmNotify] = useState(false);
     const [downloadBtn, setDownloadBtn] = useState(false);
+    const [bookingNotify, setBookingNotify] = useState(false);
 
-    const { deleteBookingSuccess, deleteBookingError, confirmBookingSuccess, confirmBookingError, invitationSuccess } = useSelector(state => state.booking)
+    const { deleteBookingSuccess, deleteBookingError, confirmBookingSuccess, confirmBookingError, invitationSuccess, shiftStatusSuccess } = useSelector(state => state.booking)
 
     const [bookingData, setBookingData] = useState({
         booking_id: booking_id,
@@ -161,6 +198,11 @@ const DetailBooking = ({ match }) => {
         booking_id: booking_id,
         signee_id: [],
     })
+
+    const [bookingStatus, setBookingStatus] = useState({
+        booking_id: "",
+        status: ""
+    });
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -196,7 +238,6 @@ const DetailBooking = ({ match }) => {
 
     const newSelected = [];
     const handleCheckboxClick = (event, name) => {
-        console.log('event: ', event.target.checked);
         if (event.target.checked === false) {
             pdfData.signee_id = [];
             const filteredArray = pdfData.signee_id.filter(item => item !== name)
@@ -211,6 +252,7 @@ const DetailBooking = ({ match }) => {
         }
 
         pdfData.signee_id.length > 0 ? setDownloadBtn(true) : setDownloadBtn(false)
+        console.log('pdfData.signee_id.length: ', pdfData.signee_id.length);
 
     };
 
@@ -251,6 +293,21 @@ const DetailBooking = ({ match }) => {
     const backPage = () => {
         history.go(-2)
     }
+
+    const handleBookingStatus = (event, id) => {
+        setBookingStatus({ ...bookingStatus, [event.target.name]: event.target.value, booking_id: id });
+    };
+
+    useEffect(() => {
+        if (bookingStatus.booking_id !== "") {
+            dispatch(changeShiftStatus(bookingStatus))
+            setBookingNotify(true)
+            setTimeout(() => {
+                getBookingDetail()
+            }, 4000);
+        }
+
+    }, [bookingStatus])
 
     const signeePage = (e, signeeId) => {
         e.preventDefault();
@@ -318,7 +375,36 @@ const DetailBooking = ({ match }) => {
                     status="error"
                 />
             }
+            {bookingNotify && shiftStatusSuccess?.message &&
+                <Notification
+                    data={shiftStatusSuccess?.message}
+                    status="success"
+                />
+            }
             <Paper className={`${classes.root} mb-6`}>
+                <Grid container spacing={4}>
+                    <Grid item xs={12} sm={6} lg={4} className={classes.statusContainer}>
+                        <span className={classes.statusLabel}>Booking Status:</span>
+                        <FormControl variant="standard" className={classes.formControl1}>
+                            <Select
+                                value={bookingDetail?.data?.status || ""}
+                                name="status"
+                                onChange={(e) => handleBookingStatus(e, bookingDetail?.data?.id)}
+                                disabled={staffDetail === "Finance" ? true : false || bookingDetail?.data?.status === "CANCEL" ? true : false}
+                            >
+                                {
+                                    bookingDetail?.data?.status === "CREATED" && <MenuItem value="CREATED" disabled>Created</MenuItem>
+                                }
+                                {
+                                    bookingDetail?.data?.status !== "CANCEL" && <MenuItem value="CONFIRMED" >Confirmed</MenuItem>
+                                }
+                                {/* <MenuItem value="CREATED" >Created</MenuItem> */}
+                                {/* <MenuItem value="CONFIRMED" >Confirmed</MenuItem> */}
+                                <MenuItem value="CANCEL">Cancel</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                </Grid>
                 <Grid container spacing={4}>
                     <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
                         <Typography variant="body2" className={classes.heading}>Reference ID:</Typography>
@@ -390,7 +476,7 @@ const DetailBooking = ({ match }) => {
                 </Grid>
             </Paper>
 
-            <Paper className={`mb-6`} style={{position:"relative"}}>
+            <Paper className={`mb-6`} style={{ position: "relative" }}>
                 <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
                     <Tab
                         label={<span className={classes.tabLabel}>Matching Candidates {bookingDetail?.data?.matching.length > 0 ? <Chip label={bookingDetail?.data?.matching.length} color="primary" className={classes.tabChip} /> : ""}</span>}
@@ -420,6 +506,7 @@ const DetailBooking = ({ match }) => {
                                 <TableCell align="left">Name</TableCell>
                                 <TableCell align="left">Contact Number</TableCell>
                                 <TableCell align="left">Email</TableCell>
+                                <TableCell align="left">Status</TableCell>
                                 <TableCell align="left">Detail</TableCell>
                                 <TableCell align="right">Action</TableCell>
                             </TableRow>
@@ -445,6 +532,7 @@ const DetailBooking = ({ match }) => {
                                         <TableCell align="left">{row.first_name} {row.last_name}</TableCell>
                                         <TableCell align="left">{row.contact_number}</TableCell>
                                         <TableCell align="left">{row.email}</TableCell>
+                                        <TableCell align="left">{row.signee_booking_status}</TableCell>
                                         <TableCell align="right">
                                             <span onClick={(e) => signeePage(e, row.signeeId)} className={classes.viewBtn}>
                                                 <VisibilityIcon className="mr-2" />view
