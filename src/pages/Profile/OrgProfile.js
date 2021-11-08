@@ -6,11 +6,14 @@ import {
     Box,
     Grid, TextField
 } from '@material-ui/core';
-import { getOrgProfile, updateOrgProfile } from '../../store/action';
+import { getOrgProfile, orgChangePassword, updateOrgProfile } from '../../store/action';
 import { useDispatch, useSelector } from 'react-redux';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Notification from '../../components/Notification/Notification';
+import { useForm } from "react-hook-form";
+// import VisibilityIcon from '@material-ui/icons/Visibility';
+// import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 
 const useStyle = makeStyles((theme) => ({
     root: {
@@ -45,57 +48,89 @@ const useStyle = makeStyles((theme) => ({
 const OrgProfile = () => {
     const classes = useStyle();
     const dispatch = useDispatch();
-    const [profileNotify, setProfileNotify]= useState(false)
+    const [profileNotify, setProfileNotify] = useState(false)
     const [data, setData] = useState({
-        organization_name:"",
+        organization_name: "",
         first_name: "",
         last_name: "",
         email: '',
         contact_number: '',
         address_line_1: '',
         address_line_2: '',
-        city:'',
+        city: '',
         postcode: '',
     })
     const { profile, loading } = useSelector(state => state.orgProfile)
-    const {profileOrgErrors, profileOrgSuccess} = useSelector(state => state.orgProfile)
+    const { profileOrgErrors, profileOrgSuccess } = useSelector(state => state.orgProfile)
+    const [passNotify, setPassNotify] = useState(false)
+    const { passChange, passerrors } = useSelector(state => state.orgProfile)
+    console.log('passerrors: ', passerrors);
+    const {register, handleSubmit, formState: { errors }} = useForm();
+
+    const [passData, setPassData] = useState({
+        old_password: "",
+        password: "",
+        confirm_password: "",
+    })
+
+    const handleChangePassword = (event) => {
+        setPassData({ ...passData, [event.target.name]: event.target.value });
+    };
 
     const handleChange = (event) => {
         setData({ ...data, [event.target.name]: event.target.value });
     };
 
-    
-    
+
+
     useEffect(() => {
-        const getProfileDetail =() => {
+        const getProfileDetail = () => {
             dispatch(getOrgProfile())
         }
         getProfileDetail()
     }, [dispatch])
 
-    useEffect(()=>{
-        if(profile.data){
+    useEffect(() => {
+        if (profile.data) {
             setData(profile.data)
         }
-    },[profile.data])
+    }, [profile.data])
 
     const profileSubmit = () => {
         dispatch(updateOrgProfile(data))
         setProfileNotify(true)
     }
 
-    
+    const onSubmit = async (passData) => {
+        dispatch(orgChangePassword(passData))
+        setPassNotify(true)
+    }
+
+
     return (
         <>
             {
                 loading ?
-                <Backdrop className={classes.backdrop} open={loading}>
-                    <CircularProgress color="inherit" />
-                </Backdrop> : ""
+                    <Backdrop className={classes.backdrop} open={loading}>
+                        <CircularProgress color="inherit" />
+                    </Backdrop> : ""
             }
             {profileNotify && profileOrgSuccess?.message &&
                 <Notification
                     data={profileOrgSuccess?.message}
+                    status="success"
+                />
+            }
+
+            {passNotify && (passerrors || passerrors?.message) &&
+                <Notification
+                    data={passerrors || passerrors?.message}
+                    status="error"
+                />
+            }
+            {passNotify && passChange?.message &&
+                <Notification
+                    data={passChange?.message}
                     status="success"
                 />
             }
@@ -107,7 +142,7 @@ const OrgProfile = () => {
                             label="Organization Name"
                             variant="outlined"
                             name="organization_name"
-                            value={data.organization_name ? data.organization_name:""}
+                            value={data.organization_name ? data.organization_name : ""}
                             onChange={handleChange}
                             fullWidth
                             disabled
@@ -131,7 +166,7 @@ const OrgProfile = () => {
                             label="Contact Person Name"
                             variant="outlined"
                             name="contact_person_name"
-                            value={data.contact_person_name? data.contact_person_name:""}
+                            value={data.contact_person_name ? data.contact_person_name : ""}
                             onChange={handleChange}
                             fullWidth
                             required
@@ -141,14 +176,14 @@ const OrgProfile = () => {
                             }
                         />
                     </Grid>
-                   
+
                     <Grid item xs={12} sm={6} lg={4}>
                         <TextField
                             id="contact_number"
                             label="Contact Number"
                             variant="outlined"
                             name="contact_number"
-                            value={data.contact_number ? data.contact_number:""}
+                            value={data.contact_number ? data.contact_number : ""}
                             onChange={handleChange}
                             fullWidth
                             required
@@ -164,7 +199,7 @@ const OrgProfile = () => {
                             label="Address line 1"
                             variant="outlined"
                             name="address_line_1"
-                            value={data.address_line_1 ?data.address_line_1:""}
+                            value={data.address_line_1 ? data.address_line_1 : ""}
                             onChange={handleChange}
                             fullWidth
                             required
@@ -178,7 +213,7 @@ const OrgProfile = () => {
                             label="Address line 2"
                             variant="outlined"
                             name="address_line_2"
-                            value={data.address_line_2? data.address_line_2:""}
+                            value={data.address_line_2 ? data.address_line_2 : ""}
                             onChange={handleChange}
                             fullWidth
                         />
@@ -189,7 +224,7 @@ const OrgProfile = () => {
                             label="City"
                             variant="outlined"
                             name="city"
-                            value={data.city?data.city:""}
+                            value={data.city ? data.city : ""}
                             onChange={handleChange}
                             fullWidth
                             required
@@ -203,7 +238,7 @@ const OrgProfile = () => {
                             label="Postcode"
                             variant="outlined"
                             name="postcode"
-                            value={data.postcode?data.postcode:""}
+                            value={data.postcode ? data.postcode : ""}
                             onChange={handleChange}
                             fullWidth
                             required
@@ -224,7 +259,94 @@ const OrgProfile = () => {
 
             </Paper>
 
-            
+            <Paper className={classes.root}>
+            <h3 className={classes.title}>Change Password</h3>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12} sm={6} lg={4}>
+                            <TextField
+                                error={(errors.old_password ? true : false)}
+                                id="old_password"
+                                label="Old Password"
+                                variant="outlined"
+                                name="old_password"
+                                // value={resetPass.old_password}
+                                type="password"
+                                aria-invalid={errors.old_password ? "true" : "false zz"}
+                                onChange={handleChangePassword}
+                                fullWidth
+                                required
+                                {...register("old_password", {
+                                    required: "Please enter old password",
+                                })}
+                                autoComplete="new-password"
+                                helperText={errors.old_password ? "Please enter old password" : ""}
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6} lg={4}>
+                            <TextField
+                                id="password"
+                                label="Enter New Password"
+                                variant="outlined"
+                                name="password"
+                                // value={data.password}
+                                // type={showPass ? "text" : "password"}
+                                type="password"
+                                onChange={handleChangePassword}
+                                fullWidth
+                                required
+                                // InputProps={{
+                                //     endAdornment: <IconButton onClick={handleClickShowPassword}>
+                                //         {showPass ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                                //     </IconButton>
+                                // }}
+                                error={(errors.password ? true : false)}
+                                {...register("password", {
+                                    required: "Please enter password",
+                                })}
+                                helperText={errors.password ? "Please enter new password" : ""}
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6} lg={4}>
+                            <TextField
+                                id="confirm_password"
+                                label="Confirm Password"
+                                variant="outlined"
+                                name="confirm_password"
+                                // value={data.confirm_password}
+                                // type={showCPass ? "text" : "password"}
+                                type="password"
+                                onChange={handleChangePassword}
+                                fullWidth
+                                required
+                                // InputProps={{
+                                //     endAdornment: <IconButton onClick={handleClickShowCPassword}>
+                                //         {showCPass ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                                //     </IconButton>
+                                // }}
+                                error={(errors.confirm_password ? true : false)}
+                                {...register("confirm_password", {
+                                    required: "Please enter Confirm password",
+                                })}
+                                helperText={errors.confirm_password ? "Please enter confirm password" : ""}
+                            />
+                        </Grid>
+                        {/* <Grid className={classes.footerBtn}>
+                            <Button color="secondary" variant="contained" type="submit" formNoValidate>
+                                Save
+                            </Button>
+                        </Grid> */}
+                    </Grid>
+                    <Box className={classes.footerBtn}>
+                    <Button color="secondary" variant="contained" type="submit" formNoValidate>
+                                Save
+                            </Button>
+                    </Box>
+                </form>
+
+            </Paper>
+
+
         </>
     )
 }

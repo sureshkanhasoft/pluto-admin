@@ -29,7 +29,7 @@ export const login = ({ email, password }) => {
                 } else if(data.data.role === 'ORGANIZATION'){
                     if(data.data.password_change === 0){
                         setTimeout(() => {
-                            history.push('./admin/change-password')
+                            history.push('./admin/organization-profile')
                         }, 2000);
                     }else{
                         setTimeout(() => {

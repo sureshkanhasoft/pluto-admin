@@ -108,9 +108,9 @@ const Navbar = () => {
             onClose={handleClose}
           >
             <MenuItem onClick={openProfile}>Profile</MenuItem>
-            {
+            {/* {
               loggedUser === "ORGANIZATION" && <MenuItem onClick={openChangePassword}>Change password</MenuItem>
-            }
+            } */}
             
             <MenuItem onClick={logout}>Logout</MenuItem>
           </Menu>
