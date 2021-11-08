@@ -183,7 +183,7 @@ const DetailBooking = ({ match }) => {
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [staffNotify, setStaffNotify] = useState(false)
     const [confirmNotify, setConfirmNotify] = useState(false);
-    const [downloadBtn, setDownloadBtn] = useState(false);
+    // const [downloadBtn, setDownloadBtn] = useState(false);
     const [bookingNotify, setBookingNotify] = useState(false);
 
     const { deleteBookingSuccess, deleteBookingError, confirmBookingSuccess, confirmBookingError, invitationSuccess, shiftStatusSuccess } = useSelector(state => state.booking)
@@ -207,7 +207,7 @@ const DetailBooking = ({ match }) => {
     const handleChange = (event, newValue) => {
         setValue(newValue);
         setSigneeSize('');
-        pdfData.signee_id = [];
+        // pdfData.signee_id = [];
     };
     const upadateLink = () => {
         history.push(`update`)
@@ -236,24 +236,39 @@ const DetailBooking = ({ match }) => {
 
     }, [bookingData])
 
-    const newSelected = [];
-    const handleCheckboxClick = (event, name) => {
-        if (event.target.checked === false) {
-            pdfData.signee_id = [];
-            const filteredArray = pdfData.signee_id.filter(item => item !== name)
-            if (filteredArray.length > 0) {
-                pdfData.signee_id.push(filteredArray);
-                setPdfData(pdfData)
-            }
+    // const newSelected = [];
+    // const handleCheckboxClick1 = (event, name) => {
+    //     if (event.target.checked === false) {
+    //         pdfData.signee_id = [];
+    //         const filteredArray = pdfData.signee_id.filter(item => item !== name)
+    //         if (filteredArray.length > 0) {
+    //             pdfData.signee_id.push(filteredArray);
+    //             setPdfData(pdfData)
+    //         }
+    //     } else {
+    //         newSelected.push(name);
+    //         pdfData.signee_id.push(name);
+    //         setPdfData(pdfData)
+    //     }
+
+    //     pdfData.signee_id.length > 0 ? setDownloadBtn(true) : setDownloadBtn(false)
+    //     console.log('pdfData.signee_id.length: ', pdfData.signee_id.length);
+
+    // };
+
+    const handleCheckboxClick = (event) => {
+        const specialityData = JSON.parse(JSON.stringify(pdfData));
+        const isChecked = (event.target.checked);
+        console.log('isChecked: ', isChecked);
+        if (isChecked) {
+            specialityData.signee_id.push(parseFloat(event.target.value));
+            setPdfData(specialityData)
         } else {
-            newSelected.push(name);
-            pdfData.signee_id.push(name);
-            setPdfData(pdfData)
+            const newData = (specialityData.signee_id).filter(item => item !== parseFloat(event.target.value));
+            specialityData.signee_id = newData;
+            setPdfData(specialityData)
         }
-
-        pdfData.signee_id.length > 0 ? setDownloadBtn(true) : setDownloadBtn(false)
-        console.log('pdfData.signee_id.length: ', pdfData.signee_id.length);
-
+        
     };
 
     const isSelected = (name) => selected.indexOf(name) !== -1;
@@ -487,12 +502,13 @@ const DetailBooking = ({ match }) => {
                 </Tabs>
 
                 {
-                    downloadBtn && <Button variant="contained" color="secondary" onClick={usersInvitation} className={classes.invitationButton}>
+                    pdfData.signee_id.length > 0 && <Button variant="contained" color="secondary" onClick={usersInvitation} className={classes.invitationButton}>
                         <span className="material-icons mr-2">mail</span> Send invitation
                     </Button>
                 }
+
                 {
-                    downloadBtn && <Button variant="contained" color="secondary" onClick={downloadPdf} className={classes.downloadButton}>
+                    pdfData.signee_id.length > 0 && <Button variant="contained" color="secondary" onClick={downloadPdf} className={classes.downloadButton}>
                         <span className="material-icons mr-2">download</span> Download PDF
                     </Button>
                 }
@@ -519,6 +535,8 @@ const DetailBooking = ({ match }) => {
                                     <TableRow key={index}>
                                         <TableCell scope="row">
                                             <Checkbox
+                                                value={row.signeeId}
+                                                checked={pdfData.signee_id.includes(row.signeeId)}
                                                 onClick={event =>
                                                     handleCheckboxClick(event, row.signeeId)
                                                 }
@@ -597,6 +615,8 @@ const DetailBooking = ({ match }) => {
                                     <TableRow key={index}>
                                         <TableCell scope="row">
                                             <Checkbox
+                                                value={row.signeeId}
+                                                checked={pdfData.signee_id.includes(row.signeeId)}
                                                 onClick={event =>
                                                     handleCheckboxClick(event, row.signeeId)
                                                 }
