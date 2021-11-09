@@ -101,7 +101,7 @@ const ViewSignee = ({ match }) => {
         status: ""
     });
     const [complainceStatus, setComplainceStatus] = useState({
-        signee_id: "",
+        signeeId: "",
         status: ""
     });
 
@@ -109,11 +109,11 @@ const ViewSignee = ({ match }) => {
         setProfileStatus({ ...profileStatus, [event.target.name]: event.target.value, signee_id: id });
     };
     const handleComplianceStatus = (event, id) => {
-        setComplainceStatus({ ...complainceStatus, [event.target.name]: event.target.value, signee_id: id });
+        setComplainceStatus({ ...complainceStatus, [event.target.name]: event.target.value, signeeId: id });
     };
 
     useEffect(() => {
-        if(complainceStatus.signee_id !== ""){
+        if(complainceStatus.signeeId !== ""){
             dispatch(signeeCompStatus(complainceStatus))
             setCompNotify(true)
             setTimeout(() => {

@@ -244,7 +244,7 @@ const DetailSignee = ({ match }) => {
                 </Grid>
             </Paper>
 
-            <Typography variant="h5" style={{ marginBottom: 16 }}>Document Details</Typography>
+            <Typography variant="h5" style={{ marginBottom: 16 }}>Compliance Document Details</Typography>
             {
                 getSingleSigneeItem?.data && getSingleSigneeItem?.data?.documents && Object.entries(getSingleSigneeItem?.data?.documents).map((list, index) => {
                     return (
@@ -280,7 +280,7 @@ const DetailSignee = ({ match }) => {
                                                 className={classes.statusSelect}
                                             >
                                                 <MenuItem value="PENDING">PENDING</MenuItem>
-                                                <MenuItem value="SUCCESS">SUCCESS</MenuItem>
+                                                <MenuItem value="SUCCESS">ACCEPTED</MenuItem>
                                                 <MenuItem value="REJECTED">REJECTED</MenuItem>
                                             </Select>
                                         </FormControl>
