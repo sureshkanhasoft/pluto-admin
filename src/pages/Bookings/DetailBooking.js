@@ -475,11 +475,15 @@ const DetailBooking = ({ match }) => {
                             <Button color="primary" onClick={backPage}>
                                 Back
                             </Button>
-                            <Button variant="contained" color="primary" onClick={upadateLink}>
-                                <EditIcon className="mr-2" />Edit
-                            </Button>
                             {
-                                (staffDetail !== "Finance") &&
+                                bookingDetail?.data?.status === "CREATED" && 
+                                <Button variant="contained" color="primary" onClick={upadateLink}>
+                                    <EditIcon className="mr-2" />Edit
+                                </Button>
+                            }
+                            
+                            {
+                                (staffDetail !== "Finance" && bookingDetail?.data?.status === "CREATED") &&
                                 <Button variant="contained" color="secondary" onClick={(e) => deleteStaffItem(bookingDetail?.data?.id)}>
                                     <DeleteIcon className="mr-2" />Delete
                                 </Button>
