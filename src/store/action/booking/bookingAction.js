@@ -201,7 +201,7 @@ const deleteBookingError = (error) => {
 export const confirmBooking = (data) => {
     return async (dispatch) => {
         dispatch(confirmBookingRequest())
-        await apiClient(true).post(`api/organization/user/confirm-booking`, data)
+        await apiClient(true).post(`api/organization/confirm-booking`, data)
             .then(response => {
                 const dataItem = response.data;
                 dispatch(confirmBookingSuccess(dataItem))

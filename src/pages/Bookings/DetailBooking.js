@@ -173,6 +173,7 @@ const DetailBooking = ({ match }) => {
     const [Id, setId] = useState(false);
     const [value, setValue] = React.useState(0);
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const [getSigneeid, setGetSigneeid] = React.useState();
     const open = Boolean(anchorEl);
     const [selected, setSelected] = React.useState([]);
     const staffDetail = JSON.parse(localStorage.getItem("staffDetail"));
@@ -213,14 +214,17 @@ const DetailBooking = ({ match }) => {
         history.push(`update`)
     }
 
-    const handleMenu = (event) => {
+    const handleMenu = (event, id) => {
+        console.log('event: ', event.currentTarget);
+        event.preventDefault();
         setAnchorEl(event.currentTarget);
+        setGetSigneeid(id);
     };
 
     const handleClose = (data) => {
         setAnchorEl(null);
     };
-    const handleClose1 = (data, signeeId) => {
+    const handleMenuItem = (data, signeeId) => {
         setBookingData({ ...bookingData, status: data, signee_id: signeeId })
         setAnchorEl(null);
     };
@@ -561,7 +565,7 @@ const DetailBooking = ({ match }) => {
                                             </span>
                                         </TableCell>
                                         <TableCell align="right">
-                                            <IconButton onClick={handleMenu}>
+                                            <IconButton onClick={(event) => handleMenu(event, row.signeeId)}>
                                                 <MoreVertIcon />
                                             </IconButton>
                                             <Menu
@@ -574,14 +578,14 @@ const DetailBooking = ({ match }) => {
                                             >
                                                 {
                                                     bookingDetail?.data?.status !== "CONFIRMED" &&
-                                                    <MenuItem onClick={() => handleClose1('OFFER', row.signeeId)} className={classes.menuItem}><CheckIcon className="mr-2" />Offer</MenuItem>
+                                                    <MenuItem onClick={(event) => handleMenuItem('OFFER', getSigneeid)} className={classes.menuItem}><CheckIcon className="mr-2" />Offer</MenuItem>
                                                 }
                                                 {
                                                     bookingDetail?.data?.status !== "CONFIRMED" &&
-                                                    <MenuItem onClick={() => handleClose1('CONFIRMED', row.signeeId)} className={classes.menuItem}><StarIcon className="mr-2" />Super Assign</MenuItem>
+                                                    <MenuItem onClick={(event) => handleMenuItem('CONFIRMED', getSigneeid)} className={classes.menuItem}><StarIcon className="mr-2" />Super Assign</MenuItem>
                                                 }
 
-                                                <MenuItem onClick={() => handleClose1('CANCEL', row.signeeId)} className={classes.menuItem}><CloseIcon className="mr-2" />Reject</MenuItem>
+                                                <MenuItem onClick={(event) => handleMenuItem('CANCEL', getSigneeid)} className={classes.menuItem}><CloseIcon className="mr-2" />Reject</MenuItem>
                                             </Menu>
                                         </TableCell>
                                     </TableRow>
@@ -607,6 +611,7 @@ const DetailBooking = ({ match }) => {
                                 <TableCell align="left">Name</TableCell>
                                 <TableCell align="left">Contact Number</TableCell>
                                 <TableCell align="left">Email</TableCell>
+                                <TableCell align="left">Status</TableCell>
                                 <TableCell align="left">Detail</TableCell>
                                 <TableCell align="right">Action</TableCell>
                             </TableRow>
@@ -635,13 +640,14 @@ const DetailBooking = ({ match }) => {
                                         <TableCell align="left">{row.first_name} {row.last_name}</TableCell>
                                         <TableCell align="left">{row.contact_number}</TableCell>
                                         <TableCell align="left">{row.email}</TableCell>
+                                        <TableCell align="left">{row.signee_booking_status}</TableCell>
                                         <TableCell align="right">
                                             <span onClick={(e) => signeePage(e, row.signeeId)} className={classes.viewBtn}>
                                                 <VisibilityIcon className="mr-2" />view
                                             </span>
                                         </TableCell>
                                         <TableCell align="right">
-                                            <IconButton onClick={handleMenu}>
+                                            <IconButton onClick={(event) => handleMenu(event, row.signeeId)}>
                                                 <MoreVertIcon />
                                             </IconButton>
                                             <Menu
@@ -654,13 +660,13 @@ const DetailBooking = ({ match }) => {
                                             >
                                                 {
                                                     bookingDetail?.data?.status !== "CONFIRMED" &&
-                                                    <MenuItem onClick={() => handleClose1('OFFER', row.signeeId)} className={classes.menuItem}><CheckIcon className="mr-2" />Offer</MenuItem>
+                                                    <MenuItem onClick={() => handleMenuItem('OFFER', row.signeeId)} className={classes.menuItem}><CheckIcon className="mr-2" />Offer</MenuItem>
                                                 }
                                                 {
                                                     bookingDetail?.data?.status !== "CONFIRMED" &&
-                                                    <MenuItem onClick={() => handleClose1('CONFIRMED', row.signeeId)} className={classes.menuItem}><StarIcon className="mr-2" />Super Assign</MenuItem>
+                                                    <MenuItem onClick={() => handleMenuItem('CONFIRMED', row.signeeId)} className={classes.menuItem}><StarIcon className="mr-2" />Super Assign</MenuItem>
                                                 }
-                                                <MenuItem onClick={() => handleClose1('CANCEL', row.signeeId)} className={classes.menuItem}><CloseIcon className="mr-2" />Reject</MenuItem>
+                                                <MenuItem onClick={() => handleMenuItem('CANCEL', row.signeeId)} className={classes.menuItem}><CloseIcon className="mr-2" />Reject</MenuItem>
                                             </Menu>
                                         </TableCell>
                                     </TableRow>
