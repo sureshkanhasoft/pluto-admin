@@ -90,49 +90,49 @@ const useStyle = makeStyles((theme) => ({
 const ViewSignee = ({ match }) => {
     const classes = useStyle()
     const dispatch = useDispatch();
-    const { getSigneeItem, loading, signeeComStatusSuccess, signeeProStatusSuccess } = useSelector(state => state.signee)
+    const { getSigneeItem, loading } = useSelector(state => state.signee)
     const [page, setPage] = useState(1)
     const [searchData, setSearchData] = useState({ search: "" });
     const staffDetail = JSON.parse(localStorage.getItem("staffDetail"));
-    const [compNotify, setCompNotify] = useState(false);
+    // const [compNotify, setCompNotify] = useState(false);
 
-    const [profileStatus, setProfileStatus] = useState({
-        signee_id: "",
-        status: ""
-    });
-    const [complainceStatus, setComplainceStatus] = useState({
-        signeeId: "",
-        status: ""
-    });
+    // const [profileStatus, setProfileStatus] = useState({
+    //     signee_id: "",
+    //     status: ""
+    // });
+    // const [complainceStatus, setComplainceStatus] = useState({
+    //     signeeId: "",
+    //     status: ""
+    // });
 
-    const handleProfileStatus = (event, id) => {
-        setProfileStatus({ ...profileStatus, [event.target.name]: event.target.value, signee_id: id });
-    };
-    const handleComplianceStatus = (event, id) => {
-        setComplainceStatus({ ...complainceStatus, [event.target.name]: event.target.value, signeeId: id });
-    };
+    // const handleProfileStatus = (event, id) => {
+    //     setProfileStatus({ ...profileStatus, [event.target.name]: event.target.value, signee_id: id });
+    // };
+    // const handleComplianceStatus = (event, id) => {
+    //     setComplainceStatus({ ...complainceStatus, [event.target.name]: event.target.value, signeeId: id });
+    // };
 
-    useEffect(() => {
-        if(complainceStatus.signeeId !== ""){
-            dispatch(signeeCompStatus(complainceStatus))
-            setCompNotify(true)
-            setTimeout(() => {
-                getSigneeList()
-            }, 4000);
-        }
+    // useEffect(() => {
+    //     if(complainceStatus.signeeId !== ""){
+    //         dispatch(signeeCompStatus(complainceStatus))
+    //         setCompNotify(true)
+    //         setTimeout(() => {
+    //             getSigneeList()
+    //         }, 4000);
+    //     }
 
-    },[complainceStatus])
+    // },[complainceStatus])
 
-    useEffect(() => {
-        if(profileStatus.signee_id !== ""){
-            dispatch(signeeProStatus(profileStatus))
-            setCompNotify(true)
-            setTimeout(() => {
-                getSigneeList()
-            }, 4000);
-        }
+    // useEffect(() => {
+    //     if(profileStatus.signee_id !== ""){
+    //         dispatch(signeeProStatus(profileStatus))
+    //         setCompNotify(true)
+    //         setTimeout(() => {
+    //             getSigneeList()
+    //         }, 4000);
+    //     }
 
-    },[profileStatus])
+    // },[profileStatus])
 
 
     const handleSearchChange = (event) => {
@@ -173,12 +173,12 @@ const ViewSignee = ({ match }) => {
                         <CircularProgress color="inherit" />
                     </Backdrop> : ""
             }
-            {compNotify && (signeeComStatusSuccess?.message || signeeProStatusSuccess?.message) &&
+            {/* {compNotify && (signeeComStatusSuccess?.message || signeeProStatusSuccess?.message) &&
                 <Notification
                     data={signeeComStatusSuccess?.message || signeeProStatusSuccess?.message}
                     status="success"
                 />
-            }
+            } */}
             <p className="mb-6">Welcome to your Pluto Software admin dashboard. Here you can get an overview of your account activity, or use navigation on the left hand side to get to your desired location.</p>
             <Paper className={`${classes.root} mb-6`}>
                 <Box className="mb-5" display="flex" alignItems="center">
@@ -210,8 +210,8 @@ const ViewSignee = ({ match }) => {
                             <TableCell align="left">Signee Name</TableCell>
                             <TableCell align="left">Email</TableCell>
                             <TableCell align="left">Contact number</TableCell>
-                            <TableCell align="left">Profile Status</TableCell>
-                            <TableCell align="left">Compliance Status</TableCell>
+                            {/* <TableCell align="left">Profile Status</TableCell>
+                            <TableCell align="left">Compliance Status</TableCell> */}
                             {/* <TableCell align="left">DOB</TableCell> */}
                             <TableCell align="right" style={{ width: 140 }}></TableCell>
                         </TableRow>
@@ -225,7 +225,7 @@ const ViewSignee = ({ match }) => {
                                         <TableCell align="left">{`${list.first_name} ${list.last_name}`}</TableCell>
                                         <TableCell align="left">{list.email}</TableCell>
                                         <TableCell align="left">{list.contact_number ? list.contact_number : "-"}</TableCell>
-                                        <TableCell align="left">
+                                        {/* <TableCell align="left">
                                             <FormControl variant="outlined" className={classes.formControl1} fullWidth>
                                                 <Select
                                                     value={list?.signee_status || ""}
@@ -253,7 +253,7 @@ const ViewSignee = ({ match }) => {
                                                     <MenuItem value="ON HOLD">On Hold</MenuItem>
                                                 </Select>
                                             </FormControl>
-                                        </TableCell>
+                                        </TableCell> */}
                                         {/* <TableCell align="left">{list.date_of_birth}</TableCell> */}
                                         <TableCell align="right">
                                             <Link to="#" className="btn btn-secondary" onClick={e => onhandlClick(list.id)}>View</Link>

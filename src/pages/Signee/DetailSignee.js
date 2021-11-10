@@ -8,7 +8,7 @@ import {
     Button,
     Backdrop,
     CircularProgress,
-    FormControl,Select, MenuItem
+    FormControl, Select, MenuItem
 } from "@material-ui/core";
 import { Link } from 'react-router-dom';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -16,7 +16,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import AlertDialog from '../../components/Alert/AlertDialog';
 import { useDispatch, useSelector } from 'react-redux';
 import history from '../../utils/HistoryUtils';
-import { changeDocStatus, deleteSignee, getSingleSignee } from '../../store/action';
+import { changeDocStatus, deleteSignee, getSingleSignee, signeeCompStatus, signeeProStatus } from '../../store/action';
 import Notification from '../../components/Notification/Notification';
 import InsertPhotoOutlinedIcon from '@material-ui/icons/InsertPhotoOutlined';
 import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
@@ -64,13 +64,48 @@ const useStyle = makeStyles((theme) => ({
             borderBottom: "none"
         }
     },
-    selectCon:{
-        marginLeft:"auto",
-        minWidth:140
+    selectCon: {
+        marginLeft: "auto",
+        minWidth: 140
     },
-    statusSelect:{
-        '& .MuiSelect-select':{
+    statusSelect: {
+        '& .MuiSelect-select': {
             padding: "10px 32px 10px 10px"
+        }
+    },
+    statusContainer: {
+        width: "100%",
+        maxWidth: "100%",
+        flex: "0 0 100%",
+        padding: '6px !important',
+        background: "#eaebed",
+        marginBottom: 24,
+        display: "flex",
+        justifyContent: "flex-end",
+        alignItems: "center",
+    },
+    statusLabel: {
+        marginRight: 16,
+        fontWeight: "500",
+        color: "#184a7b",
+    },
+    formControl1: {
+        width: 182,
+        display: "flex",
+        border: "none",
+        background: "#184a7b",
+        color: "#fff",
+        padding: '4px 8px',
+        paddingLeft: 12,
+        borderRadius: 6,
+        "& .MuiInputBase-root": {
+            color: "#fff",
+            "&:before": {
+                border: "none !important"
+            }
+        },
+        "& svg": {
+            fill: "#fff"
         }
     }
 }))
@@ -83,17 +118,32 @@ const DetailSignee = ({ match }) => {
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [signeeNotify, setSigneeNotify] = useState(false)
     const [docNotify, setDocNotify] = useState(false)
+    const [compNotify, setCompNotify] = useState(false);
+    const [proNotify, setProNotify] = useState(false);
+    console.log('compNotify: ', compNotify);
     const staffDetail = JSON.parse(localStorage.getItem("staffDetail"));
     const baseUrl = "http://backendbooking.kanhasoftdev.com/public/uploads/signee_docs/"
 
-    const { getSingleSigneeItem, loading, deleteSigneeSuccess, deleteSigneeError, changeDocStatusSuccess } = useSelector(state => state.signee)
+    const { getSingleSigneeItem, loading, deleteSigneeSuccess, deleteSigneeError, changeDocStatusSuccess, signeeProStatusSuccess, signeeComStatusSuccess, signeeComStatusError } = useSelector(state => state.signee)
+    console.log('signeeComStatusError: ', signeeComStatusError);
+    console.log('signeeComStatusSuccess: ', signeeComStatusSuccess);
 
     const [complainceStatus, setComplainceStatus] = useState({
-        
+
         signee_id: user_id,
         organization_id: "",
-        key:"",
-        document_status:""
+        key: "",
+        document_status: ""
+    });
+
+    const [profileStatus, setProfileStatus] = useState({
+        signee_id: "",
+        status: ""
+    });
+
+    const [complStatus, setComplStatus] = useState({
+        signeeId: "",
+        status: ""
     });
 
     const deleteStaffItem = (id) => {
@@ -122,11 +172,11 @@ const DetailSignee = ({ match }) => {
     }
 
     const handleComplianceStatus = (event, org_id) => {
-        setComplainceStatus({ ...complainceStatus, key: event.target.name, document_status: event.target.value, organization_id:org_id});
+        setComplainceStatus({ ...complainceStatus, key: event.target.name, document_status: event.target.value, organization_id: org_id });
     };
-    
+
     useEffect(() => {
-        if(complainceStatus.key !== ""){
+        if (complainceStatus.key !== "") {
             dispatch(changeDocStatus(complainceStatus))
             setDocNotify(true)
             setTimeout(() => {
@@ -134,6 +184,38 @@ const DetailSignee = ({ match }) => {
             }, 4000);
         }
     }, [complainceStatus])
+
+    const handleProfileStatus = (event, id) => {
+        setProfileStatus({ ...profileStatus, [event.target.name]: event.target.value, signee_id: id });
+    };
+
+    useEffect(() => {
+        if (profileStatus.signee_id !== "") {
+            dispatch(signeeProStatus(profileStatus))
+            setProNotify(true)
+            setTimeout(() => {
+                dispatch(getSingleSignee(user_id))
+                setProNotify(false)
+            }, 4000);
+        }
+
+    }, [profileStatus])
+
+    const handleComplStatus = (event, id) => {
+        setComplStatus({ ...complStatus, [event.target.name]: event.target.value, signeeId: id });
+    };
+
+    useEffect(() => {
+        if (complStatus.signeeId !== "") {
+            dispatch(signeeCompStatus(complStatus))
+            setCompNotify(true)
+            setTimeout(() => {
+                dispatch(getSingleSignee(user_id))
+                setCompNotify(false)
+            }, 4000);
+        }
+
+    }, [complStatus])
 
     return (
         <>
@@ -155,7 +237,50 @@ const DetailSignee = ({ match }) => {
                     status="error"
                 />
             }
+            {compNotify && (signeeComStatusSuccess?.message) &&
+                <Notification
+                    data={signeeComStatusSuccess?.message}
+                    status="success"
+                />
+            }
+            {proNotify && (signeeProStatusSuccess?.message) &&
+                <Notification
+                    data={signeeProStatusSuccess?.message}
+                    status="success"
+                />
+            }
             <Paper className={`${classes.root} mb-6`}>
+                <Grid container spacing={4}>
+                    <Grid item xs={12} sm={6} lg={4} className={classes.statusContainer}>
+                        <span className={classes.statusLabel}>Profile Status:</span>
+                        <FormControl  className={classes.formControl1} style={{marginRight:30}}>
+                            <Select
+                                value={getSingleSigneeItem?.data?.signee_status || ""}
+                                name="status"
+                                onChange={(e) => handleProfileStatus(e, getSingleSigneeItem?.data?.user_id)}
+                            >
+                                <MenuItem value="Active">Active</MenuItem>
+                                <MenuItem value="Inactive">Inactive</MenuItem>
+                                <MenuItem value="Dormant">Dormant</MenuItem>
+                            </Select>
+                        </FormControl>
+                        <span className={classes.statusLabel}>Compliance Status:</span>
+                        <FormControl className={classes.formControl1}>
+                            <Select
+                                value={getSingleSigneeItem?.data?.compliance_status || ""}
+                                name="status"
+                                onChange={(e) => handleComplStatus(e, getSingleSigneeItem?.data?.user_id)}
+                                defaultValue={0}
+                            >
+                                <MenuItem value="NEW SIGNUP">New Signup</MenuItem>
+                                <MenuItem value="COMPLIANCE REVIEW">Compliance review</MenuItem>
+                                <MenuItem value="NOT COMPLIANT">Not Complaint</MenuItem>
+                                <MenuItem value="COMPLIANT">Complaint</MenuItem>
+                                <MenuItem value="ON HOLD">On Hold</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                </Grid>
                 <Grid container spacing={4}>
                     {/* <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
                         <Typography variant="body2" className={classes.heading}>Candidate Id</Typography>
@@ -271,21 +396,21 @@ const DetailSignee = ({ match }) => {
                                         {
                                             list[1].length > 0 &&
                                             <FormControl variant="outlined" className={classes.formControl} fullWidth>
-                                            
-                                            <Select
-                                                value={list[1][0]?.document_status || ""}
-                                                name={list[0]}
-                                                onChange={(e) => handleComplianceStatus(e, getSingleSigneeItem?.data?.parent_id)}
-                                                defaultValue={0}
-                                                className={classes.statusSelect}
-                                            >
-                                                <MenuItem value="PENDING">PENDING</MenuItem>
-                                                <MenuItem value="SUCCESS">ACCEPTED</MenuItem>
-                                                <MenuItem value="REJECTED">REJECTED</MenuItem>
-                                            </Select>
-                                        </FormControl>
+
+                                                <Select
+                                                    value={list[1][0]?.document_status || ""}
+                                                    name={list[0]}
+                                                    onChange={(e) => handleComplianceStatus(e, getSingleSigneeItem?.data?.parent_id)}
+                                                    defaultValue={0}
+                                                    className={classes.statusSelect}
+                                                >
+                                                    <MenuItem value="PENDING">PENDING</MenuItem>
+                                                    <MenuItem value="SUCCESS">ACCEPTED</MenuItem>
+                                                    <MenuItem value="REJECTED">REJECTED</MenuItem>
+                                                </Select>
+                                            </FormControl>
                                         }
-                                       
+
                                     </div>
                                 </Grid>
                                 {
