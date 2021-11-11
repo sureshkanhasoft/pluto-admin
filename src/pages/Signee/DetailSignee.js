@@ -252,20 +252,8 @@ const DetailSignee = ({ match }) => {
             <Paper className={`${classes.root} mb-6`}>
                 <Grid container spacing={4}>
                     <Grid item xs={12} sm={6} lg={4} className={classes.statusContainer}>
-                        <span className={classes.statusLabel}>Profile Status:</span>
-                        <FormControl  className={classes.formControl1} style={{marginRight:30}}>
-                            <Select
-                                value={getSingleSigneeItem?.data?.signee_status || ""}
-                                name="status"
-                                onChange={(e) => handleProfileStatus(e, getSingleSigneeItem?.data?.id)}
-                            >
-                                <MenuItem value="Active">Active</MenuItem>
-                                <MenuItem value="Inactive">Inactive</MenuItem>
-                                <MenuItem value="Dormant">Dormant</MenuItem>
-                            </Select>
-                        </FormControl>
                         <span className={classes.statusLabel}>Compliance Status:</span>
-                        <FormControl className={classes.formControl1}>
+                        <FormControl className={classes.formControl1} style={{marginRight:30}}>
                             <Select
                                 value={getSingleSigneeItem?.data?.compliance_status || ""}
                                 name="status"
@@ -279,6 +267,19 @@ const DetailSignee = ({ match }) => {
                                 <MenuItem value="ON HOLD">On Hold</MenuItem>
                             </Select>
                         </FormControl>
+                        <span className={classes.statusLabel}>Profile Status:</span>
+                        <FormControl  className={classes.formControl1}>
+                            <Select
+                                value={getSingleSigneeItem?.data?.signee_status || ""}
+                                name="status"
+                                onChange={(e) => handleProfileStatus(e, getSingleSigneeItem?.data?.id)}
+                            >
+                                <MenuItem value="Active">Active</MenuItem>
+                                <MenuItem value="Inactive">Inactive</MenuItem>
+                                <MenuItem value="Dormant">Dormant</MenuItem>
+                            </Select>
+                        </FormControl>
+                        
                     </Grid>
                 </Grid>
                 <Grid container spacing={4}>
