@@ -90,8 +90,13 @@ const UpdateSignee = ({match}) => {
 
     const signeeSubmitData = (e) => {
         e.preventDefault()
-        console.log('data', data)
-        dispatch(updateSignee(data))
+        let requestData={
+            ...data,
+            id:data.user_id,
+            speciality:data.speciality.speciality_id
+        }
+        delete requestData.user_id
+        dispatch(updateSignee(requestData))
         setSigneeNotify(true)
     }
 
