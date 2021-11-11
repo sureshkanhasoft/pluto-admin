@@ -257,7 +257,7 @@ const DetailSignee = ({ match }) => {
                             <Select
                                 value={getSingleSigneeItem?.data?.compliance_status || ""}
                                 name="status"
-                                onChange={(e) => handleComplStatus(e, getSingleSigneeItem?.data?.id)}
+                                onChange={(e) => handleComplStatus(e, getSingleSigneeItem?.data?.user_id)}
                                 defaultValue={0}
                             >
                                 <MenuItem value="NEW SIGNUP">New Signup</MenuItem>
@@ -272,7 +272,7 @@ const DetailSignee = ({ match }) => {
                             <Select
                                 value={getSingleSigneeItem?.data?.signee_status || ""}
                                 name="status"
-                                onChange={(e) => handleProfileStatus(e, getSingleSigneeItem?.data?.id)}
+                                onChange={(e) => handleProfileStatus(e, getSingleSigneeItem?.data?.user_id)}
                             >
                                 <MenuItem value="Active">Active</MenuItem>
                                 <MenuItem value="Inactive">Inactive</MenuItem>
@@ -359,7 +359,7 @@ const DetailSignee = ({ match }) => {
                                     <Button variant="contained" color="primary" onClick={upadateLink}>
                                         <EditIcon className="mr-2" />Edit
                                     </Button>
-                                    <Button variant="contained" color="secondary" onClick={(e) => deleteStaffItem(getSingleSigneeItem?.data?.id)}>
+                                    <Button variant="contained" color="secondary" onClick={(e) => deleteStaffItem(getSingleSigneeItem?.data?.user_id)}>
                                         <DeleteIcon className="mr-2" />Delete
                                     </Button>
                                 </>
