@@ -498,20 +498,24 @@ const CreateBooking = () => {
                         </Grid>
 
                         <Grid item xs={12} sm={6} lg={4}>
-                            <TextField
-                                id="rate"
-                                label="Rate"
-                                variant="outlined"
-                                name="rate"
-                                type="number"
-                                value={data?.rate}
-                                {...register('rate', {
-                                    required: "The rate field is required.",
-                                })}
-                                error={(errors.rate ? true : false)}
-                                onChange={handleChange}
-                                fullWidth
-                            />
+                            <div className="rate-symbol">
+                                <span className="symbol">£</span>
+                                <TextField
+                                    id="rate"
+                                    label="Rate"
+                                    variant="outlined"
+                                    name="rate"
+                                    type="number"
+                                    value={data?.rate}
+                                    {...register('rate', {
+                                        required: "The rate field is required.",
+                                    })}
+                                    error={(errors.rate ? true : false)}
+                                    onChange={handleChange}
+                                    fullWidth
+                                    required
+                                />
+                            </div>
                         </Grid>
 
 

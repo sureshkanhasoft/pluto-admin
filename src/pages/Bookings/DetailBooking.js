@@ -118,12 +118,12 @@ const useStyle = makeStyles((theme) => ({
         color: "#184a7b",
     },
     formControl1: {
-        width: 200,
+        width: 140,
         display: "flex",
         border: "none",
         background: "#184a7b",
         color: "#fff",
-        padding: 8,
+        padding: '4px 8px',
         paddingLeft: 12,
         borderRadius: 6,
         "& .MuiInputBase-root": {

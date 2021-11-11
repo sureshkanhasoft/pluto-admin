@@ -123,3 +123,23 @@ $sizes:12;
     display: flex;
     flex-wrap: wrap;
 }
+
+.rate-symbol{
+    width: 100%;
+    position: relative;
+    padding-left: 40px;
+    .symbol{
+        position: absolute;
+        font-weight: 500;
+        font-size: 23px;
+        height: 100%;
+        width: 38px;
+        background: #e6e6e6;
+        left: 0;
+        top: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 4px;
+    }
+}
