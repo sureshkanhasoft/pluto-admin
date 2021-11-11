@@ -451,16 +451,20 @@ const UpdateBooking = ({ match }) => {
                         </Grid>
 
                         <Grid item xs={12} sm={6} lg={4}>
-                            <TextField
-                                id="rate"
-                                label="Rate"
-                                variant="outlined"
-                                type="number"
-                                name="rate"
-                                value={data.rate}
-                                onChange={handleChange}
-                                fullWidth
-                            />
+                            <div className="rate-symbol">
+                                <span className="symbol">£</span>
+                                <TextField
+                                    id="rate"
+                                    label="Rate"
+                                    variant="outlined"
+                                    type="number"
+                                    name="rate"
+                                    value={data.rate}
+                                    onChange={handleChange}
+                                    fullWidth
+                                    required
+                                />
+                            </div>
                         </Grid>
 
                         <Grid item xs={12}>

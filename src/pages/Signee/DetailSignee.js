@@ -257,7 +257,7 @@ const DetailSignee = ({ match }) => {
                             <Select
                                 value={getSingleSigneeItem?.data?.signee_status || ""}
                                 name="status"
-                                onChange={(e) => handleProfileStatus(e, getSingleSigneeItem?.data?.user_id)}
+                                onChange={(e) => handleProfileStatus(e, getSingleSigneeItem?.data?.id)}
                             >
                                 <MenuItem value="Active">Active</MenuItem>
                                 <MenuItem value="Inactive">Inactive</MenuItem>
@@ -269,7 +269,7 @@ const DetailSignee = ({ match }) => {
                             <Select
                                 value={getSingleSigneeItem?.data?.compliance_status || ""}
                                 name="status"
-                                onChange={(e) => handleComplStatus(e, getSingleSigneeItem?.data?.user_id)}
+                                onChange={(e) => handleComplStatus(e, getSingleSigneeItem?.data?.id)}
                                 defaultValue={0}
                             >
                                 <MenuItem value="NEW SIGNUP">New Signup</MenuItem>
