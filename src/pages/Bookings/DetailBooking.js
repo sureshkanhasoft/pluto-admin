@@ -527,7 +527,7 @@ const DetailBooking = ({ match }) => {
                 <Paper className={`mb-6`} style={{ position: "relative" }}>
                 <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
                     <Tab
-                        label={<span className={classes.tabLabel}>Matching Candidates {bookingDetail?.data?.matching.length > 0 ? <Chip label={bookingDetail?.data?.matching.length} color="primary" className={classes.tabChip} /> : ""}</span>}
+                        label={<span className={classes.tabLabel}>Matching Candidates {bookingDetail?.data?.matching.length > 0 ? <Chip label={bookingDetail?.data?.matching.filter(item => item.compliance_status === "COMPLIANT").length} color="primary" className={classes.tabChip} /> : ""}</span>}
                         {...a11yProps(0)} />
                     <Tab label=
                         {<span className={classes.tabLabel}>Interested Candidates {bookingDetail?.data?.interested.length > 0 ? <Chip label={bookingDetail?.data?.interested.length} color="primary" className={classes.tabChip} /> : ""}</span>}
