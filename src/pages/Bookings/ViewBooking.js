@@ -111,6 +111,7 @@ const useStyle = makeStyles((theme) => ({
 const ViewBooking = ({ match }) => {
     const classes = useStyle();
     const dispatch = useDispatch();
+    const tabList = ['CREATED', 'CONFIRMED', 'CANCEL'];
     const [page, setPage] = React.useState(1);
     const [searchData, setSearchData] = useState({ search: "" });
     const staffDetail = JSON.parse(localStorage.getItem("staffDetail"));
@@ -132,17 +133,19 @@ const ViewBooking = ({ match }) => {
         history.push(`${match.url}/${id}/detail`)
     }
 
-    const handleChangePage = (event, value) => {
-        setPage(value);
-        setTimeout(getBookingList(value), 2000);
+    const handleChangePage = (pageNo) => {
+        let status = tabList[activeIndex];
+        setPage(page);
+        setTimeout(getBookingList(pageNo,searchData.search,status), 2000);
     };
 
     const handleSearchChange = (event) => {
         const d1 = event.target.value
+        let status = tabList[activeIndex];
         if (d1) {
-            setTimeout(getBookingList(page, d1), 100);
+            setTimeout(getBookingList(page, d1, status), 100);
         } else {
-            setTimeout(getBookingList(page, ""), 100);
+            setTimeout(getBookingList(page, "", status), 100);
         }
         setSearchData({ ...searchData, [event.target.name]: event.target.value });
 
@@ -157,6 +160,7 @@ const ViewBooking = ({ match }) => {
     }, [])
 
     const tabChange = (index, list) => {
+        setSearchData({ ...searchData, search: '' });
         setActiveIndex(index)
         getBookingList(page, "", list)
 
@@ -202,6 +206,7 @@ const ViewBooking = ({ match }) => {
                                 root: classes.inputRoot,
                                 input: classes.inputInput,
                             }}
+                            value={searchData.search}
                         />
                     </div>
                     {
@@ -215,8 +220,7 @@ const ViewBooking = ({ match }) => {
                 </Box>
                 <Box className={classes.statusButton}>
                     {
-                        ['CREATED', 'CONFIRMED', 'CANCEL'].map((list, index) => (
-
+                        tabList.map((list, index) => (
                             <span style={{textTransform:"capitalize"}} className={`btn ${activeIndex === index ? "active" : ""}`} key={index} onClick={() => tabChange(index, list)}>{list.toLowerCase()}</span>
                         ))
                     }
@@ -282,9 +286,8 @@ const ViewBooking = ({ match }) => {
                     </TableBody>
                 </Table>
                 <Box className="mt-5" display="flex" justifyContent="flex-end">
-                    <Pagination onChange={handleChangePage} page={page} count={bookingItem?.last_page} showFirstButton showLastButton />
+                    <Pagination onChange={()=>handleChangePage(bookingItem?.data?.current_page)} page={page} count={bookingItem?.last_page} showFirstButton showLastButton />
                 </Box>
-
             </Paper>
         </>
     )
