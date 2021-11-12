@@ -428,7 +428,7 @@ const DetailBooking = ({ match }) => {
                     }
                     {
                         anchorElRowInfo.signee_booking_status !== "CONFIRMED" && anchorElRowInfo.signee_booking_status === "APPLY" && 
-                        <MenuItem onClick={() => handleMenuItem('CONFIRMED', anchorElRowInfo.signeeId)} className={classes.menuItem}><StarIcon className="mr-2" />Confirm</MenuItem>
+                        <MenuItem onClick={() => handleMenuItem('CONFIRMED', anchorElRowInfo.signeeId)} className={classes.menuItem}><StarIcon className="mr-2" />Accept</MenuItem>
                     }
                     <MenuItem onClick={() => handleMenuItem('CANCEL', anchorElRowInfo.signeeId)} className={classes.menuItem}><CloseIcon className="mr-2" />Reject</MenuItem>
                 </Menu>
