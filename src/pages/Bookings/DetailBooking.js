@@ -215,7 +215,7 @@ const DetailBooking = ({ match }) => {
         history.push(`update`)
     }
 
-    const handleMenu = (event, id, row) => {        
+    const handleMenu = (event, id, row) => {
         event.preventDefault();
         setAnchorEl(event.currentTarget);
         setAnchorElRowInfo(row);
@@ -274,7 +274,7 @@ const DetailBooking = ({ match }) => {
             specialityData.signee_id = newData;
             setPdfData(specialityData)
         }
-        
+
     };
 
     const isSelected = (name) => selected.indexOf(name) !== -1;
@@ -404,24 +404,24 @@ const DetailBooking = ({ match }) => {
             }
             {
                 anchorEl &&
-                    <Menu
-                        id="menu-appbar"
-                        anchorEl={anchorEl}
-                        getContentAnchorEl={null}
-                        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                        open={open}
-                        onClose={handleClose}
-                    >
-                        {
-                            anchorElRowInfo.signee_booking_status !== "CONFIRMED" &&
-                            <MenuItem onClick={() => handleMenuItem('OFFER', anchorElRowInfo.signeeId)} className={classes.menuItem}><CheckIcon className="mr-2" />Offer</MenuItem>
-                        }
-                        {
-                            anchorElRowInfo.signee_booking_status !== "CONFIRMED" &&
-                            <MenuItem onClick={() => handleMenuItem('CONFIRMED', anchorElRowInfo.signeeId)} className={classes.menuItem}><StarIcon className="mr-2" />Super Assign</MenuItem>
-                        }
-                        <MenuItem onClick={() => handleMenuItem('CANCEL', anchorElRowInfo.signeeId)} className={classes.menuItem}><CloseIcon className="mr-2" />Reject</MenuItem>
-                    </Menu>
+                <Menu
+                    id="menu-appbar"
+                    anchorEl={anchorEl}
+                    getContentAnchorEl={null}
+                    anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                    open={open}
+                    onClose={handleClose}
+                >
+                    {
+                        anchorElRowInfo.signee_booking_status !== "CONFIRMED" &&
+                        <MenuItem onClick={() => handleMenuItem('OFFER', anchorElRowInfo.signeeId)} className={classes.menuItem}><CheckIcon className="mr-2" />Offer</MenuItem>
+                    }
+                    {
+                        anchorElRowInfo.signee_booking_status !== "CONFIRMED" &&
+                        <MenuItem onClick={() => handleMenuItem('CONFIRMED', anchorElRowInfo.signeeId)} className={classes.menuItem}><StarIcon className="mr-2" />Super Assign</MenuItem>
+                    }
+                    <MenuItem onClick={() => handleMenuItem('CANCEL', anchorElRowInfo.signeeId)} className={classes.menuItem}><CloseIcon className="mr-2" />Reject</MenuItem>
+                </Menu>
             }
             <Paper className={`${classes.root} mb-6`}>
                 <Grid container spacing={4}>
@@ -503,12 +503,12 @@ const DetailBooking = ({ match }) => {
                                 Back
                             </Button>
                             {
-                                bookingDetail?.data?.status === "CREATED" && 
+                                bookingDetail?.data?.status === "CREATED" &&
                                 <Button variant="contained" color="primary" onClick={upadateLink}>
                                     <EditIcon className="mr-2" />Edit
                                 </Button>
                             }
-                            
+
                             {
                                 (staffDetail !== "Finance" && bookingDetail?.data?.status === "CREATED") &&
                                 <Button variant="contained" color="secondary" onClick={(e) => deleteStaffItem(bookingDetail?.data?.id)}>
@@ -588,9 +588,12 @@ const DetailBooking = ({ match }) => {
                                             </span>
                                         </TableCell>
                                         <TableCell align="right">
-                                            <IconButton onClick={(event) => handleMenu(event, row.signeeId,row)}>
-                                                <MoreVertIcon />
-                                            </IconButton>
+                                            {
+                                                row.compliance_status === "COMPLIANT" &&
+                                                <IconButton onClick={(event) => handleMenu(event, row.signeeId, row)}>
+                                                    <MoreVertIcon />
+                                                </IconButton>
+                                            }
                                             {/* <Menu
                                                 id="menu-appbar"
                                                 anchorEl={anchorEl}
@@ -670,7 +673,7 @@ const DetailBooking = ({ match }) => {
                                             </span>
                                         </TableCell>
                                         <TableCell align="right">
-                                            <IconButton onClick={(event) => handleMenu(event, row.signeeId,row)}>
+                                            <IconButton onClick={(event) => handleMenu(event, row.signeeId, row)}>
                                                 <MoreVertIcon />
                                             </IconButton>
                                             {/* <Menu
