@@ -561,7 +561,7 @@ const DetailBooking = ({ match }) => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {bookingDetail?.data?.matching && bookingDetail?.data?.matching.map((row, index) => {
+                            {bookingDetail?.data?.matching && bookingDetail?.data?.matching.filter(item => item.compliance_status === "COMPLIANT").map((row, index) => {
                                 const isItemSelected = isSelected(row.name);
                                 // const labelId = `enhanced-table-checkbox-${index}`;
                                 return (
@@ -591,6 +591,7 @@ const DetailBooking = ({ match }) => {
                                         </TableCell>
                                         <TableCell align="right">
                                             {
+                                                // if signee user is COMPLIANT
                                                 row.compliance_status === "COMPLIANT" &&
                                                 <IconButton onClick={(event) => handleMenu(event, row.signeeId, row)}>
                                                     <MoreVertIcon />
