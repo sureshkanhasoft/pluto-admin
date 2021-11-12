@@ -522,7 +522,9 @@ const DetailBooking = ({ match }) => {
                 </Grid>
             </Paper>
 
-            <Paper className={`mb-6`} style={{ position: "relative" }}>
+            {
+                bookingDetail?.data?.status !== "CANCEL" && 
+                <Paper className={`mb-6`} style={{ position: "relative" }}>
                 <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
                     <Tab
                         label={<span className={classes.tabLabel}>Matching Candidates {bookingDetail?.data?.matching.length > 0 ? <Chip label={bookingDetail?.data?.matching.length} color="primary" className={classes.tabChip} /> : ""}</span>}
@@ -709,6 +711,8 @@ const DetailBooking = ({ match }) => {
                     </Table>
                 </TabPanel>
             </Paper>
+            }
+            
 
             <AlertDialog
                 id={Id}
