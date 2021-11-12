@@ -5,7 +5,8 @@ import {
     Button,
     Box,
     Grid, TextField, Select, FormControl, MenuItem, InputLabel,
-    FormGroup, FormControlLabel, Checkbox, FormLabel
+    FormGroup, FormControlLabel, Checkbox, FormLabel, Backdrop,
+    CircularProgress
 } from '@material-ui/core';
 import axios from 'axios';
 import apiConfigs from '../../config/config';
@@ -33,7 +34,11 @@ const useStyle = makeStyles((theme) => ({
         '& > *': {
             margin: theme.spacing(1),
         },
-    }
+    },
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff',
+    },
 }))
 
 const CreateBooking = () => {
@@ -53,7 +58,7 @@ const CreateBooking = () => {
     const [trustNotify, setTrustNotify] = useState(false)
     const [specError, setSpecError] = useState(false)
     const [referenceId, setReferenceId] = useState([])
-    const { createBookingSuccess, createBookingError } = useSelector(state => state.booking)
+    const { createBookingSuccess, createBookingError, loading } = useSelector(state => state.booking)
     const disPastDate = UtilService.disabledPastDate()
     const [data, setData] = useState({
         reference_id: "",
@@ -266,6 +271,12 @@ const CreateBooking = () => {
 
     return (
         <>
+            {
+                loading ?
+                    <Backdrop className={classes.backdrop} open={loading}>
+                        <CircularProgress color="inherit" />
+                    </Backdrop> : ""
+            }
             {trustNotify && createBookingSuccess?.message &&
                 <Notification
                     data={createBookingSuccess?.message}
@@ -326,7 +337,7 @@ const CreateBooking = () => {
                             </FormControl>
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
-                            <FormControl variant="outlined" className={classes.formControl} required 
+                            <FormControl variant="outlined" className={classes.formControl} required
                                 error={(errors.hospital_id ? true : createBookingError?.message?.hospital_id ? true : false)}
                             >
                                 <InputLabel>Hospital Name</InputLabel>
@@ -356,9 +367,9 @@ const CreateBooking = () => {
                             </FormControl>
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
-                            <FormControl variant="outlined" className={classes.formControl} required 
+                            <FormControl variant="outlined" className={classes.formControl} required
                                 error={(errors.ward_id ? true : createBookingError?.message?.ward_id ? true : false)}
-                                >
+                            >
                                 <InputLabel>Ward Name</InputLabel>
                                 <Select
                                     value={data?.ward_id}
@@ -387,9 +398,9 @@ const CreateBooking = () => {
                         </Grid>
 
                         <Grid item xs={12} sm={6} lg={4}>
-                            <FormControl variant="outlined" className={classes.formControl} required 
+                            <FormControl variant="outlined" className={classes.formControl} required
                                 error={(errors.grade_id ? true : false)}
-                                >
+                            >
                                 <InputLabel>Grade Required</InputLabel>
                                 <Select
                                     value={data.grade_id}
@@ -440,9 +451,9 @@ const CreateBooking = () => {
                         </Grid>
 
                         <Grid item xs={12} sm={6} lg={2}>
-                            <FormControl variant="outlined" className={classes.formControl} required 
+                            <FormControl variant="outlined" className={classes.formControl} required
                                 error={(errors.shift_id ? true : false)}
-                                >
+                            >
                                 <InputLabel>Shift Time</InputLabel>
                                 <Select
                                     value={data.shift_id}
@@ -453,7 +464,7 @@ const CreateBooking = () => {
                                     })}
                                     // error={(errors.shift_id ? true : false)}
                                     onChange={handleChange}
-                                    // onChange={handleChange}
+                                // onChange={handleChange}
                                 >
                                     <MenuItem value="">
                                         Select a shift time
@@ -469,9 +480,9 @@ const CreateBooking = () => {
                             </FormControl>
                         </Grid>
                         <Grid item xs={12} sm={6} lg={2}>
-                            <FormControl variant="outlined" className={classes.formControl} required 
+                            <FormControl variant="outlined" className={classes.formControl} required
                                 error={(errors.shift_type_id ? true : false)}
-                                >
+                            >
                                 <InputLabel>Shift Type</InputLabel>
                                 <Select
                                     value={data.shift_type_id}
