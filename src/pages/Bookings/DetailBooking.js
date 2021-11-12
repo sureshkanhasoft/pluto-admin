@@ -173,6 +173,7 @@ const DetailBooking = ({ match }) => {
     const [Id, setId] = useState(false);
     const [value, setValue] = React.useState(0);
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const [anchorElRowInfo, setAnchorElRowInfo] = React.useState(null);
     const [getSigneeid, setGetSigneeid] = React.useState();
     const open = Boolean(anchorEl);
     const [selected, setSelected] = React.useState([]);
@@ -214,15 +215,16 @@ const DetailBooking = ({ match }) => {
         history.push(`update`)
     }
 
-    const handleMenu = (event, id) => {
-        console.log('event: ', event.currentTarget);
+    const handleMenu = (event, id, row) => {        
         event.preventDefault();
         setAnchorEl(event.currentTarget);
+        setAnchorElRowInfo(row);
         setGetSigneeid(id);
     };
 
     const handleClose = (data) => {
         setAnchorEl(null);
+        setAnchorElRowInfo(null);
     };
     const handleMenuItem = (data, signeeId) => {
         setBookingData({ ...bookingData, status: data, signee_id: signeeId })
@@ -400,6 +402,27 @@ const DetailBooking = ({ match }) => {
                     status="success"
                 />
             }
+            {
+                anchorEl &&
+                    <Menu
+                        id="menu-appbar"
+                        anchorEl={anchorEl}
+                        getContentAnchorEl={null}
+                        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                        open={open}
+                        onClose={handleClose}
+                    >
+                        {
+                            anchorElRowInfo.signee_booking_status !== "CONFIRMED" &&
+                            <MenuItem onClick={() => handleMenuItem('OFFER', anchorElRowInfo.signeeId)} className={classes.menuItem}><CheckIcon className="mr-2" />Offer</MenuItem>
+                        }
+                        {
+                            anchorElRowInfo.signee_booking_status !== "CONFIRMED" &&
+                            <MenuItem onClick={() => handleMenuItem('CONFIRMED', anchorElRowInfo.signeeId)} className={classes.menuItem}><StarIcon className="mr-2" />Super Assign</MenuItem>
+                        }
+                        <MenuItem onClick={() => handleMenuItem('CANCEL', anchorElRowInfo.signeeId)} className={classes.menuItem}><CloseIcon className="mr-2" />Reject</MenuItem>
+                    </Menu>
+            }
             <Paper className={`${classes.root} mb-6`}>
                 <Grid container spacing={4}>
                     <Grid item xs={12} sm={6} lg={4} className={classes.statusContainer}>
@@ -565,10 +588,10 @@ const DetailBooking = ({ match }) => {
                                             </span>
                                         </TableCell>
                                         <TableCell align="right">
-                                            <IconButton onClick={(event) => handleMenu(event, row.signeeId)}>
+                                            <IconButton onClick={(event) => handleMenu(event, row.signeeId,row)}>
                                                 <MoreVertIcon />
                                             </IconButton>
-                                            <Menu
+                                            {/* <Menu
                                                 id="menu-appbar"
                                                 anchorEl={anchorEl}
                                                 getContentAnchorEl={null}
@@ -586,7 +609,7 @@ const DetailBooking = ({ match }) => {
                                                 }
 
                                                 <MenuItem onClick={(event) => handleMenuItem('CANCEL', getSigneeid)} className={classes.menuItem}><CloseIcon className="mr-2" />Reject</MenuItem>
-                                            </Menu>
+                                            </Menu> */}
                                         </TableCell>
                                     </TableRow>
                                 )
@@ -647,10 +670,10 @@ const DetailBooking = ({ match }) => {
                                             </span>
                                         </TableCell>
                                         <TableCell align="right">
-                                            <IconButton onClick={(event) => handleMenu(event, row.signeeId)}>
+                                            <IconButton onClick={(event) => handleMenu(event, row.signeeId,row)}>
                                                 <MoreVertIcon />
                                             </IconButton>
-                                            <Menu
+                                            {/* <Menu
                                                 id="menu-appbar"
                                                 anchorEl={anchorEl}
                                                 getContentAnchorEl={null}
@@ -667,7 +690,7 @@ const DetailBooking = ({ match }) => {
                                                     <MenuItem onClick={() => handleMenuItem('CONFIRMED', row.signeeId)} className={classes.menuItem}><StarIcon className="mr-2" />Super Assign</MenuItem>
                                                 }
                                                 <MenuItem onClick={() => handleMenuItem('CANCEL', row.signeeId)} className={classes.menuItem}><CloseIcon className="mr-2" />Reject</MenuItem>
-                                            </Menu>
+                                            </Menu> */}
                                         </TableCell>
                                     </TableRow>
                                 )
