@@ -81,6 +81,7 @@ const Login = () => {
     const classes = useStyle();
     const dispatch = useDispatch()
     const { loading, loginErrors, userInfo } = useSelector(state => state.authReducer)
+    console.log('loginErrors: ', loginErrors);
     const [loginNotify, setLoginNotify]=useState(false)
     const { register, handleSubmit, formState: { errors } } = useForm();
     const onSubmit = async data => {
@@ -129,10 +130,16 @@ const Login = () => {
                 <Card className={classes.loginCard}>
                     {loginNotify && (loginErrors?.message || loginErrors) && 
                         <Notification
-                            data= {loginErrors?.message || loginErrors?.message ? loginErrors?.message : loginErrors ? "Sorry, your account does't exists" :""}
+                            data= {loginErrors?.message || loginErrors }
                             status="error"
                         />
                     }
+                    {/* {loginNotify && (loginErrors?.message || loginErrors) && 
+                        <Notification
+                            data= {loginErrors?.message || loginErrors?.message ? loginErrors?.message : loginErrors ? "Sorry, your account does't exists" :""}
+                            status="error"
+                        />
+                    } */}
                     {loginNotify && userInfo?.message &&
                         <Notification
                             data= {userInfo?.message}

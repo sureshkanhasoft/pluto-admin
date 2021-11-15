@@ -52,7 +52,7 @@ export const login = ({ email, password }) => {
                 dispatch(getLoginFailure(data))
             }
         }).catch(error => {
-            dispatch(getLoginFailure(error.message))
+            dispatch(getLoginFailure(error.response.data.message))
         })
     }
 }
