@@ -480,7 +480,7 @@ const DetailBooking = ({ match }) => {
                     </Grid>
                     <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
                         <Typography variant="body2" className={classes.heading}>Date:</Typography>
-                        <Typography variant="h6" className={classes.desc}>{bookingDetail?.data?.date}</Typography>
+                        <Typography variant="h6" className={classes.desc}>{bookingDetail?.data?.date.toString().split("-").reverse().join("-")}</Typography>
                     </Grid>
                     <Grid item xs={12} sm={6} lg={2} className={classes.gridItem}>
                         <Typography variant="body2" className={classes.heading}>Shift Time:</Typography>

@@ -252,7 +252,7 @@ const ViewBooking = ({ match }) => {
                                     <TableCell align="left">{row.hospital_name}</TableCell>
                                     <TableCell align="left">{row.ward_name}</TableCell>
                                     <TableCell align="left">{row.grade_name}</TableCell>
-                                    <TableCell align="left">{dateFormate}</TableCell>
+                                    <TableCell align="left" style={{whiteSpace: "nowrap"}}>{dateFormate}</TableCell>
                                     <TableCell align="left">{row.start_time} <br/> {row.end_time}</TableCell>
                                     {/* <TableCell align="left">
                                         <FormControl variant="outlined" className={classes.formControl1} fullWidth>
