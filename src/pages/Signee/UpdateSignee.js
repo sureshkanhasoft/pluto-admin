@@ -322,7 +322,7 @@ const UpdateSignee = ({match}) => {
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 id="nmc_dmc_pin"
-                                label="Nmc Dmc Pin"
+                                label="NMC/DMC Pin"
                                 variant="outlined"
                                 name="nmc_dmc_pin"
                                 value={data?.nmc_dmc_pin || ''}
