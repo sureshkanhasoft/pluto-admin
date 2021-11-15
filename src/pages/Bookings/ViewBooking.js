@@ -243,14 +243,16 @@ const ViewBooking = ({ match }) => {
                     </TableHead>
                     <TableBody>
                         {
-                            bookingItem?.data?.data && bookingItem?.data?.data.map((row, index) => (
-                                <TableRow key={index}>
+                            bookingItem?.data?.data && bookingItem?.data?.data.map((row, index) => {
+                                const dateFormate =  row.date.toString().split("-").reverse().join("-")
+                                return (
+                                    <TableRow key={index}>
                                     <TableCell scope="row">{bookingItem?.data?.from + index}</TableCell>
                                     <TableCell align="left">{row.name}</TableCell>
                                     <TableCell align="left">{row.hospital_name}</TableCell>
                                     <TableCell align="left">{row.ward_name}</TableCell>
                                     <TableCell align="left">{row.grade_name}</TableCell>
-                                    <TableCell align="left">{row.date}</TableCell>
+                                    <TableCell align="left">{dateFormate}</TableCell>
                                     <TableCell align="left">{row.start_time} <br/> {row.end_time}</TableCell>
                                     {/* <TableCell align="left">
                                         <FormControl variant="outlined" className={classes.formControl1} fullWidth>
@@ -274,7 +276,9 @@ const ViewBooking = ({ match }) => {
                                         <Link to="#" onClick={() => onhandlClick(row.id)} className="btn btn-secondary" >View</Link>
                                     </TableCell>
                                 </TableRow>
-                            ))}
+                                )
+                               
+                                })}
                         {
                             !bookingItem?.data &&
                             <TableRow>
