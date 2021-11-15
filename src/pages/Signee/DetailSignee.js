@@ -8,7 +8,8 @@ import {
     Button,
     Backdrop,
     CircularProgress,
-    FormControl, Select, MenuItem
+    FormControl, Select, MenuItem,
+    Checkbox, FormControlLabel, Card, RadioGroup, Radio
 } from "@material-ui/core";
 import { Link } from 'react-router-dom';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -107,7 +108,14 @@ const useStyle = makeStyles((theme) => ({
         "& svg": {
             fill: "#fff"
         }
-    }
+    },
+    cardBox: {
+        background: "#cae0f7",
+        padding: "12px 20px",
+        marginRight: 12,
+        minWidth: 220,
+        marginBottom: 12
+    },
 }))
 
 const DetailSignee = ({ match }) => {
@@ -253,7 +261,7 @@ const DetailSignee = ({ match }) => {
                 <Grid container spacing={4}>
                     <Grid item xs={12} sm={6} lg={4} className={classes.statusContainer}>
                         <span className={classes.statusLabel}>Compliance Status:</span>
-                        <FormControl className={classes.formControl1} style={{marginRight:30}}>
+                        <FormControl className={classes.formControl1} style={{ marginRight: 30 }}>
                             <Select
                                 value={getSingleSigneeItem?.data?.compliance_status || ""}
                                 name="status"
@@ -268,7 +276,7 @@ const DetailSignee = ({ match }) => {
                             </Select>
                         </FormControl>
                         <span className={classes.statusLabel}>Profile Status:</span>
-                        <FormControl  className={classes.formControl1}>
+                        <FormControl className={classes.formControl1}>
                             <Select
                                 value={getSingleSigneeItem?.data?.signee_status || ""}
                                 name="status"
@@ -279,7 +287,7 @@ const DetailSignee = ({ match }) => {
                                 <MenuItem value="Dormant">Dormant</MenuItem>
                             </Select>
                         </FormControl>
-                        
+
                     </Grid>
                 </Grid>
                 <Grid container spacing={4}>
@@ -369,6 +377,151 @@ const DetailSignee = ({ match }) => {
                     </Grid>
                 </Grid>
             </Paper>
+            <Typography variant="h5" style={{ marginBottom: 16 }}>Prefernces</Typography>
+
+            <Grid container spacing={2} style={{ marginBottom: 24 }}>
+                <Grid item xs={12} style={{ display: "flex", flexWrap: "wrap" }}>
+                    <Card className={classes.cardBox}>
+                        <FormControl component="fieldset" className={classes.formControl}>
+                            <p className="f-500 mb-2"> Monday</p>
+                            <div>
+                                <FormControlLabel style={{ cursor: "default" }}
+                                    control={<Checkbox checked={getSingleSigneeItem?.data?.preferences?.monday_day === 1 ? true : false} color="primary" style={{ cursor: "default" }} />}
+                                    label="Day"
+                                />
+                                <FormControlLabel style={{ cursor: "default" }}
+                                    control={<Checkbox checked={getSingleSigneeItem?.data?.preferences?.monday_night === 1 ? true : false} color="primary" style={{ cursor: "default" }} />}
+                                    label="Night"
+                                />
+                            </div>
+                        </FormControl>
+                    </Card>
+                    <Card className={classes.cardBox}>
+                        <FormControl component="fieldset" className={classes.formControl}>
+                            <p className="f-500 mb-2"> Tuesday</p>
+                            <div>
+                                <FormControlLabel style={{ cursor: "default" }}
+                                    control={<Checkbox checked={getSingleSigneeItem?.data?.preferences?.tuesday_day === 1 ? true : false} color="primary" style={{ cursor: "default" }} />}
+                                    label="Day"
+                                />
+                                <FormControlLabel style={{ cursor: "default" }}
+                                    control={<Checkbox checked={getSingleSigneeItem?.data?.preferences?.tuesday_night === 1 ? true : false} color="primary" style={{ cursor: "default" }} />}
+                                    label="Night"
+                                />
+                            </div>
+                        </FormControl>
+                    </Card>
+                    <Card className={classes.cardBox}>
+                        <FormControl component="fieldset" className={classes.formControl}>
+                            <p className="f-500 mb-2"> Wednesday</p>
+                            <div>
+                                <FormControlLabel style={{ cursor: "default" }}
+                                    control={<Checkbox checked={getSingleSigneeItem?.data?.preferences?.wednesday_day === 1 ? true : false} color="primary" />}
+                                    label="Day"
+                                />
+                                <FormControlLabel style={{ cursor: "default" }}
+                                    control={<Checkbox checked={getSingleSigneeItem?.data?.preferences?.wednesday_night === 1 ? true : false} color="primary" style={{ cursor: "default" }} />}
+                                    label="Night"
+                                />
+                            </div>
+                        </FormControl>
+                    </Card>
+                    <Card className={classes.cardBox}>
+                        <FormControl component="fieldset" className={classes.formControl}>
+                            <p className="f-500 mb-2"> Thursday</p>
+                            <div>
+                                <FormControlLabel style={{ cursor: "default" }}
+                                    control={<Checkbox checked={getSingleSigneeItem?.data?.preferences?.thursday_day === 1 ? true : false} color="primary" style={{ cursor: "default" }} />}
+                                    label="Day"
+                                />
+                                <FormControlLabel style={{ cursor: "default" }}
+                                    control={<Checkbox checked={getSingleSigneeItem?.data?.preferences?.thursday_night === 1 ? true : false} color="primary" style={{ cursor: "default" }} />}
+                                    label="Night"
+                                />
+                            </div>
+                        </FormControl>
+                    </Card>
+                    <Card className={classes.cardBox}>
+                        <FormControl component="fieldset" className={classes.formControl}>
+                            <p className="f-500 mb-2"> Friday</p>
+                            <div>
+                                <FormControlLabel style={{ cursor: "default" }}
+                                    control={<Checkbox checked={getSingleSigneeItem?.data?.preferences?.friday_day === 1 ? true : false} color="primary" style={{ cursor: "default" }} />}
+                                    label="Day"
+                                />
+                                <FormControlLabel style={{ cursor: "default" }}
+                                    control={<Checkbox checked={getSingleSigneeItem?.data?.preferences?.friday_night === 1 ? true : false} color="primary" style={{ cursor: "default" }} />}
+                                    label="Night"
+                                />
+                            </div>
+                        </FormControl>
+                    </Card>
+                    <Card className={classes.cardBox}>
+                        <FormControl component="fieldset" className={classes.formControl}>
+                            <p className="f-500 mb-2"> Saturday</p>
+                            <div>
+                                <FormControlLabel style={{ cursor: "default" }}
+                                    control={<Checkbox checked={getSingleSigneeItem?.data?.preferences?.saturday_day === 1 ? true : false} color="primary" style={{ cursor: "default" }} />}
+                                    label="Day"
+                                />
+                                <FormControlLabel style={{ cursor: "default" }}
+                                    control={<Checkbox checked={getSingleSigneeItem?.data?.preferences?.saturday_night === 1 ? true : false} color="primary" style={{ cursor: "default" }} />}
+                                    label="Night"
+                                />
+                            </div>
+                        </FormControl>
+                    </Card>
+                    <Card className={classes.cardBox}>
+                        <FormControl component="fieldset" className={classes.formControl}>
+                            <p className="f-500 mb-2"> Sunday</p>
+                            <div>
+                                <FormControlLabel style={{ cursor: "default" }}
+                                    control={<Checkbox checked={getSingleSigneeItem?.data?.preferences?.sunday_day === 1 ? true : false} name="monday_day" color="primary" style={{ cursor: "default" }} />}
+                                    label="Day"
+                                />
+                                <FormControlLabel style={{ cursor: "default" }}
+                                    control={<Checkbox checked={getSingleSigneeItem?.data?.preferences?.sunday_night === 1 ? true : false} name="monday_night" color="primary" style={{ cursor: "default" }} />}
+                                    label="Night"
+                                />
+                            </div>
+                        </FormControl>
+                    </Card>
+                </Grid>
+            </Grid>
+            <Grid container spacing={2} style={{ marginBottom: 24 }}>
+                <Grid item xs={12} style={{ display: "flex" }}>
+                    <div className="" style={{ marginRight: 24 }}>
+                        <p className="f-500 mb-3"> Number of shifts you are looking<br /> to work per week.</p>
+                        <Card className={classes.cardBox} style={{ width: "max-content" }}>
+                            <FormControl component="fieldset" className={classes.formControl}>
+                                <div>
+                                    <b>{getSingleSigneeItem?.data?.preferences?.no_of_shift}</b> Shift
+                                </div>
+                            </FormControl>
+                        </Card>
+                    </div>
+
+                    <div>
+                        <p className="f-500 mb-2">Travel for work</p>
+                        <Card className={classes.cardBox} style={{ width: "max-content" }}>
+                            <FormControl component="fieldset" className={classes.formControl}>
+                                <div>
+                                    <FormControlLabel style={{ cursor: "default" }}
+                                        control={<Checkbox checked={getSingleSigneeItem?.data?.preferences?.is_travel === 1 ? true : false} name="monday_day" color="primary" style={{ cursor: "default" }} />}
+                                        label="Yes"
+                                    />
+                                    <FormControlLabel style={{ cursor: "default" }}
+                                        control={<Checkbox checked={getSingleSigneeItem?.data?.preferences?.is_travel === 0 ? true : false} name="monday_night" color="primary" style={{ cursor: "default" }} />}
+                                        label="No"
+                                    />
+                                </div>
+                            </FormControl>
+                        </Card>
+                    </div>
+                </Grid>
+            </Grid>
+
+
 
             <Typography variant="h5" style={{ marginBottom: 16 }}>Compliance Document Details</Typography>
             {
