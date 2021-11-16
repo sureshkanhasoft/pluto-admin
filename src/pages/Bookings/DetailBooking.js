@@ -607,25 +607,6 @@ const DetailBooking = ({ match }) => {
                                                     <MoreVertIcon />
                                                 </IconButton>
                                             }
-                                            {/* <Menu
-                                                id="menu-appbar"
-                                                anchorEl={anchorEl}
-                                                getContentAnchorEl={null}
-                                                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                                                open={open}
-                                                onClose={handleClose}
-                                            >
-                                                {
-                                                    bookingDetail?.data?.status !== "CONFIRMED" &&
-                                                    <MenuItem onClick={(event) => handleMenuItem('OFFER', getSigneeid)} className={classes.menuItem}><CheckIcon className="mr-2" />Offer</MenuItem>
-                                                }
-                                                {
-                                                    bookingDetail?.data?.status !== "CONFIRMED" &&
-                                                    <MenuItem onClick={(event) => handleMenuItem('CONFIRMED', getSigneeid)} className={classes.menuItem}><StarIcon className="mr-2" />Super Assign</MenuItem>
-                                                }
-
-                                                <MenuItem onClick={(event) => handleMenuItem('CANCEL', getSigneeid)} className={classes.menuItem}><CloseIcon className="mr-2" />Reject</MenuItem>
-                                            </Menu> */}
                                         </TableCell>
                                     </TableRow>
                                 )
@@ -689,24 +670,6 @@ const DetailBooking = ({ match }) => {
                                             <IconButton onClick={(event) => handleMenu(event, row.signeeId, row)}>
                                                 <MoreVertIcon />
                                             </IconButton>
-                                            {/* <Menu
-                                                id="menu-appbar"
-                                                anchorEl={anchorEl}
-                                                getContentAnchorEl={null}
-                                                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                                                open={open}
-                                                onClose={handleClose}
-                                            >
-                                                {
-                                                    bookingDetail?.data?.status !== "CONFIRMED" &&
-                                                    <MenuItem onClick={() => handleMenuItem('OFFER', row.signeeId)} className={classes.menuItem}><CheckIcon className="mr-2" />Offer</MenuItem>
-                                                }
-                                                {
-                                                    bookingDetail?.data?.status !== "CONFIRMED" &&
-                                                    <MenuItem onClick={() => handleMenuItem('CONFIRMED', row.signeeId)} className={classes.menuItem}><StarIcon className="mr-2" />Super Assign</MenuItem>
-                                                }
-                                                <MenuItem onClick={() => handleMenuItem('CANCEL', row.signeeId)} className={classes.menuItem}><CloseIcon className="mr-2" />Reject</MenuItem>
-                                            </Menu> */}
                                         </TableCell>
                                     </TableRow>
                                 )

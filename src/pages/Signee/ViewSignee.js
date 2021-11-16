@@ -151,6 +151,7 @@ const ViewSignee = ({ match }) => {
         // setTimeout(getTrustList(page, searchData.search), 1000);
     };
     const getSigneeList = (pageNo = 1, search = '') => {
+        console.log('search: ', search);
         dispatch(getSignee({ pageNo, search }))
     }
     useEffect(() => {
@@ -163,7 +164,7 @@ const ViewSignee = ({ match }) => {
 
     const handleChangePage = (event, value) => {
         setPage(value);
-        setTimeout(getSigneeList(value), 2000);
+        setTimeout(getSigneeList(value,searchData.search), 2000);
     }
     return (
         <>

@@ -83,13 +83,13 @@ const UpdateBooking = ({ match }) => {
 
     const getSpecialities = async () => {
         const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, '');
-        await axios.get(`${apiConfigs.API_URL}api/organization/get-all-speciality`, {
+        await axios.get(`${apiConfigs.API_URL}api/organization/get-spec-shift-create`, {
             headers: {
                 'content-type': 'application/json',
                 'Authorization': `Bearer ${loggedInUser}`
             }
         }).then(response => {
-            setSpeciality(response.data.data)
+            setSpeciality(response.data)
         }).catch(error => {
             console.log('error: ', error);
         })
