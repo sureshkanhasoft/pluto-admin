@@ -3,6 +3,11 @@ import Config from '../../../config/config';
 // import history from '../../../utils/HistoryUtils';
 import { CREATE_ORGANIZATION_ERROR, CREATE_ORGANIZATION_REQUEST, CREATE_ORGANIZATION_SUCCESS, GET_ORGANIZATION_ERROR, GET_ORGANIZATION_REQUEST, GET_ORGANIZATION_SUCCESS } from '../actiontypes';
 import { UPDATE_ORGANIZATION_ERROR, UPDATE_ORGANIZATION_REQUEST, UPDATE_ORGANIZATION_SUCCESS } from '../actiontypes';
+import { loadingRequest, loadingSuccess, loadingFail} from "../globalLoading";
+
+const defaultLoadingRequest = true;
+const defaultLoadingSuccess = false;
+const defaultLoadingFail = false;
 
 export const getOrganization = ({pageNo=1, search = '', status = ''}) => {
     const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, '');
@@ -133,5 +138,32 @@ export const updateOrganizationFailure = error => {
     return {
         type: UPDATE_ORGANIZATION_ERROR,
         payload: error
+    }
+}
+
+// ----------------------
+
+// change org status = Active/Inactive
+export const changeOrgActivityStatus = (activityStatusParam,OrgListParam) => {
+    const loggedInUser = localStorage.getItem('token').replace(/['"]+/g, '');
+    return (dispatch) => {
+        // dispatch(loadingRequest(defaultLoadingRequest))
+        axios.put(`${Config.API_URL}api/superadmin/change-org-activity-status`, activityStatusParam, {
+            'headers': {
+                'content-type': 'application/json',
+                'Authorization': 'Bearer ' + loggedInUser
+            }
+        }).then(response => {
+            const data = response.data
+            if (data && data.status === true) {
+                dispatch(loadingSuccess(defaultLoadingSuccess))
+                dispatch(getOrganization(OrgListParam))
+            }else {
+                dispatch(loadingFail(defaultLoadingFail))
+            }
+            dispatch(loadingSuccess(defaultLoadingSuccess))
+        }).catch(error => {
+            dispatch(loadingFail(defaultLoadingFail))
+        })
     }
 }

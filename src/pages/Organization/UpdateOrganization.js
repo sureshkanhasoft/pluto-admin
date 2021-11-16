@@ -75,7 +75,7 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
 
     useEffect(()=>{
         if(updateMsg && updateOrgSuccess?.message) {
-            handleClose()
+            handleClose('update')
         }
     },[updateOrgSuccess])
 
@@ -95,7 +95,7 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                 status="success"
              />
         }
-        <Dialog open={openUpdate} onClose={handleClose} classes={{ paper: classes.dialogWidth }}>
+        <Dialog open={openUpdate} onClose={(e)=>handleClose('cancel')} classes={{ paper: classes.dialogWidth }}>
             <form>
                 <DialogTitle id="form-dialog-title">
                     <div>Update Organization</div>
@@ -283,7 +283,7 @@ const UpdateOrganization = ({ openUpdate, handleClose, id }) => {
                     </Box>
                 </DialogContent>
                 <DialogActions className="pr-4 pb-2">
-                    <Button onClick={handleClose} color="primary">
+                    <Button onClick={(e)=>handleClose('cancel')} color="primary">
                         Cancel
                     </Button>
                     <Button onClick={submitOrganization} color="secondary" variant="contained">
