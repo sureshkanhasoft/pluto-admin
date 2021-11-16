@@ -128,13 +128,10 @@ const DetailSignee = ({ match }) => {
     const [docNotify, setDocNotify] = useState(false)
     const [compNotify, setCompNotify] = useState(false);
     const [proNotify, setProNotify] = useState(false);
-    console.log('compNotify: ', compNotify);
     const staffDetail = JSON.parse(localStorage.getItem("staffDetail"));
     const baseUrl = "http://backendbooking.kanhasoftdev.com/public/uploads/signee_docs/"
 
     const { getSingleSigneeItem, loading, deleteSigneeSuccess, deleteSigneeError, changeDocStatusSuccess, signeeProStatusSuccess, signeeComStatusSuccess, signeeComStatusError } = useSelector(state => state.signee)
-    console.log('signeeComStatusError: ', signeeComStatusError);
-    console.log('signeeComStatusSuccess: ', signeeComStatusSuccess);
 
     const [complainceStatus, setComplainceStatus] = useState({
 
