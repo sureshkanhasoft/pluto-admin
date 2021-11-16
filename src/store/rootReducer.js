@@ -11,6 +11,8 @@ import trustReducer from "./reducer/trust/trustReducer"
 import bookingReducer from "./reducer/booking/bookingReducer"
 import signeeReducer from "./reducer/signee/signeeReducer";
 import StaffProfileReducer from "./reducer/staffProfile/StaffProfileReducer";
+import notificationMsgReducer from "./reducer/notificationMsg/notificationMsg";
+import loadingReducer from "./reducer/loading/globalLoading";
 
 const rootReducer = combineReducers(
     {
@@ -26,7 +28,9 @@ const rootReducer = combineReducers(
         trust: trustReducer,
         booking: bookingReducer,
         signee: signeeReducer,
-        staffProfile:StaffProfileReducer
+        staffProfile:StaffProfileReducer,
+        notificationMsg:notificationMsgReducer,
+        loadingReducer:loadingReducer,
     }
 );
 

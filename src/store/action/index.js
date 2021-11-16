@@ -7,7 +7,8 @@ export {
 export {
     getOrganization,
     createOrganization,
-    updateOrganization
+    updateOrganization,
+    changeOrgActivityStatus
 } from "./organization/organizationAction"
 
 export {

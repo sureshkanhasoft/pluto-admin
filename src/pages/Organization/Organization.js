@@ -14,7 +14,10 @@ import {
     RadioGroup,
     FormControlLabel,
     Radio,
-    FormLabel
+    FormLabel,
+    FormControl,
+    Select,
+    MenuItem
 } from '@material-ui/core';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -26,7 +29,7 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import CreateOrganization from './CreateOrganization';
 import UpdateOrganization from './UpdateOrganization';
 import { useDispatch, useSelector } from 'react-redux';
-import { getOrganization } from '../../store/action';
+import { getOrganization, changeOrgActivityStatus } from '../../store/action';
 // import Typography from '@material-ui/core/Typography';
 
 const useStyle = makeStyles((theme) => ({
@@ -117,15 +120,17 @@ const Organization = () => {
         setId(id);
     }
 
-    const handleClose = () => {
+    const handleClose = (action) => {
         setOpen(false);
-        getData();
+        if(action === 'update'){
+            getData(page, searchData.search, searchData.status)
+        }
         setOpenUpdate(false)
     };
 
     const handleChange = (event, value) => {
         setPage(value);
-        setTimeout(getData(value, searchData.search), 2000);
+        setTimeout(getData(value, searchData.search, searchData.status), 2000);
     };
 
     const handleSearchChange = (event) => {
@@ -137,6 +142,11 @@ const Organization = () => {
             setTimeout(getData(page, ""), 100);
         }
         setSearchData({ ...searchData, [event.target.name]: event.target.value });
+    }
+
+    // filter status store
+    const handleChangeFilterStatus = (event) => {
+        setSearchData({ ...searchData, status: event.target.value });
     }
 
     const handleClickSearch = (event, value) => {
@@ -159,6 +169,25 @@ const Organization = () => {
       const handleMenuClose = () => {
         setAnchorEl(null);
       };
+
+      const handleChangeOrgActivityStatus = (status, row) => {
+        let activityStatusParam = {
+            id: row.id, status: status
+        }
+        let OrgListParam = {
+            pageNo: page,
+            search: searchData.search,
+            status: searchData.status 
+        }
+        dispatch(changeOrgActivityStatus(activityStatusParam,OrgListParam))
+      }
+
+      // clear filter status 
+      const handleChangeFilterStatusClear = () => {
+        setSearchData({ ...searchData, status: '' });
+        setTimeout(getData(page, searchData.search, ''), 1000);
+        setAnchorEl(null);
+      }
 
     return (
         <div>
@@ -201,11 +230,14 @@ const Organization = () => {
                                 <Box className={classes.filterBox} >
                                     <FormLabel component="legend">Status</FormLabel>
                                     <RadioGroup name="status" className={classes.radioGroup}>
-                                        <FormControlLabel onChange={handleSearchChange} value="Active" control={<Radio />} label="Active" />
-                                        <FormControlLabel onChange={handleSearchChange} value="Inactive" control={<Radio />} label="Deactive" />
+                                        <FormControlLabel onChange={handleChangeFilterStatus} value="Active" checked={searchData.status === "Active" ? true : false} control={<Radio />} label="Active" />
+                                        <FormControlLabel onChange={handleChangeFilterStatus} value="Inactive" checked={searchData.status === "Inactive" ? true : false} control={<Radio />} label="Inactive" />
                                     </RadioGroup>
                                     <Button variant="contained" color="secondary" onClick={handleClickSearch}>
                                         Filter
+                                    </Button>
+                                    <Button onClick={(e)=>handleChangeFilterStatusClear()} color="primary">
+                                        Clear
                                     </Button>
                                 </Box>
                                 </div>
@@ -229,14 +261,24 @@ const Organization = () => {
                     </TableHead>
                     <TableBody>
                         {
-                            organizationList?.data && organizationList.data.map(row => {
+                            organizationList?.data && organizationList.data.map((row, index) => {
                                 return (<TableRow key={row.id}>
-                                    <TableCell scope="row">{row.id}</TableCell>
+                                    <TableCell scope="row">{organizationList.from+index}</TableCell>
                                     <TableCell align="left">{row.organization_name}</TableCell>
                                     <TableCell align="left">{row.contact_person_name}</TableCell>
                                     <TableCell align="left">{row.email}</TableCell>
                                     <TableCell align="left">{row.contact_number}</TableCell>
-                                    <TableCell align="left">{row.status} </TableCell>
+                                    <TableCell align="left">
+                                        <FormControl variant="outlined" className={classes.formControl1} fullWidth>
+                                            <Select
+                                                value={row?.status}
+                                                name="status"
+                                            >
+                                                <MenuItem value="Active" disabled={ row?.status === "Active" ? true : false } onClick={(e) => handleChangeOrgActivityStatus('Active', row)}>Active</MenuItem>
+                                                <MenuItem value="Inactive" disabled={ row?.status === "Inactive" ? true : false } onClick={(e) => handleChangeOrgActivityStatus('Inactive', row)} >Inactive</MenuItem>
+                                            </Select>
+                                        </FormControl>
+                                    </TableCell>
                                     <TableCell align="right"><Button variant="contained" color="secondary" onClick={() => handleUpdateClickOpen(row.id)}>View</Button></TableCell>
                                 </TableRow>
                                 )

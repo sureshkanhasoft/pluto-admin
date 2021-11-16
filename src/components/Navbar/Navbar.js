@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import {
   AppBar,
   Toolbar,
@@ -15,6 +16,8 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import history from '../../utils/HistoryUtils';
 import axios from 'axios';
 import Config from '../../../src/config/config';
+import LoadingComponent from '../Loading/Loading'
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -34,6 +37,9 @@ const useStyles = makeStyles((theme) => ({
 const Navbar = () => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const { status } = useSelector(state => state.loadingReducer)
+  const loadingStatus = status ? true : false
+
   const open = Boolean(anchorEl);
   const loggedUser = localStorage.getItem("role").replace(/['"]+/g, '');
 
@@ -82,6 +88,10 @@ const Navbar = () => {
   }
   return (
     <AppBar position="static" className={classes.root}>
+      {
+          loadingStatus &&
+          <LoadingComponent status={loadingStatus}/>
+      }
       <Toolbar>
         <h1 className={classes.title}>{titleName} </h1>
         <IconButton color="inherit">

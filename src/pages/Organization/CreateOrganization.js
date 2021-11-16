@@ -68,12 +68,12 @@ const CreateOrganization = ({ open, handleClose }) => {
     const onSubmit = async datas => {
         dispatch(createOrganization(datas))
         setCreateMsg(true)
-        handleClose();
+        handleClose('update');
         reset();
     };
     const dialogClose = ()=>{
         reset();
-        handleClose()
+        handleClose('cancel')
     }
     return (
         <>
