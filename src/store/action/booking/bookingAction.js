@@ -209,9 +209,11 @@ export const confirmBooking = (data) => {
             .then(response => {
                 const dataItem = response.data;
                 dispatch(confirmBookingSuccess(dataItem))
+                dispatch(notificationSuccess(dataItem.message))
             }).catch(error => {
                 dispatch(confirmBookingSuccess([]))
                 dispatch(confirmBookingFailure(error))
+                dispatch(notificationFail(error.message))
             });
     }
 }
