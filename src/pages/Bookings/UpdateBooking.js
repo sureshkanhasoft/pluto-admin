@@ -5,7 +5,8 @@ import {
     Button,
     Box,
     Grid, TextField, Select, FormControl, MenuItem, InputLabel,
-    FormGroup, FormControlLabel, Checkbox, FormHelperText, FormLabel
+    FormGroup, FormControlLabel, Checkbox, FormHelperText, FormLabel,
+    Backdrop, CircularProgress
 } from '@material-ui/core';
 import axios from 'axios';
 import apiConfigs from '../../config/config';
@@ -32,7 +33,12 @@ const useStyle = makeStyles((theme) => ({
         '& > *': {
             margin: theme.spacing(1),
         },
-    }
+    },
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff',
+        background:'rgba(0, 0, 0, 0.01)'
+    },
 }))
 
 const UpdateBooking = ({ match }) => {
@@ -49,7 +55,7 @@ const UpdateBooking = ({ match }) => {
     const [gradeList, setGradeList] = useState([])
     const [shiftTime, setShiftTime] = useState([])
     const [trustNotify, setTrustNotify] = useState(false)
-    const { updateBookingSuccess, updateBookingError } = useSelector(state => state.booking)
+    const { updateBookingSuccess, updateBookingError, loading } = useSelector(state => state.booking)
     const disPastDate = UtilService.disabledPastDate()
     const [data, setData] = useState({
         reference_id: "",
@@ -260,6 +266,12 @@ const UpdateBooking = ({ match }) => {
                     data={updateBookingSuccess?.message}
                     status="success"
                 />
+            }
+            {
+                loading ?
+                    <Backdrop className={classes.backdrop} open={loading}>
+                        {/* <CircularProgress color="inherit" /> */}
+                    </Backdrop> : ""
             }
             <Paper className={classes.root}>
 
@@ -498,7 +510,7 @@ const UpdateBooking = ({ match }) => {
                             Cancel
                         </Button>
                         <Button color="secondary" variant="contained" onClick={submitData} formNoValidate>
-                            Update
+                            Update {loading=== true? <CircularProgress style={{width: 16, height:16, marginLeft:10}} color="inherit" />:""}
                         </Button>
                     </Box>
                 </form>
