@@ -111,7 +111,7 @@ const useStyle = makeStyles((theme) => ({
 const ViewBooking = ({ match }) => {
     const classes = useStyle();
     const dispatch = useDispatch();
-    const tabList = ['CREATED', 'CONFIRMED', 'CANCEL'];
+    const tabList = ['CREATED', 'CONFIRMED', 'CANCEL', "COMPLETED"];
     const [page, setPage] = React.useState(1);
     const [searchData, setSearchData] = useState({ search: "" });
     const staffDetail = JSON.parse(localStorage.getItem("staffDetail"));
