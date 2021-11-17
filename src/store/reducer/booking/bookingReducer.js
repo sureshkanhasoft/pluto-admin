@@ -23,6 +23,9 @@ const initialState = {
 
     invitationSuccess:[],
     invitationError:[],
+
+    paymentStatusSuccess:[],
+    paymentStatusError:[]
 }
 
 const bookingReducer = (state = initialState, action) => {
@@ -167,6 +170,29 @@ const bookingReducer = (state = initialState, action) => {
             return updateObject(state, {
                 loading: false,
                 invitationError: action.payload
+            })
+
+
+        // -------------------------------------
+
+        case actionTypes.CHANGE_PAYMENT_STATUS_REQUEST:
+            return updateObject(state, {
+                loading: true,
+                paymentStatusSuccess: "",
+                paymentStatusError: ""
+
+            })
+
+        case actionTypes.CHANGE_PAYMENT_STATUS_SUCCESS:
+            return updateObject(state, {
+                loading: false,
+                paymentStatusSuccess: action.payload
+            })
+
+        case actionTypes.CHANGE_PAYMENT_STATUS_ERROR:
+            return updateObject(state, {
+                loading: false,
+                paymentStatusError: action.payload
             })
 
         default:

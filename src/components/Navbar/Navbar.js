@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   AppBar,
   Toolbar,
@@ -17,6 +17,8 @@ import history from '../../utils/HistoryUtils';
 import axios from 'axios';
 import Config from '../../../src/config/config';
 import LoadingComponent from '../Loading/Loading'
+import Notification from '../Notification/Notification';
+import { notificationClear } from '../../store/action/notificationMsg';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,9 +38,11 @@ const useStyles = makeStyles((theme) => ({
 
 const Navbar = () => {
   const classes = useStyles();
+  const dispatch = useDispatch()
   const [anchorEl, setAnchorEl] = React.useState(null);
   const { status } = useSelector(state => state.loadingReducer)
   const loadingStatus = status ? true : false
+  var notificationInfo = useSelector((state) => state.notificationMsg)
 
   const open = Boolean(anchorEl);
   const loggedUser = localStorage.getItem("role").replace(/['"]+/g, '');
@@ -53,11 +57,11 @@ const Navbar = () => {
     setAnchorEl(null);
   };
 
-  const openProfile = () =>{
+  const openProfile = () => {
     // const loggedUser = localStorage.getItem("role").replace(/['"]+/g, '');
-    if(loggedUser === "ORGANIZATION"){
+    if (loggedUser === "ORGANIZATION") {
       history.push('/admin/organization-profile')
-    } else if(loggedUser === "SUPERADMIN"){
+    } else if (loggedUser === "SUPERADMIN") {
       history.push('/super-admin/profile')
     } else {
       history.push('/staff/staff-profile')
@@ -65,8 +69,8 @@ const Navbar = () => {
     handleClose()
   }
 
-  const openChangePassword = () =>{
-    if(loggedUser === "ORGANIZATION"){
+  const openChangePassword = () => {
+    if (loggedUser === "ORGANIZATION") {
       history.push('/admin/change-password')
     }
     handleClose()
@@ -86,47 +90,74 @@ const Navbar = () => {
       console.log("error.message", error.message);
     });
   }
+
+  const clearNotificationMsg = () => {
+    let reqParam = { message: null, status: null, type: null }
+    setTimeout(() => {
+      dispatch(notificationClear(reqParam))
+    }, 4000);
+  }
   return (
-    <AppBar position="static" className={classes.root}>
-      {
-          loadingStatus &&
-          <LoadingComponent status={loadingStatus}/>
+    <>
+      {/* common notification */}
+      {notificationInfo?.message &&
+        (
+          <>
+            <Notification
+              data={notificationInfo?.message}
+              status={notificationInfo?.status ? "success" : "error"}
+            />
+            {clearNotificationMsg()}
+          </>
+        )
       }
-      <Toolbar>
-        <h1 className={classes.title}>{titleName} </h1>
-        <IconButton color="inherit">
-          <Badge badgeContent={1} color="secondary">
-            <NotificationsIcon color="primary" />
-          </Badge>
-        </IconButton>
-        <div className="ml-2">
-          <IconButton
-            aria-label="account of current user"
-            aria-controls="menu-appbar"
-            aria-haspopup="true"
-            onClick={handleMenu}
-            color="inherit"
-          >
-            <AccountCircleIcon color="primary" />
+      {/* common notification */}
+
+      {/* loading */}
+      {
+        loadingStatus &&
+        <LoadingComponent status={loadingStatus} />
+      }
+      {/* loading */}
+      
+      <AppBar position="static" className={classes.root}>
+
+        <Toolbar>
+          <h1 className={classes.title}>{titleName} </h1>
+          <IconButton color="inherit">
+            <Badge badgeContent={1} color="secondary">
+              <NotificationsIcon color="primary" />
+            </Badge>
           </IconButton>
-          <Menu
-            id="menu-appbar"
-            anchorEl={anchorEl}
-            getContentAnchorEl={null}
-            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-            open={open}
-            onClose={handleClose}
-          >
-            <MenuItem onClick={openProfile}>Profile</MenuItem>
-            {/* {
+          <div className="ml-2">
+            <IconButton
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleMenu}
+              color="inherit"
+            >
+              <AccountCircleIcon color="primary" />
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorEl}
+              getContentAnchorEl={null}
+              anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+              open={open}
+              onClose={handleClose}
+            >
+              <MenuItem onClick={openProfile}>Profile</MenuItem>
+              {/* {
               loggedUser === "ORGANIZATION" && <MenuItem onClick={openChangePassword}>Change password</MenuItem>
             } */}
-            
-            <MenuItem onClick={logout}>Logout</MenuItem>
-          </Menu>
-        </div>
-      </Toolbar>
-    </AppBar>
+
+              <MenuItem onClick={logout}>Logout</MenuItem>
+            </Menu>
+          </div>
+        </Toolbar>
+      </AppBar>
+    </>
   )
 }
 

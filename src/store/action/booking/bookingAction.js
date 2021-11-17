@@ -3,6 +3,9 @@ import { apiClient } from "../../../config/apiClient";
 import apiConfigs from "../../../config/config";
 import history from "../../../utils/HistoryUtils";
 import {
+    CHANGE_PAYMENT_STATUS_ERROR,
+    CHANGE_PAYMENT_STATUS_REQUEST,
+    CHANGE_PAYMENT_STATUS_SUCCESS,
     CHANGE_SHIFT_STATUS_ERROR, CHANGE_SHIFT_STATUS_REQUEST, CHANGE_SHIFT_STATUS_SUCCESS,
     CONFIRM_BOOKING_ERROR, CONFIRM_BOOKING_REQUEST, CONFIRM_BOOKING_SUCCESS,
     CREATE_BOOKING_ERROR, CREATE_BOOKING_REQUEST, CREATE_BOOKING_SUCCESS,
@@ -11,6 +14,7 @@ import {
     UPDATE_BOOKING_ERROR, UPDATE_BOOKING_REQUEST, UPDATE_BOOKING_SUCCESS, 
     USER_INVITATION_ERROR, USER_INVITATION_REQUEST, USER_INVITATION_SUCCESS
 } from "../actiontypes";
+import { notificationFail, notificationSuccess } from "../notificationMsg";
 
 export const getBooking = ({ pageNo = 1, search = '', status = "CREATED" }) => {
     return async (dispatch) => {
@@ -299,6 +303,45 @@ const userInvitationSuccess = (data) => {
 const userInvitationFailure = (error) => {
     return {
         type: USER_INVITATION_ERROR,
+        payload: error
+    }
+}
+
+
+// --------------------------------------------
+
+export const changePaymentStatus = (data) => {
+    return async (dispatch) => {
+        dispatch(changePaymentStatusRequest())
+        await apiClient(true).put(`api/organization/change-signee-payment-status`, data)
+            .then(response => {
+                console.log('response: ', response);
+                const dataItem = response.data;
+                dispatch(changePaymentStatusSuccess(dataItem.message))
+                dispatch(notificationSuccess(dataItem.message))
+            }).catch(error => {
+                dispatch(changePaymentStatusFailure(error))
+                dispatch(notificationFail(error.response.data.message))
+            });
+    }
+}
+
+const changePaymentStatusRequest = () => {
+    return {
+        type: CHANGE_PAYMENT_STATUS_REQUEST
+    }
+}
+
+const changePaymentStatusSuccess = (data) => {
+    return {
+        type: CHANGE_PAYMENT_STATUS_SUCCESS,
+        payload: data
+    }
+}
+
+const changePaymentStatusFailure = (error) => {
+    return {
+        type: CHANGE_PAYMENT_STATUS_ERROR,
         payload: error
     }
 }

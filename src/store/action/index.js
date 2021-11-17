@@ -57,7 +57,8 @@ export {
     deleteBooking,
     confirmBooking,
     changeShiftStatus,
-    userInvitation
+    userInvitation,
+    changePaymentStatus
 } from './booking/bookingAction'
 
 
