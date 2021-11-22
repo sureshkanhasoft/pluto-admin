@@ -274,7 +274,7 @@ const CandidatesList = ({ bookingDetail, booking_id, getBookingDetail }) => {
                 </Tabs>
 
                 {
-                    pdfData.signee_id.length > 0 && <Button variant="contained" color="secondary" onClick={usersInvitation} className={classes.invitationButton}>
+                    pdfData.signee_id.length > 0 && bookingDetail?.data?.status === 'CREATED' && <Button variant="contained" color="secondary" onClick={usersInvitation} className={classes.invitationButton}>
                         <span className="material-icons mr-2">mail</span> Send invitation
                     </Button>
                 }
@@ -300,7 +300,10 @@ const CandidatesList = ({ bookingDetail, booking_id, getBookingDetail }) => {
                                     <TableCell align="left">Payment Status</TableCell>
                                 }
                                 <TableCell align="left">Detail</TableCell>
-                                <TableCell align="right">Action</TableCell>
+                                {
+                                    (pastDate !== true) &&
+                                    <TableCell align="right">Action</TableCell>
+                                }
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -347,16 +350,16 @@ const CandidatesList = ({ bookingDetail, booking_id, getBookingDetail }) => {
                                                 <VisibilityIcon className="mr-2" />view
                                             </span>
                                         </TableCell>
-                                        <TableCell align="right">
-                                            {
-                                                // if signee user is COMPLIANT
-                                                // row.compliance_status === "COMPLIANT" &&
-                                                (pastDate !== true) &&
+                                        {
+                                            // if signee user is COMPLIANT
+                                            // row.compliance_status === "COMPLIANT" &&
+                                            (pastDate !== true) &&
+                                            <TableCell align="right">
                                                 <IconButton onClick={(event) => handleMenu(event, row.signeeId, row)}>
                                                     <MoreVertIcon />
                                                 </IconButton>
-                                            }
-                                        </TableCell>
+                                            </TableCell>
+                                        }
                                     </TableRow>
                                 )
 
@@ -386,7 +389,10 @@ const CandidatesList = ({ bookingDetail, booking_id, getBookingDetail }) => {
                                     <TableCell align="left">Payment Status</TableCell>
                                 }
                                 <TableCell align="left">Detail</TableCell>
-                                <TableCell align="right">Action</TableCell>
+                                {
+                                    (pastDate !== true) &&
+                                    <TableCell align="right">Action</TableCell>
+                                }
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -435,15 +441,15 @@ const CandidatesList = ({ bookingDetail, booking_id, getBookingDetail }) => {
                                                 <VisibilityIcon className="mr-2" />view
                                             </span>
                                         </TableCell>
-                                        <TableCell align="right">
-                                            {
-                                                (pastDate !== true) &&
+                                        {
+                                            (pastDate !== true) &&
+                                            <TableCell align="right">
                                                 <IconButton onClick={(event) => handleMenu(event, row.signeeId, row)}>
                                                     <MoreVertIcon />
                                                 </IconButton>
-                                            }
+                                            </TableCell>
+                                        }
 
-                                        </TableCell>
                                     </TableRow>
                                 )
 
