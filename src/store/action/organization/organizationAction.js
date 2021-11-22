@@ -4,6 +4,7 @@ import Config from '../../../config/config';
 import { CREATE_ORGANIZATION_ERROR, CREATE_ORGANIZATION_REQUEST, CREATE_ORGANIZATION_SUCCESS, GET_ORGANIZATION_ERROR, GET_ORGANIZATION_REQUEST, GET_ORGANIZATION_SUCCESS } from '../actiontypes';
 import { UPDATE_ORGANIZATION_ERROR, UPDATE_ORGANIZATION_REQUEST, UPDATE_ORGANIZATION_SUCCESS } from '../actiontypes';
 import { loadingRequest, loadingSuccess, loadingFail} from "../globalLoading";
+import { notificationFail, notificationSuccess } from '../notificationMsg';
 
 const defaultLoadingRequest = true;
 const defaultLoadingSuccess = false;
@@ -158,12 +159,15 @@ export const changeOrgActivityStatus = (activityStatusParam,OrgListParam) => {
             if (data && data.status === true) {
                 dispatch(loadingSuccess(defaultLoadingSuccess))
                 dispatch(getOrganization(OrgListParam))
+                dispatch(notificationSuccess(data.message))
             }else {
                 dispatch(loadingFail(defaultLoadingFail))
+                dispatch(notificationFail(data.message))
             }
             dispatch(loadingSuccess(defaultLoadingSuccess))
         }).catch(error => {
             dispatch(loadingFail(defaultLoadingFail))
+            dispatch(notificationFail(error.response.data.message))
         })
     }
 }
