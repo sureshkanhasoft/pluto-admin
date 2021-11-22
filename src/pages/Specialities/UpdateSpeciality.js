@@ -61,6 +61,11 @@ function UpdateSpeciality({ open, handleClose, id }) {
         getData(id);
     }, [id]);
 
+    const handleClose1 = () => {
+        handleClose();
+        // reset();
+    }
+
     return (
         <>
             {specilaityNotify && speUpdateSuccess?.message &&
@@ -76,7 +81,7 @@ function UpdateSpeciality({ open, handleClose, id }) {
                     status="error"
                 />
             } */}
-            <Dialog open={open} onClose={handleClose} classes={{ paper: classes.dialogWidth }}>
+            <Dialog open={open} onClose={handleClose1} classes={{ paper: classes.dialogWidth }}>
                 <form>
                     <DialogTitle id="form-dialog-title">
                         <div>Update Speciality</div>
@@ -99,7 +104,7 @@ function UpdateSpeciality({ open, handleClose, id }) {
                         />
                     </DialogContent>
                     <DialogActions className="pr-4 pb-2">
-                        <Button onClick={handleClose} color="primary">
+                        <Button onClick={handleClose1} color="primary">
                             Cancel
                         </Button>
                         <Button color="secondary" variant="contained" onClick={specialitySubmit} formNoValidate >

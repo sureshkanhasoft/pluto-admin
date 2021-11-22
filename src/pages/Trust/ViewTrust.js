@@ -87,7 +87,6 @@ const ViewTrust = ({ match }) => {
     const staffDetail = JSON.parse(localStorage.getItem("staffDetail"));
 
     const { getTrustItem, loading } = useSelector(state => state.trust)
-    console.log('getTrustItem: ', getTrustItem);
 
     const getTrustList = (pageNo = 1, search = '') => {
         dispatch(getTrust({ pageNo, search }))
