@@ -123,15 +123,15 @@ const ForgottenPassword = ({ history }) => {
                         <>
                             <Typography className={classes.subTitle}>Forgot your Password?</Typography>
                             <Card className={classes.loginCard}>
-                                {forgotMsg && forgoterrors?.message &&
+                                {forgotMsg && (forgoterrors?.message || forgoterrors) &&
                                     <Notification
-                                        data={forgoterrors?.message}
+                                        data={(forgoterrors?.message || forgoterrors)}
                                         status="error"
                                     />
                                 }
-                                {forgotMsg && forgotsuccess?.message &&
+                                {forgotMsg && (forgotsuccess?.message || forgotsuccess) &&
                                     <Notification
-                                        data={forgotsuccess?.message}
+                                        data={forgotsuccess?.message || forgotsuccess}
                                         status="success"
                                     />
                                 }

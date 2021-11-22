@@ -31,7 +31,9 @@ const authReducer = (state = initialState, action) => {
             })
         case actionTypes.FORGOT_REQUEST:
             return updateObject(state, {
-                loading: true
+                loading: true,
+                forgotsuccess:"",
+                forgoterrors:""
             })
         case actionTypes.FORGOT_SUCCESS:
             return updateObject(state, {

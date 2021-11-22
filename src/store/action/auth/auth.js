@@ -4,6 +4,7 @@ import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_ERROR, FORGOT_SUCCESS, FORGOT_ERROR
 } from '../actiontypes';
 import Config from '../../../config/config';
 import history from '../../../utils/HistoryUtils';
+import { notificationFail, notificationSuccess } from '../notificationMsg';
 
 export const login = ({ email, password }) => {
     return (dispatch) => {
@@ -71,11 +72,12 @@ export const forgotpassword = ({ email }) => {
                 dispatch(getForgotSuccess(data));
                 // dispatch(getForgotFailure(''));
             } else {
-                dispatch(getForgotFailure(data));
+                dispatch(getForgotFailure(data.message));
                 // dispatch(getForgotSuccess(''));
             }
         }).catch(error => {
-            dispatch(getForgotFailure(error.message));
+            // console.log('error111: ', error);
+            dispatch(getForgotFailure(error.response.data.message));
         })
     }
 }
