@@ -98,7 +98,8 @@ export const createTrust = (data, addAnother) => {
                 }
 
             } else {
-                dispatch(createTrustFailure(data))
+                // dispatch(createTrustFailure(data))
+                dispatch(createTrustFailure(data.message))
             }
         }).catch(error => {
             dispatch(createTrustFailure(error))

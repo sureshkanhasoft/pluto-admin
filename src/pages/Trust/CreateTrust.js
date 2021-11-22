@@ -334,7 +334,9 @@ const CreateTrust = () => {
                                                         required: "Please enter code",
                                                     })}
                                                     error={
-                                                        (errors.hospital_name ? true : (createTrustError && createTrustError?.message) ? (createTrustError && createTrustError?.message[`hospital.${index}.hospital_name`] ? true :false) : false)
+                                                        // (errors.hospital_name ? true : (createTrustError && createTrustError?.message) ? (createTrustError && createTrustError?.message[`hospital.${index}.hospital_name`] ? true :false) : false)
+                                                        (errors.trust_portal_url ? true : (createTrustError && createTrustError?.[`hospital.${index}.hospital_name`] ? true : false))
+
                                                         
                                                     }
                                                     onChange={(e) => handleChangeHospital(index, e, 'hospital')}
@@ -361,7 +363,8 @@ const CreateTrust = () => {
                                                                         required: "Please enter ward name",
                                                                     })}
                                                                     error={
-                                                                        (errors.ward_name ? true : (createTrustError && createTrustError?.message) ? (createTrustError?.message[`hospital.${index}.ward.${wIndex}.ward_name`] ? true :false) : false)
+                                                                        // (errors.ward_name ? true : (createTrustError && createTrustError?.message) ? (createTrustError?.message[`hospital.${index}.ward.${wIndex}.ward_name`] ? true :false) : false)
+                                                                        (errors.trust_portal_url ? true : (createTrustError && createTrustError?.[`hospital.${index}.ward.${wIndex}.ward_name`] ? true : false))
                                                                     }
                                                                     onChange={(e) => handleChangeWardOFHospital(index, wIndex, e)}
                                                                     fullWidth
@@ -374,7 +377,8 @@ const CreateTrust = () => {
                                                                     required: "Please enter ward type",
                                                                 })}
                                                                     error={
-                                                                        (errors.ward_type_id ? true : (createTrustError && createTrustError?.message) ? (createTrustError?.message[`hospital.${index}.ward.${wIndex}.ward_type_id`] ? true :false) : false)
+                                                                        // (errors.ward_type_id ? true : (createTrustError && createTrustError?.message) ? (createTrustError?.message[`hospital.${index}.ward.${wIndex}.ward_type_id`] ? true :false) : false)
+                                                                        (errors.trust_portal_url ? true : (createTrustError && createTrustError?.[`hospital.${index}.ward.${wIndex}.ward_type_id`] ? true : false))
                                                                     }
                                                                 >
                                                                     <InputLabel>Ward Type</InputLabel>
@@ -409,7 +413,8 @@ const CreateTrust = () => {
                                                                         required: "Please enter ward number",
                                                                     })}
                                                                     error={
-                                                                        (errors.ward_number ? true : (createTrustError && createTrustError?.message) ? (createTrustError?.message[`hospital.${index}.ward.${wIndex}.ward_number`] ? true :false) : false)
+                                                                        // (errors.ward_number ? true : (createTrustError && createTrustError?.message) ? (createTrustError?.message[`hospital.${index}.ward.${wIndex}.ward_number`] ? true :false) : false)
+                                                                        (errors.trust_portal_url ? true : (createTrustError && createTrustError?.[`hospital.${index}.ward.${wIndex}.ward_number`] ? true : false))
                                                                     }
                                                                     onChange={(e) => handleChangeWardOFHospital(index, wIndex, e)}
                                                                     fullWidth
@@ -576,8 +581,9 @@ const CreateTrust = () => {
                                     required: "Please enter trust portal URL",
                                 })}
                                 error={
+                                    (errors.trust_portal_url ? true : (createTrustError && createTrustError?.[`trust_portal_url`] ? true : false))
                                     // (errors.trust_portal_url ? true : false)
-                                    (errors.trust_portal_url ? true : (createTrustError && createTrustError?.message) ? (createTrustError?.message[`trust_portal_url`] ? true :false) : false)
+                                    // (errors.trust_portal_url ? true : (createTrustError && createTrustError?.message) ? (createTrustError?.message[`trust_portal_url`] ? true :false) : false)
                                 }
                                 onChange={handleChange}
                                 fullWidth
@@ -646,7 +652,8 @@ const CreateTrust = () => {
                                                 required: "Please enter phone number",
                                             })}
                                             error={
-                                                (errors.training_name ? true : (createTrustError && createTrustError?.message) ? (createTrustError?.message[`training.${index}.training_name`] ? true :false) : false)
+                                                // (errors.training_name ? true : (createTrustError && createTrustError?.message) ? (createTrustError?.message[`training.${index}.training_name`] ? true :false) : false)
+                                                (errors.trust_portal_url ? true : (createTrustError && createTrustError?.[`training.${index}.training_name`] ? true : false))
                                             }
                                             onChange={(e) => handleChangeHospital(index, e, 'training')}
                                             fullWidth

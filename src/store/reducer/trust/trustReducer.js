@@ -7,7 +7,7 @@ const initialState = {
     getTrustError: [],
 
     createTrustSuccess: [],
-    createTrustError: [],
+    createTrustError: {},
 
     updateTrustSuccess: [],
     updateTrustError: [],
