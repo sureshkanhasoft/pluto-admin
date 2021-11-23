@@ -31,6 +31,7 @@ function UpdateSpeciality({ open, handleClose, id }) {
     };
 
     const specialitySubmit = (event) => {
+        event.preventDefault();
         dispatch(updateSpecialities(data))
         setSpecilaityNotify(true)
     }
@@ -107,7 +108,7 @@ function UpdateSpeciality({ open, handleClose, id }) {
                         <Button onClick={handleClose1} color="primary">
                             Cancel
                         </Button>
-                        <Button color="secondary" variant="contained" onClick={specialitySubmit} formNoValidate >
+                        <Button color="secondary" type="submit" variant="contained" onClick={(event) => specialitySubmit(event)} formNoValidate >
                             Update
                         </Button>
                     </DialogActions>
