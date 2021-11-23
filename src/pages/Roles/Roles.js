@@ -44,12 +44,12 @@ const Roles = () => {
     const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
     const [deleteOpen, setDeleteOpen] = useState(false);
-    const [deleteNotify, SetDeleteNotify] = useState(false);
+    // const [deleteNotify, SetDeleteNotify] = useState(false);
     const [Id, setId] = useState(false);
     const [disabled, setDisabled]= useState(false)
     // const [deleteConfirm, SetDeleteConfim] = useState(false);
 
-    const { getRolesItem, loading, deleteSuccess, deleteError } = useSelector(state => state.roles)
+    const { getRolesItem, loading } = useSelector(state => state.roles)
 
     const handleClickOpen = (id) => {
         setOpen(true);
@@ -74,7 +74,7 @@ const Roles = () => {
             dispatch(deleteRoles(id))
         }
         setDisabled(false)
-        SetDeleteNotify(true)
+        // SetDeleteNotify(true)
     }
 
     useEffect(() => {
@@ -83,7 +83,7 @@ const Roles = () => {
 
     return (
         <>
-            {deleteNotify && deleteSuccess?.message &&
+            {/* {deleteNotify && deleteSuccess?.message &&
                 <Notification
                     data={deleteSuccess?.message}
                     status="success"
@@ -95,7 +95,7 @@ const Roles = () => {
                     data={deleteError?.message}
                     status="error"
                 />
-            }
+            } */}
 
             <p className="mb-6">Welcome to your Pluto Software admin dashboard. Here you can get an overview of your account activity, or use navigation on the left hand side to get to your desired location.</p>
             <Paper className={`${classes.root} mb-6`}>

@@ -7,6 +7,7 @@ import {
     DELETE_ROLE_SUCCESS, 
     GET_ROLE_ERROR, GET_ROLE_REQUEST, GET_ROLE_SUCCESS 
 } from "../actiontypes";
+import { notificationFail, notificationSuccess } from "../notificationMsg";
 
 
 export const getRoles = () => {
@@ -111,14 +112,17 @@ export const deleteRoles = (role_id) => {
             const data = response.data
             if (data.status === true) {
                 dispatch(deleteRolesSuccess(data))
+                dispatch(notificationSuccess(data.message))
                 setTimeout(() => {
                     dispatch(getRoles())
                 }, 2000);
             } else {
-                dispatch(deleteRolesError(data))
+                dispatch(deleteRolesError(data.message))
+                dispatch(notificationFail(data.message))
             }
         }).catch(error => {
-            dispatch(deleteRolesError(error))
+            dispatch(deleteRolesError(error.response.data))
+            dispatch(notificationFail(error.response.data))
         })
     }
 }
