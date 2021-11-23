@@ -13,6 +13,7 @@ import signeeReducer from "./reducer/signee/signeeReducer";
 import StaffProfileReducer from "./reducer/staffProfile/StaffProfileReducer";
 import notificationMsgReducer from "./reducer/notificationMsg/notificationMsg";
 import loadingReducer from "./reducer/loading/globalLoading";
+import notificationList from "./reducer/notificationList/notificationList";
 
 const rootReducer = combineReducers(
     {
@@ -31,6 +32,7 @@ const rootReducer = combineReducers(
         staffProfile:StaffProfileReducer,
         notificationMsg:notificationMsgReducer,
         loadingReducer:loadingReducer,
+        notificationList:notificationList,
     }
 );
 

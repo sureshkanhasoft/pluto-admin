@@ -81,3 +81,8 @@ export {
     updateStaffProfile,
     staffChangePassword
 } from "./staffProfile/staffProfileAction"
+
+export {
+    getNotification,
+    readNotification,
+} from "./notificationList/notificationList"
