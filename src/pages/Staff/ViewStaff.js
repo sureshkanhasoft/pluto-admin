@@ -85,7 +85,6 @@ const ViewStaff = ({ match }) => {
     const dispatch = useDispatch();
     const [page, setPage] = React.useState(1);
     const { loading, getStaffItem } = useSelector(state => state.staff)
-    console.log('getStaffItem: ', getStaffItem);
     const [searchData, setSearchData] = useState({ search: "" });
 
     const onhandlClick = (id) => {
