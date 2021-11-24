@@ -480,6 +480,10 @@ const CandidatesList = ({ bookingDetail, booking_id, getBookingDetail }) => {
                         <MenuItem onClick={() => handleMenuItem('OFFER', anchorElRowInfo.signeeId)} className={classes.menuItem}><CheckIcon className="mr-2" />Offer</MenuItem>
                     }
                     {
+                        anchorElRowInfo.signee_booking_status !== "CONFIRMED" && anchorElRowInfo.signee_booking_status === "ACCEPT" &&
+                        <MenuItem onClick={() => handleMenuItem('CONFIRMED', anchorElRowInfo.signeeId)} className={classes.menuItem}><CheckIcon className="mr-2" />Confirm</MenuItem>
+                    }
+                    {
                         anchorElRowInfo.signee_booking_status !== "APPLY" &&
                         anchorElRowInfo.signee_booking_status !== "CONFIRMED" &&
                         <MenuItem onClick={() => handleMenuItem('CONFIRMED', anchorElRowInfo.signeeId)} className={classes.menuItem}><StarIcon className="mr-2" />Super Assign</MenuItem>
@@ -487,7 +491,7 @@ const CandidatesList = ({ bookingDetail, booking_id, getBookingDetail }) => {
                     {
                         anchorElRowInfo.signee_booking_status !== "CONFIRMED" && anchorElRowInfo.signee_booking_status === "APPLY" &&
                         <MenuItem onClick={() => handleMenuItem('CONFIRMED', anchorElRowInfo.signeeId)} className={classes.menuItem}><StarIcon className="mr-2" />Accept</MenuItem>
-                    }
+                    }                   
                     <MenuItem onClick={() => handleMenuItem('CANCEL', anchorElRowInfo.signeeId)} className={classes.menuItem}><CloseIcon className="mr-2" />Reject</MenuItem>
                 </Menu>
             }
