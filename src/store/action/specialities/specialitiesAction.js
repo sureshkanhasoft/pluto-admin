@@ -29,6 +29,7 @@ export const getSpecialities = ({pageNo=1, search = ''}) => {
                 dispatch(getSpecialitiesError(dataItem.data))
             }
         }).catch(error => {
+            dispatch(getSpecialitiesSuccess(""))
             dispatch(getSpecialitiesError(error))
         })
     }
