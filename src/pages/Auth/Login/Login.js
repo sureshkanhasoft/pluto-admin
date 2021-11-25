@@ -81,7 +81,6 @@ const Login = () => {
     const classes = useStyle();
     const dispatch = useDispatch()
     const { loading, loginErrors, userInfo } = useSelector(state => state.authReducer)
-    console.log('loginErrors: ', loginErrors);
     const [loginNotify, setLoginNotify]=useState(false)
     const { register, handleSubmit, formState: { errors } } = useForm();
     const onSubmit = async data => {
