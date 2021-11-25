@@ -112,7 +112,7 @@ function a11yProps(index) {
     };
 }
 
-const CandidatesList = ({ bookingDetail, booking_id, getBookingDetail }) => {
+const CandidatesList = ({ bookingDetail, booking_id, getBookingDetail, setConfirmBtn }) => {
 
     const classes = useStyle();
     const dispatch = useDispatch();
@@ -226,6 +226,7 @@ const CandidatesList = ({ bookingDetail, booking_id, getBookingDetail }) => {
         setAnchorEl(event.currentTarget);
         setAnchorElRowInfo(row);
         setGetSigneeid(id);
+        setConfirmBtn(false)
     };
 
     const usersInvitation = () => {
@@ -247,6 +248,18 @@ const CandidatesList = ({ bookingDetail, booking_id, getBookingDetail }) => {
         }
 
     };
+
+    useEffect(()=>{
+        bookingDetail?.data?.matching && bookingDetail?.data?.matching.filter(item => item.signee_booking_status === "CONFIRMED").map((list, index) => {
+            return setConfirmBtn(true)
+        })
+    },[bookingDetail?.data?.matching])
+
+    useEffect(()=>{
+        bookingDetail?.data?.interested && bookingDetail?.data?.interested.filter(item => item.signee_booking_status === "CONFIRMED").map((list, index) => {
+            return setConfirmBtn(true)
+        })
+    },[bookingDetail?.data?.interested])
 
 
     return (

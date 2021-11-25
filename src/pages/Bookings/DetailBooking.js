@@ -110,6 +110,7 @@ const DetailBooking = ({ match }) => {
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [staffNotify, setStaffNotify] = useState(false)
     const [bookingNotify, setBookingNotify] = useState(false);
+    const [confirmBtn, setConfirmBtn] = useState(false);
 
     const { deleteBookingSuccess, deleteBookingError, shiftStatusSuccess } = useSelector(state => state.booking)
     // const { deleteBookingSuccess, deleteBookingError, confirmBookingSuccess, confirmBookingError, invitationSuccess, shiftStatusSuccess } = useSelector(state => state.booking)
@@ -219,7 +220,7 @@ const DetailBooking = ({ match }) => {
                                     bookingDetail?.data?.status === "CREATED" && <MenuItem value="CREATED" disabled>Created</MenuItem>
                                 }
                                 {
-                                    bookingDetail?.data?.status !== "CANCEL" && <MenuItem value="CONFIRMED" >Confirmed</MenuItem>
+                                    bookingDetail?.data?.status !== "CANCEL" && confirmBtn===true &&  <MenuItem value="CONFIRMED" >Confirmed</MenuItem>
                                 }
                                 {/* <MenuItem value="CREATED" >Created</MenuItem> */}
                                 {/* <MenuItem value="CONFIRMED" >Confirmed</MenuItem> */}
@@ -263,7 +264,7 @@ const DetailBooking = ({ match }) => {
                     </Grid>
                     <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
                         <Typography variant="body2" className={classes.heading}>Rate:</Typography>
-                        <Typography variant="h6" className={classes.desc}>{bookingDetail?.data?.rate}</Typography>
+                        <Typography variant="h6" className={classes.desc}><span className="symbol">£</span> {bookingDetail?.data?.rate}</Typography>
                     </Grid>
                     <Grid item xs={12}>
                         <Typography variant="body2" className={classes.heading}>Speciality:</Typography>
@@ -310,6 +311,7 @@ const DetailBooking = ({ match }) => {
                     bookingDetail={bookingDetail}
                     booking_id={booking_id}
                     getBookingDetail={getBookingDetail}
+                    setConfirmBtn={setConfirmBtn}
                 />
             }
 
