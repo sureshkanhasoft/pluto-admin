@@ -177,7 +177,7 @@ const CreateSignee = () => {
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 id="email"
-                                label="email"
+                                label="Email"
                                 variant="outlined"
                                 name="email"
                                 // value={data?.email}

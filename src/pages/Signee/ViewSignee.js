@@ -152,7 +152,7 @@ const ViewSignee = ({ match }) => {
                         (staffDetail !== "Finance") &&
                         <div className="ml-5">
                             <Link to={`${match.url}/create`} className="btn btn-secondary">
-                                <AddIcon className="mr-2" />Add Signee
+                                <AddIcon className="mr-2" />Add Candidate
                             </Link>
                         </div>
                     }
@@ -163,7 +163,7 @@ const ViewSignee = ({ match }) => {
                     <TableHead>
                         <TableRow>
                             <TableCell style={{ width: 80 }}>Id</TableCell>
-                            <TableCell align="left">Signee Name</TableCell>
+                            <TableCell align="left">Candidate Name</TableCell>
                             <TableCell align="left">Email</TableCell>
                             <TableCell align="left">Contact number</TableCell>
                             <TableCell align="right" style={{ width: 140 }}></TableCell>

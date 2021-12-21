@@ -60,15 +60,15 @@ const Routes = [
         role:"staff",
     },
     {
-        name:"Signee",
-        path:"signee",
+        name:"Candidate",
+        path:"candidate",
         component:Signee,
         icon:"assignment",
         role:"organization"
     },
     {
-        name:"Signee",
-        path:"signee",
+        name:"Candidate",
+        path:"candidate",
         component:Signee,
         icon:"assignment",
         role:"staff"
