@@ -374,7 +374,7 @@ const DetailSignee = ({ match }) => {
                     </Grid>
                 </Grid>
             </Paper>
-            <Typography variant="h5" style={{ marginBottom: 16 }}>Prefernces</Typography>
+            <Typography variant="h5" style={{ marginBottom: 16 }}>Preferences</Typography>
 
             <Grid container spacing={2} style={{ marginBottom: 24 }}>
                 <Grid item xs={12} style={{ display: "flex", flexWrap: "wrap" }}>
