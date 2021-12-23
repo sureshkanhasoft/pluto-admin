@@ -232,6 +232,9 @@ const CandidatesList = ({ bookingDetail, booking_id, getBookingDetail, setConfir
     const usersInvitation = () => {
         dispatch(userInvitation(pdfData))
         setConfirmNotify(true)
+        setTimeout(() => {
+           window.location.reload()
+        }, 4000);
     }
 
     const handleCheckboxClick = (event) => {
