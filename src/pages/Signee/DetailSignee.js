@@ -602,7 +602,7 @@ const DetailSignee = ({ match }) => {
                 open={deleteOpen}
                 close={deleteRoleClose}
                 response={alertResponse}
-                title="Delete Signee Member"
+                title="Delete Candidate"
                 description="Are you sure you want to delete?"
                 buttonName="Delete"
             />
