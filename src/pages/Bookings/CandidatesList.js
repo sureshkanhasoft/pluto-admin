@@ -234,7 +234,7 @@ const CandidatesList = ({ bookingDetail, booking_id, getBookingDetail, setConfir
         dispatch(userInvitation(pdfData))
         setConfirmNotify(true)
         setTimeout(() => {
-           window.location.reload()
+            window.location.reload()
         }, 4000);
     }
 
@@ -253,17 +253,17 @@ const CandidatesList = ({ bookingDetail, booking_id, getBookingDetail, setConfir
 
     };
 
-    useEffect(()=>{
+    useEffect(() => {
         bookingDetail?.data?.matching && bookingDetail?.data?.matching.filter(item => item.signee_booking_status === "CONFIRMED").map((list, index) => {
             return setConfirmBtn(true)
         })
-    },[bookingDetail?.data?.matching])
+    }, [bookingDetail?.data?.matching])
 
-    useEffect(()=>{
+    useEffect(() => {
         bookingDetail?.data?.interested && bookingDetail?.data?.interested.filter(item => item.signee_booking_status === "CONFIRMED").map((list, index) => {
             return setConfirmBtn(true)
         })
-    },[bookingDetail?.data?.interested])
+    }, [bookingDetail?.data?.interested])
 
 
     return (
@@ -280,188 +280,191 @@ const CandidatesList = ({ bookingDetail, booking_id, getBookingDetail, setConfir
                     status="success"
                 />
             }
-            <Paper className={`mb-6`} style={{ position: "relative" }}>
-                <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
-                    <Tab
-                        label={<span className={classes.tabLabel}>Matching Candidates {bookingDetail?.data?.matching.length > 0 ? <Chip label={bookingDetail?.data?.matching.filter(item => item.compliance_status === "COMPLIANT").length} color="primary" className={classes.tabChip} /> : ""}</span>}
-                        {...a11yProps(0)} />
-                    <Tab label=
-                        {<span className={classes.tabLabel}>Interested Candidates {bookingDetail?.data?.interested.length > 0 ? <Chip label={bookingDetail?.data?.interested.length} color="primary" className={classes.tabChip} /> : ""}</span>}
-                        {...a11yProps(1)} />
-                </Tabs>
 
-                {
-                    pdfData.signee_id.length > 0 && <Button variant="contained" color="secondary" onClick={downloadPdf} className={classes.downloadButton}>
-                        <span className="material-icons mr-2">download</span> Download PDF
-                    </Button>
-                }
+            {
+                (pastDate !== true) ?
+                    <Paper className={`mb-6`} style={{ position: "relative" }}>
+                        <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
+                            <Tab
+                                label={<span className={classes.tabLabel}>Matching Candidates {bookingDetail?.data?.matching.length > 0 ? <Chip label={bookingDetail?.data?.matching.filter(item => item.compliance_status === "COMPLIANT").length} color="primary" className={classes.tabChip} /> : ""}</span>}
+                                {...a11yProps(0)} />
+                            <Tab label=
+                                {<span className={classes.tabLabel}>Interested Candidates {bookingDetail?.data?.interested.length > 0 ? <Chip label={bookingDetail?.data?.interested.length} color="primary" className={classes.tabChip} /> : ""}</span>}
+                                {...a11yProps(1)} />
+                        </Tabs>
 
-                <TabPanel value={value} index={0}>
-                    {
-                        pdfData.signee_id.length > 0 && bookingDetail?.data?.status === 'CREATED' && <Button variant="contained" color="secondary" onClick={usersInvitation} className={classes.invitationButton}>
-                        <span className="material-icons mr-2">mail</span> Send invitation
-                        </Button>
-                    }
-                    <Table className={classes.table}>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell style={{ width: 70 }}></TableCell>
-                                <TableCell>Id</TableCell>
-                                <TableCell align="left">Name</TableCell>
-                                <TableCell align="left">Contact Number</TableCell>
-                                <TableCell align="left">Email</TableCell>
-                                <TableCell align="left">Booking Status</TableCell>
-                                {
-                                    (bookingDetail?.data?.status === "CONFIRMED" && pastDate === true) &&
-                                    <TableCell align="left">Payment Status</TableCell>
-                                }
-                                <TableCell align="left">Detail</TableCell>
-                                {
-                                    (pastDate !== true) &&
-                                    <TableCell align="right">Action</TableCell>
-                                }
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {bookingDetail?.data?.matching && bookingDetail?.data?.matching.filter(item => item.compliance_status === "COMPLIANT").map((row, index) => {
-                                const isItemSelected = isSelected(row.name);
-                                return (
-                                    <TableRow key={index}>
-                                        <TableCell scope="row">
-                                            <Checkbox
-                                                value={row.signeeId}
-                                                checked={pdfData.signee_id.includes(row.signeeId)}
-                                                onClick={event =>
-                                                    handleCheckboxClick(event, row.signeeId)
-                                                }
-                                                className="selectCheckbox"
+                        {
+                            pdfData.signee_id.length > 0 && <Button variant="contained" color="secondary" onClick={downloadPdf} className={classes.downloadButton}>
+                                <span className="material-icons mr-2">download</span> Download PDF
+                            </Button>
+                        }
 
-                                            />
-                                        </TableCell>
-                                        <TableCell scope="row">{index + 1}</TableCell>
-                                        <TableCell align="left">{row.first_name} {row.last_name}</TableCell>
-                                        <TableCell align="left">{row.contact_number}</TableCell>
-                                        <TableCell align="left">{row.email}</TableCell>
-                                        <TableCell align="left">{row.signee_booking_status}</TableCell>
+                        <TabPanel value={value} index={0}>
+                            {
+                                pdfData.signee_id.length > 0 && bookingDetail?.data?.status === 'CREATED' && <Button variant="contained" color="secondary" onClick={usersInvitation} className={classes.invitationButton}>
+                                    <span className="material-icons mr-2">mail</span> Send invitation
+                                </Button>
+                            }
+                            <Table className={classes.table}>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell style={{ width: 70 }}></TableCell>
+                                        <TableCell>Id</TableCell>
+                                        <TableCell align="left">Name</TableCell>
+                                        <TableCell align="left">Contact Number</TableCell>
+                                        <TableCell align="left">Email</TableCell>
+                                        <TableCell align="left">Booking Status</TableCell>
                                         {
                                             (bookingDetail?.data?.status === "CONFIRMED" && pastDate === true) &&
-                                            <TableCell align="left">
-                                                <FormControl variant="standard" className={classes.formControl1}>
-                                                    <Select
-                                                        value={row.payment_status || ""}
-                                                        name="payment_status"
-                                                        onChange={(e) => handlePaymentStatus(e, row.signeeId)}
-                                                        disabled={(staffDetail === "Compliance" || staffDetail === "Booking") ? true : false}
-                                                    >
-                                                        <MenuItem value="PAID">Paid</MenuItem>
-                                                        <MenuItem value="UNPAID">Unpaid</MenuItem>
-                                                        <MenuItem value="ONHOLD">On Hold</MenuItem>
-                                                    </Select>
-                                                </FormControl>
-                                            </TableCell>
+                                            <TableCell align="left">Payment Status</TableCell>
                                         }
-
-                                        <TableCell align="right">
-                                            <span onClick={(e) => signeePage(e, row.signeeId)} className={classes.viewBtn}>
-                                                <VisibilityIcon className="mr-2" />view
-                                            </span>
-                                        </TableCell>
+                                        <TableCell align="left">Detail</TableCell>
                                         {
-                                            row.signee_booking_status !== "REJECTED" ?
                                             (pastDate !== true) &&
-                                            <TableCell align="right">
-                                                <IconButton onClick={(event) => handleMenu(event, row.signeeId, row)}>
-                                                    <MoreVertIcon />
-                                                </IconButton>
-                                            </TableCell> : 
-                                            <TableCell align="right">
-                                                <IconButton disabled>
-                                                    {/* <RemoveIcon /> */}
-                                                </IconButton>
-                                            </TableCell>
+                                            <TableCell align="right">Action</TableCell>
                                         }
                                     </TableRow>
-                                )
+                                </TableHead>
+                                <TableBody>
+                                    {bookingDetail?.data?.matching && bookingDetail?.data?.matching.filter(item => item.compliance_status === "COMPLIANT").map((row, index) => {
+                                        const isItemSelected = isSelected(row.name);
+                                        return (
+                                            <TableRow key={index}>
+                                                <TableCell scope="row">
+                                                    <Checkbox
+                                                        value={row.signeeId}
+                                                        checked={pdfData.signee_id.includes(row.signeeId)}
+                                                        onClick={event =>
+                                                            handleCheckboxClick(event, row.signeeId)
+                                                        }
+                                                        className="selectCheckbox"
 
-                            })}
-
-                            {
-                                bookingDetail?.data?.matching.length === 0 &&
-                                <TableRow>
-                                    <TableCell colSpan="9" align="center">No records found</TableCell>
-                                </TableRow>
-                            }
-                        </TableBody>
-                    </Table>
-                </TabPanel>
-                <TabPanel value={value} index={1}>
-                    <Table className={classes.table}>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell style={{ width: 70 }}></TableCell>
-                                <TableCell>Id</TableCell>
-                                <TableCell align="left">Name</TableCell>
-                                <TableCell align="left">Contact Number</TableCell>
-                                <TableCell align="left">Email</TableCell>
-                                <TableCell align="left">Booking Status</TableCell>
-                                {
-                                    (bookingDetail?.data?.status === "CONFIRMED" && pastDate === true) &&
-                                    <TableCell align="left">Payment Status</TableCell>
-                                }
-                                <TableCell align="left">Detail</TableCell>
-                                {
-                                    (pastDate !== true) &&
-                                    <TableCell align="right">Action</TableCell>
-                                }
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {bookingDetail?.data?.interested && bookingDetail?.data?.interested.map((row, index) => {
-                                const isItemSelected = isSelected(row.name);
-                                // const labelId = `enhanced-table-checkbox-${index}`;
-                                return (
-                                    <TableRow key={index}>
-                                        <TableCell scope="row">
-                                            <Checkbox
-                                                value={row.signeeId}
-                                                checked={pdfData.signee_id.includes(row.signeeId)}
-                                                onClick={event =>
-                                                    handleCheckboxClick(event, row.signeeId)
+                                                    />
+                                                </TableCell>
+                                                <TableCell scope="row">{index + 1}</TableCell>
+                                                <TableCell align="left">{row.first_name} {row.last_name}</TableCell>
+                                                <TableCell align="left">{row.contact_number}</TableCell>
+                                                <TableCell align="left">{row.email}</TableCell>
+                                                <TableCell align="left">{row.signee_booking_status}</TableCell>
+                                                {
+                                                    (bookingDetail?.data?.status === "CONFIRMED" && pastDate === true) &&
+                                                    <TableCell align="left">
+                                                        <FormControl variant="standard" className={classes.formControl1}>
+                                                            <Select
+                                                                value={row.payment_status || ""}
+                                                                name="payment_status"
+                                                                onChange={(e) => handlePaymentStatus(e, row.signeeId)}
+                                                                disabled={(staffDetail === "Compliance" || staffDetail === "Booking") ? true : false}
+                                                            >
+                                                                <MenuItem value="PAID">Paid</MenuItem>
+                                                                <MenuItem value="UNPAID">Unpaid</MenuItem>
+                                                                <MenuItem value="ONHOLD">On Hold</MenuItem>
+                                                            </Select>
+                                                        </FormControl>
+                                                    </TableCell>
                                                 }
-                                                className="selectCheckbox"
-                                                name="signee_id"
 
-                                            />
-                                        </TableCell>
-                                        <TableCell scope="row">{index + 1}</TableCell>
-                                        <TableCell align="left">{row.first_name} {row.last_name}</TableCell>
-                                        <TableCell align="left">{row.contact_number}</TableCell>
-                                        <TableCell align="left">{row.email}</TableCell>
-                                        <TableCell align="left">{row.signee_booking_status}</TableCell>
+                                                <TableCell align="right">
+                                                    <span onClick={(e) => signeePage(e, row.signeeId)} className={classes.viewBtn}>
+                                                        <VisibilityIcon className="mr-2" />view
+                                                    </span>
+                                                </TableCell>
+                                                {
+                                                    row.signee_booking_status !== "REJECTED" ?
+                                                        (pastDate !== true) &&
+                                                        <TableCell align="right">
+                                                            <IconButton onClick={(event) => handleMenu(event, row.signeeId, row)}>
+                                                                <MoreVertIcon />
+                                                            </IconButton>
+                                                        </TableCell> :
+                                                        <TableCell align="right">
+                                                            <IconButton disabled>
+                                                                {/* <RemoveIcon /> */}
+                                                            </IconButton>
+                                                        </TableCell>
+                                                }
+                                            </TableRow>
+                                        )
+
+                                    })}
+
+                                    {
+                                        bookingDetail?.data?.matching.length === 0 &&
+                                        <TableRow>
+                                            <TableCell colSpan="9" align="center">No records found</TableCell>
+                                        </TableRow>
+                                    }
+                                </TableBody>
+                            </Table>
+                        </TabPanel>
+                        <TabPanel value={value} index={1}>
+                            <Table className={classes.table}>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell style={{ width: 70 }}></TableCell>
+                                        <TableCell>Id</TableCell>
+                                        <TableCell align="left">Name</TableCell>
+                                        <TableCell align="left">Contact Number</TableCell>
+                                        <TableCell align="left">Email</TableCell>
+                                        <TableCell align="left">Booking Status</TableCell>
                                         {
                                             (bookingDetail?.data?.status === "CONFIRMED" && pastDate === true) &&
-                                            <TableCell align="left">
-                                                <FormControl variant="standard" className={classes.formControl1}>
-                                                    <Select
-                                                        value={row.payment_status || ""}
-                                                        name="payment_status"
-                                                        onChange={(e) => handlePaymentStatus(e, row.signeeId)}
-                                                        disabled={(staffDetail === "Compliance" || staffDetail === "Booking") ? true : false}
-                                                    >
-                                                        <MenuItem value="PAID">Paid</MenuItem>
-                                                        <MenuItem value="UNPAID">Unpaid</MenuItem>
-                                                        <MenuItem value="ONHOLD">On Hold</MenuItem>
-                                                    </Select>
-                                                </FormControl>
-                                            </TableCell>
+                                            <TableCell align="left">Payment Status</TableCell>
                                         }
+                                        <TableCell align="left">Detail</TableCell>
+                                        {
+                                            (pastDate !== true) &&
+                                            <TableCell align="right">Action</TableCell>
+                                        }
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {bookingDetail?.data?.interested && bookingDetail?.data?.interested.map((row, index) => {
+                                        const isItemSelected = isSelected(row.name);
+                                        // const labelId = `enhanced-table-checkbox-${index}`;
+                                        return (
+                                            <TableRow key={index}>
+                                                <TableCell scope="row">
+                                                    <Checkbox
+                                                        value={row.signeeId}
+                                                        checked={pdfData.signee_id.includes(row.signeeId)}
+                                                        onClick={event =>
+                                                            handleCheckboxClick(event, row.signeeId)
+                                                        }
+                                                        className="selectCheckbox"
+                                                        name="signee_id"
 
-                                        <TableCell align="right">
-                                            <span onClick={(e) => signeePage(e, row.signeeId)} className={classes.viewBtn}>
-                                                <VisibilityIcon className="mr-2" />view
-                                            </span>
-                                        </TableCell>
-                                        {/* {
+                                                    />
+                                                </TableCell>
+                                                <TableCell scope="row">{index + 1}</TableCell>
+                                                <TableCell align="left">{row.first_name} {row.last_name}</TableCell>
+                                                <TableCell align="left">{row.contact_number}</TableCell>
+                                                <TableCell align="left">{row.email}</TableCell>
+                                                <TableCell align="left">{row.signee_booking_status}</TableCell>
+                                                {
+                                                    (bookingDetail?.data?.status === "CONFIRMED" && pastDate === true) &&
+                                                    <TableCell align="left">
+                                                        <FormControl variant="standard" className={classes.formControl1}>
+                                                            <Select
+                                                                value={row.payment_status || ""}
+                                                                name="payment_status"
+                                                                onChange={(e) => handlePaymentStatus(e, row.signeeId)}
+                                                                disabled={(staffDetail === "Compliance" || staffDetail === "Booking") ? true : false}
+                                                            >
+                                                                <MenuItem value="PAID">Paid</MenuItem>
+                                                                <MenuItem value="UNPAID">Unpaid</MenuItem>
+                                                                <MenuItem value="ONHOLD">On Hold</MenuItem>
+                                                            </Select>
+                                                        </FormControl>
+                                                    </TableCell>
+                                                }
+
+                                                <TableCell align="right">
+                                                    <span onClick={(e) => signeePage(e, row.signeeId)} className={classes.viewBtn}>
+                                                        <VisibilityIcon className="mr-2" />view
+                                                    </span>
+                                                </TableCell>
+                                                {/* {
                                             (pastDate !== true) &&
                                             <TableCell align="right">
                                                 <IconButton onClick={(event) => handleMenu(event, row.signeeId, row)}>
@@ -469,35 +472,146 @@ const CandidatesList = ({ bookingDetail, booking_id, getBookingDetail, setConfir
                                                 </IconButton>
                                             </TableCell>
                                         } */}
+                                                {
+                                                    row.signee_booking_status !== "REJECTED" ?
+                                                        (pastDate !== true) &&
+                                                        <TableCell align="right">
+                                                            <IconButton onClick={(event) => handleMenu(event, row.signeeId, row)}>
+                                                                <MoreVertIcon />
+                                                            </IconButton>
+                                                        </TableCell> :
+                                                        <TableCell align="right">
+                                                            <IconButton disabled>
+                                                                {/* <RemoveIcon /> */}
+                                                            </IconButton>
+                                                        </TableCell>
+                                                }
+
+                                            </TableRow>
+                                        )
+
+                                    })}
+                                    {
+                                        bookingDetail?.data?.interested.length === 0 &&
+                                        <TableRow>
+                                            <TableCell colSpan="9" align="center">No records found</TableCell>
+                                        </TableRow>
+                                    }
+                                </TableBody>
+                            </Table>
+                        </TabPanel>
+                    </Paper>
+                    :
+
+                    <Paper className={`mb-6`} style={{ position: "relative" }}>
+                        <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
+                            <Tab
+                                label={<span className={classes.tabLabel}>Candidates {bookingDetail?.data?.confirmed.length > 0 ? <Chip label={bookingDetail?.data?.confirmed.filter(item => item.compliance_status === "COMPLIANT").length} color="primary" className={classes.tabChip} /> : ""}</span>}
+                                {...a11yProps(0)} />
+                        </Tabs>
+
+                        {
+                            pdfData.signee_id.length > 0 && <Button variant="contained" color="secondary" onClick={downloadPdf} className={classes.downloadButton}>
+                                <span className="material-icons mr-2">download</span> Download PDF
+                            </Button>
+                        }
+
+                        <TabPanel value={value} index={0}>
+                            <Table className={classes.table}>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell style={{ width: 70 }}></TableCell>
+                                        <TableCell>Id</TableCell>
+                                        <TableCell align="left">Name</TableCell>
+                                        <TableCell align="left">Contact Number</TableCell>
+                                        <TableCell align="left">Email</TableCell>
+                                        <TableCell align="left">Booking Status</TableCell>
                                         {
-                                            row.signee_booking_status !== "REJECTED" ?
-                                            (pastDate !== true) &&
-                                            <TableCell align="right">
-                                                <IconButton onClick={(event) => handleMenu(event, row.signeeId, row)}>
-                                                    <MoreVertIcon />
-                                                </IconButton>
-                                            </TableCell> : 
-                                            <TableCell align="right">
-                                                <IconButton disabled>
-                                                    {/* <RemoveIcon /> */}
-                                                </IconButton>
-                                            </TableCell>
+                                            (bookingDetail?.data?.status === "CONFIRMED" && pastDate === true) &&
+                                            <TableCell align="left">Payment Status</TableCell>
                                         }
-
+                                        <TableCell align="left">Detail</TableCell>
+                                        {
+                                            (pastDate !== true) &&
+                                            <TableCell align="right">Action</TableCell>
+                                        }
                                     </TableRow>
-                                )
+                                </TableHead>
+                                <TableBody>
+                                    {bookingDetail?.data?.confirmed && bookingDetail?.data?.confirmed.filter(item => item.compliance_status === "COMPLIANT").map((row, index) => {
+                                        const isItemSelected = isSelected(row.name);
+                                        return (
+                                            <TableRow key={index}>
+                                                <TableCell scope="row">
+                                                    <Checkbox
+                                                        value={row.signeeId}
+                                                        checked={pdfData.signee_id.includes(row.signeeId)}
+                                                        onClick={event =>
+                                                            handleCheckboxClick(event, row.signeeId)
+                                                        }
+                                                        className="selectCheckbox"
 
-                            })}
-                            {
-                                bookingDetail?.data?.interested.length === 0 &&
-                                <TableRow>
-                                    <TableCell colSpan="9" align="center">No records found</TableCell>
-                                </TableRow>
-                            }
-                        </TableBody>
-                    </Table>
-                </TabPanel>
-            </Paper>
+                                                    />
+                                                </TableCell>
+                                                <TableCell scope="row">{index + 1}</TableCell>
+                                                <TableCell align="left">{row.first_name} {row.last_name}</TableCell>
+                                                <TableCell align="left">{row.contact_number}</TableCell>
+                                                <TableCell align="left">{row.email}</TableCell>
+                                                <TableCell align="left">{row.signee_booking_status}</TableCell>
+                                                {
+                                                    (bookingDetail?.data?.status === "CONFIRMED" && pastDate === true) &&
+                                                    <TableCell align="left">
+                                                        <FormControl variant="standard" className={classes.formControl1}>
+                                                            <Select
+                                                                value={row.payment_status || ""}
+                                                                name="payment_status"
+                                                                onChange={(e) => handlePaymentStatus(e, row.signeeId)}
+                                                                disabled={(staffDetail === "Compliance" || staffDetail === "Booking") ? true : false}
+                                                            >
+                                                                <MenuItem value="PAID">Paid</MenuItem>
+                                                                <MenuItem value="UNPAID">Unpaid</MenuItem>
+                                                                <MenuItem value="ONHOLD">On Hold</MenuItem>
+                                                            </Select>
+                                                        </FormControl>
+                                                    </TableCell>
+                                                }
+
+                                                <TableCell align="right">
+                                                    <span onClick={(e) => signeePage(e, row.signeeId)} className={classes.viewBtn}>
+                                                        <VisibilityIcon className="mr-2" />view
+                                                    </span>
+                                                </TableCell>
+                                                {
+                                                    row.signee_booking_status !== "REJECTED" ?
+                                                        (pastDate !== true) &&
+                                                        <TableCell align="right">
+                                                            <IconButton onClick={(event) => handleMenu(event, row.signeeId, row)}>
+                                                                <MoreVertIcon />
+                                                            </IconButton>
+                                                        </TableCell> :
+                                                        <TableCell align="right">
+                                                            <IconButton disabled>
+                                                                {/* <RemoveIcon /> */}
+                                                            </IconButton>
+                                                        </TableCell>
+                                                }
+                                            </TableRow>
+                                        )
+
+                                    })}
+
+                                    {
+                                        bookingDetail?.data?.matching.length === 0 &&
+                                        <TableRow>
+                                            <TableCell colSpan="9" align="center">No records found</TableCell>
+                                        </TableRow>
+                                    }
+                                </TableBody>
+                            </Table>
+                        </TabPanel>
+                    </Paper>
+            }
+
 
             {
                 anchorEl &&
