@@ -16,6 +16,7 @@ import axios from 'axios';
 import apiConfigs from '../../config/config';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import RemoveIcon from '@material-ui/icons/Remove';
 import StarIcon from '@material-ui/icons/Star';
 import CloseIcon from '@material-ui/icons/Close';
 import CheckIcon from '@material-ui/icons/Check';
@@ -290,18 +291,17 @@ const CandidatesList = ({ bookingDetail, booking_id, getBookingDetail, setConfir
                 </Tabs>
 
                 {
-                    pdfData.signee_id.length > 0 && bookingDetail?.data?.status === 'CREATED' && <Button variant="contained" color="secondary" onClick={usersInvitation} className={classes.invitationButton}>
-                        <span className="material-icons mr-2">mail</span> Send invitation
-                    </Button>
-                }
-
-                {
                     pdfData.signee_id.length > 0 && <Button variant="contained" color="secondary" onClick={downloadPdf} className={classes.downloadButton}>
                         <span className="material-icons mr-2">download</span> Download PDF
                     </Button>
                 }
 
                 <TabPanel value={value} index={0}>
+                    {
+                        pdfData.signee_id.length > 0 && bookingDetail?.data?.status === 'CREATED' && <Button variant="contained" color="secondary" onClick={usersInvitation} className={classes.invitationButton}>
+                        <span className="material-icons mr-2">mail</span> Send invitation
+                        </Button>
+                    }
                     <Table className={classes.table}>
                         <TableHead>
                             <TableRow>
@@ -367,12 +367,16 @@ const CandidatesList = ({ bookingDetail, booking_id, getBookingDetail, setConfir
                                             </span>
                                         </TableCell>
                                         {
-                                            // if signee user is COMPLIANT
-                                            // row.compliance_status === "COMPLIANT" &&
+                                            row.signee_booking_status !== "REJECTED" ?
                                             (pastDate !== true) &&
                                             <TableCell align="right">
                                                 <IconButton onClick={(event) => handleMenu(event, row.signeeId, row)}>
                                                     <MoreVertIcon />
+                                                </IconButton>
+                                            </TableCell> : 
+                                            <TableCell align="right">
+                                                <IconButton disabled>
+                                                    {/* <RemoveIcon /> */}
                                                 </IconButton>
                                             </TableCell>
                                         }
@@ -457,11 +461,25 @@ const CandidatesList = ({ bookingDetail, booking_id, getBookingDetail, setConfir
                                                 <VisibilityIcon className="mr-2" />view
                                             </span>
                                         </TableCell>
-                                        {
+                                        {/* {
                                             (pastDate !== true) &&
                                             <TableCell align="right">
                                                 <IconButton onClick={(event) => handleMenu(event, row.signeeId, row)}>
                                                     <MoreVertIcon />
+                                                </IconButton>
+                                            </TableCell>
+                                        } */}
+                                        {
+                                            row.signee_booking_status !== "REJECTED" ?
+                                            (pastDate !== true) &&
+                                            <TableCell align="right">
+                                                <IconButton onClick={(event) => handleMenu(event, row.signeeId, row)}>
+                                                    <MoreVertIcon />
+                                                </IconButton>
+                                            </TableCell> : 
+                                            <TableCell align="right">
+                                                <IconButton disabled>
+                                                    {/* <RemoveIcon /> */}
                                                 </IconButton>
                                             </TableCell>
                                         }
@@ -493,7 +511,7 @@ const CandidatesList = ({ bookingDetail, booking_id, getBookingDetail, setConfir
                 >
                     {
                         anchorElRowInfo.signee_booking_status === "PENDING" &&
-                        <MenuItem onClick={() => handleMenuItem('OFFER', anchorElRowInfo.signeeId)} className={classes.menuItem}><CheckIcon className="mr-2" />Offer</MenuItem>
+                        <MenuItem onClick={() => handleMenuItem('INVITE', anchorElRowInfo.signeeId)} className={classes.menuItem}><CheckIcon className="mr-2" />Offer</MenuItem>
                     }
                     {
                         anchorElRowInfo.signee_booking_status !== "CONFIRMED" && anchorElRowInfo.signee_booking_status === "ACCEPT" &&
@@ -501,14 +519,19 @@ const CandidatesList = ({ bookingDetail, booking_id, getBookingDetail, setConfir
                     }
                     {
                         anchorElRowInfo.signee_booking_status !== "APPLY" &&
+                        anchorElRowInfo.signee_booking_status !== "INVITE" &&
                         anchorElRowInfo.signee_booking_status !== "CONFIRMED" &&
+                        anchorElRowInfo.signee_booking_status !== "REJECTED" &&
                         <MenuItem onClick={() => handleMenuItem('CONFIRMED', anchorElRowInfo.signeeId)} className={classes.menuItem}><StarIcon className="mr-2" />Super Assign</MenuItem>
                     }
                     {
                         anchorElRowInfo.signee_booking_status !== "CONFIRMED" && anchorElRowInfo.signee_booking_status === "APPLY" &&
                         <MenuItem onClick={() => handleMenuItem('CONFIRMED', anchorElRowInfo.signeeId)} className={classes.menuItem}><StarIcon className="mr-2" />Accept</MenuItem>
-                    }                   
-                    <MenuItem onClick={() => handleMenuItem('CANCEL', anchorElRowInfo.signeeId)} className={classes.menuItem}><CloseIcon className="mr-2" />Reject</MenuItem>
+                    }
+                    {
+                        anchorElRowInfo.signee_booking_status !== "REJECTED" &&
+                        <MenuItem onClick={() => handleMenuItem('REJECTED', anchorElRowInfo.signeeId)} className={classes.menuItem}><CloseIcon className="mr-2" />Reject</MenuItem>
+                    }
                 </Menu>
             }
 
