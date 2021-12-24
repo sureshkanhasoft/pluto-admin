@@ -209,7 +209,7 @@ const CandidatesList = ({ bookingDetail, booking_id, getBookingDetail, setConfir
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');
             link.href = url;
-            link.setAttribute('download', 'signee.pdf');
+            link.setAttribute('download', 'Candidate.pdf');
             document.body.appendChild(link);
             link.click();
         }).catch(error => {
@@ -511,7 +511,7 @@ const CandidatesList = ({ bookingDetail, booking_id, getBookingDetail, setConfir
                 >
                     {
                         anchorElRowInfo.signee_booking_status === "PENDING" &&
-                        <MenuItem onClick={() => handleMenuItem('INVITE', anchorElRowInfo.signeeId)} className={classes.menuItem}><CheckIcon className="mr-2" />Offer</MenuItem>
+                        <MenuItem onClick={() => handleMenuItem('OFFER', anchorElRowInfo.signeeId)} className={classes.menuItem}><CheckIcon className="mr-2" />Offer</MenuItem>
                     }
                     {
                         anchorElRowInfo.signee_booking_status !== "CONFIRMED" && anchorElRowInfo.signee_booking_status === "ACCEPT" &&
@@ -519,7 +519,7 @@ const CandidatesList = ({ bookingDetail, booking_id, getBookingDetail, setConfir
                     }
                     {
                         anchorElRowInfo.signee_booking_status !== "APPLY" &&
-                        anchorElRowInfo.signee_booking_status !== "INVITE" &&
+                        // anchorElRowInfo.signee_booking_status !== "OFFER" &&
                         anchorElRowInfo.signee_booking_status !== "CONFIRMED" &&
                         anchorElRowInfo.signee_booking_status !== "REJECTED" &&
                         <MenuItem onClick={() => handleMenuItem('CONFIRMED', anchorElRowInfo.signeeId)} className={classes.menuItem}><StarIcon className="mr-2" />Super Assign</MenuItem>
