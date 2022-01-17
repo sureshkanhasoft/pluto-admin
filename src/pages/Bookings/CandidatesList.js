@@ -370,7 +370,7 @@ const CandidatesList = ({ bookingDetail, booking_id, getBookingDetail, setConfir
                                                     </span>
                                                 </TableCell>
                                                 {
-                                                    row.signee_booking_status !== "REJECTED" ?
+                                                    (row.signee_booking_status !== "REJECTED" && row.signee_booking_status !== "CANCEL") ?
                                                         (pastDate !== true) &&
                                                         <TableCell align="right">
                                                             <IconButton onClick={(event) => handleMenu(event, row.signeeId, row)}>
@@ -473,7 +473,7 @@ const CandidatesList = ({ bookingDetail, booking_id, getBookingDetail, setConfir
                                             </TableCell>
                                         } */}
                                                 {
-                                                    row.signee_booking_status !== "REJECTED" ?
+                                                    (row.signee_booking_status !== "REJECTED" && row.signee_booking_status !== "CANCEL") ?
                                                         (pastDate !== true) &&
                                                         <TableCell align="right">
                                                             <IconButton onClick={(event) => handleMenu(event, row.signeeId, row)}>
@@ -503,6 +503,7 @@ const CandidatesList = ({ bookingDetail, booking_id, getBookingDetail, setConfir
                     </Paper>
                     :
 
+                    //for only completed tab
                     <Paper className={`mb-6`} style={{ position: "relative" }}>
                         <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
                             <Tab
@@ -582,7 +583,7 @@ const CandidatesList = ({ bookingDetail, booking_id, getBookingDetail, setConfir
                                                     </span>
                                                 </TableCell>
                                                 {
-                                                    row.signee_booking_status !== "REJECTED" ?
+                                                    (row.signee_booking_status !== "REJECTED" && row.signee_booking_status !== "CANCEL") ?
                                                         (pastDate !== true) &&
                                                         <TableCell align="right">
                                                             <IconButton onClick={(event) => handleMenu(event, row.signeeId, row)}>
