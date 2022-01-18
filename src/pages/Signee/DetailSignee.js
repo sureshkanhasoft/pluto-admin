@@ -584,7 +584,7 @@ const DetailSignee = ({ match }) => {
                                     list[1].length === 0 &&
                                     <Grid item xs={12} className={classes.boxContainer}>
                                         <div className="compliance-container">
-                                            <span style={{ paddingLeft: 35, opacity: "0.6" }}>Sorry, document does't exits</span>
+                                            <span style={{ paddingLeft: 35, opacity: "0.6" }}>Sorry, document does't exist</span>
                                         </div>
                                     </Grid>
                                 }

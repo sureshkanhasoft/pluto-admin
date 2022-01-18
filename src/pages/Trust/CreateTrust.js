@@ -282,6 +282,12 @@ const CreateTrust = () => {
                     status="error"
                 />
             }
+             {trustNotify && (Object.values(createTrustError)?.length > 0 || createTrustError) &&
+                <Notification
+                    data={Object.values(createTrustError)[0]}
+                    status="error"
+                />
+            }
             <Paper className={classes.root}>
                 <form onSubmit={handleSubmit(submitData)} autoComplete="off">
                     <Grid container spacing={2}>

@@ -156,6 +156,7 @@ const CreateBooking = () => {
         data.ward_id = "";
         setGetHospitalId(event.target.value)
         setData({ ...data, [event.target.name]: event.target.value });
+        getWardType();
     }
     useEffect(() => {
         gethospital()
@@ -176,7 +177,7 @@ const CreateBooking = () => {
     }
 
     useEffect(() => {
-        getWardType()
+        // getWardType()
     }, [getHospitalId])
 
     const getShiftType = async () => {
