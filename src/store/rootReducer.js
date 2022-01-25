@@ -14,6 +14,7 @@ import StaffProfileReducer from "./reducer/staffProfile/StaffProfileReducer";
 import notificationMsgReducer from "./reducer/notificationMsg/notificationMsg";
 import loadingReducer from "./reducer/loading/globalLoading";
 import notificationList from "./reducer/notificationList/notificationList";
+import dashboardReducer from "./reducer/dashboard/dashboardReducer";
 
 const rootReducer = combineReducers(
     {
@@ -32,6 +33,7 @@ const rootReducer = combineReducers(
         staffProfile:StaffProfileReducer,
         notificationMsg:notificationMsgReducer,
         loadingReducer:loadingReducer,
+        dashboardReducer:dashboardReducer,
         notificationList:notificationList,
     }
 );
