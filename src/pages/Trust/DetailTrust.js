@@ -28,6 +28,10 @@ const useStyle = makeStyles((theme) => ({
     desc: {
         fontSize: 16
     },
+    descBreak: {
+        fontSize: 16,
+        wordBreak:'break-word'
+    },
     heading: {
         color: "#626161",
     },
@@ -73,7 +77,7 @@ const DetailTrust = ({ match }) => {
     const [trustItems, setTrustItems] = useState([])
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [staffNotify, setStaffNotify] = useState(false)
-    const { deleteTrustSuccess } = useSelector(state => state.trust)
+    const { deleteTrustSuccess, deleteTrustError } = useSelector(state => state.trust)
     const staffDetail = JSON.parse(localStorage.getItem("staffDetail"));
 
     const getSingleTrust = async () => {
@@ -132,6 +136,12 @@ const DetailTrust = ({ match }) => {
                 <Notification
                     data={deleteTrustSuccess?.message}
                     status="success"
+                />
+            }  {
+                staffNotify && deleteTrustError?.message &&
+                <Notification
+                    data={deleteTrustError?.message}
+                    status="error"
                 />
             }
             <Paper className={`${classes.root} mb-6`}>
@@ -224,7 +234,7 @@ const DetailTrust = ({ match }) => {
 
                     <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
                         <Typography variant="body2" className={classes.heading}>Trust Portal URL</Typography>
-                        <Typography variant="h6" className={classes.desc}>{trustItems.trust_portal_url}</Typography>
+                        <Typography variant="h6" className={classes.descBreak}>{trustItems.trust_portal_url}</Typography>
                     </Grid>
                     <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
                         <Typography variant="body2" className={classes.heading}>Email Address</Typography>

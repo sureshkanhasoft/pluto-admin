@@ -133,7 +133,8 @@ const CandidatesList = ({ bookingDetail, booking_id, getBookingDetail, setConfir
     var GivenDate = bookingDetail && bookingDetail?.data?.date;
     GivenDate = new Date(GivenDate);
     var CurrentDate = new Date();
-    const pastDate = GivenDate < CurrentDate ? true : false
+    const pastDate = bookingDetail?.data?.is_past
+    // const pastDate = GivenDate < CurrentDate ? true : false
 
     const isSelected = (name) => selected.indexOf(name) !== -1;
 
