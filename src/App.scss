@@ -143,3 +143,35 @@ $sizes:12;
         border-radius: 4px;
     }
 }
+
+.box-container{
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -16px 24px;
+    .box-list{
+        flex: 0 0 33.33%;
+        padding: 0 16px;
+        .inner-box-list{
+            background: #184a7b;
+            padding: 20px;
+            min-height: 130px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: 6px;
+            h2{
+                margin: 0;
+                color: #fff;
+            }
+            p{
+                margin-bottom: 0;
+                color: #fff;
+            }
+            svg{
+                fill: #fff;
+                width: 40px;
+                height: 40px;
+            }
+        }
+    }
+}

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getDashboard } from "../../store/action";
 import CanvasJSReact from "../../assets/canvasjs.react";
 import { Chart } from "react-google-charts";
+import SearchIcon from '@material-ui/icons/Search';
 // import { Chart } from 'react-charts'
 // import BarChart from 'react-bar-chart';
 import {
@@ -112,11 +113,32 @@ const Dashboard = () => {
      <div className="col-md-6 mb-2">
         <CanvasJSChart options={yearlyOption} />
       </div>*/}
+        <div className="box-container">
+          {
+            [1, 2, 3].map(index => {
+              return (
+                <div className="box-list">
+                  <div className="inner-box-list">
+                    <div >
+                      <h2>635</h2>
+                      <p>Total number of user</p>
+                    </div>
+                    <div>
+                    <SearchIcon className={classes.searchIcondet} />
+                    </div>
+                  </div>
+                </div>
+              )
+            })
+          }
+
+
+        </div>
         <Box className="mt-16">Total User {dashboardList?.total_user}</Box>
         <Box className="mt-16">
           Total Block User {dashboardList?.block_user}
         </Box>
-        
+
         <Chart
           chartType="ColumnChart"
           width="100%"
