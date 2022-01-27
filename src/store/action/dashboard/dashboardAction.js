@@ -2,11 +2,12 @@ import axios from 'axios';
 import Config from '../../../config/config';
 import { GET_DASHBOARD_ERROR, GET_DASHBOARD_REQUEST, GET_DASHBOARD_SUCCESS } from '../actiontypes';
 
-export const getDashboard = () => {
+export const getDashboard = ({dashboardYear}) => {
+    console.log(dashboardYear.years, " filllterrerere")
     const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, '');
     return async (dispatch) => {
         dispatch(getDashboardRequest())
-        await axios.get(`${Config.API_URL}api/superadmin/dashboard`, {
+        await axios.get(`${Config.API_URL}api/superadmin/dashboard/${dashboardYear.years}/`, {
             headers: {
                 'content-type': 'application/json',
                 'Authorization': `Bearer ${loggedInUser}`
