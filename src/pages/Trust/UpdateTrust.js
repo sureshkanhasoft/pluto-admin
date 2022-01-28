@@ -382,6 +382,7 @@ const UpdateTrust = ({ match }) => {
                                                         <Grid container spacing={2} key={wIndex} className={classes.wardBox}>
                                                             <Grid item xs={12} sm={4}>
                                                                 <TextField
+                                                                key={'ward_name'+index}
                                                                     id="ward_name"
                                                                     label="Ward Name"
                                                                     variant="outlined"
@@ -407,6 +408,7 @@ const UpdateTrust = ({ match }) => {
                                                                 >
                                                                     <InputLabel>Ward Type</InputLabel>
                                                                     <Select
+                                                                    key={'ward_type_id'+index}
                                                                         label="Trust Name"
                                                                         name="ward_type_id"
                                                                         value={wardsField?.ward_type_id || ""}
@@ -428,6 +430,7 @@ const UpdateTrust = ({ match }) => {
                                                             </Grid>
                                                             <Grid item xs={12} sm={3}>
                                                                 <TextField
+                                                                key={'ward_number'+index}
                                                                     id="ward_number"
                                                                     label="Ward Number"
                                                                     variant="outlined"
@@ -634,6 +637,7 @@ const UpdateTrust = ({ match }) => {
                                 return (
                                     <Grid item xs={12} sm={6} key={index} style={{position:"relative"}}>
                                         <TextField
+                                            key={"training_name" + index}
                                             id="training_name"
                                             label="Training example type"
                                             variant="outlined"

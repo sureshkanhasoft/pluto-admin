@@ -46,8 +46,8 @@ const CreateBooking = () => {
     const dispatch = useDispatch()
     const [speciality, setSpeciality] = useState([])
     const [trust, setTrust] = useState([])
-    const [getTrustId, setgetTrustId] = useState()
-    const [getHospitalId, setGetHospitalId] = useState([])
+    const [getTrustId, setTrustId] = useState()
+    const [getHospitalId, setHospitalId] = useState()
     const [hospitalList, setHospitalList] = useState()
     const [wardList, setWardList] = useState([])
     const [shiftTypeList, setShiftTypeList] = useState([])
@@ -115,13 +115,15 @@ const CreateBooking = () => {
 
     const getTrust = async () => {
         const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, '');
-        await axios.get(`${apiConfigs.API_URL}api/organization/get-trust`, {
+        // await axios.get(`${apiConfigs.API_URL}api/organization/get-trust`, {
+            await axios.get(`${apiConfigs.API_URL}api/organization/get-trusts`, {
             headers: {
                 'content-type': 'application/json',
                 'Authorization': `Bearer ${loggedInUser}`
             }
         }).then(response => {
-            setTrust(response.data.data)
+            setTrust(response.data)
+            // setTrust(response.data.data)
         }).catch(error => {
             console.log('error: ', error);
         })
@@ -129,7 +131,7 @@ const CreateBooking = () => {
     const trustHandleChange = (event) => {
         data.hospital_id = "";
         data.ward_id = "";
-        setgetTrustId(event.target.value)
+        setTrustId(event.target.value)
         setData({ ...data, [event.target.name]: event.target.value });
     }
     useEffect(() => {
@@ -154,17 +156,19 @@ const CreateBooking = () => {
     }
     const hospitalHandleChange = (event) => {
         data.ward_id = "";
-        setGetHospitalId(event.target.value)
+        setHospitalId(event.target.value)
         setData({ ...data, [event.target.name]: event.target.value });
-        getWardType();
+        getWardType(event.target.value);
     }
     useEffect(() => {
         gethospital()
     }, [getTrustId])
 
-    const getWardType = async () => {
+    const getWardType = async (hospitalId) => {
         const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, '');
-        await axios.get(`${apiConfigs.API_URL}api/organization/get-ward-by-hospital?hospitalId=${getHospitalId}&trustId=${getTrustId}`, {
+        console.log(getHospitalId, "getHospitalId")
+        console.log(getTrustId , "getTrustId")
+        await axios.get(`${apiConfigs.API_URL}api/organization/get-ward-by-hospital?hospitalId=${hospitalId}&trustId=${getTrustId}`, {
             headers: {
                 'content-type': 'application/json',
                 'Authorization': `Bearer ${loggedInUser}`

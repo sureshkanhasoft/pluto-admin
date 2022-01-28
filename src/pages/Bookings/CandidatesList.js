@@ -128,6 +128,8 @@ const CandidatesList = ({ bookingDetail, booking_id, getBookingDetail, setConfir
     const staffDetail = JSON.parse(localStorage.getItem("staffDetail"));
     const loginDetail = JSON.parse(localStorage.getItem("loginUserInfo"));
     const { confirmBookingSuccess, confirmBookingError, invitationSuccess, shiftStatusSuccess } = useSelector(state => state.booking)
+    console.log(confirmBookingSuccess , "confirmBookingSuccess")
+    console.log(confirmBookingError , "confirmBookingError")
 
     // for confirmed past date checking
     var GivenDate = bookingDetail && bookingDetail?.data?.date;
@@ -269,7 +271,13 @@ const CandidatesList = ({ bookingDetail, booking_id, getBookingDetail, setConfir
 
     return (
         <>
-            {signeeSizeMsg &&
+            {confirmBookingError &&
+                <Notification
+                    data={confirmBookingError.message}
+                    status="error"
+                />
+            }
+              {signeeSizeMsg &&
                 <Notification
                     data={signeeSizeMsg}
                     status="error"

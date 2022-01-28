@@ -3,29 +3,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { getDashboard } from "../../store/action";
 import CanvasJSReact from "../../assets/canvasjs.react";
 import { Chart } from "react-google-charts";
-import SearchIcon from "@material-ui/icons/Search";
-import Group from "@material-ui/icons/Group";
-import PersonOutline from "@material-ui/icons/PersonOutline";
+// import SearchIcon from "@material-ui/icons/Search";
+// import Group from "@material-ui/icons/Group";
+// import PersonOutline from "@material-ui/icons/PersonOutline";
 // import { Chart } from 'react-charts'
 // import BarChart from 'react-bar-chart';
 import {
   Container,
-  Checkbox,
   FormControl,
-  FormControlLabel,
-  Grid,
-  Radio,
-  RadioGroup,
+  InputLabel,
   makeStyles,
-  Button,
-  Card,
-  Box,
   MenuItem,
   Select,
   Backdrop,
   CircularProgress,
 } from "@material-ui/core";
-var CanvasJSChart = CanvasJSReact.CanvasJSChart;
+// var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 const Dashboard = () => {
   const useStyle = makeStyles((theme) => ({
@@ -40,8 +33,6 @@ const Dashboard = () => {
   const { dashboardList, loading } = useSelector(
     (state) => state.dashboardReducer
   );
- 
-
 
 
   const monthlyOption1 = dashboardList?.monthly_details;
@@ -71,17 +62,25 @@ const Dashboard = () => {
     dispatch(getDashboard({dashboardYear}));
   };
 
-
-
   const yearList = [
     { value: "2021", label: "2021" },
     { value: "2022", label: "2022" },
   ];
- console.log(Date.now() , "Date.now()")
+ 
+  var options = {
+    title: "",
+    legend: { position: "none" },
+  };
   return (
     <section key={Date.now()+'1'} className="pt-16 pb-32">
       <Container key={Date.now()+'2'} maxWidth="lg">
-        <h1 key={Date.now()+'3'} className="mt-0">Dashboard</h1>
+      <p key={Date.now()+'22'}  className="mt-5" >
+          Welcome to your Pluto Software admin dashboard. Here you can get an
+          overview of your account activity, or use navigation on the left hand
+          side to get to your desired location.
+        </p>
+
+        {/* <h1 key={Date.now()+'3'} className="mt-0">Dashboard</h1> */}
         {loading ? (
           <Backdrop key={Date.now()+'4'} className={classes.backdrop} open={loading}>
             <CircularProgress key={Date.now()+'5'} color="inherit" />
@@ -99,7 +98,7 @@ const Dashboard = () => {
                 <div className="inner-box-list" key={Date.now()+'8'}>
                   <div>
                     <h2 key={Date.now()+'9'}>{dashboardList?.total_user}</h2>
-                    <p key={Date.now()+'10'} >Total number of user</p>
+                    <p key={Date.now()+'10'} >Total Number Of User</p>
                   </div>
                   <div key={Date.now()+'16'}>
                     {/* <Group className={classes.searchIcondet} /> */}
@@ -128,6 +127,7 @@ const Dashboard = () => {
         </div>
         <div key={Date.now()+'16'} style={{display: "flex",alignItems: "center",width:'100%',justifyContent: "space-between"}} className="inner-box-list">
             <h2 key={Date.now()+'17'}>Monthly User Details</h2>
+            <InputLabel style={{marginLeft: '54%'}}>Select Year</InputLabel>
               <FormControl key={Date.now()+'2'}
               variant="outlined"
               className={classes.formControl1}
@@ -149,6 +149,7 @@ const Dashboard = () => {
           width="100%"
           height="400px"
           data={monthlyOption1}
+          options={options}
         />
        <div  key={Date.now()+'20'} style={{display: "flex",alignItems: "center",width:'100%',justifyContent: "space-between"}} className="inner-box-list">
             <h2 key="aa">Yearly User Details</h2>
@@ -158,13 +159,8 @@ const Dashboard = () => {
           width="100%"
           height="400px"
           data={yearlyOption1}
+          options={options}
         />
-
-        <p key={Date.now()+'22'}  className="mt-5" >
-          Welcome to your Pluto Software admin dashboard. Here you can get an
-          overview of your account activity, or use navigation on the left hand
-          side to get to your desired location.
-        </p>
       </Container>
     </section>
   );

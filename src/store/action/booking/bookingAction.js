@@ -208,8 +208,14 @@ export const confirmBooking = (data) => {
         await apiClient(true).post(`api/organization/confirm-booking`, data)
             .then(response => {
                 const dataItem = response.data;
-                dispatch(confirmBookingSuccess(dataItem))
-                dispatch(notificationSuccess(dataItem.message))
+                if(dataItem.status === true){
+                    dispatch(confirmBookingSuccess(dataItem))
+                    dispatch(notificationSuccess(dataItem.message))
+                }else{
+                    dispatch(confirmBookingSuccess([]))
+                    dispatch(confirmBookingFailure(dataItem))
+                    dispatch(notificationFail(dataItem.message))    
+                }
             }).catch(error => {
                 dispatch(confirmBookingSuccess([]))
                 dispatch(confirmBookingFailure(error))

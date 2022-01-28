@@ -66,7 +66,7 @@ const Sidebar = (props) => {
     return (
         <Drawer variant="permanent" classes={{ paper: classes.drawer }}>
             <Box className={classes.logoContainer}>
-                <Link to="/admin/dashboard">
+                <Link to={(!authAdmin) ? '/super-admin/dashboard':'/admin/bookings'}>
                     <img src={logo} alt="Pluto logo" />
                 </Link>
             </Box>

@@ -107,7 +107,8 @@ const UpdateBooking = ({ match }) => {
 
     const getTrust = async () => {
         const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, '');
-        await axios.get(`${apiConfigs.API_URL}api/organization/get-trust`, {
+        // await axios.get(`${apiConfigs.API_URL}api/organization/get-trust`, {
+        await axios.get(`${apiConfigs.API_URL}api/organization/get-trusts`, {
             headers: {
                 'content-type': 'application/json',
                 'Authorization': `Bearer ${loggedInUser}`
@@ -307,7 +308,7 @@ const UpdateBooking = ({ match }) => {
                                         Select Trust
                                     </MenuItem>
                                     {
-                                        trust?.data?.data && trust?.data?.data.map((trustList, index) => {
+                                        trust?.data && trust?.data.map((trustList, index) => {
                                             return (
                                                 <MenuItem value={trustList.id} key={index}>{trustList.name}</MenuItem>
                                             )
