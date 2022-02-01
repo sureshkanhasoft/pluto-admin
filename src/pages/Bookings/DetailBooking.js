@@ -174,7 +174,7 @@ const DetailBooking = ({ match }) => {
         }
 
     }, [bookingStatus])
-
+console.log(confirmBtn , "confirmBtn")
     return (
         <>
             {

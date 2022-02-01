@@ -230,7 +230,7 @@ const CandidatesList = ({ bookingDetail, booking_id, getBookingDetail, setConfir
         setAnchorEl(event.currentTarget);
         setAnchorElRowInfo(row);
         setGetSigneeid(id);
-        setConfirmBtn(false)
+        setConfirmBtn((row.status === "CONFIRMED" ? true :false))
     };
 
     const usersInvitation = () => {
@@ -271,7 +271,8 @@ const CandidatesList = ({ bookingDetail, booking_id, getBookingDetail, setConfir
 
     return (
         <>
-            {confirmBookingError && confirmBookingError?.message &&
+        {confirmBookingError && confirmBookingError?.message &&
+
                 <Notification
                     data={confirmBookingError.message}
                     status="error"
