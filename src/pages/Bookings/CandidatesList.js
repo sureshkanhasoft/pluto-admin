@@ -271,7 +271,7 @@ const CandidatesList = ({ bookingDetail, booking_id, getBookingDetail, setConfir
 
     return (
         <>
-            {confirmBookingError &&
+            {confirmBookingError && confirmBookingError?.message &&
                 <Notification
                     data={confirmBookingError.message}
                     status="error"
