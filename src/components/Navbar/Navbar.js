@@ -72,78 +72,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// const notificationList = {
-//   data:
-//     [
-//       {
-//         "id": 883,
-//         "signee_id": 138,
-//         "organization_id": 40,
-//         "message": "Your shift in sdgfxc hospital of vb ward at 25-11-2021 07:30 AM To 08:30 PM has been confirmed",
-//         "status": "CONFIRMED",
-//         "is_read": 0,
-//         "is_sent": 1,
-//         "created_at": "2021-11-23T05:10:15.000000Z",
-//         "updated_at": "2021-11-23T06:51:48.000000Z",
-//         "booking_id": 214,
-//         "deleted_at": null
-//       },
-//       {
-//         "id": 880,
-//         "signee_id": 138,
-//         "organization_id": 40,
-//         "message": "Your shift in sdgfxc hospital of vb ward at 25-11-2021 07:30 AM To 08:30 PM has been created",
-//         "status": "CREATED",
-//         "is_read": 0,
-//         "is_sent": 1,
-//         "created_at": "2021-11-23T05:10:03.000000Z",
-//         "updated_at": "2021-11-23T06:51:48.000000Z",
-//         "booking_id": 214,
-//         "deleted_at": null
-//       },
-//       {
-//         "id": 855,
-//         "signee_id": 138,
-//         "organization_id": 40,
-//         "message": "Your shift in fg hospital of fgh ward at 06-12-2021 07:30 AM To 08:30 PM has been created",
-//         "status": "CREATED",
-//         "is_read": 1,
-//         "is_sent": 1,
-//         "created_at": "2021-11-22T13:53:05.000000Z",
-//         "updated_at": "2021-11-23T06:51:48.000000Z",
-//         "booking_id": 209,
-//         "deleted_at": null
-//       },
-//       {
-//         "id": 852,
-//         "signee_id": 138,
-//         "organization_id": 40,
-//         "message": "Your shift in fg hospital of fgh ward at 29-11-2021 07:30 AM To 08:30 PM has been created",
-//         "status": "PENDING",
-//         "is_read": 1,
-//         "is_sent": 1,
-//         "created_at": "2021-11-22T13:52:41.000000Z",
-//         "updated_at": "2021-11-23T06:51:48.000000Z",
-//         "booking_id": 208,
-//         "deleted_at": null
-//       },
-//       {
-//         "id": 837,
-//         "signee_id": 138,
-//         "organization_id": 40,
-//         "message": "Your shift in fg hospital of fgh ward at 29-11-2021 07:30 AM To 08:30 PM has been created",
-//         "status": "PENDING",
-//         "is_read": 1,
-//         "is_sent": 1,
-//         "created_at": "2021-11-22T13:49:28.000000Z",
-//         "updated_at": "2021-11-23T06:51:48.000000Z",
-//         "booking_id": 208,
-//         "deleted_at": null
-//       }
-
-//     ]
-// }
-
 const Navbar = () => {
   const classes = useStyles();
   const dispatch = useDispatch()
@@ -308,7 +236,7 @@ const Navbar = () => {
             {notificationList?.data && notificationList?.data.length > 0 ?
               <MenuItem>
                 <>
-                  <Link to="/notification">
+                  <Link to="/admin/notification">
                     <Typography variant="caption">Show all notification</Typography>
                   </Link>
                   <span style={{ marginLeft: "auto" }} onClick={ReadAllNotification}>

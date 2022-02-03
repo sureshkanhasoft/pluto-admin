@@ -133,10 +133,10 @@ const ViewBooking = ({ match }) => {
         history.push(`${match.url}/${id}/detail`)
     }
 
-    const handleChangePage = (pageNo) => {
+    const handleChangePage = (pageNo,value) => {
         let status = tabList[activeIndex];
-        setPage(page);
-        setTimeout(getBookingList(pageNo,searchData.search,status), 2000);
+        setPage(value);
+        setTimeout(getBookingList(value,searchData.search,status), 2000);
     };
 
     const handleSearchChange = (event) => {
@@ -160,10 +160,10 @@ const ViewBooking = ({ match }) => {
     }, [])
 
     const tabChange = (index, list) => {
+        setPage(1);
         setSearchData({ ...searchData, search: '' });
         setActiveIndex(index)
-        getBookingList(page, "", list)
-
+        getBookingList(1, "", list)
     }
 
     const handleBookingStatus = (event, id) => {
@@ -289,8 +289,11 @@ const ViewBooking = ({ match }) => {
                         }
                     </TableBody>
                 </Table>
+                {/* <Box className="mt-5" display="flex" justifyContent="flex-end">
+                    <Pagination onChange={()=>handleChangePage(bookingItem?.data?.current_page)} page={page} count={bookingItem?.data?.last_page} showFirstButton showLastButton />
+                </Box> */}
                 <Box className="mt-5" display="flex" justifyContent="flex-end">
-                    <Pagination onChange={()=>handleChangePage(bookingItem?.data?.current_page)} page={page} count={bookingItem?.last_page} showFirstButton showLastButton />
+                    <Pagination onChange={handleChangePage} page={page} count={bookingItem?.data?.last_page} showFirstButton showLastButton />
                 </Box>
             </Paper>
         </>

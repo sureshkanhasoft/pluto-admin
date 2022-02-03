@@ -11,6 +11,7 @@ import Trust from "./pages/Trust/Trust";
 import Profile from "./pages/Profile/Profile";
 import OrgProfile from "./pages/Profile/OrgProfile";
 import Signee from "./pages/Signee/Signee";
+import Notification from "./pages/Notification/Notification";
 import StaffUserProfile from "./pages/StaffUser/StaffUserProfile/StaffUserProfile";
 
 const Routes = [
@@ -153,7 +154,14 @@ const Routes = [
         role:"staff",
         sidebar:false
     },
-
+    {
+        name:"Notification",
+        path:"notification",
+        component:Notification,
+        // icon:"description",
+        role:"organization",
+        sidebar:false
+    },
 ]
 
 export default Routes
