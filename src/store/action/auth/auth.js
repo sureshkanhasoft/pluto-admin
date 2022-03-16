@@ -32,6 +32,10 @@ export const login = ({ email, password }) => {
                         setTimeout(() => {
                             history.push('./admin/organization-profile')
                         }, 2000);
+                    }else if(data.data.is_plan_expire === true){
+                        setTimeout(() => {
+                            history.push('./admin/payment')
+                        }, 2000);
                     }else{
                         setTimeout(() => {
                             history.push('./admin')

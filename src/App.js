@@ -14,6 +14,7 @@ import history from './utils/HistoryUtils';
 import PrivateRoute from './config/PrivateRoute';
 import { useEffect } from 'react';
 import StaffUser from './layout/StaffUser';
+import moment from "moment";
 
 
 function App() {
@@ -46,6 +47,20 @@ function App() {
     // } else {
     //   history.push('/login')
     // }
+    const loginUserInfo = JSON.parse(
+      window.localStorage.getItem("loginUserInfo")
+    );
+    if(loginUserInfo){
+      let expireDate = loginUserInfo?.subscription_expire_date
+      let today = moment(new Date()).format("YYYY-MM-DD");
+      if (new Date(expireDate) > new Date(today) ){
+        console.log("Plan continue")
+        loginUserInfo.is_plan_expire = false;
+      } else {
+        loginUserInfo.is_plan_expire = true;
+      }
+      localStorage.setItem('loginUserInfo', JSON.stringify(loginUserInfo));
+    }
   }, []);
 
   return (

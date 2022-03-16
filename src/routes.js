@@ -1,4 +1,5 @@
 import Bookings from "./pages/Bookings/Bookings";
+import Payment from "./pages/Payments/Payments";
 import ChangePassword from "./pages/ChangePassword/ChangePassword";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Organization from "./pages/Organization/Organization";
@@ -13,6 +14,7 @@ import OrgProfile from "./pages/Profile/OrgProfile";
 import Signee from "./pages/Signee/Signee";
 import Notification from "./pages/Notification/Notification";
 import StaffUserProfile from "./pages/StaffUser/StaffUserProfile/StaffUserProfile";
+const loginUserInfo = JSON.parse(window.localStorage.getItem("loginUserInfo?"));
 
 const Routes = [
     {
@@ -40,7 +42,7 @@ const Routes = [
     {
         name:"change-password",
         path:"change-password",
-        component:ChangePassword,
+        component:(loginUserInfo?.is_plan_expire === true ) ? Payment : ChangePassword,
         icon:"assignment",
         role:"organization",
         sidebar:false
@@ -49,7 +51,7 @@ const Routes = [
     {
         name:"Bookings",
         path:"bookings",
-        component:Bookings,
+        component:(loginUserInfo?.is_plan_expire === true ) ? Payment : Bookings,
         icon:"bookmark",
         role:"organization",
     },
@@ -63,7 +65,7 @@ const Routes = [
     {
         name:"Candidate",
         path:"candidate",
-        component:Signee,
+        component:(loginUserInfo?.is_plan_expire === true ) ? Payment : Signee,
         icon:"assignment",
         role:"organization"
     },
@@ -77,21 +79,21 @@ const Routes = [
     {
         name:"Staff",
         path:"staff",
-        component:Staff,
+        component:(loginUserInfo?.is_plan_expire === true ) ? Payment : Staff,
         icon:"people",
         role:"organization",
         children:[
             {
                 name:"Create Staff",
                 path:"create",
-                component:CreateStaff
+                component:(loginUserInfo?.is_plan_expire === true ) ? Payment : CreateStaff
             }
         ]
     },
     {
         name:"Trust",
         path:"Trust",
-        component:Trust,
+        component:(loginUserInfo?.is_plan_expire === true ) ? Payment : Trust,
         icon:"shield",
         role:"organization"
     },
@@ -105,14 +107,14 @@ const Routes = [
     {
         name:"Roles",
         path:"roles",
-        component:Roles,
+        component:(loginUserInfo?.is_plan_expire === true ) ? Payment : Roles,
         icon:"manage_accounts",
         role:"organization"
     },
     {
         name:"Specialities",
         path:"specialities",
-        component:Specialities,
+        component:(loginUserInfo?.is_plan_expire === true ) ? Payment : Specialities,
         icon:"volunteer_activism",
         role:"organization"
     },
@@ -126,7 +128,7 @@ const Routes = [
     {
         name:"Reports",
         path:"reports",
-        component:PlanManagement,
+        component:(loginUserInfo?.is_plan_expire === true ) ? Payment : PlanManagement,
         icon:"description",
         role:"organization"
     },
@@ -141,7 +143,7 @@ const Routes = [
     {
         name:"Organization Profile",
         path:"organization-profile",
-        component:OrgProfile,
+        component:(loginUserInfo?.is_plan_expire === true ) ? Payment : OrgProfile,
         // icon:"description",
         role:"organization",
         sidebar:false
@@ -157,8 +159,16 @@ const Routes = [
     {
         name:"Notification",
         path:"notification",
-        component:Notification,
+        component:(loginUserInfo?.is_plan_expire === true ) ? Payment : Notification,
         // icon:"description",
+        role:"organization",
+        sidebar:false
+    },
+    {
+        name:"Payment",
+        path:"payment",
+        component:Payment,
+        icon:"bookmark",
         role:"organization",
         sidebar:false
     },

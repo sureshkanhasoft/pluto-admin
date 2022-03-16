@@ -15,6 +15,7 @@ import notificationMsgReducer from "./reducer/notificationMsg/notificationMsg";
 import loadingReducer from "./reducer/loading/globalLoading";
 import notificationList from "./reducer/notificationList/notificationList";
 import dashboardReducer from "./reducer/dashboard/dashboardReducer";
+import paymentReducer from "./reducer/payment/paymentReducer";
 
 const rootReducer = combineReducers(
     {
@@ -35,6 +36,7 @@ const rootReducer = combineReducers(
         loadingReducer:loadingReducer,
         dashboardReducer:dashboardReducer,
         notificationList:notificationList,
+        paymentReducer:paymentReducer,
     }
 );
 

@@ -192,9 +192,8 @@ const CandidatesList = ({ bookingDetail, booking_id, getBookingDetail, setConfir
     const signeePage = (e, signeeId) => {
         e.preventDefault();
         const adminUrl = loginDetail.role === "ORGANIZATION" ? 'admin' : 'staff'
-        history.push(`/${(adminUrl).toLowerCase()}/signee/${signeeId}/detail`)
+        history.push(`/${(adminUrl).toLowerCase()}/candidate/${signeeId}/detail`)
     }
-
 
 
     const downloadPdf = async () => {
