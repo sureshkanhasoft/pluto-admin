@@ -28,15 +28,16 @@ export const login = ({ email, password }) => {
                         history.push('./super-admin')
                     }, 2000);
                 } else if(data.data.role === 'ORGANIZATION'){
-                    if(data.data.password_change === 0){
-                        setTimeout(() => {
-                            history.push('./admin/organization-profile')
-                        }, 2000);
-                    }else if(data.data.is_plan_expire === true){
+                    if(data.data.is_plan_expire === true || data.data.is_plan_expire === null){
                         setTimeout(() => {
                             history.push('./admin/payment')
                         }, 2000);
-                    }else{
+                    }else if(data.data.password_change === 0){
+                        setTimeout(() => {
+                            history.push('./admin/organization-profile')
+                        }, 2000);
+                    }
+                    else{
                         setTimeout(() => {
                             history.push('./admin')
                         }, 2000);

@@ -14,7 +14,7 @@ import OrgProfile from "./pages/Profile/OrgProfile";
 import Signee from "./pages/Signee/Signee";
 import Notification from "./pages/Notification/Notification";
 import StaffUserProfile from "./pages/StaffUser/StaffUserProfile/StaffUserProfile";
-const loginUserInfo = JSON.parse(window.localStorage.getItem("loginUserInfo?"));
+const loginUserInfo = JSON.parse(window.localStorage.getItem("loginUserInfo"));
 
 const Routes = [
     {
