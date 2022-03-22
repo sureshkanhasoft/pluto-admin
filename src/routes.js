@@ -170,7 +170,7 @@ const Routes = [
         component:Payment,
         icon:"bookmark",
         role:"organization",
-        sidebar:false
+        sidebar:true
     },
 ]
 

@@ -25,12 +25,16 @@ const useStyle = makeStyles({
     marginLeft: "10px",
   },
   paypalForm: {
-    width: "30%",
-    maxWidth: 480,
-    padding: "36px 24px 24px",
+    width: "100%",
+    // maxWidth: 480,
+    padding: "36px 24px 24px 10%",
+    // padding: "36px 24px 24px",
     boxShadow: "none",
     display: "inline-grid",
     marginLeft: "10px",
+    "& div.paypal-buttons": {
+      width: "70% !important",
+    },
   },
   activePlan: {
     border: "2px double #2b68a4",
@@ -47,7 +51,10 @@ const useStyle = makeStyles({
     textAlign: "center",
   },
   pinkColor: {
-    color: "pink",
+    color: "#b35767",
+    // color: "pink",
+    cursor: "pointer",
+    fontSize: "20px",
   },
   grayColor: {
     color: "gray",
@@ -112,9 +119,9 @@ const Payments = () => {
         setPaymentErrorMsg(`Sorry, you can not purchase same plan again.`);
       } else if (
         (loginUserInfo.subscription_name === "FREE" &&
-        (planName === "6MONTH" || planName === "12MONTH")) || 
-        (loginUserInfo.subscription_name === "6MONTH" && planName === "12MONTH"))
-      {
+          (planName === "6MONTH" || planName === "12MONTH")) ||
+        (loginUserInfo.subscription_name === "6MONTH" && planName === "12MONTH")
+      ) {
         setPlanPrice(planPrice);
         setPlanName(planName);
         data.payment_status = "";
@@ -191,7 +198,7 @@ const Payments = () => {
     data.payment_status = "Failed";
     setErrorMessage("An Error occured with your payment ");
     submitForm();
-  }; 
+  };
 
   useEffect(() => {
     setPayer();
@@ -199,11 +206,14 @@ const Payments = () => {
     setPlanName("");
     setShow(false);
     setSuccess(false);
-    console.log(JSON.parse(window.localStorage.getItem('loginUserInfo')) , " loginUserInfologinUserInfo")
+    console.log(
+      JSON.parse(window.localStorage.getItem("loginUserInfo")),
+      " loginUserInfologinUserInfo"
+    );
   }, []);
   return (
     <>
-      <div>
+      <div className="main-paypal">
         {loading ? (
           <Backdrop className={classes.backdrop} open={loading}>
             <CircularProgress color="inherit" />
@@ -335,28 +345,30 @@ const Payments = () => {
             </Card>
           </div>
         ) : (
-          <div className={[classes.paypalForm]}>
-            <PayPalScriptProvider
-              options={{
-                "client-id": clientId,
-              }}
-            >
-              {/* <div> */}
-              {/* {show ? ( */}
-              <PayPalButtons
-                style={{
-                  layout: "vertical",
-                  shape: "rect",
-                  size: "responsive",
+          <Card>
+            <div className={[classes.paypalForm]}>
+              <PayPalScriptProvider
+                options={{
+                  "client-id": clientId,
                 }}
-                // style={{ layout: "horizontal",shape:"rect",size:"responsive" }}
-                createOrder={createOrder}
-                onApprove={onApprove}
-              />
-              {/* // ) : null} */}
-              {/* </div> */}
-            </PayPalScriptProvider>
-          </div>
+              >
+                <PayPalButtons
+                  // style={{
+                  //   layout: "vertical",
+                  //   shape: "rect",
+                  //   size: "responsive",
+                  // }}
+                  style={{
+                    layout: "horizontal",
+                    shape: "rect",
+                    size: "responsive",
+                  }}
+                  createOrder={createOrder}
+                  onApprove={onApprove}
+                />
+              </PayPalScriptProvider>
+            </div>
+          </Card>
         )}
       </div>
     </>
