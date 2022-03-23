@@ -18,6 +18,8 @@ import { notificationFail, notificationSuccess } from "../notificationMsg";
 
 export const getBooking = ({ pageNo = 1, search = '', status = "CREATED" }) => {
     return async (dispatch) => {
+        dispatch(confirmBookingFailure([]))
+                dispatch(notificationFail(""))
         dispatch(getBookingRequest())
         await apiClient(true).get(`api/organization/booking-by-status?status=${status}&search=${search}&page=${pageNo}`)
             .then(response => {

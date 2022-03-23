@@ -271,32 +271,42 @@ const Payments = () => {
             <Grid item xs={12} sm={12} lg={12} className={classes.gridItem}>
               <p style={{ textAlign: "center" }}>Subscription Details</p>
             </Grid>
-            
-            <Grid item xs={12} sm={6} lg={4} >
-              <Typography variant="body2" className={classes.heading}>
-                Subscription Name
-              </Typography>
-              <Typography variant="h6" className={classes.desc}>
-                {profile?.data?.subscription_name}
-              </Typography>
-            </Grid>
-            <Grid item xs={12} sm={6} lg={4} >
-              <Typography variant="body2" className={classes.heading}>
-                Subscription Purchase Date
-              </Typography>
-              <Typography variant="h6" className={classes.desc}>
-                {profile?.data?.subscription_purchase_date}
-              </Typography>
-            </Grid>
-            
-            <Grid item xs={12} sm={6} lg={4} >
-              <Typography variant="body2" className={classes.heading}>
-                Subscription Expire Date
-              </Typography>
-              <Typography variant="h6" className={classes.desc}>
-                {profile?.data?.subscription_expire_date}
-              </Typography>
-            </Grid>
+            {profile?.data && profile?.data?.subscription_name == null && (
+               <Grid item xs={12} sm={12} lg={12} >
+               <p style={{ textAlign: "center" }}>Your purchase plan details not available</p>
+              </Grid>
+            )}
+            {profile?.data && profile?.data?.subscription_name !== null && (
+              <>
+                <Grid item xs={12} sm={6} lg={4}>
+                  <Typography variant="body2" className={classes.heading}>
+                    Subscription Name
+                  </Typography>
+                  <Typography variant="h6" className={classes.desc}>
+                    {profile?.data?.subscription_name
+                      ? profile?.data?.subscription_name
+                      : ""}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sm={6} lg={4}>
+                  <Typography variant="body2" className={classes.heading}>
+                    Subscription Purchase Date
+                  </Typography>
+                  <Typography variant="h6" className={classes.desc}>
+                    {profile?.data?.subscription_purchase_date}
+                  </Typography>
+                </Grid>
+
+                <Grid item xs={12} sm={6} lg={4}>
+                  <Typography variant="body2" className={classes.heading}>
+                    Subscription Expire Date
+                  </Typography>
+                  <Typography variant="h6" className={classes.desc}>
+                    {profile?.data?.subscription_expire_date}
+                  </Typography>
+                </Grid>
+              </>
+            )}
           </Grid>
         </Paper>
 
