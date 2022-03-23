@@ -165,10 +165,10 @@ const Routes = [
         sidebar:false
     },
     {
-        name:"Payment",
+        name:"Subscription",
         path:"payment",
         component:Payment,
-        icon:"bookmark",
+        icon:"paid",
         role:"organization",
         sidebar:true
     },

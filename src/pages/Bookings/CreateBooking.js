@@ -104,6 +104,11 @@ const CreateBooking = () => {
             }
         }).then(response => {
             setSpeciality(response.data)
+            console.log(response.data , "response.data")
+            console.log(response.data.status , "response.data.status")
+            if(response.data.status === false){
+                setSpecError(true)
+            }
         }).catch(error => {
             console.log('error: ', error);
         })
@@ -124,6 +129,9 @@ const CreateBooking = () => {
         }).then(response => {
             setTrust(response.data)
             // setTrust(response.data.data)
+            setTimeout(function(){
+                // setSpecError(false)
+            },2000)
         }).catch(error => {
             console.log('error: ', error);
         })
@@ -258,7 +266,7 @@ const CreateBooking = () => {
         // e.preventDefault();
         // console.log('data ward_id: ', typeof data.ward_id);
         if (data.speciality.length > 0) {
-
+            setSpecError(false)
             if (addAnother === true) {
                 dispatch(createBooking(data, addAnother))
             } else {
@@ -273,7 +281,7 @@ const CreateBooking = () => {
     const backPage = () => {
         history.goBack()
     }
-
+ 
     return (
         <>
             {
@@ -286,6 +294,14 @@ const CreateBooking = () => {
                 <Notification
                     data={createBookingSuccess?.message}
                     status="success"
+                />
+            }  
+            {specError && speciality?.data === undefined &&
+            
+                <Notification 
+                // key={Date.now()} 
+                    data={"speciality not found please add it."}
+                    status="error"
                 />
             }
 

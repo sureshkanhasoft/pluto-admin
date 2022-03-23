@@ -9,11 +9,16 @@ import {
   makeStyles,
   Backdrop,
   CircularProgress,
+  Grid,
+  Paper,
+  Box,
+  Button,
 } from "@material-ui/core";
 import Notification from "../../components/Notification/Notification";
 import history from "../../utils/HistoryUtils";
 import UtilService from "../../helper/service";
 import moment from "moment";
+import { getOrgProfile } from "../../store/action";
 
 const useStyle = makeStyles({
   paymentCard: {
@@ -59,6 +64,17 @@ const useStyle = makeStyles({
   grayColor: {
     color: "gray",
   },
+  gridItem: {
+    borderBottom: "1px solid #ccc",
+  },
+  root: {
+    width: "100%",
+    overflowX: "auto",
+    padding: 24,
+  },
+  heading: {
+    color: "#626161",
+  },
 });
 
 const Payments = () => {
@@ -73,6 +89,7 @@ const Payments = () => {
     "AVeZX42v6hTHDwQoPQHmLjId9Ycn4uWqENcsC_ppnRFITpAjzlBHtbLTz01t6nE1rF1MSsscg_rVOANo";
   const [paymentNotify, setPaymentNotify] = useState(false);
   const [paymentErrorMsg, setPaymentErrorMsg] = useState("");
+  const { profile } = useSelector((state) => state.orgProfile);
   const { createPaymentSuccess, createPaymentError, loading } = useSelector(
     (state) => state.paymentReducer
   );
@@ -211,6 +228,20 @@ const Payments = () => {
       " loginUserInfologinUserInfo"
     );
   }, []);
+
+  useEffect(() => {
+    const getProfileDetail = () => {
+      dispatch(getOrgProfile());
+    };
+    getProfileDetail();
+  }, [dispatch]);
+  useEffect(() => {
+    if (profile.data) {
+      console.log(profile.data, " profile.data");
+      setData(profile.data);
+    }
+  }, [profile.data]);
+
   return (
     <>
       <div className="main-paypal">
@@ -234,6 +265,41 @@ const Payments = () => {
         {paymentNotify && createPaymentError?.message && (
           <Notification data={createPaymentError?.message} status="error" />
         )}
+
+        <Paper className={`${classes.root} mb-6`}>
+          <Grid container spacing={4}>
+            <Grid item xs={12} sm={12} lg={12} className={classes.gridItem}>
+              <p style={{ textAlign: "center" }}>Subscription Details</p>
+            </Grid>
+            
+            <Grid item xs={12} sm={6} lg={4} >
+              <Typography variant="body2" className={classes.heading}>
+                Subscription Name
+              </Typography>
+              <Typography variant="h6" className={classes.desc}>
+                {profile?.data?.subscription_name}
+              </Typography>
+            </Grid>
+            <Grid item xs={12} sm={6} lg={4} >
+              <Typography variant="body2" className={classes.heading}>
+                Subscription Purchase Date
+              </Typography>
+              <Typography variant="h6" className={classes.desc}>
+                {profile?.data?.subscription_purchase_date}
+              </Typography>
+            </Grid>
+            
+            <Grid item xs={12} sm={6} lg={4} >
+              <Typography variant="body2" className={classes.heading}>
+                Subscription Expire Date
+              </Typography>
+              <Typography variant="h6" className={classes.desc}>
+                {profile?.data?.subscription_expire_date}
+              </Typography>
+            </Grid>
+          </Grid>
+        </Paper>
+
         {!show ? (
           <div>
             <Card
