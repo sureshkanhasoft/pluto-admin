@@ -14,6 +14,7 @@ import OrgProfile from "./pages/Profile/OrgProfile";
 import Signee from "./pages/Signee/Signee";
 import Notification from "./pages/Notification/Notification";
 import StaffUserProfile from "./pages/StaffUser/StaffUserProfile/StaffUserProfile";
+import Report from "./pages/Report/Reports";
 const loginUserInfo = JSON.parse(window.localStorage.getItem("loginUserInfo"));
 
 const Routes = [
@@ -128,7 +129,7 @@ const Routes = [
     {
         name:"Reports",
         path:"reports",
-        component:(loginUserInfo?.is_plan_expire === true ) ? Payment : PlanManagement,
+        component:(loginUserInfo?.is_plan_expire === true ) ? Payment : Report,
         icon:"description",
         role:"organization"
     },
