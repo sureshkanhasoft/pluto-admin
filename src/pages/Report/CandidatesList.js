@@ -303,7 +303,8 @@ const CandidatesList = ({ bookingDetail, booking_id, getBookingDetail, setConfir
                         </Tabs>
 
                         {
-                            pdfData.signee_id.length > 0 && <Button variant="contained" color="secondary" onClick={downloadPdf} className={classes.downloadButton}>
+                            pdfData.signee_id.length > 0 && 
+                            <Button variant="contained" color="secondary" onClick={downloadPdf} className={classes.downloadButton}>
                                 <span className="material-icons mr-2">download</span> Download PDF
                             </Button>
                         }
@@ -520,17 +521,18 @@ const CandidatesList = ({ bookingDetail, booking_id, getBookingDetail, setConfir
                                 {...a11yProps(0)} />
                         </Tabs>
 
-                        {
-                            pdfData.signee_id.length > 0 && <Button variant="contained" color="secondary" onClick={downloadPdf} className={classes.downloadButton}>
+                        {/* {
+                            pdfData.signee_id.length > 0 &&  */}
+                            <Button variant="contained" color="secondary" onClick={downloadPdf} className={classes.downloadButton}>
                                 <span className="material-icons mr-2">download</span> Download PDF
                             </Button>
-                        }
+                        {/* } */}
 
                         <TabPanel value={value} index={0}>
                             <Table className={classes.table}>
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell style={{ width: 70 }}></TableCell>
+                                        {/* <TableCell style={{ width: 70 }}></TableCell> */}
                                         <TableCell>Id</TableCell>
                                         <TableCell align="left">Name</TableCell>
                                         <TableCell align="left">Contact Number</TableCell>
@@ -552,7 +554,7 @@ const CandidatesList = ({ bookingDetail, booking_id, getBookingDetail, setConfir
                                         const isItemSelected = isSelected(row.name);
                                         return (
                                             <TableRow key={index}>
-                                                <TableCell scope="row">
+                                                {/* <TableCell scope="row">
                                                     <Checkbox
                                                         value={row.signeeId}
                                                         checked={pdfData.signee_id.includes(row.signeeId)}
@@ -562,7 +564,7 @@ const CandidatesList = ({ bookingDetail, booking_id, getBookingDetail, setConfir
                                                         className="selectCheckbox"
 
                                                     />
-                                                </TableCell>
+                                                </TableCell> */}
                                                 <TableCell scope="row">{index + 1}</TableCell>
                                                 <TableCell align="left">{row.first_name} {row.last_name}</TableCell>
                                                 <TableCell align="left">{row.contact_number}</TableCell>
@@ -570,20 +572,7 @@ const CandidatesList = ({ bookingDetail, booking_id, getBookingDetail, setConfir
                                                 <TableCell align="left">{row.signee_booking_status}</TableCell>
                                                 {
                                                     (bookingDetail?.data?.status === "CONFIRMED" && pastDate === true) &&
-                                                    <TableCell align="left">
-                                                        <FormControl variant="standard" className={classes.formControl1}>
-                                                            <Select
-                                                                value={row.payment_status || ""}
-                                                                name="payment_status"
-                                                                onChange={(e) => handlePaymentStatus(e, row.signeeId)}
-                                                                disabled={(staffDetail === "Compliance" || staffDetail === "Booking") ? true : false}
-                                                            >
-                                                                <MenuItem value="PAID">Paid</MenuItem>
-                                                                <MenuItem value="UNPAID">Unpaid</MenuItem>
-                                                                <MenuItem value="ONHOLD">On Hold</MenuItem>
-                                                            </Select>
-                                                        </FormControl>
-                                                    </TableCell>
+                                                    <TableCell align="left">{row.payment_status}</TableCell>
                                                 }
 
                                                 <TableCell align="right">

@@ -96,6 +96,12 @@ const useStyle = makeStyles((theme) => ({
         '& svg':{
             fontSize:16
         }
+    },
+    showError:{
+        color: "red",
+    },
+    disFeild: {
+        color: "#757575"
     }
 }))
 
@@ -365,9 +371,9 @@ const CreateTrust = () => {
                                                                     variant="outlined"
                                                                     name="ward_name"
                                                                     value={wardsField?.ward_name}
-                                                                    {...register('ward_name', {
-                                                                        required: "Please enter ward name",
-                                                                    })}
+                                                                    // {...register('ward_name', {
+                                                                    //     required: "Please enter ward name",
+                                                                    // })}
                                                                     error={
                                                                         // (errors.ward_name ? true : (createTrustError && createTrustError?.message) ? (createTrustError?.message[`hospital.${index}.ward.${wIndex}.ward_name`] ? true :false) : false)
                                                                         (errors.trust_portal_url ? true : (createTrustError && createTrustError?.[`hospital.${index}.ward.${wIndex}.ward_name`] ? true : false))
@@ -415,9 +421,9 @@ const CreateTrust = () => {
                                                                     name="ward_number"
                                                                     type="number"
                                                                     value={wardsField?.ward_number}
-                                                                    {...register('ward_number', {
-                                                                        required: "Please enter ward number",
-                                                                    })}
+                                                                    // {...register('ward_number', {
+                                                                    //     required: "Please enter ward number",
+                                                                    // })}
                                                                     error={
                                                                         // (errors.ward_number ? true : (createTrustError && createTrustError?.message) ? (createTrustError?.message[`hospital.${index}.ward.${wIndex}.ward_number`] ? true :false) : false)
                                                                         (errors.trust_portal_url ? true : (createTrustError && createTrustError?.[`hospital.${index}.ward.${wIndex}.ward_number`] ? true : false))
@@ -463,12 +469,12 @@ const CreateTrust = () => {
                         <Grid item xs={12}>
                             <Box className="mt-3">
                                 <FormControl required
-                                    {...register('preference_invoice_method', {
-                                        required: "Please enter code",
-                                    })}
+                                    // {...register('preference_invoice_method', {
+                                    //     required: "Please enter code",
+                                    // })}
                                     error={(errors?.preference_invoice_method ? true : false)}
                                     component="fieldset" className={classes.formControl}>
-                                    <FormLabel component="legend">Preferred Invoice Method</FormLabel>
+                                    <FormLabel component="legend" className={createTrustError.preference_invoice_method[0] ? classes.showError: classes.disFeild }>Preferred Invoice Method</FormLabel>
                                     <RadioGroup
                                         name="preference_invoice_method"
                                         onChange={handleChange} className={classes.radioGroup}>

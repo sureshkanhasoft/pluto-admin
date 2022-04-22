@@ -923,12 +923,13 @@ const DetailSignee = ({ match }) => {
                             )}
                           </div>
                           <Link
+                            style={{ minWidth: "650px"}}
                             to={{ pathname: `${baseUrl}${filename}` }}
                             target="_blank"
                           >
                             {filename}
                           </Link>
-                          <span style={{ paddingLeft: "50%"}}>
+                          <span style={{ float: "right"}}>
                             Expire Date: {fileList?.expire_date || "N/A"}
                           </span>
                         </div>

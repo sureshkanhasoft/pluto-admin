@@ -70,12 +70,17 @@ const CreateBooking = () => {
         rate: "",
         shift_type_id: "",
         hospital_id: "",
+        commission: "",
         speciality: []
     })
     const handleChange = (event) => {
         setData({ ...data, [event.target.name]: event.target.value });
     };
-
+    const commissionHandleChange = (event) => {
+        if(event.target.value < parseInt(data.rate)){
+            setData({ ...data, [event.target.name]: event.target.value});
+        } 
+    }
     // const handleChangeCheck = (event) => {
     //     const specialityData = JSON.parse(JSON.stringify(data));
     //     specialityData.speciality.push(event.target.value);
@@ -549,14 +554,29 @@ const CreateBooking = () => {
                                 />
                             </div>
                         </Grid>
-
-
+                        <Grid item xs={12} sm={6} lg={4}>
+                                <TextField
+                                    id="commission"
+                                    label="Commission"
+                                    variant="outlined"
+                                    name="commission"
+                                    type="number"
+                                    value={data?.commission}
+                                    // {...register('rate', {
+                                    //     required: "The committion field is required.",
+                                    // })}
+                                    error={(errors.commission ? true : false)}
+                                    onChange={commissionHandleChange}
+                                    fullWidth
+                                    required
+                                />
+                        </Grid>
 
                         <Grid item xs={12}>
                             <FormControl required
-                                {...register('speciality', {
-                                    required: "The speciality field is required.",
-                                })}
+                                // {...register('speciality', {
+                                //     required: "The speciality field is required.",
+                                // })}
                                 error={(errors.speciality ? true : false || specError === true ? true : false)}
                                 component="fieldset" className={classes.formControl}>
                                 {

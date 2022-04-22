@@ -157,6 +157,8 @@ const updateBookingError = (error) => {
 // -----------------------------------
 
 export const deleteBooking = (id) => {
+    debugger
+    console.log("deleteBookingid",id)
     const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, '');
     return async (dispatch) => {
         dispatch(deleteBookingRequest())
@@ -166,6 +168,7 @@ export const deleteBooking = (id) => {
                 'Authorization': `Bearer ${loggedInUser}`
             }
         }).then(response => {
+            console.log("response.databbbbbb",response.data)
             const data = response.data
             if (data && data.status === true) {
                 dispatch(deleteBookingSuccess(response.data))
