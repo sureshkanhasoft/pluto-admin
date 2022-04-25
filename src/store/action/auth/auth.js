@@ -31,6 +31,7 @@ export const login = ({ email, password }) => {
                     if(data.data.is_plan_expire === true || data.data.is_plan_expire === null){
                         setTimeout(() => {
                             history.push('./admin/payment')
+                            window.location.reload();
                         }, 2000);
                     }else if(data.data.password_change === 0){
                         setTimeout(() => {
