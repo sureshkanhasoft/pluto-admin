@@ -562,9 +562,9 @@ const CreateBooking = () => {
                                     name="commission"
                                     type="number"
                                     value={data?.commission}
-                                    // {...register('rate', {
-                                    //     required: "The committion field is required.",
-                                    // })}
+                                    {...register('commission', {
+                                        required: "The committion field is required.",
+                                    })}
                                     error={(errors.commission ? true : false)}
                                     onChange={commissionHandleChange}
                                     fullWidth

@@ -474,7 +474,7 @@ const CreateTrust = () => {
                                     // })}
                                     error={(errors?.preference_invoice_method ? true : false)}
                                     component="fieldset" className={classes.formControl}>
-                                    <FormLabel component="legend" className={createTrustError.preference_invoice_method[0] ? classes.showError: classes.disFeild }>Preferred Invoice Method</FormLabel>
+                                    <FormLabel component="legend" className={createTrustError && createTrustError.preference_invoice_method && createTrustError.preference_invoice_method[0] ? classes.showError: classes.disFeild }>Preferred Invoice Method</FormLabel>
                                     <RadioGroup
                                         name="preference_invoice_method"
                                         onChange={handleChange} className={classes.radioGroup}>
