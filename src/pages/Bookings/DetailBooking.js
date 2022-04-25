@@ -266,6 +266,10 @@ console.log(confirmBtn , "confirmBtn")
                         <Typography variant="body2" className={classes.heading}>Rate:</Typography>
                         <Typography variant="h6" className={classes.desc}><span className="symbol">£</span> {bookingDetail?.data?.rate}</Typography>
                     </Grid>
+                    <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
+                        <Typography variant="body2" className={classes.heading}>Commission:</Typography>
+                        <Typography variant="h6" className={classes.desc}><span className="symbol">£</span> {bookingDetail?.data?.commission}</Typography>
+                    </Grid>
                     <Grid item xs={12}>
                         <Typography variant="body2" className={classes.heading}>Speciality:</Typography>
                         <div className={classes.chipContainer}>
