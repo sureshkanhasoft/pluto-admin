@@ -42,6 +42,8 @@ const UpdateSignee = ({match}) => {
     const [signeeNotify, setSigneeNotify] = useState(false)
     const {getCandidateReferrredForm, loading, getSingleSigneeItem, updateSigneeSuccess, updateSigneeError} = useSelector(state => state.signee)
     const disFutureDate = UtilService.disabledPastDate()
+    const [bdate, setBdate] = useState(null)
+    
     const [data, setData] = useState({
         password:"",
         mobile_number:"",
@@ -68,7 +70,9 @@ const UpdateSignee = ({match}) => {
         setData({ ...data, [event.target.name]: event.target.value });
     }
     const handleChangeDate = (event) => {
-        setData({ ...data, [event.target.name]: event.target.value });
+        let tempBdate = (event.target.value)
+        setData({ ...data, [event.target.name]: tempBdate });
+        setBdate(tempBdate)
     }
     useEffect(() => {
         dispatch(getCandidateReferredFrom());
@@ -84,6 +88,7 @@ const UpdateSignee = ({match}) => {
         //     })
         //     response.data.data.speciality = speciality;
         setData(getSingleSigneeItem?.data)
+        setBdate(getSingleSigneeItem?.data?.date_of_birth?.split('-').reverse().join('-'))
     }, [getSingleSigneeItem])
 
     
@@ -212,10 +217,10 @@ const UpdateSignee = ({match}) => {
                             <TextField
                                 id="date_of_birth"
                                 label="Date of birth"
-                                type="date"
                                 name="date_of_birth"
                                 variant="outlined"
-                                value={data?.date_of_birth || ''}
+                                value={bdate || ''}
+                                type="date"
                                 // helperText={updateSigneeError.message?.date_of_birth}
                                 // error={!!updateSigneeError.message?.date_of_birth}
                                 onChange={handleChangeDate}
@@ -234,7 +239,6 @@ const UpdateSignee = ({match}) => {
                             <TextField
                                 id="date_registered"
                                 label="Date Registered"
-                                type="date"
                                 name="date_registered"
                                 variant="outlined"
                                 value={data?.date_registered || ''}
