@@ -157,7 +157,6 @@ const CreateOrganization = ({ open, handleClose }) => {
                                 label="Contact Number"
                                 variant="outlined"
                                 name="contact_number"
-                                placeholder='Ex: +91 12345 67890'
                                 // type="number"
                                 value={data.contact_number}
                                 required
