@@ -555,21 +555,24 @@ const CreateBooking = () => {
                             </div>
                         </Grid>
                         <Grid item xs={12} sm={6} lg={4}>
-                                <TextField
-                                    id="commission"
-                                    label="Commission"
-                                    variant="outlined"
-                                    name="commission"
-                                    type="number"
-                                    value={data?.commission}
-                                    {...register('commission', {
-                                        required: "The committion field is required.",
-                                    })}
-                                    error={(errors.commission ? true : false)}
-                                    onChange={commissionHandleChange}
-                                    fullWidth
-                                    required
-                                />
+                            <div className="rate-symbol">
+                                <span className="symbol">£</span>
+                                    <TextField
+                                        id="commission"
+                                        label="Commission"
+                                        variant="outlined"
+                                        name="commission"
+                                        type="number"
+                                        value={data?.commission}
+                                        {...register('commission', {
+                                            required: "The committion field is required.",
+                                        })}
+                                        error={(errors.commission ? true : false)}
+                                        onChange={commissionHandleChange}
+                                        fullWidth
+                                        required
+                                    />
+                            </div>
                         </Grid>
 
                         <Grid item xs={12}>
