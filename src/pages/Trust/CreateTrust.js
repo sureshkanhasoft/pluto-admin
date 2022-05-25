@@ -413,7 +413,7 @@ const CreateTrust = () => {
                                                                     </Select>
                                                                 </FormControl>
                                                             </Grid>
-                                                            <Grid item xs={12} sm={3}>
+                                                            {/* <Grid item xs={12} sm={3}>
                                                                 <TextField
                                                                     id="ward_number"
                                                                     label="Ward Number"
@@ -430,9 +430,8 @@ const CreateTrust = () => {
                                                                     }
                                                                     onChange={(e) => handleChangeWardOFHospital(index, wIndex, e)}
                                                                     fullWidth
-                                                                    required
                                                                 />
-                                                            </Grid>
+                                                            </Grid> */}
                                                             {wIndex !== 0 ? <CloseIcon className={classes.removeWard} onClick={() => removeWards(index, wIndex)} /> :""}
                                                             
                                                         </Grid>
@@ -647,7 +646,7 @@ const CreateTrust = () => {
                             </div>
                         </Grid>
                         <Grid item xs={12}>
-                            <Typography>Training</Typography>
+                            <Typography>Notes</Typography>
                         </Grid>
 
                         {
@@ -656,7 +655,7 @@ const CreateTrust = () => {
                                     <Grid item xs={12} sm={6} key={index} style={{position:"relative"}}>
                                         <TextField
                                             id="training_name"
-                                            label="Training example type"
+                                            label="Notes"
                                             variant="outlined"
                                             name="training_name"
                                             value={item?.training_name || ""}
@@ -669,7 +668,7 @@ const CreateTrust = () => {
                                             }
                                             onChange={(e) => handleChangeHospital(index, e, 'training')}
                                             fullWidth
-                                            required
+                                            
                                         />
                                         {index !== 0 ?<CloseIcon className={classes.removeTraining} onClick={() => removeTraining(index)} /> :""   }
                                         
@@ -682,7 +681,7 @@ const CreateTrust = () => {
                             {/* <Button onClick={handleAddClick} color="secondary"> */}
                             <Button color="secondary" onClick={addTraining}>
                                 <AddCircleOutlineIcon className="mr-3" />
-                                <Typography >Add Training </Typography>
+                                <Typography >Add Notes </Typography>
                             </Button>
                         </Grid>
                         <Grid item xs={12} >

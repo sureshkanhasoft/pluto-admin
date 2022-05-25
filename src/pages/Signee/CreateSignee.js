@@ -200,7 +200,7 @@ const CreateSignee = () => {
                                 label="Contact number"
                                 variant="outlined"
                                 name="contact_number"
-                                type="number"
+                                type="text"
                                 value={data?.contact_number}
                                 // {...register('contact_number', {
                                 //     required: "Please enter contact number",

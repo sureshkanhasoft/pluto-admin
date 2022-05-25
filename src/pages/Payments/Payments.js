@@ -61,6 +61,11 @@ const useStyle = makeStyles({
     cursor: "pointer",
     fontSize: "20px",
   },
+  button: {
+    color: "#fff",
+    background:"#184a7b !important;",
+    cursor: "pointer",
+  },
   grayColor: {
     color: "gray",
   },
@@ -339,13 +344,13 @@ const Payments = () => {
                 functionality.
               </Typography>
               <Typography className={classes.descText}>
-                <p
+                <Button color="primary"
                   onClick={() => purchasePlan(0, "FREE")}
-                  className={classes.pinkColor}
+                  className={classes.button}
                   align="center"
                 >
-                  PURCHASE {">"}{" "}
-                </p>
+                  PURCHASE 
+                </Button>
               </Typography>
             </Card>
 
@@ -374,13 +379,13 @@ const Payments = () => {
                 functionality.
               </Typography>
               <Typography className={classes.descText}>
-                <p
+                <Button
                   onClick={() => purchasePlan(55, "6MONTH")}
-                  className={classes.pinkColor}
+                  className={classes.button}
                   align="center"
                 >
-                  PURCHASE {">"}{" "}
-                </p>
+                  PURCHASE 
+                </Button>
               </Typography>
             </Card>
             <Card
@@ -410,13 +415,13 @@ const Payments = () => {
                 functionality.
               </Typography>
               <Typography className={classes.descText}>
-                <p
+                <Button
                   onClick={() => purchasePlan(100, "12MONTH")}
-                  className={classes.pinkColor}
+                  className={classes.button}
                   align="center"
                 >
-                  PURCHASE {">"}{" "}
-                </p>
+                  PURCHASE
+                </Button>
               </Typography>
             </Card>
           </div>

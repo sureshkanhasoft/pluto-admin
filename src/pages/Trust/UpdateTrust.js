@@ -428,7 +428,7 @@ const UpdateTrust = ({ match }) => {
                                                                     <FormHelperText>{updateTrustError?.message ? (updateTrustError?.message[`hospital.${index}.ward.${wIndex}.ward_type_id`] ? "The ward type field is required." :false) : false}</FormHelperText>
                                                                 </FormControl>
                                                             </Grid>
-                                                            <Grid item xs={12} sm={3}>
+                                                            {/* <Grid item xs={12} sm={3}>
                                                                 <TextField
                                                                 key={'ward_number'+index}
                                                                     id="ward_number"
@@ -445,9 +445,8 @@ const UpdateTrust = ({ match }) => {
                                                                     }
                                                                     onChange={(e) => handleChangeWardOFHospital(index, wIndex, e)}
                                                                     fullWidth
-                                                                    required
                                                                 />
-                                                            </Grid>
+                                                            </Grid> */}
                                                             {wIndex !== 0 ? <CloseIcon className={classes.removeWard} onClick={() => removeWards(index, wIndex)} /> :""}
                                                         </Grid>
                                                     )
@@ -628,7 +627,7 @@ const UpdateTrust = ({ match }) => {
                             </div>
                         </Grid>
                         <Grid item xs={12}>
-                            <Typography>Training</Typography>
+                            <Typography>Notes</Typography>
                         </Grid>
 
                         {
@@ -639,7 +638,7 @@ const UpdateTrust = ({ match }) => {
                                         <TextField
                                             key={"training_name" + index}
                                             id="training_name"
-                                            label="Training example type"
+                                            label="Notes "
                                             variant="outlined"
                                             name="training_name"
                                             value={item?.training_name || ""}
@@ -649,7 +648,6 @@ const UpdateTrust = ({ match }) => {
                                             }
                                             onChange={(e) => handleChangeHospital(index, e, 'training')}
                                             fullWidth
-                                            required
                                         />
                                         {index !== 0 ?<CloseIcon className={classes.removeTraining} onClick={() => removeTraining(index)} /> :""   }
                                     </Grid>
@@ -659,7 +657,7 @@ const UpdateTrust = ({ match }) => {
                         <Grid item xs={12} sm={6} lg={4}>
                             <Button color="secondary" onClick={addTraining}>
                                 <AddCircleOutlineIcon className="mr-3" />
-                                <Typography >Add Training </Typography>
+                                <Typography >Add Notes </Typography>
                             </Button>
                         </Grid>
                         <Grid item xs={12} >

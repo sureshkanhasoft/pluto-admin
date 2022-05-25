@@ -189,10 +189,10 @@ const DetailTrust = ({ match }) => {
                                                     <Typography variant="h6" className={classes.desc}>{warditem.ward_type}</Typography>
                                                 </Grid>
 
-                                                <Grid item xs={12} sm={6} lg={3} className={classes.gridItem}>
+                                                {/* <Grid item xs={12} sm={6} lg={3} className={classes.gridItem}>
                                                     <Typography variant="body2" className={classes.heading}>Number</Typography>
                                                     <Typography variant="h6" className={classes.desc}>{warditem.ward_number}</Typography>
-                                                </Grid>
+                                                </Grid> */}
                                             </Fragment>
                                         )
                                     })
@@ -246,7 +246,7 @@ const DetailTrust = ({ match }) => {
                     </Grid>
 
                     <Grid item xs={12} className={classes.mainWrapper}>
-                        <Typography className={classes.mainTitle}>Training</Typography>
+                        <Typography className={classes.mainTitle}>Notes</Typography>
                     </Grid>
 
                     {/* <Grid item xs={12} sm={12} className={classes.gridItem}>
@@ -258,7 +258,7 @@ const DetailTrust = ({ match }) => {
                         trustItems?.training && trustItems?.training.map((items, index) => {
                             return (
                                 <Grid item xs={12} sm={12} className={classes.gridItem} key={index}>
-                                    <Typography variant="body2" className={classes.heading}>Training Example Type</Typography>
+                                    <Typography variant="body2" className={classes.heading}>{++index}. Notes </Typography>
                                     <Typography variant="h6" className={classes.desc}>{items.training_name}</Typography>
                                 </Grid>
                             )

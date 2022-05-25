@@ -204,7 +204,7 @@ const UpdateSignee = ({match}) => {
                                 label="Contact number"
                                 variant="outlined"
                                 name="contact_number"
-                                type="number"
+                                type="text"
                                 value={data?.contact_number || ''}
                                 // helperText={updateSigneeError.message?.contact_number}
                                 // error={!!updateSigneeError.message?.contact_number}
