@@ -191,10 +191,11 @@ const Navbar = () => {
       {/* loading */}
 
       <AppBar position="static" className={classes.root}>
-        <Container>
-
-        <Card style={{marginTop:4, padding:"8px 12px"}}>{ loginUserInfo.first_name } { loginUserInfo.last_name }</Card>
-        </Container>
+      { loginUserInfo.role == 'ORGANIZATION' &&
+          <Container>
+            <Card style={{marginTop:4, padding:"8px 12px"}}>{ loginUserInfo.first_name } { loginUserInfo.last_name }</Card>
+          </Container>
+        }
         <Toolbar>
           <h1 className={classes.title}>{titleName} </h1>
           {

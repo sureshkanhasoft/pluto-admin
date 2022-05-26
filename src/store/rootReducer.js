@@ -17,6 +17,7 @@ import notificationList from "./reducer/notificationList/notificationList";
 import dashboardReducer from "./reducer/dashboard/dashboardReducer";
 import paymentReducer from "./reducer/payment/paymentReducer";
 import reportReducer from "./reducer/report/reportReducer";
+import planReducer from "./reducer/planReducer/planReducer";
 
 const rootReducer = combineReducers(
     {
@@ -39,6 +40,7 @@ const rootReducer = combineReducers(
         notificationList:notificationList,
         paymentReducer:paymentReducer,
         reportReducer:reportReducer,
+        planReducer:planReducer,
     }
 );
 

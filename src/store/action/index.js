@@ -107,3 +107,8 @@ export {
     // userInvitation,
     // changePaymentStatus
 } from './report/reportAction'
+
+export {
+    getPlan,
+    updatePlan,
+} from "./plan/planAction"
