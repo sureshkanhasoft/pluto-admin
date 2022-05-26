@@ -6,8 +6,8 @@ import {
   makeStyles,
   Badge,
   IconButton,
-  Menu,
-  MenuItem, Typography
+  Menu,Card,
+  MenuItem, Typography, Container
 } from "@material-ui/core";
 // import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
@@ -166,7 +166,7 @@ const Navbar = () => {
     }
     dispatch(readNotification(requestData))
   }
-
+  const loginUserInfo = JSON.parse(localStorage.getItem("loginUserInfo"));
   return (
     <>
       {/* common notification */}
@@ -191,7 +191,10 @@ const Navbar = () => {
       {/* loading */}
 
       <AppBar position="static" className={classes.root}>
+        <Container>
 
+        <Card style={{marginTop:4, padding:"8px 12px"}}>{ loginUserInfo.first_name } { loginUserInfo.last_name }</Card>
+        </Container>
         <Toolbar>
           <h1 className={classes.title}>{titleName} </h1>
           {

@@ -11,6 +11,7 @@ import {
 } from "@material-ui/core";
 import { NavLink, Link } from "react-router-dom";
 import logo from '../../assets/images/logo.svg'
+import apiConfigs from '../../config/config';
 
 const useStyle = makeStyles({
     logoContainer: {
@@ -40,6 +41,13 @@ const useStyle = makeStyles({
                 color: "#fff"
             }
         }
+    },
+    bottomLogoContainer:{
+        display:"flex",
+        maxWidth:"90%",
+        alignItems:"cener",
+        justifyContent:"center",
+        marginBottom:20
     }
 })
 
@@ -85,6 +93,9 @@ const Sidebar = (props) => {
                     ))
                 }
             </List>
+            <Box className={classes.bottomLogoContainer}>
+                <img src={(loginUserInfo?.profile_pic ? (apiConfigs.API_URL+ "uploads/org_logo/" + loginUserInfo?.profile_pic) : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtNWVnKZZfy-1CLo75eO5vLhTWFZyeyc7QaI6GgdSalXDIJOCA6t0DSdDDMabrTOdjdYs&usqp=CAU")} alt="Organization logo" />
+            </Box>
 
         </Drawer>
     )

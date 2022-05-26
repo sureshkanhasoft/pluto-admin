@@ -203,8 +203,15 @@ const DetailBooking = ({ match }) => {
                     status="success"
                 />
             }
-
+            
             <Paper className={`${classes.root} mb-6`}>
+                <Grid item xs={12}>
+                    <Box display="flex" justifyContent="flex-end" className={classes.btnContainer}>
+                        <Button color="primary" onClick={backPage}>
+                            Back
+                        </Button>
+                    </Box>
+                </Grid>
                 <Grid container spacing={4}>
                     <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
                         <Typography variant="body2" className={classes.heading}>Reference ID:</Typography>
@@ -257,9 +264,7 @@ const DetailBooking = ({ match }) => {
                     </Grid>
                     <Grid item xs={12}>
                         <Box display="flex" justifyContent="flex-end" className={classes.btnContainer}>
-                            <Button color="primary" onClick={backPage}>
-                                Back
-                            </Button>
+                           
                             {
                                 bookingDetail?.data?.status === "CREATED" &&
                                 <Button variant="contained" color="primary" onClick={upadateLink}>
