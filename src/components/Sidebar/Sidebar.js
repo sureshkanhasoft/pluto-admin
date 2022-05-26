@@ -44,11 +44,14 @@ const useStyle = makeStyles({
     },
     bottomLogoContainer:{
         display:"flex",
-        maxWidth:"90%",
+        // maxWidth:"90%",
         alignItems:"cener",
         justifyContent:"center",
         marginBottom:20
-    }
+    },
+    imgTag: {
+        maxWidth: "200px"
+    },
 })
 
 const Sidebar = (props) => {
@@ -94,7 +97,7 @@ const Sidebar = (props) => {
                 }
             </List>
             <Box className={classes.bottomLogoContainer}>
-                <img src={(loginUserInfo?.profile_pic ? (apiConfigs.API_URL+ "uploads/org_logo/" + loginUserInfo?.profile_pic) : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtNWVnKZZfy-1CLo75eO5vLhTWFZyeyc7QaI6GgdSalXDIJOCA6t0DSdDDMabrTOdjdYs&usqp=CAU")} alt="Organization logo" />
+                <img className={classes.imgTag} src={(loginUserInfo?.profile_pic ? (apiConfigs.API_URL+ "uploads/org_logo/" + loginUserInfo?.profile_pic) : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtNWVnKZZfy-1CLo75eO5vLhTWFZyeyc7QaI6GgdSalXDIJOCA6t0DSdDDMabrTOdjdYs&usqp=CAU")} alt="Organization logo" />
             </Box>
 
         </Drawer>

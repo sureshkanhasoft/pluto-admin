@@ -29,7 +29,9 @@ const useStyle = makeStyles((theme) => ({
         fontSize: 16,
         margin: "0 0 24px 0"
     },
-
+    imgTag: {
+        maxWidth: "250px"
+    },
     formControl: {
         width: "100%"
     },
@@ -401,7 +403,7 @@ const OrgProfile = () => {
             <form onSubmit={(e) => updateProfile1(e)}>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6} lg={4}>
-                        <img src={(data?.profile_pic ? (apiConfigs.API_URL+ "uploads/org_logo/" + data?.profile_pic) : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtNWVnKZZfy-1CLo75eO5vLhTWFZyeyc7QaI6GgdSalXDIJOCA6t0DSdDDMabrTOdjdYs&usqp=CAU")} alt="profile img" />
+                        <img className={classes.imgTag} src={(data?.profile_pic ? (apiConfigs.API_URL+ "uploads/org_logo/" + data?.profile_pic) : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtNWVnKZZfy-1CLo75eO5vLhTWFZyeyc7QaI6GgdSalXDIJOCA6t0DSdDDMabrTOdjdYs&usqp=CAU")} alt="profile img" />
                             <div className="choose_file">
                                 <input name="filename" type="file" onChange={(event) => setProfilePic1(event)} />
                             </div>
