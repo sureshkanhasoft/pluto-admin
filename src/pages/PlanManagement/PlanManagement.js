@@ -122,7 +122,7 @@ const PlanManagement = () => {
                   <TableRow key={row.id}>
                     <TableCell scope="row">{++index}</TableCell>
                     <TableCell align="left">{row.name}</TableCell>
-                    <TableCell align="left">${row.price}</TableCell>
+                    <TableCell align="left">£{row.price}</TableCell>
                     <TableCell align="left">{row.title}</TableCell>
                     <TableCell align="left">{row.description}</TableCell>
                     <TableCell align="center">

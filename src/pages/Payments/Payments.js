@@ -19,6 +19,7 @@ import history from "../../utils/HistoryUtils";
 import UtilService from "../../helper/service";
 import moment from "moment";
 import { getOrgProfile } from "../../store/action";
+import { getPlan } from "../../store/action";
 
 const useStyle = makeStyles({
   paymentCard: {
@@ -63,7 +64,7 @@ const useStyle = makeStyles({
   },
   button: {
     color: "#fff",
-    background:"#184a7b !important;",
+    background: "#184a7b !important;",
     cursor: "pointer",
   },
   grayColor: {
@@ -101,7 +102,7 @@ const Payments = () => {
   const loginUserInfo = JSON.parse(
     window.localStorage.getItem("loginUserInfo")
   );
-
+  const { planList } = useSelector((state) => state.planReducer);
   const dispatch = useDispatch();
   const [data, setData] = useState({
     subscription_name: "",
@@ -165,6 +166,9 @@ const Payments = () => {
         submitForm();
       }
     }
+  };
+  const getData = (pageNo = 1, search = "", status = "") => {
+    dispatch(getPlan({ pageNo, search, status }));
   };
 
   // creates a paypal order
@@ -232,6 +236,7 @@ const Payments = () => {
       JSON.parse(window.localStorage.getItem("loginUserInfo")),
       " loginUserInfologinUserInfo"
     );
+    getData();
   }, []);
 
   useEffect(() => {
@@ -277,8 +282,10 @@ const Payments = () => {
               <p style={{ textAlign: "center" }}>Subscription Details</p>
             </Grid>
             {profile?.data && profile?.data?.subscription_name == null && (
-               <Grid item xs={12} sm={12} lg={12} >
-               <p style={{ textAlign: "center" }}>Your purchase plan details not available</p>
+              <Grid item xs={12} sm={12} lg={12}>
+                <p style={{ textAlign: "center" }}>
+                  Your purchase plan details not available
+                </p>
               </Grid>
             )}
             {profile?.data && profile?.data?.subscription_name !== null && (
@@ -317,7 +324,49 @@ const Payments = () => {
 
         {!show ? (
           <div>
-            <Card
+            {planList?.data &&
+              planList?.data.map((row, index) => {
+                return (
+                  <Card
+                    className={[
+                      classes.paymentCard,
+                      loginUserInfo.subscription_name === row.name
+                        ? classes.activePlan
+                        : "",
+                    ]}
+                  >
+                    <p style={{ textAlign: "center" }}>
+                      <Icon style={{ fontSize: "40px" }}>people</Icon>
+                    </p>
+                    <Typography className={classes.descText}>
+                      {row.title}
+                    </Typography>
+                    <Typography className={classes.descText}>
+                      <b align="center">£{row.price}</b>
+                      <p className={classes.middleText}>
+                        <sub className={[classes.grayColor]} align="center">
+                          {row.type}
+                        </sub>
+                      </p>
+                    </Typography>
+                    <Typography className={classes.descText}>
+                      {row.description}
+                    </Typography>
+                    <Typography className={classes.descText}>
+                      <Button
+                        color="primary"
+                        onClick={() => purchasePlan(row.price, row.name)}
+                        className={classes.button}
+                        align="center"
+                      >
+                        PURCHASE
+                      </Button>
+                    </Typography>
+                  </Card>
+                );
+              })}
+
+            {/* <Card
               className={[
                 classes.paymentCard,
                 loginUserInfo.subscription_name === "FREE"
@@ -344,12 +393,13 @@ const Payments = () => {
                 functionality.
               </Typography>
               <Typography className={classes.descText}>
-                <Button color="primary"
+                <Button
+                  color="primary"
                   onClick={() => purchasePlan(0, "FREE")}
                   className={classes.button}
                   align="center"
                 >
-                  PURCHASE 
+                  PURCHASE
                 </Button>
               </Typography>
             </Card>
@@ -384,7 +434,7 @@ const Payments = () => {
                   className={classes.button}
                   align="center"
                 >
-                  PURCHASE 
+                  PURCHASE
                 </Button>
               </Typography>
             </Card>
@@ -423,7 +473,7 @@ const Payments = () => {
                   PURCHASE
                 </Button>
               </Typography>
-            </Card>
+            </Card> */}
           </div>
         ) : (
           <Card>
