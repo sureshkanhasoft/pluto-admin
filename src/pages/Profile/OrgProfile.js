@@ -144,7 +144,7 @@ const OrgProfile = () => {
                 setLogoError(dataItem.message)    
             }
         }).catch(error => {
-            setLogoError(error.response.data)
+            setLogoError("Sorry logo upload failed");
         });
     }
 

@@ -123,6 +123,14 @@ const UpdateTrust = ({ match }) => {
         phone_number: "",
         client: "",
         department: "",
+        payable_day_rate: "",
+        payable_night_rate: "",
+        payable_saturday_rate: "",
+        payable_holiday_rate: "",
+        chargeable_day_rate: "",
+        chargeable_night_rate: "",
+        chargeable_saturday_rate: "",
+        chargeable_holiday_rate: "",
         training: [
             {
                 training_name: ""
@@ -756,6 +764,150 @@ const UpdateTrust = ({ match }) => {
                                 fullWidth
                             />
                         </Grid>
+                        <Grid item xs={12}>
+                <div className="pt-5 pb-4">
+                  <Divider />
+                </div>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography>Rate</Typography>
+              </Grid>
+              <Grid item xs={12} sm={6} lg={3}>
+                <TextField
+                  id="payable_day_rate"
+                  label="Payable Day Rate"
+                  variant="outlined"
+                  value={data?.payable_day_rate || "0"}
+                  name="payable_day_rate"
+                  helperText={updateTrustError.message?.payable_day_rate}
+                  error={
+                      !!updateTrustError.message?.payable_day_rate
+                  }
+                  onChange={handleChange}
+                  fullWidth
+                  type="number"
+                  required
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} lg={3}>
+                <TextField
+                  id="payable_night_rate"
+                  label="Payable Night Rate"
+                  variant="outlined"
+                  name="payable_night_rate"
+                  value={data?.payable_night_rate || "0"}
+                  helperText={updateTrustError.message?.payable_night_rate}
+                  error={
+                      !!updateTrustError.message?.payable_night_rate
+                  }
+                  onChange={handleChange}
+                  fullWidth
+                  type="number"
+                  required
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} lg={3}>
+                <TextField
+                  id="payable_saturday_rate"
+                  label="Payable Saturday Rate"
+                  variant="outlined"
+                  value={data?.payable_saturday_rate || "0"}
+                  name="payable_saturday_rate"
+                  helperText={updateTrustError.message?.payable_saturday_rate}
+                  error={
+                      !!updateTrustError.message?.payable_saturday_rate
+                  }
+                  onChange={handleChange}
+                  fullWidth
+                  type="number"
+                  required
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} lg={3}>
+                <TextField
+                  id="payable_holiday_rate"
+                  label="Payable Holiday/Sunday"
+                  variant="outlined"
+                  value={data?.payable_holiday_rate || "0"}
+                  name="payable_holiday_rate"
+                  helperText={updateTrustError.message?.payable_holiday_rate}
+                  error={
+                      !!updateTrustError.message?.payable_holiday_rate
+                  }
+                  onChange={handleChange}
+                  fullWidth
+                  type="number"
+                  required
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} lg={3}>
+                <TextField
+                  id="chargeable_day_rate"
+                  label="Chargeable Day Rate"
+                  variant="outlined"
+                  name="chargeable_day_rate"
+                  value={data?.chargeable_day_rate || "0"}
+                  helperText={updateTrustError.message?.chargeable_day_rate}
+                  error={
+                      !!updateTrustError.message?.chargeable_day_rate
+                  }
+                  onChange={handleChange}
+                  fullWidth
+                  type="number"
+                  required
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} lg={3}>
+                <TextField
+                  id="chargeable_night_rate"
+                  label="Chargeable Night Rate"
+                  variant="outlined"
+                  value={data?.chargeable_night_rate || "0"}
+                  name="chargeable_night_rate"
+                  helperText={updateTrustError.message?.chargeable_night_rate}
+                  error={
+                      !!updateTrustError.message?.chargeable_night_rate
+                  }
+                  onChange={handleChange}
+                  fullWidth
+                  type="number"
+                  required
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} lg={3}>
+                <TextField
+                  id="chargeable_saturday_rate"
+                  label="Chargeable Saturday Rate"
+                  variant="outlined"
+                  value={data?.chargeable_saturday_rate || "0"}
+                  name="chargeable_saturday_rate"
+                  helperText={updateTrustError.message?.chargeable_saturday_rate}
+                  error={
+                      !!updateTrustError.message?.chargeable_saturday_rate
+                  }
+                  onChange={handleChange}
+                  fullWidth
+                  type="number"
+                  required
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} lg={3}>
+                <TextField
+                  id="chargeable_holiday_rate"
+                  label="Chargeable Holiday/Sunday"
+                  variant="outlined"
+                  value={data?.chargeable_holiday_rate || "0"}
+                  name="chargeable_holiday_rate"
+                  helperText={updateTrustError.message?.chargeable_holiday_rate}
+                  error={
+                      !!updateTrustError.message?.chargeable_holiday_rate
+                  }
+                  onChange={handleChange}
+                  fullWidth
+                  type="number"
+                  required
+                />
+              </Grid>
                     </Grid>
 
                     <Box className={classes.footerBtn}>

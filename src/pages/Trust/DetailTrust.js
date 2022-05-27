@@ -315,6 +315,44 @@ const DetailTrust = ({ match }) => {
                         <Typography variant="h6" className={classes.desc}>{trustItems.department}</Typography>
                     </Grid>
 
+                    <Grid item xs={12} className={classes.mainWrapper}>
+                        <Typography className={classes.mainTitle}>Rate</Typography>
+                    </Grid>
+
+                    <Grid item xs={12} sm={6} lg={3} className={classes.gridItem}>
+                        <Typography variant="body2" className={classes.heading}>Payable Day Rate</Typography>
+                        <Typography variant="h6" className={classes.desc}>{trustItems.payable_day_rate}</Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={6} lg={3} className={classes.gridItem}>
+                        <Typography variant="body2" className={classes.heading}>Payable Night Rate</Typography>
+                        <Typography variant="h6" className={classes.desc}>{trustItems.payable_night_rate}</Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={6} lg={3} className={classes.gridItem}>
+                        <Typography variant="body2" className={classes.heading}>Payable Saturday Rate</Typography>
+                        <Typography variant="h6" className={classes.desc}>{trustItems.payable_saturday_rate}</Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={6} lg={3} className={classes.gridItem}>
+                        <Typography variant="body2" className={classes.heading}>Payable Holiday/Sunday</Typography>
+                        <Typography variant="h6" className={classes.desc}>{trustItems.payable_holiday_rate}</Typography>
+                    </Grid>
+
+                    <Grid item xs={12} sm={6} lg={3} className={classes.gridItem}>
+                        <Typography variant="body2" className={classes.heading}>Chargeable Day Rate</Typography>
+                        <Typography variant="h6" className={classes.desc}>{trustItems.chargeable_day_rate}</Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={6} lg={3} className={classes.gridItem}>
+                        <Typography variant="body2" className={classes.heading}>Chargeable Night Rate</Typography>
+                        <Typography variant="h6" className={classes.desc}>{trustItems.chargeable_night_rate}</Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={6} lg={3} className={classes.gridItem}>
+                        <Typography variant="body2" className={classes.heading}>Chargeable Saturday Rate</Typography>
+                        <Typography variant="h6" className={classes.desc}>{trustItems.chargeable_saturday_rate}</Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={6} lg={3} className={classes.gridItem}>
+                        <Typography variant="body2" className={classes.heading}>Chargeable Holiday/Sunday</Typography>
+                        <Typography variant="h6" className={classes.desc}>{trustItems.chargeable_holiday_rate}</Typography>
+                    </Grid>
+
                     <Grid item xs={12}>
                         <Box display="flex" justifyContent="flex-end" className={classes.btnContainer}>
                             <Button color="primary" onClick={backPage}>

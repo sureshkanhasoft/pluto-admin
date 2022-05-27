@@ -50,7 +50,8 @@ const useStyle = makeStyles({
         marginBottom:20
     },
     imgTag: {
-        maxWidth: "200px"
+        borderRadius: "20px",
+        maxWidth: "120px"
     },
 })
 

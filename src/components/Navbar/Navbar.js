@@ -193,7 +193,7 @@ const Navbar = () => {
       <AppBar position="static" className={classes.root}>
       { loginUserInfo.role == 'ORGANIZATION' &&
           <Container>
-            <Card style={{marginTop:4, padding:"8px 12px"}}>{ loginUserInfo.first_name } { loginUserInfo.last_name }</Card>
+            <Card style={{marginTop:4, padding:"8px 12px"}}>Welcome { loginUserInfo.first_name } { loginUserInfo.last_name }</Card>
           </Container>
         }
         <Toolbar>
