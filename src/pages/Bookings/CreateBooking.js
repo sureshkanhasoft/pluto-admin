@@ -91,10 +91,18 @@ const CreateBooking = () => {
     shift_type_id: "",
     hospital_id: "",
     commission: "",
-    speciality: []
-  })
+    speciality: [],
+  });
   const handleChange = (event) => {
     setData({ ...data, [event.target.name]: event.target.value });
+    if (event.target.name == "date") {
+      data.date = event.target.value;
+      getCharge();
+    }
+    if (event.target.name == "start_time") {
+      data.start_time = event.target.value;
+      getCharge();
+    }
   };
   const commissionHandleChange = (event) => {
     if (event.target.value < parseInt(data.rate)) {
@@ -173,6 +181,7 @@ const CreateBooking = () => {
     data.ward_id = "";
     setTrustId(event.target.value);
     setData({ ...data, [event.target.name]: event.target.value });
+    getCharge();
   };
   useEffect(() => {
     getTrust();
@@ -210,12 +219,12 @@ const CreateBooking = () => {
   const handleEndTime = async (event) => {
     // setData({ ...data, [event.target.name]: event.target.value });
     data.end_time = event.target.value;
-    console.log(data, " data")
+    console.log(data, " data");
     getCharge();
   };
 
   const getCharge = async () => {
-    if (data.start_time && data.end_time && data.trust_id) {
+    if (data.start_time && data.end_time && data.trust_id && data.date) {
       const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, "");
       await axios
         .post(`${apiConfigs.API_URL}api/organization/get-rate`, data, {
@@ -225,11 +234,9 @@ const CreateBooking = () => {
           },
         })
         .then((response) => {
-          console.log("response: ", response.data.data);
           const output = response.data.data;
           data.commission = Number(output.chargebleAmount);
           data.rate = Number(output.payableAmount);
-          console.log(data, "datadatadata")
           setData({ ...data });
         })
         .catch((error) => {
@@ -238,29 +245,26 @@ const CreateBooking = () => {
     }
   };
 
-    const getHoursList = async () => {
-      const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, "");
-      await axios
-        .get(`${apiConfigs.API_URL}api/organization/get-hours`, {
-          headers: {
-            "content-type": "application/json",
-            Authorization: `Bearer ${loggedInUser}`,
-          },
-        })
-        .then((response) => {
-          setHours(response.data);
-          const output = response.data.data;
-        })
-        .catch((error) => {
-          console.log("error: ", error);
-        });
-    };
+  const getHoursList = async () => {
+    const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, "");
+    await axios
+      .get(`${apiConfigs.API_URL}api/organization/get-hours`, {
+        headers: {
+          "content-type": "application/json",
+          Authorization: `Bearer ${loggedInUser}`,
+        },
+      })
+      .then((response) => {
+        setHours(response.data);
+        const output = response.data.data;
+      })
+      .catch((error) => {
+        console.log("error: ", error);
+      });
+  };
 
   const handleStartTime = async (event) => {
     data.start_time = event.target.value;
-    console.log(data, " datadata");
-    console.log(data.start_time, " data.start_time");
-    getCharge();
   };
 
   useEffect(() => {
@@ -269,8 +273,6 @@ const CreateBooking = () => {
 
   const getWardType = async (hospitalId) => {
     const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, "");
-    console.log(getHospitalId, "getHospitalId");
-    console.log(getTrustId, "getTrustId");
     await axios
       .get(
         `${apiConfigs.API_URL}api/organization/get-ward-by-hospital?hospitalId=${hospitalId}&trustId=${getTrustId}`,
@@ -396,9 +398,8 @@ const CreateBooking = () => {
   };
   const backPage = () => {
     history.goBack();
-  }; 
-console.log(errors, " adsadssadasdsad")
-console.log(data, " data")
+  };
+
   return (
     <>
       {loading ? (
@@ -410,6 +411,9 @@ console.log(data, " data")
       )}
       {trustNotify && createBookingSuccess?.message && (
         <Notification data={createBookingSuccess?.message} status="success" />
+      )}
+      {trustNotify && createBookingError?.message && (
+        <Notification data={createBookingError?.message} status="error" />
       )}
       {specError && speciality?.data === undefined && (
         <Notification
@@ -594,39 +598,18 @@ console.log(data, " data")
                 })}
                 error={errors.date ? true : false}
                 onChange={handleChange}
+                // onChange={e => { handleChange(e); getCharge() }}
                 InputLabelProps={{
                   shrink: true,
                 }}
                 fullWidth
                 required
                 inputProps={{
-                 min:disPastDate
+                  min: disPastDate,
                 }}
               />
             </Grid>
             <Grid item xs={12} sm={6} lg={4}>
-              {/* <TextField
-                                id="start_time"
-                                label="start time"
-                                type="time"
-                                name="start_time"
-                                // defaultValue="2017-05-24"
-                                className={classes.textField}
-                                variant="outlined"
-                                {...register('start_time', {
-                                    required: "The start time field is required.",
-                                })}
-                                error={(errors.start_time ? true : false)}
-                                onSelect={handleStartTime}
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                                fullWidth
-                                required
-                                inputProps={{
-                                    // min: disPastDate
-                                }}
-                            /> */}
               <FormControl
                 variant="outlined"
                 className={classes.formControl}
@@ -644,7 +627,7 @@ console.log(data, " data")
                   onChange={handleChange}
                   //   onChange={handleStartTime}
                 >
-                    <MenuItem value="">Select Start Time</MenuItem>
+                  <MenuItem value="">Select Start Time</MenuItem>
                   {hours?.data &&
                     hours?.data.map((hoursList, index) => {
                       return (
@@ -653,36 +636,10 @@ console.log(data, " data")
                         </MenuItem>
                       );
                     })}
-                  
                 </Select>
               </FormControl>
             </Grid>
             <Grid item xs={12} sm={6} lg={4}>
-              {/* <TextField
-                id="end_time"
-                label="end time"
-                type="time"
-                name="end_time"
-                className={classes.textField}
-                variant="outlined"
-                {...register("end_time", {
-                  required: "The start time field is required.",
-                })}
-                error={errors.end_time ? true : false}
-                // onChange={handleChange}
-                onChange={handleEndTime}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                fullWidth
-                required
-                inputProps={
-                  {
-                    // min: disPastDate
-                  }
-                }
-              /> */}
-
               <FormControl
                 variant="outlined"
                 className={classes.formControl}
@@ -699,9 +656,9 @@ console.log(data, " data")
                   })}
                   // error={(errors.end_time ? true : false)}
                   onChange={handleEndTime}
-                //   onChange={handleChange}
+                  //   onChange={handleChange}
                 >
-                   {hours?.data &&
+                  {hours?.data &&
                     hours?.data.map((hoursList, index) => {
                       return (
                         <MenuItem value={hoursList} key={index}>
@@ -796,7 +753,7 @@ console.log(data, " data")
                 />
               </div>
             </Grid> */}
-            
+
             <Grid item xs={12} sm={6} lg={4}>
               <div className="rate-symbol">
                 <span className="symbol">£</span>
@@ -807,17 +764,16 @@ console.log(data, " data")
                   name="commission"
                   type="number"
                   value={data?.commission}
-                  {...register("commission", {
-                    required: "The committion field is required.",
-                  })}
-                  error={!errors.commission ? true : false}
+                  // {...register("commission", {
+                  //   required: "The Chargeable field is required.",
+                  // })}
+                  // error={!errors.commission ? true : false}
                   onChange={handleChange}
                   InputProps={{
                     readOnly: true,
                   }}
-                //   onChange={commissionHandleChange}
+                  //   onChange={commissionHandleChange}
                   fullWidth
-                  // required
                 />
               </div>
             </Grid>

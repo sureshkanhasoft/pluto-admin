@@ -70,10 +70,19 @@ const UpdateBooking = ({ match }) => {
         end_time: "",
         shift_type_id: "",
         hospital_id: "",
+        commission: "",
         speciality: []
     })
     const handleChange = (event) => {
         setData({ ...data, [event.target.name]: event.target.value });
+        if(event.target.name == 'date'){
+            data.date = event.target.value;
+            getCharge()
+          }
+          if(event.target.name == 'start_time'){
+            data.start_time = event.target.value;
+            getCharge()
+          }
     };
 
     const handleChangeCheck = (event) => {
@@ -127,6 +136,7 @@ const UpdateBooking = ({ match }) => {
         data.ward_id=""
         setgetTrustId(event.target.value)
         setData({ ...data, [event.target.name]: event.target.value });
+        getCharge()
     }
     useEffect(() => {
         getTrust()
@@ -333,6 +343,9 @@ const UpdateBooking = ({ match }) => {
                     status="success"
                 />
             }
+             {trustNotify && updateBookingError?.message && (
+                <Notification data={updateBookingError?.message} status="error" />
+            )}
             {
                 loading ?
                     <Backdrop className={classes.backdrop} open={loading}>
@@ -619,7 +632,10 @@ const UpdateBooking = ({ match }) => {
                                         onChange={handleChange}
                                         // onChange={commissionHandleChange}
                                         fullWidth
-                                        required
+                                        InputProps={{
+                                            readOnly: true,
+                                          }}
+                                        // required
                                     />
                             </div>
                         </Grid>

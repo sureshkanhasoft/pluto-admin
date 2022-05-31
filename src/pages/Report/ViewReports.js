@@ -263,7 +263,7 @@ const ViewReports = ({ match }) => {
             InputLabelProps={{
                 shrink: true,
             }}
-        />
+        /> &nbsp;
         <TextField
             id="date"
             value={data.end_date}
@@ -276,7 +276,7 @@ const ViewReports = ({ match }) => {
             InputLabelProps={{
                 shrink: true,
             }}
-        />
+        /> &nbsp;
 
         <FormControl variant="outlined" className={classes.formControl}>
             <InputLabel>Trust Name</InputLabel>

@@ -15,7 +15,7 @@ import {
   FormControlLabel,
   Card,
   RadioGroup,
-  Radio,
+  Chip,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -252,6 +252,9 @@ const DetailSignee = ({ match }) => {
       }, 4000);
     }
   }, [complStatus]);
+  // console.log(getSingleSigneeItem?.data?.speciality?.speciality_name)
+  let specilaity_list = (getSingleSigneeItem?.data?.speciality?.speciality_name) ? getSingleSigneeItem?.data?.speciality?.speciality_name.split(",") : '';
+  console.log(specilaity_list.length, " specilaity_listspecilaity_list")
 
   return (
     <>
@@ -440,6 +443,23 @@ const DetailSignee = ({ match }) => {
                 : "-"}
             </Typography>
           </Grid>
+          <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
+            <Typography variant="body2" className={classes.heading}>
+            Candidate Id
+            </Typography>
+            <Typography variant="h6" className={classes.desc}>
+              {getSingleSigneeItem?.data?.candidate_id
+                ? getSingleSigneeItem?.data?.candidate_id
+                : ""}
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={12} lg={12} className={classes.gridItem}>
+              <Typography variant="body2" className={classes.heading}>Speciality:</Typography>
+              <div className={classes.chipContainer}>
+                  {specilaity_list.length >0 && specilaity_list?.map((list, index) => <Chip className="tag mt-1 mr-1" label={list} key={index}></Chip>)}
+              </div>
+          </Grid>
+
           {/* <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
                         <Typography variant="body2" className={classes.heading}>Candidate Referred from</Typography>
                         <Typography variant="h6" className={classes.desc}>{getSingleSigneeItem?.data?.candidate_referred_name ? getSingleSigneeItem?.data?.candidate_referred_name : "-"}</Typography>
