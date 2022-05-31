@@ -55,6 +55,7 @@ const UpdateBooking = ({ match }) => {
     const [gradeList, setGradeList] = useState([])
     const [shiftTime, setShiftTime] = useState([])
     const [trustNotify, setTrustNotify] = useState(false)
+    const [hours, setHours] = useState([]);
     const { updateBookingSuccess, updateBookingError, loading } = useSelector(state => state.booking)
     const disPastDate = UtilService.disabledPastDate()
     const [data, setData] = useState({
@@ -65,6 +66,8 @@ const UpdateBooking = ({ match }) => {
         date: "",
         shift_id: "",
         rate: "",
+        start_time: "",
+        end_time: "",
         shift_type_id: "",
         hospital_id: "",
         speciality: []
@@ -185,8 +188,8 @@ const UpdateBooking = ({ match }) => {
         });
     }
     useEffect(() => {
-        getShiftType()
-    }, [])
+        getShiftType()       
+    }, [])  
 
     const getGradeList = async () => {
         const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, '');
@@ -248,6 +251,8 @@ const UpdateBooking = ({ match }) => {
         });
     }
     useEffect(() => {
+        getCharge()
+        getHoursList();
         getBookingDetail()
     }, [])
 
@@ -260,6 +265,66 @@ const UpdateBooking = ({ match }) => {
     const backPage = () => {
         history.goBack()
     }
+
+    const commissionHandleChange = (event) => {
+        if(event.target.value < parseInt(data.rate)){
+            setData({ ...data, [event.target.name]: event.target.value});
+        } 
+    }
+    
+    const handleEndTime = async (event) => {
+        data.end_time = event.target.value;
+        getCharge();
+      };
+    
+    const getCharge = async () => {
+        if (data.start_time && data.end_time && data.trust_id) {
+          const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, "");
+          await axios
+            .post(`${apiConfigs.API_URL}api/organization/get-rate`, data, {
+              headers: {
+                "content-type": "application/json",
+                Authorization: `Bearer ${loggedInUser}`,
+              },
+            })
+            .then((response) => {
+              console.log("response: ", response.data.data);
+              const output = response.data.data;
+              data.commission = output.chargebleAmount;
+              data.rate = output.payableAmount;
+              console.log(data, "datadatadata")
+              setData({ ...data });
+            })
+            .catch((error) => {
+              console.log("error: ", error);
+            });
+        }
+    };
+
+    const handleStartTime = async (event) =>{
+        data.start_time = event.target.value;
+        console.log(data, " datadata")
+        getCharge();
+    }
+    
+    const getHoursList = async () => {
+        const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, "");
+        await axios
+          .get(`${apiConfigs.API_URL}api/organization/get-hours`, {
+            headers: {
+              "content-type": "application/json",
+              Authorization: `Bearer ${loggedInUser}`,
+            },
+          })
+          .then((response) => {
+            setHours(response.data);
+            const output = response.data.data;
+          })
+          .catch((error) => {
+            console.log("error: ", error);
+          });
+      };
+      
     return (
         <>
             {trustNotify && updateBookingSuccess?.message &&
@@ -415,8 +480,70 @@ const UpdateBooking = ({ match }) => {
                                 }}
                             />
                         </Grid>
-
-                        <Grid item xs={12} sm={6} lg={2}>
+                        <Grid item xs={12} sm={6} lg={4}>
+                            {/* <TextField
+                                id="start_time"
+                                label="start time"
+                                type="time"
+                                name="start_time"
+                                value={data?.start_time}
+                                // defaultValue="2017-05-24"
+                                className={classes.textField}
+                                variant="outlined"
+                                onChange={handleChange}
+                                onSelect={handleStartTime}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                fullWidth
+                                required
+                             
+                            /> */}
+                <FormControl variant="outlined" className={classes.formControl} required error={!!updateBookingError?.message?.start_time}>
+                <InputLabel>Start Time</InputLabel>
+                <Select
+                  value={data?.start_time}
+                  label="Start Time Required"
+                  name="start_time"
+                  onChange={handleChange}
+                  //   onChange={handleStartTime}
+                >
+                <MenuItem value="">Start Time</MenuItem>
+                  {hours?.data &&
+                    hours?.data.map((hoursList, index) => {
+                      return (
+                        <MenuItem value={hoursList} key={index}>
+                          {hoursList}
+                        </MenuItem>
+                      );
+                    })}
+                </Select>
+              </FormControl>
+                        </Grid>
+                        <Grid item xs={12} sm={6} lg={4}>
+                            <FormControl
+                            variant="outlined"
+                            className={classes.formControl}
+                            required error={!!updateBookingError?.message?.end_time}
+                        >
+                            <InputLabel>End Time</InputLabel>
+                            <Select
+                            value={data?.end_time}
+                            label="End Time"
+                            name="end_time"
+                            onChange={handleEndTime}
+                            >
+                            {
+                                        hours?.data && hours?.data.map((hoursList, index) => {
+                                            return (
+                                                <MenuItem value={hoursList} key={index}>{hoursList}</MenuItem>
+                                            )
+                                        })
+                            }
+                            </Select>
+                            </FormControl>
+                        </Grid>
+                        {/* <Grid item xs={12} sm={6} lg={2}>
                             <FormControl variant="outlined" className={classes.formControl} required error={!!updateBookingError?.message?.shift_id}>
                                 <InputLabel>Shift Time</InputLabel>
                                 <Select
@@ -438,8 +565,8 @@ const UpdateBooking = ({ match }) => {
                                 </Select>
                                 <FormHelperText>{updateBookingError?.message?.shift_id ? "The shift time field is required." :""}</FormHelperText>
                             </FormControl>
-                        </Grid>
-                        <Grid item xs={12} sm={6} lg={2}>
+                        </Grid> */}
+                        {/* <Grid item xs={12} sm={6} lg={2}>
                             <FormControl variant="outlined" className={classes.formControl} required error={!!updateBookingError?.message?.shift_type_id}>
                                 <InputLabel>Shift Type</InputLabel>
                                 <Select
@@ -461,14 +588,14 @@ const UpdateBooking = ({ match }) => {
                                 </Select>
                                 <FormHelperText>{updateBookingError?.message?.shift_type_id ? "The shift type field is required." :""}</FormHelperText>
                             </FormControl>
-                        </Grid>
+                        </Grid> */}
 
-                        <Grid item xs={12} sm={6} lg={4}>
+                        {/* <Grid item xs={12} sm={6} lg={2}>
                             <div className="rate-symbol">
                                 <span className="symbol">£</span>
                                 <TextField
                                     id="rate"
-                                    label="Rate"
+                                    label="Payable"
                                     variant="outlined"
                                     type="number"
                                     name="rate"
@@ -477,6 +604,23 @@ const UpdateBooking = ({ match }) => {
                                     fullWidth
                                     required
                                 />
+                            </div>
+                        </Grid> */}
+                        <Grid item xs={12} sm={6} lg={4}>
+                            <div className="rate-symbol">
+                                <span className="symbol">£</span>
+                                    <TextField
+                                        id="commission"
+                                        label="Chargeable"
+                                        variant="outlined"
+                                        name="commission"
+                                        type="number"
+                                        value={data.commission}
+                                        onChange={handleChange}
+                                        // onChange={commissionHandleChange}
+                                        fullWidth
+                                        required
+                                    />
                             </div>
                         </Grid>
 
