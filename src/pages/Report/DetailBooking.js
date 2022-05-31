@@ -237,17 +237,17 @@ const DetailBooking = ({ match }) => {
                         <Typography variant="body2" className={classes.heading}>Date:</Typography>
                         <Typography variant="h6" className={classes.desc}>{bookingDetail?.data?.date.toString().split("-").reverse().join("-")}</Typography>
                     </Grid>
-                    <Grid item xs={12} sm={6} lg={2} className={classes.gridItem}>
+                    <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
                         <Typography variant="body2" className={classes.heading}>Shift Time:</Typography>
                         <Typography variant="h6" className={classes.desc}>{bookingDetail?.data?.start_time} - {bookingDetail?.data?.end_time}</Typography>
                     </Grid>
-                    <Grid item xs={12} sm={6} lg={2} className={classes.gridItem}>
+                    <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
                         <Typography variant="body2" className={classes.heading}>Shift Type :</Typography>
                         <Typography variant="h6" className={classes.desc}>{bookingDetail?.data?.shift_type}</Typography>
                     </Grid>
                     <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
-                        <Typography variant="body2" className={classes.heading}>Rate:</Typography>
-                        <Typography variant="h6" className={classes.desc}><span className="symbol">£</span> {bookingDetail?.data?.rate}</Typography>
+                        <Typography variant="body2" className={classes.heading}>Payable:</Typography>
+                        <Typography variant="h6" className={classes.desc}><span className="symbol">£</span> {bookingDetail?.data?.payable}</Typography>
                     </Grid>
                     <Grid item xs={12}>
                         <Typography variant="body2" className={classes.heading}>Speciality:</Typography>

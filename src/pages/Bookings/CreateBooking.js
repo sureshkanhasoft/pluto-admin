@@ -87,10 +87,10 @@ const CreateBooking = () => {
     shift_id: "",
     start_time: "",
     end_time: "",
-    rate: "",
+    payable: "",
     shift_type_id: "",
     hospital_id: "",
-    commission: "",
+    chargeable: "",
     speciality: [],
   });
   const handleChange = (event) => {
@@ -105,7 +105,7 @@ const CreateBooking = () => {
     }
   };
   const commissionHandleChange = (event) => {
-    if (event.target.value < parseInt(data.rate)) {
+    if (event.target.value < parseInt(data.payable)) {
       setData({ ...data, [event.target.name]: event.target.value });
     }
   };
@@ -235,8 +235,8 @@ const CreateBooking = () => {
         })
         .then((response) => {
           const output = response.data.data;
-          data.commission = Number(output.chargebleAmount);
-          data.rate = Number(output.payableAmount);
+          data.chargeable = Number(output.chargebleAmount);
+          data.payable = Number(output.payableAmount);
           setData({ ...data });
         })
         .catch((error) => {
@@ -732,17 +732,17 @@ const CreateBooking = () => {
               <div className="rate-symbol hide">
                 <span className="symbol">£</span>
                 <TextField
-                  id="rate"
+                  id="payable"
                   label="Payable"
                   variant="outlined"
-                  name="rate"
+                  name="payable"
                   type="number"
-                  value={data?.rate}
-                  {...register("rate", {
-                    required: "The rate field is required.",
+                  value={data?.payable}
+                  {...register("payable", {
+                    required: "The payable field is required.",
                   })}
                   
-                  error={!errors.rate ? true : false}
+                  error={!errors.payable ? true : false}
                   onChange={handleChange}
                   noValidate
                   fullWidth
@@ -758,16 +758,16 @@ const CreateBooking = () => {
               <div className="rate-symbol">
                 <span className="symbol">£</span>
                 <TextField
-                  id="commission"
+                  id="chargeable"
                   label="Chargeable"
                   variant="outlined"
-                  name="commission"
+                  name="chargeable"
                   type="number"
-                  value={data?.commission}
-                  // {...register("commission", {
+                  value={data?.chargeable}
+                  // {...register("chargeable", {
                   //   required: "The Chargeable field is required.",
                   // })}
-                  // error={!errors.commission ? true : false}
+                  // error={!errors.chargeable ? true : false}
                   onChange={handleChange}
                   InputProps={{
                     readOnly: true,

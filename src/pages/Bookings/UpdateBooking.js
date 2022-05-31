@@ -65,12 +65,12 @@ const UpdateBooking = ({ match }) => {
         grade_id: "",
         date: "",
         shift_id: "",
-        rate: "",
+        payable: "",
         start_time: "",
         end_time: "",
         shift_type_id: "",
         hospital_id: "",
-        commission: "",
+        chargeable: "",
         speciality: []
     })
     const handleChange = (event) => {
@@ -277,7 +277,7 @@ const UpdateBooking = ({ match }) => {
     }
 
     const commissionHandleChange = (event) => {
-        if(event.target.value < parseInt(data.rate)){
+        if(event.target.value < parseInt(data.payable)){
             setData({ ...data, [event.target.name]: event.target.value});
         } 
     }
@@ -300,8 +300,8 @@ const UpdateBooking = ({ match }) => {
             .then((response) => {
               console.log("response: ", response.data.data);
               const output = response.data.data;
-              data.commission = output.chargebleAmount;
-              data.rate = output.payableAmount;
+              data.chargeable = output.chargebleAmount;
+              data.payable = output.payableAmount;
               console.log(data, "datadatadata")
               setData({ ...data });
             })
@@ -607,12 +607,12 @@ const UpdateBooking = ({ match }) => {
                             <div className="rate-symbol">
                                 <span className="symbol">£</span>
                                 <TextField
-                                    id="rate"
+                                    id="payable"
                                     label="Payable"
                                     variant="outlined"
                                     type="number"
-                                    name="rate"
-                                    value={data.rate}
+                                    name="payable"
+                                    value={data.payable}
                                     onChange={handleChange}
                                     fullWidth
                                     required
@@ -623,12 +623,12 @@ const UpdateBooking = ({ match }) => {
                             <div className="rate-symbol">
                                 <span className="symbol">£</span>
                                     <TextField
-                                        id="commission"
+                                        id="chargeable"
                                         label="Chargeable"
                                         variant="outlined"
-                                        name="commission"
+                                        name="chargeable"
                                         type="number"
-                                        value={data.commission}
+                                        value={data.chargeable}
                                         onChange={handleChange}
                                         // onChange={commissionHandleChange}
                                         fullWidth

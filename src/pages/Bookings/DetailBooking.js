@@ -264,20 +264,19 @@ console.log(confirmBtn , "confirmBtn")
                     </Grid> */}
                     <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
                         <Typography variant="body2" className={classes.heading}>Payable:</Typography>
-                        <Typography variant="h6" className={classes.desc}><span className="symbol">£</span> {bookingDetail?.data?.rate}</Typography>
+                        <Typography variant="h6" className={classes.desc}><span className="symbol">£</span> {bookingDetail?.data?.payable}</Typography>
                     </Grid>
                     <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
                         <Typography variant="body2" className={classes.heading}>Chargeable:</Typography>
-                        <Typography variant="h6" className={classes.desc}><span className="symbol">£</span> {bookingDetail?.data?.commission}</Typography>
+                        <Typography variant="h6" className={classes.desc}><span className="symbol">£</span> {bookingDetail?.data?.chargeable}</Typography>
                     </Grid>
                     <Grid item xs={12}>
                         <Typography variant="body2" className={classes.heading}>Speciality:</Typography>
                         <div className={classes.chipContainer}>
-
                             {
                                 bookingDetail?.data?.speciality && bookingDetail?.data?.speciality.map((list, index) => {
                                     return (
-                                        <Chip label={list.speciality_name} key={index} />
+                                        <Chip className='mt-1' label={list.speciality_name} key={index} />
                                     )
                                 })
                             }

@@ -316,7 +316,7 @@ const DetailTrust = ({ match }) => {
                     </Grid>
 
                     <Grid item xs={12} className={classes.mainWrapper}>
-                        <Typography className={classes.mainTitle}>Rate</Typography>
+                        <Typography className={classes.mainTitle}>Rates</Typography>
                     </Grid>
 
                     <Grid item xs={12} sm={6} lg={3} className={classes.gridItem}>
