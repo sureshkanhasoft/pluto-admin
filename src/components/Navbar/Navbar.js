@@ -4,7 +4,7 @@ import {
   AppBar,
   Toolbar,
   makeStyles,
-  Badge,
+  Badge,Box,Grid,
   IconButton,
   Menu,Card,
   MenuItem, Typography, Container
@@ -170,44 +170,143 @@ const Navbar = () => {
   return (
     <>
       {/* common notification */}
-      {notificationInfo?.message &&
-        (
-          <>
-            <Notification
-              data={notificationInfo?.message}
-              status={notificationInfo?.status ? "success" : "error"}
-            />
-            {clearNotificationMsg()}
-          </>
-        )
-      }
+      {notificationInfo?.message && (
+        <>
+          <Notification
+            data={notificationInfo?.message}
+            status={notificationInfo?.status ? "success" : "error"}
+          />
+          {clearNotificationMsg()}
+        </>
+      )}
       {/* common notification */}
 
       {/* loading */}
-      {
-        loadingStatus &&
-        <LoadingComponent status={loadingStatus} />
-      }
+      {loadingStatus && <LoadingComponent status={loadingStatus} />}
       {/* loading */}
 
       <AppBar position="static" className={classes.root}>
-      { loginUserInfo.role == 'ORGANIZATION' &&
-          <Container>
-            <Card style={{marginTop:4, padding:"8px 12px"}}>Welcome { loginUserInfo.first_name } { loginUserInfo.last_name }</Card>
-          </Container>
-        }
+        {loginUserInfo.role == "ORGANIZATION" && (
+          <Box style={{ padding: "0px 24px"}}>
+            <Card
+              style={{ marginTop: 4, padding: "4px 12px", display: "flex",justifyContent: "space-between",color: "#02294F"}}
+            >
+              <p className='mt-3'>Welcome {loginUserInfo.first_name}!</p>
+              {/* <Grid xs={12} sm={6} lg={11} className='mt-3'>Welcome {loginUserInfo.first_name} {loginUserInfo.last_name}</Grid> */}
+              <Box display="flex" justifyContent="flex-end">
+                {loggedUser !== "SUPERADMIN" && (
+                  <IconButton color="inherit" onClick={handleMenuNotification}>
+                    <Badge badgeContent={unReadNotification} color="secondary">
+                      <NotificationsIcon color="primary" />
+                    </Badge>
+                  </IconButton>
+                )}
+
+                <Menu
+                  anchorEl={notificationShow}
+                  open={open1}
+                  onClose={handleClose}
+                  getContentAnchorEl={null}
+                  anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                  transformOrigin={{ vertical: "top", horizontal: "right" }}
+                  className={classes.menuBox}
+                >
+                  {notificationList?.data &&
+                  notificationList?.data.length > 0 ? (
+                    notificationList?.data.map((val, index) => {
+                      if (index < 5) {
+                        return (
+                          <MenuItem
+                            onClick={(e) => readNotification1(e, val)}
+                            style={{
+                              background:
+                                val.is_read == 0 ? "#e7f2ff" : "white",
+                            }}
+                            key={index}
+                          >
+                            <div>
+                              <Typography
+                                variant="body2"
+                                className={`${classes.menuDesc} ${
+                                  val.is_read == 0 ? "isRead" : ""
+                                }`}
+                              >
+                                {val.message}{" "}
+                              </Typography>
+                            </div>
+                          </MenuItem>
+                        );
+                      }
+                    })
+                  ) : (
+                    <MenuItem>
+                      <div>
+                        <Typography
+                          variant="h6"
+                          className={classes.menuHeading}
+                        >
+                          No Data Found{" "}
+                        </Typography>
+                      </div>
+                    </MenuItem>
+                  )}
+                  {notificationList?.data &&
+                  notificationList?.data.length > 0 ? (
+                    <MenuItem>
+                      <>
+                        <Link to="/admin/notification">
+                          <Typography variant="caption">
+                            Show all notification
+                          </Typography>
+                        </Link>
+                        <span
+                          style={{ marginLeft: "auto" }}
+                          onClick={ReadAllNotification}
+                        >
+                          <Typography variant="caption">Read all</Typography>
+                        </span>
+                      </>
+                    </MenuItem>
+                  ) : (
+                    ""
+                  )}
+                </Menu>
+
+                <IconButton
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={handleMenu}
+                  color="inherit"
+                >
+                  <AccountCircleIcon color="primary" />
+                </IconButton>
+                <Menu
+                  id="menu-appbar"
+                  anchorEl={anchorEl}
+                  getContentAnchorEl={null}
+                  anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+                  open={open}
+                  onClose={handleClose}
+                >
+                  <MenuItem onClick={openProfile}>Profile</MenuItem>
+                  <MenuItem onClick={logout}>Logout</MenuItem>
+                </Menu>
+              </Box>
+            </Card>
+          </Box>
+        )}
         <Toolbar>
           <h1 className={classes.title}>{titleName} </h1>
-          {
-            loggedUser !== "SUPERADMIN" &&
+          {/* {loggedUser !== "SUPERADMIN" && (
             <IconButton color="inherit" onClick={handleMenuNotification}>
               <Badge badgeContent={unReadNotification} color="secondary">
                 <NotificationsIcon color="primary" />
               </Badge>
             </IconButton>
-          }
+          )} */}
 
-          <Menu
+          {/* <Menu
             anchorEl={notificationShow}
             open={open1}
             onClose={handleClose}
@@ -217,42 +316,62 @@ const Navbar = () => {
             transformOrigin={{ vertical: "top", horizontal: "right" }}
             className={classes.menuBox}
           >
-            {
-              notificationList?.data && notificationList?.data.length > 0 ?
-
-                notificationList?.data.map((val, index) => {
-                  if (index < 5) {
-                    return (
-                      <MenuItem onClick={((e) => readNotification1(e, val))} style={{ background: val.is_read == 0 ? '#e7f2ff' : 'white' }} key={index}>
-                        <div>
-                          <Typography variant="body2" className={`${classes.menuDesc} ${val.is_read == 0 ? 'isRead' : ''}`}>{val.message} </Typography>
-                        </div>
-                      </MenuItem>
-                    )
-                  }
-                }) :
-                <MenuItem >
-                  <div>
-                    <Typography variant="h6" className={classes.menuHeading}>No Data Found </Typography>
-                  </div>
-                </MenuItem>
-            }
-            {notificationList?.data && notificationList?.data.length > 0 ?
+            {notificationList?.data && notificationList?.data.length > 0 ? (
+              notificationList?.data.map((val, index) => {
+                if (index < 5) {
+                  return (
+                    <MenuItem
+                      onClick={(e) => readNotification1(e, val)}
+                      style={{
+                        background: val.is_read == 0 ? "#e7f2ff" : "white",
+                      }}
+                      key={index}
+                    >
+                      <div>
+                        <Typography
+                          variant="body2"
+                          className={`${classes.menuDesc} ${
+                            val.is_read == 0 ? "isRead" : ""
+                          }`}
+                        >
+                          {val.message}{" "}
+                        </Typography>
+                      </div>
+                    </MenuItem>
+                  );
+                }
+              })
+            ) : (
+              <MenuItem>
+                <div>
+                  <Typography variant="h6" className={classes.menuHeading}>
+                    No Data Found{" "}
+                  </Typography>
+                </div>
+              </MenuItem>
+            )}
+            {notificationList?.data && notificationList?.data.length > 0 ? (
               <MenuItem>
                 <>
                   <Link to="/admin/notification">
-                    <Typography variant="caption">Show all notification</Typography>
+                    <Typography variant="caption">
+                      Show all notification
+                    </Typography>
                   </Link>
-                  <span style={{ marginLeft: "auto" }} onClick={ReadAllNotification}>
+                  <span
+                    style={{ marginLeft: "auto" }}
+                    onClick={ReadAllNotification}
+                  >
                     <Typography variant="caption">Read all</Typography>
                   </span>
                 </>
+              </MenuItem>
+            ) : (
+              ""
+            )}
+          </Menu> */}
 
-              </MenuItem> : ""
-            }
-          </Menu>
-
-          <div className="ml-2">
+          {/* <div className="ml-2">
             <IconButton
               aria-label="account of current user"
               aria-controls="menu-appbar"
@@ -271,17 +390,13 @@ const Navbar = () => {
               onClose={handleClose}
             >
               <MenuItem onClick={openProfile}>Profile</MenuItem>
-              {/* {
-              loggedUser === "ORGANIZATION" && <MenuItem onClick={openChangePassword}>Change password</MenuItem>
-            } */}
-
               <MenuItem onClick={logout}>Logout</MenuItem>
             </Menu>
-          </div>
+          </div> */}
         </Toolbar>
       </AppBar>
     </>
-  )
+  );
 }
 
 export default Navbar

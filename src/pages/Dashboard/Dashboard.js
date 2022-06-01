@@ -8,6 +8,8 @@ import { Chart } from "react-google-charts";
 // import PersonOutline from "@material-ui/icons/PersonOutline";
 // import { Chart } from 'react-charts'
 // import BarChart from 'react-bar-chart';
+import axios from 'axios';
+import apiConfigs from '../../config/config';
 import {
   Container,
   FormControl,
@@ -15,7 +17,7 @@ import {
   makeStyles,
   MenuItem,
   Select,
-  Backdrop,
+  Backdrop,Button,
   CircularProgress,
 } from "@material-ui/core";
 // var CanvasJSChart = CanvasJSReact.CanvasJSChart;
@@ -71,6 +73,28 @@ const Dashboard = () => {
     title: "",
     legend: { position: "none" },
   };
+
+  const handleClickDownload = async (event, value) => {
+    console.log(dashboardYear, " dashboardYear")
+    const loggedInUser = localStorage.getItem("token").replace(/['"]+/g, '');
+    await axios.get(`${apiConfigs.API_URL}api/superadmin/dashboard-csv/${dashboardYear?.years}`, {
+        headers: {
+            'content-type': 'application/json',
+            'Authorization': `Bearer ${loggedInUser}`
+        }
+    }).then(response => {
+      console.log(response.data,"=====")
+        const url = response.data.data;
+        var link = document.createElement("a");
+        link.download = "Candidate.csv";
+        link.href = url;
+        link.target = "_blank";
+        link.click();
+    }).catch(error => {
+        console.log('error: ', error);
+    })
+};
+
   return (
     <section key={Date.now()+'1'} className="pt-16 pb-32">
       <Container key={Date.now()+'2'} maxWidth="lg">
@@ -91,8 +115,6 @@ const Dashboard = () => {
      
         <div className="box-container" key={Date.now()+'6'}>
           {
-            // [1, 2, 3].map(index => {
-            // return (
             <>
               <div className="box-list" key={Date.now()+'7'}>
                 <div className="inner-box-list" key={Date.now()+'8'}>
@@ -121,13 +143,11 @@ const Dashboard = () => {
                 </div>
               </div>
             </>
-            // )
-            // })
           }
         </div>
         <div key={Date.now()+'16'} style={{display: "flex",alignItems: "center",width:'100%',justifyContent: "space-between"}} className="inner-box-list">
             <h2 key={Date.now()+'17'}>Monthly User Details</h2>
-            <InputLabel style={{marginLeft: '54%'}}>Select Year</InputLabel>
+            <InputLabel style={{marginLeft: '44%'}}>Select Year</InputLabel>
               <FormControl key={Date.now()+'2'}
               variant="outlined"
               className={classes.formControl1}
@@ -143,6 +163,9 @@ const Dashboard = () => {
                 ))}
               </Select>
             </FormControl>
+            <Button variant="contained" color="secondary" onClick={handleClickDownload}>
+                  <span className="material-icons mr-2">download</span> Download
+            </Button>
           </div>
         <Chart key={Date.now()+'19'}
           chartType="ColumnChart"

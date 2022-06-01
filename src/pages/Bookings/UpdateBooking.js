@@ -603,7 +603,7 @@ const UpdateBooking = ({ match }) => {
                             </FormControl>
                         </Grid> */}
 
-                        {/* <Grid item xs={12} sm={6} lg={2}>
+                        <Grid item xs={12} sm={6} lg={2}>
                             <div className="rate-symbol">
                                 <span className="symbol">£</span>
                                 <TextField
@@ -618,8 +618,8 @@ const UpdateBooking = ({ match }) => {
                                     required
                                 />
                             </div>
-                        </Grid> */}
-                        <Grid item xs={12} sm={6} lg={4}>
+                        </Grid>
+                        <Grid item xs={12} sm={6} lg={2}>
                             <div className="rate-symbol">
                                 <span className="symbol">£</span>
                                     <TextField

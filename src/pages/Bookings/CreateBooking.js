@@ -728,7 +728,7 @@ const CreateBooking = () => {
                             </FormControl>
                         </Grid> */}
 
-            {/* <Grid item xs={12} sm={6} lg={2}>
+            <Grid item xs={12} sm={6} lg={2}>
               <div className="rate-symbol hide">
                 <span className="symbol">£</span>
                 <TextField
@@ -752,9 +752,9 @@ const CreateBooking = () => {
                   }}
                 />
               </div>
-            </Grid> */}
+            </Grid>
 
-            <Grid item xs={12} sm={6} lg={4}>
+            <Grid item xs={12} sm={6} lg={2}>
               <div className="rate-symbol">
                 <span className="symbol">£</span>
                 <TextField
