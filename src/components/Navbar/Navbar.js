@@ -191,7 +191,7 @@ const Navbar = () => {
             <Card
               style={{ marginTop: 4, padding: "4px 12px", display: "flex",justifyContent: "space-between",color: "#02294F"}}
             >
-              <p className='mt-3'>Welcome {loginUserInfo.first_name}!</p>
+              <p className='mt-3'>Welcome {loginUserInfo.organization_name}!</p>
               {/* <Grid xs={12} sm={6} lg={11} className='mt-3'>Welcome {loginUserInfo.first_name} {loginUserInfo.last_name}</Grid> */}
               <Box display="flex" justifyContent="flex-end">
                 {loggedUser !== "SUPERADMIN" && (
@@ -306,7 +306,7 @@ const Navbar = () => {
             </IconButton>
           )} */}
 
-          {/* <Menu
+          <Menu
             anchorEl={notificationShow}
             open={open1}
             onClose={handleClose}
@@ -369,30 +369,31 @@ const Navbar = () => {
             ) : (
               ""
             )}
-          </Menu> */}
-
-          {/* <div className="ml-2">
-            <IconButton
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleMenu}
-              color="inherit"
-            >
-              <AccountCircleIcon color="primary" />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorEl}
-              getContentAnchorEl={null}
-              anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-              open={open}
-              onClose={handleClose}
-            >
-              <MenuItem onClick={openProfile}>Profile</MenuItem>
-              <MenuItem onClick={logout}>Logout</MenuItem>
-            </Menu>
-          </div> */}
+          </Menu>
+          {loggedUser == "SUPERADMIN" && (
+            <div className="ml-2">
+              <IconButton
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+                color="inherit"
+              >
+                <AccountCircleIcon color="primary" />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                getContentAnchorEl={null}
+                anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+                open={open}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={openProfile}>Profile</MenuItem>
+                <MenuItem onClick={logout}>Logout</MenuItem>
+              </Menu>
+            </div>
+          )}
         </Toolbar>
       </AppBar>
     </>
