@@ -112,3 +112,10 @@ export {
     getPlan,
     updatePlan,
 } from "./plan/planAction"
+
+
+export {
+    getHoliday,
+    createHoliday,
+    deleteHoliday
+} from './holiday/holidayAction'

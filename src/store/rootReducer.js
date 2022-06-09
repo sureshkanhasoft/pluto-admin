@@ -5,6 +5,7 @@ import organizationReducer from "./reducer/organizationReducer/organizationReduc
 import orgProfileReducer from "./reducer/orgProfileReducer/orgProfileReducer";
 import profileReducer from "./reducer/profile/profileReducer"
 import rolesReducer from "./reducer/Roles/rolesReducer";
+import holidayReducer from "./reducer/Holiday/holidayReducer";
 import specialitiesReducer from "./reducer/specialities/specialitiesReducer";
 import staffReducer from "./reducer/staff/staffReducer";
 import trustReducer from "./reducer/trust/trustReducer"
@@ -41,6 +42,7 @@ const rootReducer = combineReducers(
         paymentReducer:paymentReducer,
         reportReducer:reportReducer,
         planReducer:planReducer,
+        holiday: holidayReducer,
     }
 );
 

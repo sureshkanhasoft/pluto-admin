@@ -4,6 +4,7 @@ import ChangePassword from "./pages/ChangePassword/ChangePassword";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Organization from "./pages/Organization/Organization";
 import PlanManagement from "./pages/PlanManagement/PlanManagement";
+import Holiday from "./pages/Holiday/Holiday";
 import Roles from "./pages/Roles/Roles";
 import Specialities from "./pages/Specialities/Specialities";
 import CreateStaff from "./pages/Staff/CreateStaff";
@@ -37,6 +38,13 @@ const Routes = [
         path:"plan",
         component:PlanManagement,
         icon:"account_tree",
+        role:"superadmin"
+    },
+    {
+        name:"Holiday",
+        path:"holiday",
+        component:Holiday,
+        icon:"holiday_village",
         role:"superadmin"
     },
 
