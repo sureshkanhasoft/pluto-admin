@@ -40,13 +40,7 @@ const Routes = [
         icon:"account_tree",
         role:"superadmin"
     },
-    {
-        name:"Holiday",
-        path:"holiday",
-        component:Holiday,
-        icon:"holiday_village",
-        role:"superadmin"
-    },
+   
 
     {
         name:"change-password",
@@ -172,6 +166,13 @@ const Routes = [
         // icon:"description",
         role:"organization",
         sidebar:false
+    },
+    {
+        name:"Holiday",
+        path:"holiday",
+        component:Holiday,
+        icon:"holiday_village",
+        role:"organization"
     },
     {
         name:"Subscription",

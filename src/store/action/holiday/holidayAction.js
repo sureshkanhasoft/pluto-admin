@@ -14,7 +14,7 @@ export const getHoliday = () => {
     const loggedInUser = localStorage.getItem('token').replace(/['"]+/g, '');
     return async(dispatch) =>{
         dispatch(getHolidayRequest())
-        await axios.get(`${Config.API_URL}api/superadmin/holiday`, {
+        await axios.get(`${Config.API_URL}api/organization/holiday`, {
             headers: {
                 'content-type': 'application/json',
                 'Authorization': `Bearer ${loggedInUser}`
@@ -24,6 +24,7 @@ export const getHoliday = () => {
             if (data.status === true) {
                 dispatch(getHolidaySuccess(data))
             } else {
+                dispatch(getHolidaySuccess([]))
                 dispatch(getHolidayError(data))
             }
         }).catch(error => {
@@ -57,7 +58,7 @@ export const createHoliday = (data) => {
     const loggedInUser = localStorage.getItem('token').replace(/['"]+/g, '');
     return async(dispatch) =>{
         dispatch(createHolidayRequest())
-        await axios.post(`${Config.API_URL}api/superadmin/holiday`, data,{
+        await axios.post(`${Config.API_URL}api/organization/holiday`, data,{
             headers: {
                 'content-type': 'application/json',
                 'Authorization': `Bearer ${loggedInUser}`
@@ -103,7 +104,7 @@ export const deleteHoliday = (holiday_id) => {
     const loggedInUser = localStorage.getItem('token').replace(/['"]+/g, '');
     return async(dispatch) =>{
         dispatch(deleteHolidayRequest())
-        await axios.delete(`${Config.API_URL}api/superadmin/holiday/${holiday_id}`, {
+        await axios.delete(`${Config.API_URL}api/organization/holiday/${holiday_id}`, {
             headers: {
                 'content-type': 'application/json',
                 'Authorization': `Bearer ${loggedInUser}`
