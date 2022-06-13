@@ -170,7 +170,7 @@ const Routes = [
     {
         name:"Holiday",
         path:"holiday",
-        component:Holiday,
+        component:(loginUserInfo?.is_plan_expire === true ) ? Payment : Holiday,
         icon:"holiday_village",
         role:"organization"
     },

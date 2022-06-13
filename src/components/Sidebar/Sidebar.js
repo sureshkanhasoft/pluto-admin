@@ -33,7 +33,8 @@ const useStyle = makeStyles({
         color: "#fff",
         display: "block",
         width: "90%",
-        margin: "12px auto",
+        margin: "auto auto",
+        // margin: "12px auto",
         borderRadius: 4,
         "&.active": {
             background: "#ff8b46",
