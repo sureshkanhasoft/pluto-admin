@@ -370,7 +370,7 @@ const Navbar = () => {
               ""
             )}
           </Menu>
-          {loggedUser == "SUPERADMIN" && (
+          {loggedUser != "ORGANIZATION" && (
             <div className="ml-2">
               <IconButton
                 aria-label="account of current user"
