@@ -206,10 +206,9 @@ const getSingleSigneeFailure = (error) => {
 
 // ---------------------------------------
 
-export const getContactEventForSignee = (id) => {
+export const getContactEventForSignee = (pageNo, search, id) => {
     const loggedInUser = localStorage.getItem('token').replace(/['"]+/g, '');
     return async (dispatch) => {
-        let search = "";
         dispatch(getContactEventRequest())
         await axios.get(`${Config.API_URL}api/organization/contact-event/${id}?search=${search}`, {
             'headers': {

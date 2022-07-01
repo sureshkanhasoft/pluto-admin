@@ -16,6 +16,12 @@ import {
   Card,
   RadioGroup,
   Chip,
+  InputBase,
+  Table,
+  TableBody,
+  TableHead,
+  TableRow,
+  TableCell,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -27,6 +33,10 @@ import PublishIcon from "@material-ui/icons/Publish";
 import axios from "axios";
 import { apiClient } from "../../config/apiClient";
 import apiConfigs from "../../config/config";
+import { Pagination } from "@material-ui/lab";
+import moment from "moment";
+import { alpha } from "@material-ui/core/styles/colorManipulator";
+
 import {
   changeDocStatus,
   deleteSignee,
@@ -39,6 +49,8 @@ import Notification from "../../components/Notification/Notification";
 import InsertPhotoOutlinedIcon from "@material-ui/icons/InsertPhotoOutlined";
 import PictureAsPdfIcon from "@material-ui/icons/PictureAsPdf";
 import InfoIcon from "@material-ui/icons/Info";
+import SearchIcon from "@material-ui/icons/Search";
+
 const useStyle = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -137,6 +149,46 @@ const useStyle = makeStyles((theme) => ({
     minWidth: 220,
     marginBottom: 12,
   },
+  search: {
+    position: "relative",
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: alpha(theme.palette.common.white, 0.15),
+    "&:hover": {
+      backgroundColor: alpha(theme.palette.common.white, 0.25),
+    },
+    marginLeft: 0,
+    width: "100%",
+    flexGrow: 1,
+    [theme.breakpoints.up("sm")]: {
+      marginLeft: theme.spacing(),
+      width: "auto",
+    },
+  },
+  searchIcon: {
+    width: theme.spacing(6),
+    height: "100%",
+    position: "absolute",
+    pointerEvents: "none",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  inputRoot: {
+    color: "inherit",
+    width: "100%",
+  },
+  inputInput: {
+    paddingTop: theme.spacing(),
+    paddingRight: theme.spacing(),
+    paddingBottom: theme.spacing(),
+    paddingLeft: theme.spacing(1),
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    borderBottom: "1px solid #ccc",
+    [theme.breakpoints.up("md")]: {
+      width: 200,
+    },
+  },
 }));
 
 const DetailSignee = ({ match }) => {
@@ -162,6 +214,8 @@ const DetailSignee = ({ match }) => {
   const [fileSizeMsg, setFileSize] = useState("");
   const [notifyMsg, setNotifyMsg] = useState(false);
   const [loader, setLoader] = useState(false);
+  const [page, setPage] = React.useState(1);
+  const [searchData, setSearchData] = useState({ search: "" });
 
   const baseUrl =
     "http://backendbooking.kanhasoftdev.com/public/uploads/signee_docs/";
@@ -209,9 +263,10 @@ const DetailSignee = ({ match }) => {
   const deleteRoleClose = () => {
     setDeleteOpen(false);
   };
+
   useEffect(() => {
     dispatch(getSingleSignee(user_id));
-    dispatch(getContactEventForSignee(user_id));
+    getevent(1, "");
   }, [user_id]);
 
   const backPage = () => {
@@ -349,6 +404,29 @@ const DetailSignee = ({ match }) => {
       });
   };
 
+  const getevent = (pageNo = 1, search = "") => {
+    dispatch(getContactEventForSignee(pageNo, search, user_id));
+  };
+
+  const handleSearchChange = (event) => {
+    const d1 = event.target.value;
+    if (d1) {
+      setTimeout(getevent(page, d1), 100);
+    } else {
+      setTimeout(getevent(page, ""), 100);
+    }
+    setSearchData({ ...searchData, [event.target.name]: event.target.value });
+  };
+
+  const handleClickSearch = (event, value) => {
+    setTimeout(getevent(page, searchData.search), 1000);
+  };
+
+  const handleChangePage = (event, value) => {
+    setPage(value);
+    setTimeout(getevent(value), 2000);
+  };
+  console.log(getCandidateEventItem, getCandidateEventError);
   return (
     <>
       {loading || loader ? (
@@ -1010,7 +1088,7 @@ const DetailSignee = ({ match }) => {
                         <span>Upload files</span>
                       </button>
                     </div>
-                    
+
                     <div className={classes.selectCon}>
                       {list[1].length > 0 && (
                         <>
@@ -1089,6 +1167,71 @@ const DetailSignee = ({ match }) => {
             );
           }
         )}
+
+      <Paper className={`${classes.root} mb-6`}>
+        <Box className="mb-5" display="flex" alignItems="center">
+          <SearchIcon
+            className={classes.searchIcondet}
+            onClick={handleClickSearch}
+          />
+          <div className={classes.search}>
+            <InputBase
+              name="search"
+              placeholder="Search…"
+              onChange={handleSearchChange}
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput,
+              }}
+            />
+          </div>
+        </Box>
+
+        <Table className={classes.table}>
+          <TableHead>
+            <TableRow>
+              <TableCell>Id</TableCell>
+              <TableCell align="left">Date</TableCell>
+              <TableCell align="left">Comment</TableCell>
+              <TableCell align="left">By</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {getCandidateEventItem?.data &&
+              getCandidateEventItem?.data.map((row, index) => {
+                return (
+                  <TableRow key={index}>
+                    <TableCell scope="row">{index + 1}</TableCell>
+                    <TableCell align="left">
+                      {moment(row.created_at).format("DD MMM YYYY hh:mm A")}
+                    </TableCell>
+                    <TableCell align="left">{row.comment}</TableCell>
+                    <TableCell align="left">{`${row.first_name} ${row.last_name}`}</TableCell>
+                  </TableRow>
+                );
+              })}
+
+            {getCandidateEventItem?.data == "" && (
+              <TableRow>
+                <TableCell scope="row" colSpan="6">
+                  <div className="" align="center">
+                    Sorry, Event not available!
+                  </div>
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+        <Box className="mt-5" display="flex" justifyContent="flex-end">
+          <Pagination
+            onChange={handleChangePage}
+            page={page}
+            count={getCandidateEventItem?.data?.last_page}
+            showFirstButton
+            showLastButton
+          />
+        </Box>
+      </Paper>
 
       <AlertDialog
         id={Id}
