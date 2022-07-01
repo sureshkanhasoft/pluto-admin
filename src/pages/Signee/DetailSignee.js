@@ -1235,11 +1235,11 @@ const DetailSignee = ({ match }) => {
                 );
               })}
 
-            {getCandidateEventItem?.data == "" && (
+            {getCandidateEventItem?.data == "" || getCandidateEventItem?.data == undefined && (
               <TableRow>
-                <TableCell scope="row" colSpan="6">
+                <TableCell scope="row" colSpan="4">
                   <div className="" align="center">
-                    Sorry, Event not available!
+                    Sorry, Contact Event not found!
                   </div>
                 </TableCell>
               </TableRow>
