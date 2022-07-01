@@ -69,6 +69,7 @@ export {
     getCandidateReferredFrom,
     getSingleSignee,
     getContactEventForSignee,
+    addContactEventForSignee,
     deleteSignee,
     signeeProStatus,
     signeeCompStatus,

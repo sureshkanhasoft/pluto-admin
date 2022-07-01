@@ -50,6 +50,8 @@ import InsertPhotoOutlinedIcon from "@material-ui/icons/InsertPhotoOutlined";
 import PictureAsPdfIcon from "@material-ui/icons/PictureAsPdf";
 import InfoIcon from "@material-ui/icons/Info";
 import SearchIcon from "@material-ui/icons/Search";
+import AddIcon from "@material-ui/icons/Add";
+import CreateContactEvent from "./CreateContactEvent";
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -216,7 +218,7 @@ const DetailSignee = ({ match }) => {
   const [loader, setLoader] = useState(false);
   const [page, setPage] = React.useState(1);
   const [searchData, setSearchData] = useState({ search: "" });
-
+  const [open, setOpen] = useState(false);
   const baseUrl =
     "http://backendbooking.kanhasoftdev.com/public/uploads/signee_docs/";
 
@@ -426,7 +428,14 @@ const DetailSignee = ({ match }) => {
     setPage(value);
     setTimeout(getevent(value), 2000);
   };
-  console.log(getCandidateEventItem, getCandidateEventError);
+  const handleClickOpen = (id) => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <>
       {loading || loader ? (
@@ -456,6 +465,9 @@ const DetailSignee = ({ match }) => {
       )}
       {fileSizeMsg && <Notification data={fileSizeMsg} status="error" />}
       {addDocMsg && <Notification data={addDocMsg} status="success" />}
+
+      <CreateContactEvent open={open} handleClose={handleClose} signee_id={user_id} />
+
       <Paper className={`${classes.root} mb-6`}>
         <Grid container spacing={4}>
           <Grid item xs={12} sm={6} lg={4} className={classes.statusContainer}>
@@ -1167,7 +1179,9 @@ const DetailSignee = ({ match }) => {
             );
           }
         )}
-
+      <Typography variant="h5" style={{ marginBottom: 16 }}>
+        Contact Event list
+      </Typography>
       <Paper className={`${classes.root} mb-6`}>
         <Box className="mb-5" display="flex" alignItems="center">
           <SearchIcon
@@ -1184,6 +1198,16 @@ const DetailSignee = ({ match }) => {
                 input: classes.inputInput,
               }}
             />
+          </div>
+          <div className="ml-5">
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={handleClickOpen}
+            >
+              <AddIcon className="mr-2" />
+              Add Contact Event
+            </Button>
           </div>
         </Box>
 
