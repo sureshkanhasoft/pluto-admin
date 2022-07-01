@@ -10,7 +10,8 @@ import {
     GET_SINGLE_SIGNEE_REQUETS, GET_SINGLE_SIGNEE_SUCCESS, GET_SINGLE_SIGNEE_ERROR, 
     DELETE_SIGNEE_REQUETS, DELETE_SIGNEE_SUCCESS, DELETE_SIGNEE_ERROR, 
     CHANGE_SIGNEE_PRO_STATUS_REQUEST, CHANGE_SIGNEE_PRO_STATUS_SUCCESS, CHANGE_SIGNEE_PRO_STATUS_ERROR, 
-    CHANGE_SIGNEE_COMP_STATUS_REQUEST, CHANGE_SIGNEE_COMP_STATUS_SUCCESS, CHANGE_SIGNEE_COMP_STATUS_ERROR, CHANGE_DOC_STATUS_REQUEST, CHANGE_DOC_STATUS_SUCCESS, CHANGE_DOC_STATUS_ERROR 
+    CHANGE_SIGNEE_COMP_STATUS_REQUEST, CHANGE_SIGNEE_COMP_STATUS_SUCCESS, CHANGE_SIGNEE_COMP_STATUS_ERROR, CHANGE_DOC_STATUS_REQUEST, CHANGE_DOC_STATUS_SUCCESS, CHANGE_DOC_STATUS_ERROR ,
+    GET_CONTACT_EVENT_REQUETS , GET_CONTACT_EVENT_SUCCESS,  GET_CONTACT_EVENT_ERROR
 } from "../actiontypes";
 
 
@@ -182,6 +183,7 @@ export const getSingleSignee = (id) => {
     }
 }
 
+
 const getSingleSigneeRequest = () => {
     return {
         type: GET_SINGLE_SIGNEE_REQUETS
@@ -198,6 +200,52 @@ const getSingleSigneeSuccess = (data) => {
 const getSingleSigneeFailure = (error) => {
     return {
         type: GET_SINGLE_SIGNEE_ERROR,
+        payload: error
+    }
+}
+
+// ---------------------------------------
+
+export const getContactEventForSignee = (id) => {
+    const loggedInUser = localStorage.getItem('token').replace(/['"]+/g, '');
+    return async (dispatch) => {
+        let search = "";
+        dispatch(getContactEventRequest())
+        await axios.get(`${Config.API_URL}api/organization/contact-event/${id}?search=${search}`, {
+            'headers': {
+                'Content-type': 'application/json',
+                'Authorization': 'Bearer ' + loggedInUser
+            }
+        }).then(response => {
+            const data = response.data
+            if (data && data.status === true) {
+                dispatch(getContactEventSuccess(data))
+            } else {
+                dispatch(getContactEventSuccess(""))
+                dispatch(getContactEventFailure(data))
+            }
+        }).catch(error => {
+            dispatch(getContactEventFailure(error))
+        })
+    }
+}
+
+const getContactEventRequest = () => {
+    return {
+        type: GET_CONTACT_EVENT_REQUETS
+    }
+}
+
+const getContactEventSuccess = (data) => {
+    return {
+        type: GET_CONTACT_EVENT_SUCCESS,
+        payload: data
+    }
+}
+
+const getContactEventFailure = (error) => {
+    return {
+        type: GET_CONTACT_EVENT_ERROR,
         payload: error
     }
 }

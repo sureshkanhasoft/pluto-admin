@@ -68,6 +68,7 @@ export {
     updateSignee,
     getCandidateReferredFrom,
     getSingleSignee,
+    getContactEventForSignee,
     deleteSignee,
     signeeProStatus,
     signeeCompStatus,

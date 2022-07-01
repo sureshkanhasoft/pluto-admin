@@ -23,10 +23,15 @@ import EditIcon from "@material-ui/icons/Edit";
 import AlertDialog from "../../components/Alert/AlertDialog";
 import { useDispatch, useSelector } from "react-redux";
 import history from "../../utils/HistoryUtils";
+import PublishIcon from "@material-ui/icons/Publish";
+import axios from "axios";
+import { apiClient } from "../../config/apiClient";
+import apiConfigs from "../../config/config";
 import {
   changeDocStatus,
   deleteSignee,
   getSingleSignee,
+  getContactEventForSignee,
   signeeCompStatus,
   signeeProStatus,
 } from "../../store/action";
@@ -78,6 +83,10 @@ const useStyle = makeStyles((theme) => ({
     },
   },
   selectCon: {
+    marginLeft: "auto",
+    minWidth: 140,
+  },
+  fileCon: {
     marginLeft: "auto",
     minWidth: 140,
   },
@@ -140,7 +149,20 @@ const DetailSignee = ({ match }) => {
   const [docNotify, setDocNotify] = useState(false);
   const [compNotify, setCompNotify] = useState(false);
   const [proNotify, setProNotify] = useState(false);
+  const [key1, aetKey1] = useState("");
   const staffDetail = JSON.parse(localStorage.getItem("staffDetail"));
+  const [selectedFile, setSelectedFile] = useState([]);
+  const [uploadPercentage, setUploadPercentage] = useState(0);
+  const [key2, setKey] = useState("");
+  const getToken = localStorage.getItem("token")
+    ? localStorage.getItem("token").replace(/['"]+/g, "")
+    : "";
+  // const { documentDetail, documentDetailError } = useSelector(state => state.addCompliance);
+  const [addDocMsg, setAddDocMsg] = useState("");
+  const [fileSizeMsg, setFileSize] = useState("");
+  const [notifyMsg, setNotifyMsg] = useState(false);
+  const [loader, setLoader] = useState(false);
+
   const baseUrl =
     "http://backendbooking.kanhasoftdev.com/public/uploads/signee_docs/";
 
@@ -153,6 +175,8 @@ const DetailSignee = ({ match }) => {
     signeeProStatusSuccess,
     signeeComStatusSuccess,
     signeeComStatusError,
+    getCandidateEventItem,
+    getCandidateEventError,
   } = useSelector((state) => state.signee);
 
   const [complainceStatus, setComplainceStatus] = useState({
@@ -187,6 +211,7 @@ const DetailSignee = ({ match }) => {
   };
   useEffect(() => {
     dispatch(getSingleSignee(user_id));
+    dispatch(getContactEventForSignee(user_id));
   }, [user_id]);
 
   const backPage = () => {
@@ -253,12 +278,80 @@ const DetailSignee = ({ match }) => {
     }
   }, [complStatus]);
   // console.log(getSingleSigneeItem?.data?.speciality?.speciality_name)
-  let specilaity_list = (getSingleSigneeItem?.data?.speciality?.speciality_name) ? getSingleSigneeItem?.data?.speciality?.speciality_name.split(",") : '';
-  console.log(specilaity_list.length, " specilaity_listspecilaity_list")
+  let specilaity_list = getSingleSigneeItem?.data?.speciality?.speciality_name
+    ? getSingleSigneeItem?.data?.speciality?.speciality_name.split(",")
+    : "";
+
+  const handleClick = (e, keyData) => {
+    setKey(keyData);
+    console.log(keyData, " keyData");
+    console.log(e.target.files, " filesfilesfiles");
+    setSelectedFile(e.target.files);
+    setFileSize("");
+  };
+
+  useEffect(() => {
+    if (selectedFile && selectedFile.length > 0) {
+      let totalLength = null;
+      if (selectedFile.length <= 5) {
+        for (const key of Object.keys(selectedFile)) {
+          const fsize = selectedFile.item(key).size;
+          const file2 = Math.round(fsize / 1024);
+          totalLength += file2;
+        }
+        if (totalLength <= 20480) {
+          onSubmit();
+        } else {
+          setFileSize("File size should be less than 20MB");
+        }
+      } else {
+        setFileSize("Maximum 5 documents allowed");
+      }
+    }
+  }, [selectedFile]);
+
+  const onSubmit = (e) => {
+    let formData = new FormData();
+    for (const key of Object.keys(selectedFile)) {
+      console.log(selectedFile[key], " selectedFile");
+      formData.append("files[]", selectedFile[key]);
+      formData.append("key", key2);
+    }
+    setAddDocMsg("");
+
+    axios
+      .post(
+        apiConfigs.API_URL + "api/organization/upload-document/" + user_id,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: getToken ? `Bearer ${getToken}` : "",
+          },
+          onUploadProgress: (progressEvent) => {
+            setLoader(true);
+          },
+        }
+      )
+      .then(function (response) {
+        const dataItem = response.data;
+        if (dataItem && dataItem.status === true) {
+          setLoader(false);
+          setNotifyMsg(true);
+          setAddDocMsg("Document Uploaded Successfully");
+          dispatch(getSingleSignee(user_id));
+          setSelectedFile([]);
+        }
+      })
+      .catch(function (error) {
+        setLoader(false);
+        setAddDocMsg(error.message);
+      });
+  };
 
   return (
     <>
-      {loading ? (
+      {loading || loader ? (
         <Backdrop className={classes.backdrop} open={loading}>
           <CircularProgress color="inherit" />
         </Backdrop>
@@ -283,6 +376,8 @@ const DetailSignee = ({ match }) => {
       {proNotify && signeeProStatusSuccess?.message && (
         <Notification data={signeeProStatusSuccess?.message} status="success" />
       )}
+      {fileSizeMsg && <Notification data={fileSizeMsg} status="error" />}
+      {addDocMsg && <Notification data={addDocMsg} status="success" />}
       <Paper className={`${classes.root} mb-6`}>
         <Grid container spacing={4}>
           <Grid item xs={12} sm={6} lg={4} className={classes.statusContainer}>
@@ -445,7 +540,7 @@ const DetailSignee = ({ match }) => {
           </Grid>
           <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
             <Typography variant="body2" className={classes.heading}>
-            Candidate Id
+              Candidate Id
             </Typography>
             <Typography variant="h6" className={classes.desc}>
               {getSingleSigneeItem?.data?.candidate_id
@@ -454,10 +549,19 @@ const DetailSignee = ({ match }) => {
             </Typography>
           </Grid>
           <Grid item xs={12} sm={12} lg={12} className={classes.gridItem}>
-              <Typography variant="body2" className={classes.heading}>Speciality:</Typography>
-              <div className={classes.chipContainer}>
-                  {specilaity_list.length >0 && specilaity_list?.map((list, index) => <Chip className="tag mt-1 mr-1" label={list} key={index}></Chip>)}
-              </div>
+            <Typography variant="body2" className={classes.heading}>
+              Speciality:
+            </Typography>
+            <div className={classes.chipContainer}>
+              {specilaity_list.length > 0 &&
+                specilaity_list?.map((list, index) => (
+                  <Chip
+                    className="tag mt-1 mr-1"
+                    label={list}
+                    key={index}
+                  ></Chip>
+                ))}
+            </div>
           </Grid>
 
           {/* <Grid item xs={12} sm={6} lg={4} className={classes.gridItem}>
@@ -892,6 +996,21 @@ const DetailSignee = ({ match }) => {
                         ? "Proof of NI- Any letter from HMRC showing NI number or Copy of NI card ( front & back Copy ) -We don’t accept payslips"
                         : ""}
                     </Typography>
+                    <div className={classes.fileCon}>
+                      <button className="btn1">
+                        <PublishIcon className="mr-3" />
+                        <input
+                          key={key1}
+                          accept="image/*,.pdf"
+                          type="file"
+                          multiple
+                          name="files"
+                          onChange={(e) => handleClick(e, list[0])}
+                        />
+                        <span>Upload files</span>
+                      </button>
+                    </div>
+                    
                     <div className={classes.selectCon}>
                       {list[1].length > 0 && (
                         <>
@@ -943,13 +1062,13 @@ const DetailSignee = ({ match }) => {
                             )}
                           </div>
                           <Link
-                            style={{ minWidth: "650px"}}
+                            style={{ minWidth: "650px" }}
                             to={{ pathname: `${baseUrl}${filename}` }}
                             target="_blank"
                           >
                             {filename}
                           </Link>
-                          <span style={{ float: "right"}}>
+                          <span style={{ float: "right" }}>
                             Expire Date: {fileList?.expire_date || "N/A"}
                           </span>
                         </div>

@@ -26,7 +26,10 @@ const initialState = {
     signeeComStatusError:[],
 
     changeDocStatusSuccess:[],
-    changeDocStatusError:[]
+    changeDocStatusError:[],
+
+    getCandidateEventItem: [],
+    getCandidateEventError:[]
 }
 
 const signeeReducer = (state = initialState, action) => {
@@ -196,6 +199,24 @@ const signeeReducer = (state = initialState, action) => {
                 changeDocStatusError: action.payload
             })
 
+            case actionTypes.GET_CONTACT_EVENT_REQUETS:
+                return updateObject(state, {
+                    loading: true,
+                    getCandidateEventItem: "",
+                    getCandidateEventError: ""
+                })
+    
+            case actionTypes.GET_CONTACT_EVENT_SUCCESS:
+                return updateObject(state, {
+                    loading: false,
+                    getCandidateEventItem: action.payload
+                })
+    
+            case actionTypes.GET_CONTACT_EVENT_ERROR:
+                return updateObject(state, {
+                    loading: false,
+                    getCandidateEventError: action.payload
+                })
 
         default: return state
     }
